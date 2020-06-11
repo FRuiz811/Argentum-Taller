@@ -23,7 +23,7 @@ public:
 
 	void handleEvent(SDL_Event& event);
 
-	SDL_Renderer* getRenderer();
+	SDL_Renderer* getRenderer() const;
 
 	~SDLWindow();
 };

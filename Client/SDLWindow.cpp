@@ -1,21 +1,22 @@
 #include "SDLWindow.h"
 #include <exception>
 #include <SDL2/SDL.h>
+#include "SDLException.h"
 
 SDLWindow::SDLWindow(const int height, const int width, const char* title) :
 	 isMinimized(false), isFullScreen(false), height(height), width(width) {
 
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
-		throw std::exception();
+		throw SDLException("Error with SDL_Init: %s",SDL_GetError());
 	Uint32 flags = SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_RENDERER_ACCELERATED;
 	if (SDL_CreateWindowAndRenderer(width, height, flags, &this->window,
 									&this->renderer)) 
-		throw std::exception();
+		throw SDLException("Error with SDL_CreateWindowAndRenderer: %s",SDL_GetError());
 	SDL_SetWindowTitle(this->window,title);
 }
 
 void SDLWindow::clearScreen() {
-	SDL_SetRenderDrawColor(this->renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+	SDL_SetRenderDrawColor(this->renderer, 0x00, 0x78, 0xFF, 0xFF);
 	SDL_RenderClear(this->renderer);
 }
 
@@ -54,7 +55,7 @@ void SDLWindow::render() {
 	}
 }
 
-SDL_Renderer* SDLWindow::getRenderer() {
+SDL_Renderer* SDLWindow::getRenderer() const {
 	return this->renderer;
 }
 
@@ -68,4 +69,5 @@ SDLWindow::~SDLWindow() {
 		SDL_DestroyRenderer(this->renderer);
 		this->renderer = nullptr;
 	}
+	SDL_Quit();
 }
