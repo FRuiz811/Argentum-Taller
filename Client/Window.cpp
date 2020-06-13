@@ -1,26 +1,45 @@
-#include "SDLWindow.h"
+#include "Window.h"
 #include <exception>
 #include <SDL2/SDL.h>
-#include "SDLException.h"
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h>
+#include <SDL2/SDL_ttf.h>
+#include "Exception.h"
 
-SDLWindow::SDLWindow(const int height, const int width, const char* title) :
+#define CHANNELS 2
+#define MIX_CHUNKSIZE 1024
+
+Window::Window(const int height, const int width, const char* title) :
 	 isMinimized(false), isFullScreen(false), height(height), width(width) {
 
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
-		throw SDLException("Error with SDL_Init: %s",SDL_GetError());
+		throw Exception("Error with SDL_Init: %s",SDL_GetError());
+
+	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 
+									CHANNELS, MIX_CHUNKSIZE) == -1) {
+			throw Exception("Fail Mix_OpenAudio: %s", Mix_GetError());
+	}
+
+	if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
+		throw Exception("Fail IMG_Init: %s", IMG_GetError());
+	}
+
+	if(TTF_Init() == -1)
+		throw Exception("Fail TTF_Init: %s", TTF_GetError());
+
 	Uint32 flags = SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_RENDERER_ACCELERATED;
 	if (SDL_CreateWindowAndRenderer(width, height, flags, &this->window,
 									&this->renderer)) 
-		throw SDLException("Error with SDL_CreateWindowAndRenderer: %s",SDL_GetError());
+		throw Exception("Error with SDL_CreateWindowAndRenderer: %s",SDL_GetError());
 	SDL_SetWindowTitle(this->window,title);
 }
 
-void SDLWindow::clearScreen() {
+void Window::clearScreen() {
 	SDL_SetRenderDrawColor(this->renderer, 0x00, 0x78, 0xFF, 0xFF);
 	SDL_RenderClear(this->renderer);
 }
 
-void SDLWindow::handleEvent(SDL_Event& event) {
+void Window::handleEvent(SDL_Event& event) {
 	if(event.type == SDL_WINDOWEVENT) {
 		switch(event.window.event) {
 			//Redimenciona el tamaño de la ventana.
@@ -49,17 +68,26 @@ void SDLWindow::handleEvent(SDL_Event& event) {
 }
 }
 
-void SDLWindow::render() {
+void Window::render() {
 	if (!this->isMinimized) {
 		SDL_RenderPresent(this->renderer);
 	}
 }
 
-SDL_Renderer* SDLWindow::getRenderer() const {
-	return this->renderer;
+SDL_Renderer& Window::getRenderer() const {
+	return *this->renderer;
 }
 
-SDLWindow::~SDLWindow() {
+int Window::getWidth() const {
+	return this->width;
+}
+
+
+int Window::getHeight() const {
+	return this->height;
+}
+
+Window::~Window() {
 	if (this->window) {
 		SDL_DestroyWindow(this->window);
 		this->window = nullptr;
@@ -69,5 +97,8 @@ SDLWindow::~SDLWindow() {
 		SDL_DestroyRenderer(this->renderer);
 		this->renderer = nullptr;
 	}
+	IMG_Quit();
+	TTF_Quit();
+	Mix_Quit();
 	SDL_Quit();
 }

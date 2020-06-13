@@ -1,10 +1,10 @@
-#include "SDLException.h"
+#include "Exception.h"
 #include <errno.h>
 #include <cstdio>
 #include <cstring>
 #include <cstdarg>
 
-SDLException::SDLException(const char* msg, ...) noexcept {
+Exception::Exception(const char* msg, ...) noexcept {
 	int _errno = errno;
 
 	va_list args;
@@ -16,8 +16,8 @@ SDLException::SDLException(const char* msg, ...) noexcept {
 	msg_error[BUFF_SIZE-1] = 0;
 }
 
-const char* SDLException::what() const noexcept {
+const char* Exception::what() const noexcept {
 	return msg_error;
 }
 
-SDLException::~SDLException() noexcept {}
+Exception::~Exception() noexcept {}

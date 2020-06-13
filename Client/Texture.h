@@ -1,25 +1,27 @@
-#ifndef SDLTEXTURE_H
-#define SDLTEXTURE_H
+#ifndef TEXTURE_H
+#define TEXTURE_H
 #include <string>
 
-class SDLWindow;
+class Window;
 class SDL_Renderer;
 class SDL_Texture;
 class SDL_Rect;
 
-class SDLTexture {
+class Texture {
 private:
 	SDL_Texture* texture = nullptr;
 	SDL_Renderer* renderer = nullptr;
 	SDL_Texture* loadTexture(const std::string &fileName);
 public:
-	SDLTexture(const std::string &fileName, const SDLWindow& window);
+	Texture(const std::string &fileName, SDL_Renderer& renderer);
 
-	~SDLTexture();
+	~Texture();
 
 	int render(const SDL_Rect& source, const SDL_Rect& destiny) const;
 
 	int render();
+	Texture(Texture&& other);
+	Texture& operator=(Texture &&other);
 };
 
 #endif

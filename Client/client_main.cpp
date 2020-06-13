@@ -1,7 +1,9 @@
 #include "SDL2/SDL.h"
-#include "SDLWindow.h"
-#include "SDLTexture.h"
-#include "SDLMusic.h"
+#include "Window.h"
+#include "Texture.h"
+#include "Music.h"
+#include "TextureManager.h"
+#include "GameTexture.h"
 #include <SDL2/SDL_mixer.h>
 
 #define ARGENTUM "Argentum Online"
@@ -10,18 +12,20 @@
 
 int main(int argc, char* args[]) {
 	bool quit = false;
+	std::string path = "assets/img/ImagenPresentacion.jpg";
+	std::string music = "assets/sound/Musica Inicio.mp3";
 	SDL_Event events;
-	SDLWindow window(WINDOW_HEIGHT, WINDOW_WIDTH, ARGENTUM);
-	std::string path = "Media/ImagenPresentacion.jpg";
-	std::string music = "Media/Musica Inicio.mp3";
-	SDLTexture fondo(path, window);
-	SDLMusic musica(music);
+	Window window(WINDOW_HEIGHT, WINDOW_WIDTH, ARGENTUM);
+	TextureManager textureManager(window.getRenderer());
+	textureManager.createTexture(GameTexture::PresentationImage, path);
+	Music musica(music);
 	musica.playMusic(-1);
-	
+	Texture fondo = std::move(textureManager.getTexture(GameTexture::PresentationImage));
 	while (!quit) {
 		while (SDL_PollEvent(&events) != 0) {
-			if (events.type == SDL_QUIT) 
+			if (events.type == SDL_QUIT) {
 				quit = true;
+			}
 			window.handleEvent(events);
 		}
 		window.clearScreen();
