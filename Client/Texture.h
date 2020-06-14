@@ -10,6 +10,8 @@ class SDL_Rect;
 class Texture {
 private:
 	SDL_Texture* texture = nullptr;
+	int width;
+	int height;
 	SDL_Renderer* renderer = nullptr;
 	SDL_Texture* loadTexture(const std::string &fileName);
 public:

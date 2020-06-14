@@ -12,7 +12,7 @@ private:
 public:
 	MusicManager();
 
-	void createMusic(MusicID id, std::string path);
+	void createMusic(MusicID id, const std::string& path);
 
 	void dropMusic(MusicID id);
 

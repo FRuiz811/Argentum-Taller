@@ -15,7 +15,7 @@ private:
 public:
 	TextureManager(SDL_Renderer& renderer);
 
-	void createTexture(TextureID id, std::string path);
+	void createTexture(TextureID id, const std::string& path);
 
 	void dropTexture(TextureID id);
 

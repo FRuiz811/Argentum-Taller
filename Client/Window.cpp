@@ -8,10 +8,33 @@
 
 #define CHANNELS 2
 #define MIX_CHUNKSIZE 1024
+#define WINDOW_HEIGHT 600
+#define WINDOW_WIDTH 800
 
 Window::Window(const int height, const int width, const char* title) :
 	 isMinimized(false), height(height), width(width) {
 
+	init();
+
+	Uint32 flags = SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_RENDERER_ACCELERATED;
+	if (SDL_CreateWindowAndRenderer(this->width, this->height, flags, &this->window,
+									&this->renderer)) 
+		throw Exception("Error with SDL_CreateWindowAndRenderer: %s",SDL_GetError());
+	SDL_SetWindowTitle(this->window,title);
+}
+
+Window::Window(const char* title) : isMinimized(false), height(WINDOW_HEIGHT),
+	width(WINDOW_WIDTH) {
+		init();
+
+	Uint32 flags = SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_RENDERER_ACCELERATED;
+	if (SDL_CreateWindowAndRenderer(this->width, this->height, flags, &this->window,
+									&this->renderer)) 
+		throw Exception("Error with SDL_CreateWindowAndRenderer: %s",SDL_GetError());
+	SDL_SetWindowTitle(this->window,title);
+}
+
+void Window::init() {
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
 		throw Exception("Error with SDL_Init: %s",SDL_GetError());
 
@@ -26,16 +49,10 @@ Window::Window(const int height, const int width, const char* title) :
 
 	if(TTF_Init() == -1)
 		throw Exception("Fail TTF_Init: %s", TTF_GetError());
-
-	Uint32 flags = SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_RENDERER_ACCELERATED;
-	if (SDL_CreateWindowAndRenderer(width, height, flags, &this->window,
-									&this->renderer)) 
-		throw Exception("Error with SDL_CreateWindowAndRenderer: %s",SDL_GetError());
-	SDL_SetWindowTitle(this->window,title);
 }
 
 void Window::clearScreen() {
-	SDL_SetRenderDrawColor(this->renderer, 0x00, 0x78, 0xFF, 0xFF);
+	SDL_SetRenderDrawColor(this->renderer, 0x00, 0x00, 0x00, 0x00);
 	SDL_RenderClear(this->renderer);
 }
 
@@ -88,17 +105,18 @@ int Window::getHeight() const {
 }
 
 Window::~Window() {
+	if (this->renderer){
+		SDL_DestroyRenderer(this->renderer);
+		this->renderer = nullptr;
+	}
 	if (this->window) {
 		SDL_DestroyWindow(this->window);
 		this->window = nullptr;
 	}
 
-	if (this->renderer){
-		SDL_DestroyRenderer(this->renderer);
-		this->renderer = nullptr;
-	}
 	IMG_Quit();
 	TTF_Quit();
+	Mix_CloseAudio();
 	Mix_Quit();
 	SDL_Quit();
 }

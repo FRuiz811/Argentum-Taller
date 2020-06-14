@@ -2,6 +2,7 @@
 #include "Window.h"
 #include <SDL2/SDL_image.h>
 #include "Exception.h"
+#include <iostream>
 
 Texture::Texture(const std::string &fileName, SDL_Renderer& renderer) {
 	this->renderer = &renderer;
@@ -20,6 +21,10 @@ SDL_Texture* Texture::loadTexture(const std::string &fileName) {
 	if (!this->texture){
 		throw Exception("Fail IMG_LoadTexture: %s", IMG_GetError());
 	}
+	int h,w;
+	SDL_QueryTexture(this->texture, NULL, NULL, &w, &h);
+	this->width = w;
+	this->height = h;
 	return this->texture;
 }
 

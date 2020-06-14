@@ -1,10 +1,31 @@
 #include "Font.h"
 #include "Exception.h"
 
-Font::Font(const std::string path, const int size) : size(size) {
+Font::Font(const std::string& path, const int size, SDL_Color color) : size(size),
+	color(color) {
 	this->font = TTF_OpenFont(path.c_str(), this->size);
 	if (!this->font)
-		throw Exception("Fail TTF_OpenFont: ", TTF_GetError());
+		throw Exception("Fail TTF_OpenFont: %s", TTF_GetError());
+}
+
+
+void Font::setColor(SDL_Color color) {
+	this->color = color;
+}
+
+SDL_Texture* Font::createText(const std::string& text, SDL_Renderer* renderer, int* width, int* height) {
+	SDL_Surface* textSurface = TTF_RenderText_Solid(this->font, text.c_str(), this->color);
+	if (!textSurface)
+		throw Exception("Fail TTF_RenderText_Solid: %s", TTF_GetError());
+
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, textSurface);
+	if (!texture)
+		throw Exception("Fail SDL_CreateTextureFromSurface in createText: %s", SDL_GetError());
+	
+	*height = textSurface->h;	
+	*width = textSurface->w;
+	SDL_FreeSurface(textSurface);
+	return texture;
 }
 
 TTF_Font* Font::getFont() const {

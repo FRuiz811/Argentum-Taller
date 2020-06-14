@@ -12,9 +12,9 @@ private:
 	bool isMinimized;
 	int height;
 	int width;
-
+	void init();
 public:
-	Window();
+	Window(const char* title);
 	Window(const int height,const int width,const char* title);
 
 	void clearScreen();

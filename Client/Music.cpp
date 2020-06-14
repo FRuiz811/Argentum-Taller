@@ -34,6 +34,6 @@ void Music::stopMusic() {
 }
 
 Music::~Music() {
-	if (!this->music)
+	if (this->music)
 		Mix_FreeMusic(this->music);
 }
