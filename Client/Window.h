@@ -10,7 +10,6 @@ private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	bool isMinimized;
-	bool isFullScreen;
 	int height;
 	int width;
 

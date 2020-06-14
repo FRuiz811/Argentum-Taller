@@ -10,7 +10,7 @@
 #define MIX_CHUNKSIZE 1024
 
 Window::Window(const int height, const int width, const char* title) :
-	 isMinimized(false), isFullScreen(false), height(height), width(width) {
+	 isMinimized(false), height(height), width(width) {
 
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
 		throw Exception("Error with SDL_Init: %s",SDL_GetError());
@@ -65,7 +65,7 @@ void Window::handleEvent(SDL_Event& event) {
 			 this->isMinimized = false;
        break;
 		}
-}
+	}
 }
 
 void Window::render() {

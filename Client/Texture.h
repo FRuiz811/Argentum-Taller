@@ -14,14 +14,12 @@ private:
 	SDL_Texture* loadTexture(const std::string &fileName);
 public:
 	Texture(const std::string &fileName, SDL_Renderer& renderer);
-
+	Texture(Texture&& other);
 	~Texture();
 
 	int render(const SDL_Rect& source, const SDL_Rect& destiny) const;
 
 	int render();
-	Texture(Texture&& other);
-	Texture& operator=(Texture &&other);
 };
 
 #endif

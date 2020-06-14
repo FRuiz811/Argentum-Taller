@@ -9,14 +9,8 @@ Texture::Texture(const std::string &fileName, SDL_Renderer& renderer) {
 }
 
 Texture::Texture(Texture &&other) {
-   std::swap(this->texture, other.texture);
-   std::swap(this->renderer, other.renderer);
-}
-
-Texture& Texture::operator=(Texture &&other) {
-   std::swap(this->texture, other.texture);
-   std::swap(this->renderer, other.renderer);
-    return *this;
+    std::swap(this->texture, other.texture);
+    std::swap(this->renderer, other.renderer);
 }
 
 SDL_Texture* Texture::loadTexture(const std::string &fileName) {
