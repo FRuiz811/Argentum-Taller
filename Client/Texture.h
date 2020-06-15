@@ -1,11 +1,7 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 #include <string>
-
-class Window;
-class SDL_Renderer;
-class SDL_Texture;
-class SDL_Rect;
+#include <SDL2/SDL.h>
 
 class Texture {
 private:
@@ -13,15 +9,17 @@ private:
 	int width;
 	int height;
 	SDL_Renderer* renderer = nullptr;
-	SDL_Texture* loadTexture(const std::string &fileName);
+	SDL_Texture* loadTexture(const std::string &fileName, SDL_Color colorKey);
+
 public:
+	Texture(const std::string &fileName, SDL_Renderer& renderer, SDL_Color colorKey);
 	Texture(const std::string &fileName, SDL_Renderer& renderer);
 	Texture(Texture&& other);
 	~Texture();
 
 	int render(const SDL_Rect& source, const SDL_Rect& destiny) const;
 
-	int render();
+	int render() const;
 };
 
 #endif

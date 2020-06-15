@@ -2,7 +2,7 @@
 #define MUSICID_H
 
 enum class MusicID {
-	MusicStart,
+	Start,
 };
 
 #endif

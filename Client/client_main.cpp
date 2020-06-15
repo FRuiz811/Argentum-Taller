@@ -4,38 +4,46 @@
 #include "Window.h"
 #include "Texture.h"
 #include "Music.h"
+#include "MusicManager.h"
 #include "TextureManager.h"
 #include "TextureID.h"
+#include "MusicID.h"
 #include "Font.h"
+#include "Zombie.h"
 
 #define ARGENTUM "Argentum Online"
 
 int main(int argc, char* args[]) {
 	bool quit = false;
-	std::string presentation = "assets/img/ImagenPresentacion.jpg";
-	std::string lobby = "assets/img/Fondo Inicio.jpg";
-	std::string music = "assets/sound/Musica Inicio.mp3";
+	SDL_Color textColor = {0x0, 0x0, 0x0};
 	std::string fuente = "assets/font/Prince Valiant.ttf";
+	int width_text, height_text;
+	SDL_Rect dest;
 
 	SDL_Event event;
 	Window window(ARGENTUM);
-	SDL_Color textColor = {0x0, 0x0, 0x0};
-	Font font(fuente, 18, textColor);
+
 	TextureManager textureManager(window.getRenderer());
-	textureManager.createTexture(TextureID::PresentationImage, presentation);
-	textureManager.createTexture(TextureID::LobbyBackground, lobby);
-	Texture& fondo = textureManager.getTexture(TextureID::PresentationImage);
-	Texture& lobbyTexture = textureManager.getTexture(TextureID::LobbyBackground);
-	Music musica(music);
+	textureManager.createTexture(TextureID::PresentationImage, "assets/img/ImagenPresentacion.jpg");
+	textureManager.createTexture(TextureID::LobbyBackground, "assets/img/Fondo Inicio.jpg");
+	textureManager.createTexture(TextureID::ZombieHead, "assets/img/Zombie Cabeza.png",textColor);
+	textureManager.createTexture(TextureID::ZombieBody, "assets/img/Zombie Cuerpo Sprite.png",textColor);
+	const Texture& fondo = textureManager.getTexture(TextureID::PresentationImage);
+	const Texture& lobbyTexture = textureManager.getTexture(TextureID::LobbyBackground);
+
+	MusicManager musicManager;
+	musicManager.createMusic(MusicID::Start, "assets/sound/Musica Inicio.mp3");
+	const Music& musica = musicManager.getMusic(MusicID::Start);
 	musica.playMusic(-1);
 
+	Font font(fuente, 18, textColor);
 	textColor = {0xFF, 0xFF, 0xFF};
 	font.setColor(textColor);
-	int width_text, height_text;
-	std::string message = "Presionar ENTER para continuar";
-	SDL_Texture* messageTexture = font.createText(message,&(window.getRenderer()), &width_text, &height_text);
-	SDL_Rect dest;
+	SDL_Texture* messageTexture = font.createText("Presionar ENTER para continuar",&(window.getRenderer()), &width_text, &height_text);
+
+	Zombie zombie(textureManager);
 	while (!quit) {
+
 		while (SDL_PollEvent(&event) != 0) {
 			if (event.type == SDL_QUIT) {
 				quit = true;
@@ -44,15 +52,22 @@ int main(int argc, char* args[]) {
 					messageTexture = nullptr;
 				}
 			}
+			zombie.handleEvent(event);
 			window.handleEvent(event);
 		}
-		dest = {(window.getWidth() - width_text) / 2, (window.getHeight() - height_text)* 6/7, width_text, height_text};
 		window.clearScreen();
+
 		if(messageTexture)
 			fondo.render();
-		else
+		else {
 			lobbyTexture.render();
+			zombie.render(window.getWidth(), window.getHeight());
+		}
+
+		dest = {(window.getWidth() - width_text) / 2, (window.getHeight() - height_text)* 6/7, width_text, height_text};
 		SDL_RenderCopy(&(window.getRenderer()), messageTexture, NULL, &dest);
 		window.render();
 	}
+
+	SDL_DestroyTexture(messageTexture);
 }

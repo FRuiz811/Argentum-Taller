@@ -7,10 +7,14 @@ Music::Music(const std::string& fileName) : reproduce(false) {
 	this->music = loadMusic(fileName);
 }
 
-int Music::playMusic(int times) {
-	this->reproduce =true;
+int Music::playMusic(int times) const {
 	return Mix_PlayMusic(this->music, times);
 }
+
+Music::Music(Music &&other) {
+    std::swap(this->music, other.music);
+}
+
 
 Mix_Music* Music::loadMusic(const std::string &fileName) {
 	if (!this->music) {
@@ -22,14 +26,14 @@ Mix_Music* Music::loadMusic(const std::string &fileName) {
 	return this->music;
 }
 
-void Music::pauseMusic() {
-	if (this->reproduce == true)
+void Music::pauseMusic() const {
+	if (Mix_PausedMusic() == 1)
 		Mix_PauseMusic();
 	else 
 		Mix_ResumeMusic();
 }
 
-void Music::stopMusic() {
+void Music::stopMusic() const {
 	Mix_HaltMusic();
 }
 

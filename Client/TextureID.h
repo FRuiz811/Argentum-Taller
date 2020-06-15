@@ -4,6 +4,8 @@
 enum class TextureID {
 	LobbyBackground,
 	PresentationImage,
+	ZombieHead,
+	ZombieBody,
 };
 
 #endif

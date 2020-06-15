@@ -16,7 +16,7 @@ public:
 
 	void dropMusic(MusicID id);
 
-	Music& getMusic(MusicID id);
+	const Music& getMusic(MusicID id) const;
 
 	~MusicManager();
 

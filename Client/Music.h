@@ -12,12 +12,13 @@ private:
 
 public:
 	explicit Music(const std::string &fileName);
+	Music(Music&& other);
 
-	int playMusic(int times);
+	int playMusic(int times) const ;
 
-	void pauseMusic();
+	void pauseMusic() const;
 
-	void stopMusic();
+	void stopMusic() const;
 
 	~Music();
 };

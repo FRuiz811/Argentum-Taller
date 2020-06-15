@@ -13,7 +13,7 @@ void MusicManager::dropMusic(MusicID id) {
 	this->songs.erase(id);
 }
 
-Music& MusicManager::getMusic(MusicID id) {
+const Music& MusicManager::getMusic(MusicID id) const {
 	return this->songs.at(id);
 }
 

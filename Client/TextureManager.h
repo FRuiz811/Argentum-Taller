@@ -6,6 +6,7 @@
 #include <string>
 
 class SDL_Renderer;
+class SDL_Color;
 
 class TextureManager {
 private:
@@ -15,11 +16,12 @@ private:
 public:
 	TextureManager(SDL_Renderer& renderer);
 
-	void createTexture(TextureID id, const std::string& path);
+	void createTexture(TextureID id, const std::string& path, SDL_Color color);
+	void createTexture(TextureID id, const std::string& path) ;
 
 	void dropTexture(TextureID id);
 
-	Texture& getTexture(TextureID id);
+	const Texture& getTexture(TextureID id) const;
 
 	~TextureManager();
 
