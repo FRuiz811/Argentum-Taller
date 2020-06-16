@@ -10,6 +10,8 @@
 #include "MusicID.h"
 #include "Font.h"
 #include "Zombie.h"
+#include "Player.h"
+#include "Spider.h"
 
 #define ARGENTUM "Argentum Online"
 
@@ -28,6 +30,13 @@ int main(int argc, char* args[]) {
 	textureManager.createTexture(TextureID::LobbyBackground, "assets/img/Fondo Inicio.jpg");
 	textureManager.createTexture(TextureID::ZombieHead, "assets/img/Zombie Cabeza.png",textColor);
 	textureManager.createTexture(TextureID::ZombieBody, "assets/img/Zombie Cuerpo Sprite.png",textColor);
+	textureManager.createTexture(TextureID::Spider, "assets/img/Araña Sprite.png",textColor);
+	textureManager.createTexture(TextureID::ElfHead,"assets/img/Cabeza Elfo.png", textColor);
+	textureManager.createTexture(TextureID::BlueTunic,"assets/img/Tunica Azul Sprite.png", textColor);
+	textureManager.createTexture(TextureID::TortleShield, "assets/img/Escudo de Tortuga Sprite.png",textColor);
+	textureManager.createTexture(TextureID::IronHelmet, "assets/img/Casco de Hierro Sprite.png", textColor);
+	textureManager.createTexture(TextureID::AshStick, "assets/img/Vara de Fresno Sprite.png", textColor);
+	textureManager.createTexture(TextureID::MagicHat, "assets/img/Sombrero Magico Sprite.png", textColor);
 	const Texture& fondo = textureManager.getTexture(TextureID::PresentationImage);
 	const Texture& lobbyTexture = textureManager.getTexture(TextureID::LobbyBackground);
 
@@ -40,8 +49,8 @@ int main(int argc, char* args[]) {
 	textColor = {0xFF, 0xFF, 0xFF};
 	font.setColor(textColor);
 	SDL_Texture* messageTexture = font.createText("Presionar ENTER para continuar",&(window.getRenderer()), &width_text, &height_text);
-
-	Zombie zombie(textureManager);
+	Spider spider(textureManager);
+	Player player(textureManager);
 	while (!quit) {
 
 		while (SDL_PollEvent(&event) != 0) {
@@ -51,8 +60,9 @@ int main(int argc, char* args[]) {
 				if (event.key.keysym.sym  == SDLK_RETURN){				
 					messageTexture = nullptr;
 				}
+				player.handleEvent(event);
+				spider.handleEvent(event);
 			}
-			zombie.handleEvent(event);
 			window.handleEvent(event);
 		}
 		window.clearScreen();
@@ -61,7 +71,8 @@ int main(int argc, char* args[]) {
 			fondo.render();
 		else {
 			lobbyTexture.render();
-			zombie.render(window.getWidth(), window.getHeight());
+			player.render(window.getWidth(), window.getHeight());
+			spider.render(window.getWidth(), window.getHeight());
 		}
 
 		dest = {(window.getWidth() - width_text) / 2, (window.getHeight() - height_text)* 6/7, width_text, height_text};

@@ -6,6 +6,13 @@ enum class TextureID {
 	PresentationImage,
 	ZombieHead,
 	ZombieBody,
+	Spider,
+	ElfHead,
+	BlueTunic,
+	TortleShield,
+	IronHelmet,
+	AshStick,
+	MagicHat,
 };
 
 #endif

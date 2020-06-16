@@ -12,7 +12,7 @@
 #define WINDOW_WIDTH 800
 
 Window::Window(const int height, const int width, const char* title) :
-	 isMinimized(false), height(height), width(width) {
+	 isMinimized(false), height(height), width(width),title(title) {
 
 	init();
 
@@ -20,18 +20,18 @@ Window::Window(const int height, const int width, const char* title) :
 	if (SDL_CreateWindowAndRenderer(this->width, this->height, flags, &this->window,
 									&this->renderer)) 
 		throw Exception("Error with SDL_CreateWindowAndRenderer: %s",SDL_GetError());
-	SDL_SetWindowTitle(this->window,title);
+	SDL_SetWindowTitle(this->window,this->title);
 }
 
 Window::Window(const char* title) : isMinimized(false), height(WINDOW_HEIGHT),
-	width(WINDOW_WIDTH) {
+	width(WINDOW_WIDTH), title(title) {
 		init();
 
 	Uint32 flags = SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_RENDERER_ACCELERATED;
 	if (SDL_CreateWindowAndRenderer(this->width, this->height, flags, &this->window,
 									&this->renderer)) 
 		throw Exception("Error with SDL_CreateWindowAndRenderer: %s",SDL_GetError());
-	SDL_SetWindowTitle(this->window,title);
+	SDL_SetWindowTitle(this->window,this->title);
 }
 
 void Window::init() {
@@ -71,16 +71,16 @@ void Window::handleEvent(SDL_Event& event) {
 				break;
 			//Window minimized
 			case SDL_WINDOWEVENT_MINIMIZED:
-        this->isMinimized = true;
-        break;
+        		this->isMinimized = true;
+        		break;
 			//Window maxized
 			case SDL_WINDOWEVENT_MAXIMIZED:
-			 this->isMinimized = false;
-       break;
+			 	this->isMinimized = false;
+      			 break;
 			//Window restored
 			case SDL_WINDOWEVENT_RESTORED:
-			 this->isMinimized = false;
-       break;
+			 	this->isMinimized = false;
+		        break;
 		}
 	}
 }
@@ -114,9 +114,9 @@ Window::~Window() {
 		this->window = nullptr;
 	}
 
-	IMG_Quit();
-	TTF_Quit();
 	Mix_CloseAudio();
 	Mix_Quit();
+	IMG_Quit();
+	TTF_Quit();
 	SDL_Quit();
 }

@@ -43,7 +43,7 @@ SDL_Texture* Texture::loadTexture(const std::string &fileName, SDL_Color colorKe
 	if (!this->texture){
 		throw Exception("Fail SDL_CreateTextureFromSurface: %s", SDL_GetError());
 	}
-
+	SDL_FreeSurface(surface);
 	return this->texture;
 }
 
