@@ -20,6 +20,8 @@ public:
 	int render(const SDL_Rect& source, const SDL_Rect& destiny) const;
 
 	int render() const;
+
+    int getWidth() const;
 };
 
 #endif

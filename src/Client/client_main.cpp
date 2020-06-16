@@ -10,6 +10,9 @@
 #include "MusicID.h"
 #include "Font.h"
 #include "Zombie.h"
+#include "../JsonReader.h"
+#include "../MapTransformer.h"
+#include "GameMap.h"
 
 #define ARGENTUM "Argentum Online"
 
@@ -22,6 +25,11 @@ int main(int argc, char* args[]) {
 
 	SDL_Event event;
 	Window window(ARGENTUM);
+    JsonReader jsonReader;
+    rapidjson::Document jsonMap = jsonReader.read("json/tiledMap.json");
+    MapTransformer mapTransformer;
+    TiledMap tiledMap = mapTransformer.transform(jsonMap);
+    GameMap gameMap(tiledMap, window.getRenderer());
 
 	TextureManager textureManager(window.getRenderer());
 	textureManager.createTexture(TextureID::PresentationImage, "assets/img/ImagenPresentacion.jpg");
@@ -60,8 +68,11 @@ int main(int argc, char* args[]) {
 		if(messageTexture)
 			fondo.render();
 		else {
+
 			lobbyTexture.render();
+            gameMap.draw(window.getRenderer());
 			zombie.render(window.getWidth(), window.getHeight());
+
 		}
 
 		dest = {(window.getWidth() - width_text) / 2, (window.getHeight() - height_text)* 6/7, width_text, height_text};

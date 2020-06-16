@@ -27,6 +27,8 @@ Texture::Texture(const std::string &fileName, SDL_Renderer& renderer) {
 Texture::Texture(Texture &&other) {
     std::swap(this->texture, other.texture);
     std::swap(this->renderer, other.renderer);
+    std::swap(this->height, other.height);
+    std::swap(this->width, other.width);
 }
 
 SDL_Texture* Texture::loadTexture(const std::string &fileName, SDL_Color colorKey) {
@@ -58,4 +60,8 @@ int Texture::render(const SDL_Rect& source, const SDL_Rect& destiny) const {
 Texture::~Texture() {
 	if (this->texture)
 		SDL_DestroyTexture(this->texture);
+}
+
+int Texture::getWidth() const {
+    return width;
 }
