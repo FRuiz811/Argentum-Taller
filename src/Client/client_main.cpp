@@ -68,8 +68,6 @@ int main(int argc, char* args[]) {
 		if(messageTexture)
 			fondo.render();
 		else {
-
-			lobbyTexture.render();
             gameMap.draw(window.getRenderer());
 			zombie.render(window.getWidth(), window.getHeight());
 
