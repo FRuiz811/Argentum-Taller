@@ -1,7 +1,3 @@
-//
-// Created by victorbelosevich on 14/06/20.
-//
-
 #include <algorithm>
 #include "MapTransformer.h"
 #include "JsonReader.h"

@@ -13,6 +13,7 @@ private:
 	int height;
 	int width;
 	void init();
+	const char* title;
 public:
 	Window(const char* title);
 	Window(const int height,const int width,const char* title);

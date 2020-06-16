@@ -1,7 +1,7 @@
-#include "Zombie.h"
+#include "Player.h"
 #include <SDL2/SDL.h>
 
-Zombie::Zombie(const TextureManager& manager) : manager(manager) {
+Player::Player(const TextureManager& manager) : manager(manager) {
 	this->rowBody = 0;
 	this->rowHead = 1;
 	this->totalFrames = 6;
@@ -15,22 +15,28 @@ Zombie::Zombie(const TextureManager& manager) : manager(manager) {
 	this->posY = 0;
 }
 
-void Zombie::render(const int width_screen, const int height_screen) {
-	const Texture& head = manager.getTexture(TextureID::ZombieHead);
-	const Texture& body = manager.getTexture(TextureID::ZombieBody);
+void Player::render(const int width_screen, const int height_screen) {
+	const Texture& head = manager.getTexture(TextureID::ElfHead);
+	const Texture& body = manager.getTexture(TextureID::BlueTunic);
+    const Texture& shield = manager.getTexture(TextureID::TortleShield);
+    const Texture& helmet = manager.getTexture(TextureID::MagicHat);
+    const Texture& weapon = manager.getTexture(TextureID::AshStick);
 	SDL_Rect srcHead = {widthHead*frameHead, heightHead*0, this->widthHead, this->heightHead};
 	SDL_Rect dstHead = {((width_screen+9)/2)+posX,((height_screen/2)-(this->heightHead+1)/2)+posY,this->widthHead, this->heightHead};
 	head.render(srcHead, dstHead);
+    helmet.render(srcHead,dstHead);
 	SDL_Rect srcBody = {widthBody*frameBody,heightBody*rowBody, this->widthBody, this->heightBody};
 	SDL_Rect dstBody = {(width_screen/2)+posX, (height_screen/2)+posY, this->widthBody, this->heightBody};
-	body.render(srcBody, dstBody);
+    body.render(srcBody, dstBody);
+    weapon.render(srcBody,dstBody);
+    shield.render(srcBody,dstBody);
 }
 
-void Zombie::update(double dt) {
+void Player::update(double dt) {
 	this->frameBody = (SDL_GetTicks()/this->animSpeed) % this->totalFrames;
 }
 
-void Zombie::handleEvent(SDL_Event& event) {
+void Player::handleEvent(SDL_Event& event) {
 	bool needUpdate = true;
 	if(event.type == SDL_KEYDOWN && event.key.repeat == 0) {
         //Adjust the velocity
@@ -68,4 +74,4 @@ void Zombie::handleEvent(SDL_Event& event) {
 
 }
 
-Zombie::~Zombie(){}
+Player::~Player(){}

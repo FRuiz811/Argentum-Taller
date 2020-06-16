@@ -11,9 +11,6 @@ public:
     Animation(const Texture& texture, int widthSprite, int heightSprite, int speed);
     void update(double dt);
     void render(int row, int totalFrames);
-
-
-
 };
 
 #endif

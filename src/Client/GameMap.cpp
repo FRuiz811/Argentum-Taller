@@ -1,7 +1,3 @@
-//
-// Created by victorbelosevich on 15/06/20.
-//
-
 #include <iostream>
 #include "GameMap.h"
 

@@ -1,17 +1,11 @@
-//
-// Created by victorbelosevich on 14/06/20.
-//
-
 #include <fstream>
 #include <rapidjson/istreamwrapper.h>
 #include <iostream>
 #include "JsonReader.h"
 
-JsonReader::JsonReader() {}
+JsonReader::JsonReader() = default;
 
-JsonReader::~JsonReader() {
-
-}
+JsonReader::~JsonReader() = default;
 
 rapidjson::Document JsonReader::read(const std::string & filename) {
     std::ifstream file(filename);

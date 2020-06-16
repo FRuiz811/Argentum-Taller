@@ -1,18 +1,13 @@
-//
-// Created by victorbelosevich on 15/06/20.
-//
+
 
 #ifndef ARGENTUM_GAMEMAP_H
 #define ARGENTUM_GAMEMAP_H
 
-
-#include <vector>
 #include "Tile.h"
 #include "TiledMap.h"
 #include "Texture.h"
+#include <vector>
 #import <map>
-
-
 
 class GameMap {
 private:
