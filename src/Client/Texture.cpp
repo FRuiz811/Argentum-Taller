@@ -58,8 +58,10 @@ int Texture::render(const SDL_Rect& source, const SDL_Rect& destiny) const {
 }
 
 Texture::~Texture() {
-	if (this->texture)
+	if (this->texture) {
 		SDL_DestroyTexture(this->texture);
+		this->texture = nullptr;
+	}
 }
 
 int Texture::getWidth() const {

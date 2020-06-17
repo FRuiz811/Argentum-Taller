@@ -38,6 +38,8 @@ void Music::stopMusic() const {
 }
 
 Music::~Music() {
-	if (this->music)
+	if (this->music) {
 		Mix_FreeMusic(this->music);
+		this->music = nullptr;
+	}
 }
