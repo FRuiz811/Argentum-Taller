@@ -1,5 +1,3 @@
-
-
 #ifndef ARGENTUM_GAMEMAP_H
 #define ARGENTUM_GAMEMAP_H
 
@@ -7,7 +5,7 @@
 #include "TiledMap.h"
 #include "Texture.h"
 #include <vector>
-#import <map>
+#include <map>
 
 class GameMap {
 private:

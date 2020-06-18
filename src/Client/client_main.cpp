@@ -47,7 +47,6 @@ int main(int argc, char* args[]) {
 	textureManager.createTexture(TextureID::AshStick, "assets/img/Vara de Fresno Sprite.png", textColor);
 	textureManager.createTexture(TextureID::MagicHat, "assets/img/Sombrero Magico Sprite.png", textColor);
 	const Texture& fondo = textureManager.getTexture(TextureID::PresentationImage);
-	const Texture& lobbyTexture = textureManager.getTexture(TextureID::LobbyBackground);
 
 	MusicManager musicManager;
 	musicManager.createMusic(MusicID::Start, "assets/sound/Musica Inicio.mp3");
