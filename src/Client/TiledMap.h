@@ -48,6 +48,9 @@ public:
     float getVersion();
     int getWidth();
 
+    int getMapWidth();
+    int getMapHeight();
+
     void setHeight(int height);
 
     void setInfinite(bool infinite);

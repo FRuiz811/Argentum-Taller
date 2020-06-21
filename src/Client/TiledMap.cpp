@@ -64,6 +64,14 @@ int TiledMap::getWidth() {
     return width;
 }
 
+int TiledMap::getMapHeight() {
+    return this->height*this->tileheight;
+}
+
+int TiledMap::getMapWidth() {
+    return this->width*this->tilewidth;
+}
+
 void TiledMap::setHeight(int height) {
     TiledMap::height = height;
 }

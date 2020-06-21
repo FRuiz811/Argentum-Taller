@@ -28,9 +28,9 @@ Mix_Music* Music::loadMusic(const std::string &fileName) {
 
 void Music::pauseMusic() const {
 	if (Mix_PausedMusic() == 1)
-		Mix_PauseMusic();
-	else 
 		Mix_ResumeMusic();
+	else 
+		Mix_PauseMusic();
 }
 
 void Music::stopMusic() const {
