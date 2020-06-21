@@ -61,8 +61,7 @@ int main(int argc, char* args[]) {
 	textureManager.createTexture(TextureID::AshStick, "assets/img/Vara de Fresno Sprite.png", textColor);
 	textureManager.createTexture(TextureID::MagicHat, "assets/img/Sombrero Magico Sprite.png", textColor);
 	textureManager.createTexture(TextureID::Spider, "assets/img/Araña Sprite.png",textColor);
-
-
+	
 	MusicManager musicManager;
 	musicManager.createMusic(MusicID::Start, "assets/sound/Musica Inicio.mp3");
 	const Music& musica = musicManager.getMusic(MusicID::Start);
