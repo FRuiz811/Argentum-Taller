@@ -1,20 +1,20 @@
-#ifndef GREENCOMMONBODY_H
-#define GREENCOMMONBODY_H
+#ifndef GHOSTBODY_H
+#define GHOSTBODY_H
 
 #include "Body.h"
 #include "../TextureManager.h"
 
-class GreenCommonBody: public Body {
+class GhostBody: public Body {
 private:
     void setDirection(int direction);
 public:
-    GreenCommonBody(const TextureManager& manager);
+    GhostBody(const TextureManager& manager);
 
     virtual void render(int posX, int posY, int direction);
 
     virtual void update(double dt);
 
-    ~GreenCommonBody();
+    ~GhostBody();
 
 };
 

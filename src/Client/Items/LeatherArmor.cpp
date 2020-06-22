@@ -13,8 +13,15 @@ void LeatherArmor::render(int posX, int posY, int direction) {
     this->texture.render(srcHead, dstHead);
 }
 
-void LeatherArmor::update(double dt, int animationSpeed,int totalFrames) {
-    this->frame = (SDL_GetTicks()/animationSpeed) % totalFrames;
+void LeatherArmor::update(double dt) {
+   Body::update(dt);
+}
+
+void LeatherArmor::setDirection(int direction) {
+    if (direction == 0 || direction == 1)
+        this->totalFrames = 6;
+    if (direction == 2|| direction == 3)
+        this->totalFrames = 5;   
 }
 
 LeatherArmor::~LeatherArmor(){}

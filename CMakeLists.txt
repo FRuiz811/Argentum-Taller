@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
 project(Argentum_Taller)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Werror -pedantic -pedantic-errors -O3 -ggdb -DDEBUG -fno-inline")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11  -pedantic -pedantic-errors -O3 -ggdb -DDEBUG -fno-inline")
 
 INCLUDE(FindPkgConfig)
 
@@ -16,8 +16,6 @@ INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/include)
 INCLUDE_DIRECTORIES(Client)
 INCLUDE_DIRECTORIES(Server)
 add_executable(client
-        src/Client/Animation.cpp
-        src/Client/Animation.h
         src/Client/client_main.cpp
         src/Client/Exception.cpp
         src/Client/Exception.h
@@ -55,7 +53,91 @@ add_executable(client
         src/Client/Player.cpp
         src/Client/Player.h
         src/Client/Spider.cpp
-        src/Client/Spider.h)
+        src/Client/Spider.h
+        src/Client/Banker.h
+        src/Client/Banker.cpp
+        src/Client/Camera.h
+        src/Client/Camera.cpp
+        src/Client/Character.h
+        src/Client/Chrono.h
+        src/Client/Chrono.cpp
+        src/Client/Goblin.h
+        src/Client/Goblin.cpp
+        src/Client/Merchant.h
+        src/Client/Merchant.cpp
+        src/Client/Point.h
+        src/Client/Point.cpp
+        src/Client/Presentation.h
+        src/Client/Presentation.cpp
+        src/Client/Priest.h
+        src/Client/Priest.cpp
+        src/Client/Skeleton.h
+        src/Client/Skeleton.cpp
+        src/Client/Items/BankerBody.h
+        src/Client/Items/BankerBody.cpp
+        src/Client/Items/BlueCommonBody.h
+        src/Client/Items/BlueCommonBody.cpp
+        src/Client/Items/BlueTunic.cpp
+        src/Client/Items/BlueTunic.h
+        src/Client/Items/Body.h
+        src/Client/Items/DwarfHead.h
+        src/Client/Items/DwarfHead.cpp
+        src/Client/Items/ElfHead.h
+        src/Client/Items/ElfHead.cpp
+        src/Client/Items/GnomeHead.cpp
+        src/Client/Items/GnomeHead.h
+        src/Client/Items/GoblinBody.h
+        src/Client/Items/GoblinBody.cpp
+        src/Client/Items/GreenCommonBody.h
+        src/Client/Items/GreenCommonBody.cpp
+        src/Client/Items/Head.h
+        src/Client/Items/HumanHead.h
+        src/Client/Items/HumanHead.cpp
+        src/Client/Items/Item.h
+        src/Client/Items/LeatherArmor.cpp
+        src/Client/Items/LeatherArmor.h
+        src/Client/Items/MerchantBody.h
+        src/Client/Items/MerchantBody.cpp
+        src/Client/Items/PlateArmor.cpp
+        src/Client/Items/PlateArmor.h
+        src/Client/Items/PriestBody.cpp
+        src/Client/Items/PriestBody.h
+        src/Client/Items/PriestHead.h
+        src/Client/Items/PriestHead.cpp
+        src/Client/Items/RedCommonBody.h
+        src/Client/Items/RedCommonBody.cpp
+        src/Client/Items/SkeletonBody.h
+        src/Client/Items/SkeletonBody.cpp
+        src/Client/Items/SpiderBody.h
+        src/Client/Items/SpiderBody.cpp
+        src/Client/Items/ZombieBody.h
+        src/Client/Items/ZombieBody.cpp
+        src/Client/Items/ZombieHead.h
+        src/Client/Items/ZombieHead.cpp
+        src/Client/Items/GhostBody.h
+        src/Client/Items/GhostBody.cpp
+        src/Client/Items/Shield.h
+        src/Client/Items/TurtleShield.h
+        src/Client/Items/TurtleShield.cpp
+        src/Client/Items/IronShield.h
+        src/Client/Items/IronShield.cpp
+        src/Client/Items/Helmet.h
+        src/Client/Items/Hood.h
+        src/Client/Items/Hood.cpp
+        src/Client/Items/IronHelmet.h
+        src/Client/Items/IronHelmet.cpp
+        src/Client/Items/MagicHat.h
+        src/Client/Items/MagicHat.cpp
+        src/Client/CharacterStates/CharacterState.h
+        src/Client/CharacterStates/CharacterStatesID.h
+        src/Client/CharacterStates/DeadState.h
+        src/Client/CharacterStates/DeadState.cpp
+        src/Client/CharacterStates/MoveState.h
+        src/Client/CharacterStates/MoveState.cpp
+        src/Client/CharacterStates/StartMovingState.cpp
+        src/Client/CharacterStates/StartMovingState.h
+        src/Client/CharacterStates/StillState.cpp
+        src/Client/CharacterStates/StillState.h)
 
 add_executable(Server
         src/Server/Arma.cpp
