@@ -1,7 +1,3 @@
-//
-// Created by victorbelosevich on 15/06/20.
-//
-
 #ifndef ARGENTUM_TILE_H
 #define ARGENTUM_TILE_H
 

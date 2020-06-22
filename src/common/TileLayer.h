@@ -22,6 +22,8 @@ public:
     virtual ~TileLayer();
 
     const std::vector<int> &getData() const;
+
+    const std::string &getName() const;
 };
 
 
