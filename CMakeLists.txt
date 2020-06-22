@@ -5,7 +5,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11  -pedantic -pedantic-errors -
 
 INCLUDE(FindPkgConfig)
 
-
 PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
 PKG_SEARCH_MODULE(SDL2_image REQUIRED SDL2_image>=2.0.0)
 PKG_SEARCH_MODULE(SDL2_ttf REQUIRED SDL2_ttf)
@@ -13,169 +12,24 @@ PKG_SEARCH_MODULE(SDL2_mixer REQUIRED SDL2_mixer)
 
 INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIR} ${SDL2TTF_INCLUDE_DIR} ${SDL2MIXER_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/include)
-INCLUDE_DIRECTORIES(Client)
-INCLUDE_DIRECTORIES(Server)
-add_executable(client
-        src/Client/client_main.cpp
-        src/Client/Exception.cpp
-        src/Client/Exception.h
-        src/Client/Font.cpp
-        src/Client/Font.h
-        src/Client/Makefile
-        src/Client/Music.cpp
-        src/Client/Music.h
-        src/Client/MusicID.h
-        src/Client/MusicManager.cpp
-        src/Client/MusicManager.h
-        src/Client/Texture.cpp
-        src/Client/Texture.h
-        src/Client/TextureID.h
-        src/Client/TextureManager.cpp
-        src/Client/TextureManager.h
-        src/Client/Window.cpp
-        src/Client/Window.h
-        src/Client/Zombie.cpp
-        src/Client/Zombie.h
-        src/Client/GameMap.cpp
-        src/Client/GameMap.h
-        src/Client/Tile.cpp
-        src/Client/Tile.h
-        src/Client/TiledMap.cpp
-        src/Client/TiledMap.h
-        src/Client/TileSet.cpp
-        src/Client/TileSet.h
-        src/Client/Layer.cpp
-        src/Client/Layer.h
-        src/JsonReader.cpp
-        src/JsonReader.h
-        src/MapTransformer.cpp
-        src/MapTransformer.h
-        src/Client/Player.cpp
-        src/Client/Player.h
-        src/Client/Spider.cpp
-        src/Client/Spider.h
-        src/Client/Banker.h
-        src/Client/Banker.cpp
-        src/Client/Camera.h
-        src/Client/Camera.cpp
-        src/Client/Character.h
-        src/Client/Chrono.h
-        src/Client/Chrono.cpp
-        src/Client/Goblin.h
-        src/Client/Goblin.cpp
-        src/Client/Merchant.h
-        src/Client/Merchant.cpp
-        src/Client/Point.h
-        src/Client/Point.cpp
-        src/Client/Presentation.h
-        src/Client/Presentation.cpp
-        src/Client/Priest.h
-        src/Client/Priest.cpp
-        src/Client/Skeleton.h
-        src/Client/Skeleton.cpp
-        src/Client/Items/BankerBody.h
-        src/Client/Items/BankerBody.cpp
-        src/Client/Items/BlueCommonBody.h
-        src/Client/Items/BlueCommonBody.cpp
-        src/Client/Items/BlueTunic.cpp
-        src/Client/Items/BlueTunic.h
-        src/Client/Items/Body.h
-        src/Client/Items/DwarfHead.h
-        src/Client/Items/DwarfHead.cpp
-        src/Client/Items/ElfHead.h
-        src/Client/Items/ElfHead.cpp
-        src/Client/Items/GnomeHead.cpp
-        src/Client/Items/GnomeHead.h
-        src/Client/Items/GoblinBody.h
-        src/Client/Items/GoblinBody.cpp
-        src/Client/Items/GreenCommonBody.h
-        src/Client/Items/GreenCommonBody.cpp
-        src/Client/Items/Head.h
-        src/Client/Items/HumanHead.h
-        src/Client/Items/HumanHead.cpp
-        src/Client/Items/Item.h
-        src/Client/Items/LeatherArmor.cpp
-        src/Client/Items/LeatherArmor.h
-        src/Client/Items/MerchantBody.h
-        src/Client/Items/MerchantBody.cpp
-        src/Client/Items/PlateArmor.cpp
-        src/Client/Items/PlateArmor.h
-        src/Client/Items/PriestBody.cpp
-        src/Client/Items/PriestBody.h
-        src/Client/Items/PriestHead.h
-        src/Client/Items/PriestHead.cpp
-        src/Client/Items/RedCommonBody.h
-        src/Client/Items/RedCommonBody.cpp
-        src/Client/Items/SkeletonBody.h
-        src/Client/Items/SkeletonBody.cpp
-        src/Client/Items/SpiderBody.h
-        src/Client/Items/SpiderBody.cpp
-        src/Client/Items/ZombieBody.h
-        src/Client/Items/ZombieBody.cpp
-        src/Client/Items/ZombieHead.h
-        src/Client/Items/ZombieHead.cpp
-        src/Client/Items/GhostBody.h
-        src/Client/Items/GhostBody.cpp
-        src/Client/Items/Shield.h
-        src/Client/Items/TurtleShield.h
-        src/Client/Items/TurtleShield.cpp
-        src/Client/Items/IronShield.h
-        src/Client/Items/IronShield.cpp
-        src/Client/Items/Helmet.h
-        src/Client/Items/Hood.h
-        src/Client/Items/Hood.cpp
-        src/Client/Items/IronHelmet.h
-        src/Client/Items/IronHelmet.cpp
-        src/Client/Items/MagicHat.h
-        src/Client/Items/MagicHat.cpp
-        src/Client/CharacterStates/CharacterState.h
-        src/Client/CharacterStates/CharacterStatesID.h
-        src/Client/CharacterStates/DeadState.h
-        src/Client/CharacterStates/DeadState.cpp
-        src/Client/CharacterStates/MoveState.h
-        src/Client/CharacterStates/MoveState.cpp
-        src/Client/CharacterStates/StartMovingState.cpp
-        src/Client/CharacterStates/StartMovingState.h
-        src/Client/CharacterStates/StillState.cpp
-        src/Client/CharacterStates/StillState.h)
+INCLUDE_DIRECTORIES(client)
+INCLUDE_DIRECTORIES(server)
 
-add_executable(Server
-        src/Server/Arma.cpp
-        src/Server/Arma.h
-        src/Server/Ataque.cpp
-        src/Server/Ataque.h
-        src/Server/Casillero.cpp
-        src/Server/Casillero.h
-        src/Server/Clase.cpp
-        src/Server/Clase.h
-        src/Server/Criatura.cpp
-        src/Server/Criatura.h
-        src/Server/Defensa.cpp
-        src/Server/Defensa.h
-        src/Server/Ecuacion.cpp
-        src/Server/Ecuacion.h
-        src/Server/Estado.cpp
-        src/Server/Estado.h
-        src/Server/Excepciones.cpp
-        src/Server/Excepciones.h
-        src/Server/Movimiento.cpp
-        src/Server/Movimiento.h
-        src/Server/NPC.cpp
-        src/Server/NPC.h
-        src/Server/ObjetoJuego.cpp
-        src/Server/ObjetoJuego.h
-        src/Server/Personaje.cpp
-        src/Server/Personaje.h
-        src/Server/Posicion.cpp
-        src/Server/Posicion.h
-        src/Server/Raza.cpp
-        src/Server/Raza.h
-        src/Server/StatsJuego.cpp
-        src/Server/StatsJuego.h
-        src/Server/Tablero.cpp
-        src/Server/Tablero.h
-        src/Server/testCasillero.cpp
-        src/Server/testPersonaje.cpp)
+file(GLOB_RECURSE CLIENT_SOURCES
+        src/client/*.h
+        src/client/*.cpp)
+
+file(GLOB_RECURSE SERVER_SOURCES
+        src/server/*.h
+        src/server/*.cpp)
+
+file(GLOB_RECURSE COMMON_SOURCES
+        src/common/*.h
+        src/common/*.cpp)
+
+add_executable(client ${CLIENT_SOURCES} ${COMMON_SOURCES})
+
+add_executable(Server ${SERVER_SOURCES})
 
 target_link_libraries(client -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer)
 
