@@ -1,25 +1,25 @@
 #ifndef ZOMBIE_H
 #define ZOMBIE_H
 
-#include "Texture.h"
+#include "Character.h"
 #include "TextureManager.h"
+#include "Items/ZombieHead.h"
+#include "Items/ZombieBody.h"
 
 union SDL_Event;
 
 
-class Zombie {
+class Zombie : public Character {
 private:
-	const TextureManager& manager;
-	int frameBody, widthBody, heightBody, rowBody;
-	int frameHead, widthHead, heightHead, rowHead;
-	int animSpeed, totalFrames;
-	int posX, posY;
+	ZombieBody body;
+	ZombieHead head;
+	int frameHead;
 
 public:
-	Zombie(const TextureManager& manager);
+	Zombie(const TextureManager& manager,int posX, int posY);
 
-	void render(const int width_screen, const int height_screen);
-	void update(double dt);
+	virtual void render(Camera& camera);
+	virtual void update(double dt);
 
 	void handleEvent(SDL_Event& event);
 

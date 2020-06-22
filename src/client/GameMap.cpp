@@ -1,9 +1,9 @@
 #include <iostream>
 #include "GameMap.h"
 
-GameMap::GameMap(const TiledMap& tiledMap, SDL_Renderer& renderer) {
-    int rows = tiledMap.getHeight();
-    int colums = tiledMap.getWidth();
+GameMap::GameMap(const TiledMap & tiledMap, SDL_Renderer& renderer) : renderer(renderer) {
+    this->rows = tiledMap.getHeight();
+    this->colums = tiledMap.getWidth();
     _loadTileSets(tiledMap.getTilesets(), renderer);
 
     int tileWidth = tiledMap.getTilewidth();
@@ -49,6 +49,14 @@ GameMap::GameMap(const TiledMap& tiledMap, SDL_Renderer& renderer) {
     }
 
 }
+int GameMap::getMapHeight() {
+    return this->height;
+}
+
+int GameMap::getMapWidth() {
+    return this->width;
+}
+
 
 void GameMap::_loadTileSets(const std::vector<TileSet> &tileSets, SDL_Renderer &renderer) {
     SDL_Color textColor = {0x0, 0x0, 0x0};
@@ -58,9 +66,9 @@ void GameMap::_loadTileSets(const std::vector<TileSet> &tileSets, SDL_Renderer &
     }
 }
 
-void GameMap::draw(SDL_Renderer & renderer) {
+void GameMap::draw(Camera& camera) {
     for (Tile& tile: tiles) {
-        tile.draw(renderer);
+        tile.draw(renderer, camera);
     }
 }
 

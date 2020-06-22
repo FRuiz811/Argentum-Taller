@@ -83,3 +83,5 @@ TiledMap &TiledMap::operator=(TiledMap &&other) noexcept {
     std::swap(tilesets, other.tilesets);
     return *this;
 }
+
+

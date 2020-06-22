@@ -1,24 +1,22 @@
 #ifndef SPIDER_H
 #define SPIDER_H
 
-#include "Texture.h"
+#include "Character.h"
 #include "TextureManager.h"
+#include "Items/SpiderBody.h"
 
 union SDL_Event;
 
 
-class Spider {
+class Spider: public Character {
 private:
-	const TextureManager& manager;
-	int frame, width, height, row;
-	int animSpeed, totalFrames;
-	int posX, posY;
+	SpiderBody body;
 
 public:
-	Spider(const TextureManager& manager);
+	Spider(const TextureManager& manager, int posX, int posY);
 
-	void render(const int width_screen, const int height_screen);
-	void update(double dt);
+	virtual void render(Camera& camera);
+	virtual void update(double dt);
 
 	void handleEvent(SDL_Event& event);
 

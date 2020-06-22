@@ -96,12 +96,16 @@ SDL_Renderer& Window::getRenderer() const {
 }
 
 int Window::getWidth() const {
-	return this->width;
+	int w,h;
+	SDL_GL_GetDrawableSize(this->window,&w,&h);
+	return w;
 }
 
 
 int Window::getHeight() const {
-	return this->height;
+	int w,h;
+	SDL_GL_GetDrawableSize(this->window,&w,&h);
+	return h;
 }
 
 Window::~Window() {

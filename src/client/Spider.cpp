@@ -1,25 +1,15 @@
 #include "Spider.h"
 #include <SDL2/SDL.h>
 
-Spider::Spider(const TextureManager& manager) : manager(manager) {
-	this->width = 53;
-    this->height = 35;
-    this->row = 0;
-    this->animSpeed = 80;
-    this->totalFrames = 4;
-    this->posY = 0;
-    this->posX = 0;
-}
+Spider::Spider(const TextureManager& manager, int posX, int posY) : 
+	Character(posX,posY), body(manager) {}
 
-void Spider::render(const int width_screen, const int height_screen) {
-	const Texture& spider = manager.getTexture(TextureID::Spider);
-	SDL_Rect src = {width*frame,height*row, this->width, this->height};
-	SDL_Rect dst = {(width_screen/4)+posX, (height_screen/4)+posY, this->width, this->height};
-	spider.render(src, dst);
+void Spider::render(Camera& camera) {
+	body.render(posX-camera.getCameraPosition().x, posY-camera.getCameraPosition().y,directionBody);
 }
 
 void Spider::update(double dt) {
-	this->frame = (SDL_GetTicks()/this->animSpeed) % this->totalFrames;
+	this->body.update(dt);
 }
 
 void Spider::handleEvent(SDL_Event& event) {
@@ -29,19 +19,19 @@ void Spider::handleEvent(SDL_Event& event) {
         switch(event.key.keysym.sym) {
             case SDLK_w: 	
 				this->posY -= 5;
-				row = 1;
+				directionBody = 1;
 				break;
             case SDLK_s: 
 				this->posY += 5;
-				row = 0;
+				directionBody = 0;
 				break;
             case SDLK_a: 
 				this->posX -= 5;
-				row = 2;
+				directionBody = 2;
 				break;
             case SDLK_d:
 				this->posX += 5; 
-				row = 3;
+				directionBody = 3;
 				break;
 		default:
 				needUpdate = false;
