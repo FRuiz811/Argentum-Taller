@@ -5,7 +5,7 @@
 #define HEIGHT_BODY 45
 
 TurtleShield::TurtleShield(const TextureManager& manager) :
- Shield(manager.getTexture(TextureID::TurtleShield),WIDTH_BODY,HEIGHT_BODY) {}
+ Shield(manager.getTexture(TextureID::TurtleShield),WIDTH_BODY,HEIGHT_BODY,ShieldID::TurtleShield) {}
 
 void TurtleShield::render(int posX, int posY, int direction) {
     setDirection(direction);

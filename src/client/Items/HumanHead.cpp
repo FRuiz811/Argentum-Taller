@@ -5,7 +5,7 @@
 #define HEIGHT_HEAD 16
 
 HumanHead::HumanHead(const TextureManager& manager) :
- Head(manager.getTexture(TextureID::HumanHead),WIDTH_HEAD,HEIGHT_HEAD) {}
+ Head(manager.getTexture(TextureID::HumanHead),WIDTH_HEAD,HEIGHT_HEAD,HeadID::Human) {}
 
 void HumanHead::render(int posX, int posY, int direction) {
     SDL_Rect srcHead = {this->width*direction, this->height*0, this->width, this->height};

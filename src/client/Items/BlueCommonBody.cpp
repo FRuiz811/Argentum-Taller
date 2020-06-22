@@ -5,7 +5,7 @@
 #define HEIGHT_BODY 45
 
 BlueCommonBody::BlueCommonBody(const TextureManager& manager):
-    Body(manager.getTexture(TextureID::BlueCommonBody),WIDTH_BODY,HEIGHT_BODY) {}
+    Body(manager.getTexture(TextureID::BlueCommonBody),WIDTH_BODY,HEIGHT_BODY,BodyID::BlueCommon) {}
 
 void BlueCommonBody::render(int posX, int posY, int direction) {
     setDirection(direction);

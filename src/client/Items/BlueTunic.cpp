@@ -5,7 +5,7 @@
 #define HEIGHT_BODY 45
 
 BlueTunic::BlueTunic(const TextureManager& manager) :
- Body(manager.getTexture(TextureID::BlueTunic),WIDTH_BODY,HEIGHT_BODY) {}
+ Body(manager.getTexture(TextureID::BlueTunic),WIDTH_BODY,HEIGHT_BODY,BodyID::BlueTunic) {}
 
 void BlueTunic::render(int posX, int posY, int direction) {
     setDirection(direction);

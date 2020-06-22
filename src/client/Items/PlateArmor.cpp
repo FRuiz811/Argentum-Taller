@@ -5,7 +5,7 @@
 #define HEIGHT_BODY 45
 
 PlateArmor::PlateArmor(const TextureManager& manager) :
- Body(manager.getTexture(TextureID::PlateArmor),WIDTH_BODY,HEIGHT_BODY) {}
+ Body(manager.getTexture(TextureID::PlateArmor),WIDTH_BODY,HEIGHT_BODY,BodyID::PlateArmor) {}
 
 void PlateArmor::render(int posX, int posY, int direction) {
     setDirection(direction);

@@ -22,13 +22,15 @@
 #define GAMELOOPTIME 60000
 
 int main(int argc, char* args[]) {
+	//Debería ser 5 argc
+	//Realiar el connect al host & port indicado.
+	ServerProxy serverProxy;
+	PlayerInfo playerInfo = serverProxy.createCharacter(0, 0);
 	bool quit = false;
 	SDL_Event event;
 
 	Window window(ARGENTUM);
-    ServerProxy serverProxy;
     GameMap gameMap(serverProxy.getStaticMap(), window.getRenderer());
-    PlayerInfo playerInfo = serverProxy.createCharacter(0, 0);
 	SDL_Color textColor = {0x0, 0x0, 0x0};
 
 	TextureManager textureManager(window.getRenderer());

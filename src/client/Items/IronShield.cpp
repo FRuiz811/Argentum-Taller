@@ -5,7 +5,7 @@
 #define HEIGHT_BODY 45
 
 IronShield::IronShield(const TextureManager& manager) :
- Shield(manager.getTexture(TextureID::IronShield),WIDTH_BODY,HEIGHT_BODY) {}
+ Shield(manager.getTexture(TextureID::IronShield),WIDTH_BODY,HEIGHT_BODY, ShieldID::IronShield) {}
 
 void IronShield::render(int posX, int posY, int direction) {
     setDirection(direction);

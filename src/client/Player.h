@@ -2,10 +2,13 @@
 #define PLAYER_H
 
 #include "Texture.h"
+#include "Character.h"
 #include "TextureManager.h"
 #include "Point.h"
 #include "Items/Head.h"
 #include "Items/Body.h"
+#include "Items/Helmet.h"
+#include "Items/Shield.h"
 #include "characterStates/CharacterState.h"
 #include "characterStates/CharacterStatesID.h"
 #include "Camera.h"
@@ -16,18 +19,19 @@
 union SDL_Event;
 
 
-class Player {
+class Player : public Character {
 private:
-	Head* head = nullptr;
-	std::shared_ptr<Body>  body = nullptr;
-	std::shared_ptr<CharacterState> state = nullptr;
 	Point center;
 	const TextureManager& manager;
-	int frameBody, widthBody, heightBody, rowBody;
-	int frameHead, widthHead, heightHead, rowHead;
-	int animSpeed, totalFrames;
-	PlayerInfo playerInfo;
-	int posX, posY;
+	PlayerInfo playerInfo;	
+	std::shared_ptr<Body>  body = nullptr;
+	std::shared_ptr<CharacterState> state = nullptr;
+	std::shared_ptr<Head> head = nullptr;
+	std::shared_ptr<Helmet> helmet = nullptr;
+	std::shared_ptr<Shield> shield = nullptr;
+//	std::shared_ptr<Weapon> weapon = nullptr;
+	int frameHead;
+	bool isAlive{true};
 
     void moveUp();
 
@@ -37,19 +41,19 @@ private:
 
     void moveRight();
 
+	void setArmor(BodyID newArmor);
+	void setShield(ShieldID newShield);
+	void setHelmet(HelmetID newHelmet);
+	void setHead(HeadID head);
+
+
 public:
 	Player(const TextureManager& manager, PlayerInfo playerInfo);
 
-	void render(Camera& camera);
-	void update(double dt);
+	virtual void render(Camera& camera);
+	virtual void update(double dt);
 
-	void setArmor(Body* newArmor);
-
-	/*void setShield(Shield newShield);
-
-	void setHelmet(Helmet newHelmet);
-
-	void setWeapon(Weapon newWeapon);*/
+	//void setWeapon(Weapon newWeapon);
 
 	void setState(CharacterStateID newState);
 

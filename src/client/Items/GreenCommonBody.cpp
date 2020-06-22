@@ -5,7 +5,7 @@
 #define HEIGHT_BODY 45
 
 GreenCommonBody::GreenCommonBody(const TextureManager& manager):
-    Body(manager.getTexture(TextureID::GreenCommonBody),WIDTH_BODY,HEIGHT_BODY) {}
+    Body(manager.getTexture(TextureID::GreenCommonBody),WIDTH_BODY,HEIGHT_BODY, BodyID::GreenCommon) {}
 
 void GreenCommonBody::render(int posX, int posY, int direction) {
     setDirection(direction);

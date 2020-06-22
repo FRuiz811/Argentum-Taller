@@ -5,7 +5,7 @@
 #define HEIGHT_BODY 45
 
 LeatherArmor::LeatherArmor(const TextureManager& manager) :
- Body(manager.getTexture(TextureID::LeatherArmor),WIDTH_BODY,HEIGHT_BODY) {}
+ Body(manager.getTexture(TextureID::LeatherArmor),WIDTH_BODY,HEIGHT_BODY,BodyID::LeatherArmor) {}
 
 void LeatherArmor::render(int posX, int posY, int direction) {
     SDL_Rect srcHead = {this->width*frame, this->height*direction, this->width, this->height};

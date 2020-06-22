@@ -35,4 +35,48 @@ enum class InputID {
     dropItem, //f
 };
 
+enum class HelmetID {
+    Nothing,
+    Hood,
+    IronHelmet,
+    MagicHat,
+};
+
+enum class BodyID {
+    Nothing,
+    RedCommon,
+    BlueCommon,
+    GreenCommon,
+    BlueTunic,
+    LeatherArmor,
+    PlateArmor,
+};
+
+enum class HeadID {
+    Elf,
+    Human,
+    Gnome,
+    Dwarf,
+    Other,
+};
+
+enum class ShieldID {
+    Nothing,
+    TurtleShield,
+    IronShield,
+};
+
+enum class WeaponID {
+    Nothing,
+    SimpleArc,
+    CompoundArc,
+    LongSword,
+    Hammer,
+    Ax,
+    ElficFlaute,
+    AshStick,
+    GnarledStick,
+    Crosier,
+};
+
 #endif

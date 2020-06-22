@@ -3,15 +3,17 @@
 
 #include "Item.h"
 #include "../Texture.h"
+#include "../characterStates/CharacterStatesID.h"
 
 class Body: public Item {
 protected:
     int frame{0};
     float animationSpeed{25.0f};
     int totalFrames{5};
+    BodyID id{BodyID::Nothing};
 public:
-    Body(const Texture& texture, const int width, const int height) : 
-        Item(texture, width, height){}
+    Body(const Texture& texture, const int width, const int height, BodyID id = BodyID::Nothing) : 
+        Item(texture, width, height) {}
     
     virtual void render(int posX, int posY, int direction) = 0;
 
@@ -21,6 +23,14 @@ public:
 
     void setAnimationSpeed(float speed) {
         this->animationSpeed = speed;
+    }
+
+    int getHeight() {
+        return this->height;
+    }
+
+    BodyID getId(){
+        return this->id;
     }
 
     ~Body() {};
