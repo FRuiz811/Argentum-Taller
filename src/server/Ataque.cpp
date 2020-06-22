@@ -3,7 +3,7 @@
 Ataque::Ataque(){}
 
 
-float Ataque::atacar(ObjetoJuego &atacado, Arma &arma, float nivel){
+float Ataque::atacar(GameObject &atacado, Arma &arma, float nivel){
 	StatsJuego stats;
 	Defensa defensa;
 	float danio = Ecuacion::danio(stats.fuerza, arma.getDanioMin(), arma.getDanioMax());

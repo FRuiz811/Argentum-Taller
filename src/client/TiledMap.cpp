@@ -1,121 +1,85 @@
-//
-// Created by victorbelosevich on 14/06/20.
-//
-
 #include "TiledMap.h"
 
 TiledMap::TiledMap() = default;
 
 TiledMap::~TiledMap() = default;
 
-int TiledMap::getHeight() {
+int TiledMap::getHeight() const {
     return height;
 }
 
-bool TiledMap::isInfinite() {
-    return infinite;
+void TiledMap::setHeight(int aHeight) {
+    TiledMap::height = aHeight;
 }
 
-std::vector<Layer> TiledMap::getLayers() {
-    return layers;
+const std::vector<TileLayer> &TiledMap::getTileLayers() const {
+    return tileLayers;
 }
 
-int TiledMap::getNextLayerId() {
-    return nextlayerid;
+void TiledMap::setTileLayers(const std::vector<TileLayer> &tileLayers) {
+    TiledMap::tileLayers = tileLayers;
 }
 
-int TiledMap::getNextObjectId() {
-    return nextobjectid;
+const std::vector<ObjectLayer> &TiledMap::getObjectLayers() const {
+    return objectLayers;
 }
 
-std::string TiledMap::getOrientation() {
-    return orientation;
+void TiledMap::setObjectLayers(const std::vector<ObjectLayer> &objectLayers) {
+    TiledMap::objectLayers = objectLayers;
 }
 
-std::string TiledMap::getRenderOrder() {
-    return renderorder;
-}
-
-std::string TiledMap::getTiledVersion() {
-    return tiledversion;
-}
-
-int TiledMap::getTileHeight() {
-    return tileheight;
-}
-
-std::vector<TileSet> TiledMap::getTileSet() {
-    return tilesets;
-}
-
-int TiledMap::getTileWidth() {
-    return tilewidth;
-}
-
-std::string TiledMap::getType() {
-    return type;
-}
-
-float TiledMap::getVersion() {
-    return version;
-}
-
-int TiledMap::getWidth() {
-    return width;
-}
-
-void TiledMap::setHeight(int height) {
-    TiledMap::height = height;
-}
-
-void TiledMap::setInfinite(bool infinite) {
-    TiledMap::infinite = infinite;
-}
-
-void TiledMap::setLayers(const std::vector<Layer> &layers) {
-    TiledMap::layers = layers;
-}
-
-void TiledMap::setNextlayerid(int nextlayerid) {
-    TiledMap::nextlayerid = nextlayerid;
-}
-
-void TiledMap::setNextobjectid(int nextobjectid) {
-    TiledMap::nextobjectid = nextobjectid;
-}
-
-void TiledMap::setOrientation(const std::string &orientation) {
-    TiledMap::orientation = orientation;
-}
-
-void TiledMap::setRenderorder(const std::string &renderorder) {
-    TiledMap::renderorder = renderorder;
-}
-
-void TiledMap::setTiledversion(const std::string &tiledversion) {
-    TiledMap::tiledversion = tiledversion;
+int TiledMap::getTileheight() const {
+    return tileHeight;
 }
 
 void TiledMap::setTileheight(int tileheight) {
-    TiledMap::tileheight = tileheight;
+    TiledMap::tileHeight = tileheight;
+}
+
+const std::vector<TileSet> &TiledMap::getTilesets() const {
+    return tilesets;
 }
 
 void TiledMap::setTilesets(const std::vector<TileSet> &tilesets) {
     TiledMap::tilesets = tilesets;
 }
 
+int TiledMap::getTilewidth() const {
+    return tileWidth;
+}
+
 void TiledMap::setTilewidth(int tilewidth) {
-    TiledMap::tilewidth = tilewidth;
+    TiledMap::tileWidth = tilewidth;
 }
 
-void TiledMap::setType(const std::string &type) {
-    TiledMap::type = type;
-}
-
-void TiledMap::setVersion(float version) {
-    TiledMap::version = version;
+int TiledMap::getWidth() const {
+    return width;
 }
 
 void TiledMap::setWidth(int width) {
     TiledMap::width = width;
+}
+
+TiledMap::TiledMap(TiledMap &&other) noexcept {
+    std::swap(height, other.height);
+    std::swap(width, other.width);
+    std::swap(tileHeight, other.tileHeight);
+    std::swap(tileWidth, other.tileWidth);
+    std::swap(tileLayers, other.tileLayers);
+    std::swap(objectLayers, other.objectLayers);
+    std::swap(tilesets, other.tilesets);
+}
+
+TiledMap &TiledMap::operator=(TiledMap &&other) noexcept {
+    if(this == &other) {
+        return *this;
+    }
+    std::swap(height, other.height);
+    std::swap(width, other.width);
+    std::swap(tileHeight, other.tileHeight);
+    std::swap(tileWidth, other.tileWidth);
+    std::swap(tileLayers, other.tileLayers);
+    std::swap(objectLayers, other.objectLayers);
+    std::swap(tilesets, other.tilesets);
+    return *this;
 }

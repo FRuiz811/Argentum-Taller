@@ -1,7 +1,3 @@
-//
-// Created by victorbelosevich on 15/06/20.
-//
-
 #ifndef ARGENTUM_TILESET_H
 #define ARGENTUM_TILESET_H
 
@@ -12,18 +8,13 @@
 class TileSet {
 private:
     int firstgid;
-    int columns;
     std::string image;
     int imageHeight;
     int imageWidth;
     std::string name;
-    int tilecount;
-    int tileheight;
-    int tilewidth;
-    std::string type;
 
 public:
-    explicit TileSet(int, rapidjson::Document&&);
+    explicit TileSet(rapidjson::Value&);
 
     virtual ~TileSet();
 

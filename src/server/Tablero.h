@@ -3,13 +3,13 @@
 #include <string>
 #include <iostream>
 #include <map>
-#include "Posicion.h"
-#include "Casillero.h"
+#include "Position.h"
+#include "Cell.h"
 
 
 class Tablero {
 private: 
-	std::map<Posicion, Casillero> casilleros;
+	std::map<Position, Cell> casilleros;
 	
 	//int tamanioTablero;
 public: 

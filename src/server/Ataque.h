@@ -1,6 +1,6 @@
 #ifndef ATAQUE_H
 #define ATAQUE_H
-#include "ObjetoJuego.h"
+#include "GameObject.h"
 #include "Estado.h"
 #include "Excepciones.h"
 #include <functional>
@@ -16,7 +16,7 @@ private:
 public: 
 	Ataque();
 
-	float atacar(ObjetoJuego &atacado, Arma &arma, float nivel);
+	float atacar(GameObject &atacado, Arma &arma, float nivel);
 
 	~Ataque();
 };

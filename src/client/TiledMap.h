@@ -1,81 +1,57 @@
-//
-// Created by victorbelosevich on 14/06/20.
-//
-
 #ifndef ARGENTUM_TILEDMAP_H
 #define ARGENTUM_TILEDMAP_H
 
 
 #include <vector>
 #include <string>
-#include "Layer.h"
+#include "TileLayer.h"
 #include "TileSet.h"
+#include "ObjectLayer.h"
 
 class TiledMap {
 private:
-    int height{};
-    bool infinite{};
-    std::vector<Layer> layers;
-    int nextlayerid{};
-    int nextobjectid{};
-    std::string orientation;
-    std::string renderorder;
-    std::string tiledversion;
-    int tileheight{};
+    int height;
+    int width;
+    int tileHeight;
+    int tileWidth;
+    std::vector<TileLayer> tileLayers;
+    std::vector<ObjectLayer> objectLayers;
     std::vector<TileSet> tilesets;
-    int tilewidth{};
-    std::string type;
-    float version{};
-    int width{};
-
 public:
     TiledMap();
 
     ~TiledMap();
 
-    int getHeight();
-    bool isInfinite();
-    std::vector<Layer> getLayers();
-    int getNextLayerId();
-    int getNextObjectId();
-    std::string getOrientation();
-    std::string getRenderOrder();
-    std::string getTiledVersion();
-    int getTileHeight();
-    std::vector<TileSet> getTileSet();
-    int getTileWidth();
-    std::string getType();
-    float getVersion();
-    int getWidth();
+    TiledMap(TiledMap&& other) noexcept ;
+    TiledMap& operator=(TiledMap&& other) noexcept ;
 
-    void setHeight(int height);
+    int getHeight() const;
 
-    void setInfinite(bool infinite);
+    void setHeight(int aHeight);
 
-    void setLayers(const std::vector<Layer> &layers);
+    const std::vector<TileLayer> &getTileLayers() const;
 
-    void setNextlayerid(int nextlayerid);
+    void setTileLayers(const std::vector<TileLayer> &tileLayers);
 
-    void setNextobjectid(int nextobjectid);
+    const std::vector<ObjectLayer> &getObjectLayers() const;
 
-    void setOrientation(const std::string &orientation);
+    void setObjectLayers(const std::vector<ObjectLayer> &objectLayers);
 
-    void setRenderorder(const std::string &renderorder);
-
-    void setTiledversion(const std::string &tiledversion);
+    int getTileheight() const;
 
     void setTileheight(int tileheight);
 
+    const std::vector<TileSet> &getTilesets() const;
+
     void setTilesets(const std::vector<TileSet> &tilesets);
+
+    int getTilewidth() const;
 
     void setTilewidth(int tilewidth);
 
-    void setType(const std::string &type);
-
-    void setVersion(float version);
+    int getWidth() const;
 
     void setWidth(int width);
-
 };
 
 

@@ -14,7 +14,7 @@ public:
 
     virtual ~JsonReader();
 
-    rapidjson::Document read(const std::string&);
+    static rapidjson::Document read(const std::string&);
 
 };
 

@@ -1,15 +1,15 @@
 #include <iostream>
 #include "GameMap.h"
 
-GameMap::GameMap(TiledMap & tiledMap, SDL_Renderer& renderer) {
+GameMap::GameMap(const TiledMap& tiledMap, SDL_Renderer& renderer) {
     int rows = tiledMap.getHeight();
     int colums = tiledMap.getWidth();
-    _loadTileSets(tiledMap.getTileSet(), renderer);
+    _loadTileSets(tiledMap.getTilesets(), renderer);
 
-    int tileWidth = tiledMap.getTileWidth();
-    int tileHeight = tiledMap.getTileHeight();
+    int tileWidth = tiledMap.getTilewidth();
+    int tileHeight = tiledMap.getTileheight();
 
-    for (auto& layer : tiledMap.getLayers()) {
+    for (auto& layer : tiledMap.getTileLayers()) {
 
         std::vector<int> layerData = layer.getData();
 

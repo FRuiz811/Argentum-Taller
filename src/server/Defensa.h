@@ -1,6 +1,6 @@
 #ifndef DEFENSA_H
 #define DEFENSA_H
-#include "ObjetoJuego.h"
+#include "GameObject.h"
 #include "Excepciones.h"
 #include <functional>
 #include <iostream>
@@ -8,12 +8,12 @@
 
 class Defensa {
 private: 
-	bool esquiva(ObjetoJuego &atacado);
+	bool esquiva(GameObject &atacado);
 
 public: 
 	Defensa();
 
-	float getDanioConDefensa(ObjetoJuego &atacado, float danio);
+	float getDanioConDefensa(GameObject &atacado, float danio);
 
 	~Defensa();
 };

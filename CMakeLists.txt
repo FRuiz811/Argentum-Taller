@@ -12,8 +12,8 @@ PKG_SEARCH_MODULE(SDL2_mixer REQUIRED SDL2_mixer)
 
 INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIR} ${SDL2TTF_INCLUDE_DIR} ${SDL2MIXER_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/include)
-INCLUDE_DIRECTORIES(Client)
-INCLUDE_DIRECTORIES(Server)
+INCLUDE_DIRECTORIES(client)
+INCLUDE_DIRECTORIES(server)
 
 add_executable(client
         src/client/Animation.cpp
@@ -46,8 +46,8 @@ add_executable(client
         src/client/TiledMap.h
         src/client/TileSet.cpp
         src/client/TileSet.h
-        src/client/Layer.cpp
-        src/client/Layer.h
+        src/client/TileLayer.cpp
+        src/client/TileLayer.h
         src/JsonReader.cpp
         src/JsonReader.h
         src/MapTransformer.cpp
@@ -55,15 +55,21 @@ add_executable(client
         src/client/Player.cpp
         src/client/Player.h
         src/client/Spider.cpp
-        src/client/Spider.h)
+        src/client/Spider.h
+        src/client/ObjectLayer.cpp
+        src/client/ObjectLayer.h
+        src/client/MapObject.cpp
+        src/client/MapObject.h
+        src/server/ServerProxy.cpp
+        src/server/ServerProxy.h)
 
 add_executable(Server
         src/server/Arma.cpp
         src/server/Arma.h
         src/server/Ataque.cpp
         src/server/Ataque.h
-        src/server/Casillero.cpp
-        src/server/Casillero.h
+        src/server/Cell.cpp
+        src/server/Cell.h
         src/server/Clase.cpp
         src/server/Clase.h
         src/server/Criatura.cpp
@@ -80,12 +86,12 @@ add_executable(Server
         src/server/Movimiento.h
         src/server/NPC.cpp
         src/server/NPC.h
-        src/server/ObjetoJuego.cpp
-        src/server/ObjetoJuego.h
-        src/server/Personaje.cpp
-        src/server/Personaje.h
-        src/server/Posicion.cpp
-        src/server/Posicion.h
+        src/server/GameObject.cpp
+        src/server/GameObject.h
+        src/server/Character.cpp
+        src/server/Character.h
+        src/server/Position.cpp
+        src/server/Position.h
         src/server/Raza.cpp
         src/server/Raza.h
         src/server/StatsJuego.cpp
@@ -93,7 +99,9 @@ add_executable(Server
         src/server/Tablero.cpp
         src/server/Tablero.h
         src/server/testCasillero.cpp
-        src/server/testPersonaje.cpp)
+        src/server/testPersonaje.cpp
+        src/server/ServerProxy.cpp
+        src/server/ServerProxy.h src/server/City.cpp src/server/City.h src/server/Collider.cpp src/server/Collider.h)
 
 target_link_libraries(client -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer)
 

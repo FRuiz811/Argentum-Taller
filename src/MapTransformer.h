@@ -3,7 +3,7 @@
 
 
 #include <rapidjson/document.h>
-#include "Client/TiledMap.h"
+#include "client/TiledMap.h"
 #include <vector>
 
 class MapTransformer {
@@ -12,7 +12,7 @@ public:
 
     ~MapTransformer();
 
-    TiledMap transform(rapidjson::Document&);
+    static TiledMap transform(rapidjson::Document&);
 
 };
 

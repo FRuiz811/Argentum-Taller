@@ -13,7 +13,7 @@ private:
     std::map<int, Texture> tileSetMap;
     void _loadTileSets(const std::vector<TileSet>&, SDL_Renderer&);
 public:
-    explicit GameMap(TiledMap&, SDL_Renderer&);
+    explicit GameMap(const TiledMap&, SDL_Renderer&);
 
     virtual ~GameMap();
 

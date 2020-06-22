@@ -6,7 +6,7 @@
 
 Texture::Texture(const std::string &fileName, SDL_Renderer& renderer, SDL_Color colorKey) {
 	this->renderer = &renderer;
-	this->texture = loadTexture(fileName,colorKey);
+	this->texture = loadTexture(fileName, colorKey);
 }
 
 Texture::Texture(const std::string &fileName, SDL_Renderer& renderer) {

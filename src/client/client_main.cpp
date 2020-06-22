@@ -1,6 +1,4 @@
 #include "SDL2/SDL.h"
-#include "SDL2/SDL_ttf.h"
-#include <utility>
 #include "Window.h"
 #include "Texture.h"
 #include "Music.h"
@@ -9,12 +7,10 @@
 #include "TextureID.h"
 #include "MusicID.h"
 #include "Font.h"
-#include "Zombie.h"
-#include "../JsonReader.h"
-#include "../MapTransformer.h"
 #include "GameMap.h"
 #include "Player.h"
 #include "Spider.h"
+#include "../server/ServerProxy.h"
 
 
 #define ARGENTUM "Argentum Online"
@@ -28,11 +24,9 @@ int main(int argc, char* args[]) {
 
 	SDL_Event event;
 	Window window(ARGENTUM);
-    JsonReader jsonReader;
-    rapidjson::Document jsonMap = jsonReader.read("json/tiledMap.json");
-    MapTransformer mapTransformer;
-    TiledMap tiledMap = mapTransformer.transform(jsonMap);
-    GameMap gameMap(tiledMap, window.getRenderer());
+    ServerProxy serverProxy;
+    GameMap gameMap(serverProxy.getStaticMap(), window.getRenderer());
+    uint characterId = serverProxy.createCharacter(0, 0);
 
 	TextureManager textureManager(window.getRenderer());
 	textureManager.createTexture(TextureID::PresentationImage, "assets/img/ImagenPresentacion.jpg");

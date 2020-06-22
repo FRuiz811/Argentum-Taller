@@ -2,6 +2,7 @@
 #include <rapidjson/istreamwrapper.h>
 #include <iostream>
 #include "JsonReader.h"
+#include "client/Exception.h"
 
 JsonReader::JsonReader() = default;
 
@@ -13,8 +14,7 @@ rapidjson::Document JsonReader::read(const std::string & filename) {
     rapidjson::Document json;
     json.ParseStream(isw);
     if (json.HasParseError()) {
-        std::cout << "There are some problems with parsing" << std::endl;
-        return nullptr;
+        throw Exception("There are some problems with parsing", json.GetParseError());
     }
-    return std::move(json);
+    return json;
 }

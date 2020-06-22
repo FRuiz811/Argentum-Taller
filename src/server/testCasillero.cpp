@@ -1,6 +1,6 @@
 #include "StatsJuego.h"
 #include <iostream>
-#include "Casillero.h"
+#include "Cell.h"
 
 void test01CasilleroVacio();
 void test02CasilleroNoVacio();
@@ -14,7 +14,7 @@ int main(int argc, char*argv[]){
 		//StatsJuego stats;	
 		//std::cout << stats.oroRandMax << '\n';
 
-		//Personaje personaje(Humano());
+		//Character personaje(Humano());
 		//personaje.getRaza();
 		test01CasilleroVacio();
 		test02CasilleroNoVacio();
@@ -32,7 +32,7 @@ int main(int argc, char*argv[]){
 
 
 void test01CasilleroVacio(){
-	Casillero casiller;
+	Cell casiller;
 	if(casiller.estaVacio()){
 		std::cout << "OK 01" << '\n';
 	}
@@ -40,8 +40,8 @@ void test01CasilleroVacio(){
 }
 
 void test02CasilleroNoVacio(){
-	Casillero casillero;
-	ObjetoJuego objeto;
+	Cell casillero;
+	GameObject objeto;
 	//casillero.agregarObjeto(std::move(objeto));
 	casillero.agregarObjeto(&objeto);
 
@@ -53,8 +53,8 @@ void test02CasilleroNoVacio(){
 }
 
 void test03ObtenerObjetoDelCasillero(){
-	Casillero casillero;
-	ObjetoJuego objeto;
+	Cell casillero;
+	GameObject objeto;
 	//casillero.agregarObjeto(std::move(objeto));
 	casillero.agregarObjeto(&objeto);
 
@@ -67,11 +67,11 @@ void test03ObtenerObjetoDelCasillero(){
 }
 
 void test04EliminarObjetoDeCasillero(){
-	Casillero casillero;
-	ObjetoJuego objeto;
+	Cell casillero;
+	GameObject objeto;
 
 	casillero.agregarObjeto(&objeto);
-	ObjetoJuego* objetoEliminado = casillero.eliminarObjeto();
+	GameObject* objetoEliminado = casillero.eliminarObjeto();
 
 
 	if(&objeto == objetoEliminado){
@@ -89,7 +89,7 @@ void test04EliminarObjetoDeCasillero(){
 
 void test05ObtenerObjetoCasilleroVacio(){
 	try{
-		Casillero casillero;
+		Cell casillero;
 		casillero.obtenerObjeto();
 	}catch(CasilleroVacio e){
 		std::cout << "OK 05" << '\n';
@@ -99,7 +99,7 @@ void test05ObtenerObjetoCasilleroVacio(){
 
 void test06EliminarObjetoCasilleroVacio(){
 	try{
-		Casillero casillero;
+		Cell casillero;
 		casillero.eliminarObjeto();
 	}catch(CasilleroVacio e){
 		std::cout << "OK 06" << '\n';

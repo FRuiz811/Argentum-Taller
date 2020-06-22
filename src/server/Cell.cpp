@@ -1,8 +1,8 @@
-#include "Casillero.h"
+#include "Cell.h"
 
-Casillero::Casillero() : vacio(true){}
+Cell::Cell() : vacio(true){}
 	
-void Casillero::agregarObjeto(ObjetoJuego* unObjeto){
+void Cell::agregarObjeto(GameObject* unObjeto){
 	if(!estaVacio()){
 		throw CasilleroOcupado();
 	}
@@ -10,7 +10,7 @@ void Casillero::agregarObjeto(ObjetoJuego* unObjeto){
 	this->vacio = false;
 }
 
-ObjetoJuego* Casillero::eliminarObjeto(){
+GameObject* Cell::eliminarObjeto(){
 	if(estaVacio()){
 		throw CasilleroVacio();
 	}
@@ -18,18 +18,18 @@ ObjetoJuego* Casillero::eliminarObjeto(){
 	return this->objeto;
 }
 
-ObjetoJuego* Casillero::obtenerObjeto(){
+GameObject* Cell::obtenerObjeto(){
 	if(estaVacio()){
 		throw CasilleroVacio();
 	}
-	//ObjetoJuego unObjeto = this->objeto;
+	//GameObject unObjeto = this->objeto;
 	//this->objeto = NULL;
 	
 	return this->objeto;
 }
 
-bool Casillero::estaVacio(){
+bool Cell::estaVacio(){
 	return vacio;
 }
 
-Casillero::~Casillero(){}
+Cell::~Cell(){}

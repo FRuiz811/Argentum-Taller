@@ -1,6 +1,6 @@
 #include "StatsJuego.h"
 #include <iostream>
-#include "Personaje.h"
+#include "Character.h"
 #include "Criatura.h"
 #include <float.h>
 #include <cmath>
@@ -37,8 +37,8 @@ int main(int argc, char*argv[]){
 void test01CrearPersonacompararPosicion(){
 	int humano = 0;
 	int mago = 0;
-	Posicion posicion(1,1);
-	Personaje personaje(humano, mago, posicion);
+	Position posicion(1, 1);
+	Character personaje(humano, mago, posicion);
 	int x = personaje.getCoordenadaX();
 	int y = personaje.getCoordenadaY();
 	
@@ -56,8 +56,8 @@ void test01CrearPersonacompararPosicion(){
 void test02CrearPersonacompararConstitucion(){
 	int humano = 0;
 	int mago = 0;
-	Posicion posicion(1,1);
-	Personaje personaje(humano, mago, posicion);
+	Position posicion(1, 1);
+	Character personaje(humano, mago, posicion);
 	
 	float constitucion = (1+0.8)/2;
 	float epsilon = 0.01f;
@@ -72,8 +72,8 @@ void test02CrearPersonacompararConstitucion(){
 void test03CrearPersonacompararInteligencia(){
 	int humano = 0;
 	int mago = 0;
-	Posicion posicion(1,1);
-	Personaje personaje(humano, mago, posicion);
+	Position posicion(1, 1);
+	Character personaje(humano, mago, posicion);
 	
 	float inteligencia = (1+1.8)/2;
 	
@@ -92,8 +92,8 @@ void test03CrearPersonacompararInteligencia(){
 void test04CrearPersonacompararAgilidad(){
 	int humano = 0;
 	int mago = 0;
-	Posicion posicion(1,1);
-	Personaje personaje(humano, mago, posicion);
+	Position posicion(1, 1);
+	Character personaje(humano, mago, posicion);
 	
 	float agilidad = (1+0.4)/2;
 	float epsilon = 0.01f;
@@ -109,8 +109,8 @@ void test04CrearPersonacompararAgilidad(){
 void test05CrearPersonaConPosicionRazaClase(){
 	int humano = 0;
 	int mago = 0;
-	Posicion posicion(1,1);
-	Personaje personaje(humano, mago, posicion);
+	Position posicion(1, 1);
+	Character personaje(humano, mago, posicion);
 	int x = personaje.getCoordenadaX();
 	int y = personaje.getCoordenadaY();
 	
@@ -136,10 +136,10 @@ void test06CrearDosPersonasInicialmenteYAtacarlos(){
 	try{
 		int humano = 0;
 		int mago = 0;
-		Posicion posicion(1,1);
-		Personaje personaje(humano, mago, posicion);
-		Posicion posicionAtacado(1,2);
-		Personaje personajeAtacado(humano, mago, posicionAtacado);
+		Position posicion(1, 1);
+		Character personaje(humano, mago, posicion);
+		Position posicionAtacado(1, 2);
+		Character personajeAtacado(humano, mago, posicionAtacado);
 		
 		float vidaInicial =  personajeAtacado.estado.getVida();
 		personaje.atacar(personajeAtacado);
@@ -161,9 +161,9 @@ void test06CrearDosPersonasInicialmenteYAtacarlos(){
 void test07CrearUnaPersonaYUnaCriaturaInicialmenteYAtacarlos(){
 	try{
 		
-		Posicion posicion(1,1);
-		Personaje personaje(1, 3, posicion);
-		Posicion posicionAtacado(1,2);
+		Position posicion(1, 1);
+		Character personaje(1, 3, posicion);
+		Position posicionAtacado(1, 2);
 		Criatura criatura(posicionAtacado);
 		
 		float vidaInicial =  criatura.estado.getVida();
@@ -185,9 +185,9 @@ void test07CrearUnaPersonaYUnaCriaturaInicialmenteYAtacarlos(){
 
 void test08CrearUnaPersonaYUnaCriaturaYMatarlo(){
 	try{	
-		Posicion posicion(1,1);
-		Personaje personaje(1, 3, posicion);
-		Posicion posicionAtacado(1,2);
+		Position posicion(1, 1);
+		Character personaje(1, 3, posicion);
+		Position posicionAtacado(1, 2);
 		Criatura criatura(posicionAtacado);
 		
 		float vidaInicial =  criatura.estado.getVida();

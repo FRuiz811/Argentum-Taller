@@ -1,17 +1,17 @@
 #ifndef NPC_H
 #define NPC_H
 
-#include "Posicion.h"
-#include "ObjetoJuego.h"
+#include "Position.h"
+#include "GameObject.h"
 
-class NPC : public ObjetoJuego{
+class NPC : public GameObject{
 	//Pocion de vida, mana, oro, otro obj al azar
 private: 
 
 public: 
 	NPC();
 
-	Posicion getPosicion(){}
+	Position getPosicion(){}
 	/*Constructor del NPC.*/
 
 	~NPC();

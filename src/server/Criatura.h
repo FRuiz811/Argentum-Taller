@@ -1,16 +1,16 @@
 #ifndef CRIATURA_H
 #define CRIATURA_H
-#include "ObjetoJuego.h"
+#include "GameObject.h"
 
-class Criatura : public ObjetoJuego{
+class Criatura : public GameObject{
 private: 
 	//Ataque ataque;
 	//Movimiento movimiento;
 
 public: 
-	Criatura(Posicion posicion);
+	Criatura(Position posicion);
 	/*Constructor de la Criatura.*/
-	//Posicion getPosicion(){}
+	//Position getPosicion(){}
 	
 	~Criatura();
 	/*Destructor de la Criatura.*/

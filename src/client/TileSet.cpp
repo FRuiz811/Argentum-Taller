@@ -4,17 +4,16 @@
 
 #include "TileSet.h"
 
-TileSet::TileSet(int gid, rapidjson::Document&& tilesetDoc) {
-    firstgid = gid;
+TileSet::TileSet(rapidjson::Value& tilesetDoc) {
+    firstgid = tilesetDoc["firstgid"].GetInt();
     columns = tilesetDoc["columns"].GetInt();
     image = tilesetDoc["image"].GetString();
     imageHeight = tilesetDoc["imageheight"].GetInt();
     imageWidth = tilesetDoc["imagewidth"].GetInt();
     name = tilesetDoc["name"].GetString();
     tilecount = tilesetDoc["tilecount"].GetInt();
-    tileheight = tilesetDoc["tileheight"].GetInt();
-    tilewidth = tilesetDoc["tilewidth"].GetInt();
-    type = tilesetDoc["type"].GetString();
+    tileheight = tilesetDoc["tileHeight"].GetInt();
+    tilewidth = tilesetDoc["tileWidth"].GetInt();
 }
 
 int TileSet::getFirstgid() const {

@@ -2,11 +2,11 @@
 
 Defensa::Defensa(){}
 
-bool Defensa::esquiva(ObjetoJuego &atacado){
+bool Defensa::esquiva(GameObject &atacado){
 	return Ecuacion::esquivar(atacado.estado.getAgilidad());
 }
 
-float Defensa::getDanioConDefensa(ObjetoJuego &atacado, float danio){
+float Defensa::getDanioConDefensa(GameObject &atacado, float danio){
 	if(esquiva(atacado)) return 0;
 
 	// armaduraMin = atacado.armadura.getDanioMin(;
