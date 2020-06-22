@@ -23,7 +23,7 @@
 
 int main(int argc, char* args[]) {
 	//Debería ser 5 argc
-	//Realiar el connect al host & port indicado.
+	//Realizar el connect al host & port indicado.
 	ServerProxy serverProxy;
 	PlayerInfo playerInfo = serverProxy.createCharacter(0, 0);
 	bool quit = false;
