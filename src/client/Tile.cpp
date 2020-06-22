@@ -1,11 +1,10 @@
 #include "Tile.h"
-#include <iostream>
 
 Tile::Tile(int x, int y, int tx, int ty,
         int width, int height, Texture &texture) :
         x(x), y(y), tx(tx), ty(ty),
         width(width), height(height),
-        texture(texture), position(tx,ty) {}
+        texture(texture) {}
 
 void Tile::draw(SDL_Renderer &renderer, Camera& camera) {
     src.w = width;

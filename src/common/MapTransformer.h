@@ -3,7 +3,7 @@
 
 
 #include <rapidjson/document.h>
-#include "../client/TiledMap.h"
+#include "TiledMap.h"
 #include <vector>
 
 class MapTransformer {

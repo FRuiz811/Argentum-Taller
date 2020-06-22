@@ -11,12 +11,21 @@ MapObject::MapObject(rapidjson::Value &value) {
     id = value["id"].GetInt();
 }
 
-MapObject::MapObject(MapObject &&other) {
-    std::swap(position, other.position);
-    std::swap(id, other.id);
-}
-
 const Position &MapObject::getPosition() const {
     return position;
 }
+
+//MapObject::MapObject(MapObject &&other) noexcept {
+//    std::swap(position, other.position);
+//    std::swap(id, other.id);
+//}
+//
+//MapObject &MapObject::operator=(MapObject &&other) noexcept {
+//    if (&other == this) {
+//        return *this;
+//    }
+//    std::swap(position, other.position);
+//    std::swap(id, other.id);
+//    return *this;
+//}
 

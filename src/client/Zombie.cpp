@@ -2,7 +2,7 @@
 #include <SDL2/SDL.h>
 
 Zombie::Zombie(const TextureManager& manager, int posX, int posY) 
-	: Character(posX,posY), body(manager), head(manager) {
+	: Character(posX, posY), body(manager), head(manager) {
 	this->frameHead = 0;
 }
 

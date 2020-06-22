@@ -1,19 +1,11 @@
-//
-// Created by victorbelosevich on 15/06/20.
-//
-
 #include "TileSet.h"
 
 TileSet::TileSet(rapidjson::Value& tilesetDoc) {
     firstgid = tilesetDoc["firstgid"].GetInt();
-    columns = tilesetDoc["columns"].GetInt();
     image = tilesetDoc["image"].GetString();
     imageHeight = tilesetDoc["imageheight"].GetInt();
     imageWidth = tilesetDoc["imagewidth"].GetInt();
     name = tilesetDoc["name"].GetString();
-    tilecount = tilesetDoc["tilecount"].GetInt();
-    tileheight = tilesetDoc["tileHeight"].GetInt();
-    tilewidth = tilesetDoc["tileWidth"].GetInt();
 }
 
 int TileSet::getFirstgid() const {

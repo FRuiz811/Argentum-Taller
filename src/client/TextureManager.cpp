@@ -22,4 +22,4 @@ const Texture& TextureManager::getTexture(TextureID id) const {
 	return this->textures.at(id);
 }
 
-TextureManager::~TextureManager() {}
+TextureManager::~TextureManager() = default;

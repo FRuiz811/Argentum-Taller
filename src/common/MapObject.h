@@ -2,16 +2,17 @@
 #define ARGENTUM_TALLER_MAPOBJECT_H
 
 #include <rapidjson/document.h>
-#include "../server/Position.h"
+#include "Position.h"
 
 class MapObject {
 private:
-   Position position;
-   unsigned int id;
+    Position position;
+   unsigned int id{};
 public:
-    MapObject(rapidjson::Value &value);
+    explicit MapObject(rapidjson::Value &value);
 
-    MapObject(MapObject&& other);
+//    MapObject(MapObject&& other) noexcept;
+//    MapObject& operator=(MapObject&& other) noexcept;
 
     ~MapObject();
 

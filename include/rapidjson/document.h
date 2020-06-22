@@ -335,7 +335,7 @@ private:
     can be used to avoid copying a character string to be referenced as a
     value in a JSON GenericValue object, if the string's lifetime is known
     to be valid long enough.
-    \tparam CharType Character type of the string
+    \tparam CharType GameCharacter type of the string
     \param str Constant string, lifetime assumed to be longer than the use of the string in e.g. a GenericValue
     \return GenericStringRef string reference object
     \relatesalso GenericStringRef
@@ -543,7 +543,7 @@ public:
     typedef GenericMember<Encoding, Allocator> Member;
     typedef Encoding EncodingType;                  //!< Encoding type from template parameter.
     typedef Allocator AllocatorType;                //!< Allocator type from template parameter.
-    typedef typename Encoding::Ch Ch;               //!< Character type derived from Encoding.
+    typedef typename Encoding::Ch Ch;               //!< GameCharacter type derived from Encoding.
     typedef GenericStringRef<Ch> StringRefType;     //!< Reference to a constant string
     typedef typename GenericMemberIterator<false,Encoding,Allocator>::Iterator MemberIterator;  //!< Member iterator for iterating in object.
     typedef typename GenericMemberIterator<true,Encoding,Allocator>::Iterator ConstMemberIterator;  //!< Constant member iterator for iterating in object.
@@ -2023,7 +2023,7 @@ typedef GenericValue<UTF8<> > Value;
 template <typename Encoding, typename Allocator = MemoryPoolAllocator<>, typename StackAllocator = CrtAllocator>
 class GenericDocument : public GenericValue<Encoding, Allocator> {
 public:
-    typedef typename Encoding::Ch Ch;                       //!< Character type derived from Encoding.
+    typedef typename Encoding::Ch Ch;                       //!< GameCharacter type derived from Encoding.
     typedef GenericValue<Encoding, Allocator> ValueType;    //!< Value type of the document.
     typedef Allocator AllocatorType;                        //!< Allocator type from template parameter.
 

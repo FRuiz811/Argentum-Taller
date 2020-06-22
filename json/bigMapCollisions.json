@@ -302,7 +302,7 @@
         {
          "columns":16,
          "firstgid":645,
-         "image":".assets/img/Caminos1.png",
+         "image":"assets/img/Caminos1.png",
          "imageheight":512,
          "imagewidth":512,
          "margin":0,

@@ -1,7 +1,6 @@
 #ifndef ARGENTUM_TALLER_OBJECTLAYER_H
 #define ARGENTUM_TALLER_OBJECTLAYER_H
 
-
 #include <string>
 #include <vector>
 #include <rapidjson/pointer.h>
@@ -14,17 +13,16 @@ private:
     std::string type;
 
 public:
-    ObjectLayer(rapidjson::Value&);
+    explicit ObjectLayer(rapidjson::Value&);
+
+//    ObjectLayer(ObjectLayer&& other) noexcept ;
+//    ObjectLayer& operator=(ObjectLayer&& other) noexcept;
 
     ~ObjectLayer();
 
     const std::string &getName() const;
 
-    void setName(const std::string &name);
-
-    const std::vector<MapObject> &getObjects() const;
-
-    void setObjects(const std::vector<MapObject> &objects);
+    std::vector<MapObject>&& getObjects();
 };
 
 

@@ -20,12 +20,8 @@ void TiledMap::setTileLayers(const std::vector<TileLayer> &tileLayers) {
     TiledMap::tileLayers = tileLayers;
 }
 
-const std::vector<ObjectLayer> &TiledMap::getObjectLayers() const {
-    return objectLayers;
-}
-
-void TiledMap::setObjectLayers(const std::vector<ObjectLayer> &objectLayers) {
-    TiledMap::objectLayers = objectLayers;
+std::vector<ObjectLayer> TiledMap::getObjectLayers() {
+    return std::move(objectLayers);
 }
 
 int TiledMap::getTileheight() const {
@@ -84,4 +80,6 @@ TiledMap &TiledMap::operator=(TiledMap &&other) noexcept {
     return *this;
 }
 
-
+void TiledMap::setObjectLayers(const std::vector<ObjectLayer> &objectLayers) {
+    TiledMap::objectLayers = objectLayers;
+}

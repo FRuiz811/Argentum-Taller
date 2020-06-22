@@ -13,7 +13,7 @@ public:
         width(width), height(height) {}
 
     virtual void render(int posX, int posY,int direction) = 0;
-    ~Item(){};
+    ~Item()= default;
 };
 
 #endif 

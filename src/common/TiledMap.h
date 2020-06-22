@@ -27,15 +27,15 @@ public:
 
     int getHeight() const;
 
+    void setObjectLayers(const std::vector<ObjectLayer> &objectLayers);
+
     void setHeight(int aHeight);
 
     const std::vector<TileLayer> &getTileLayers() const;
 
     void setTileLayers(const std::vector<TileLayer> &tileLayers);
 
-    const std::vector<ObjectLayer> &getObjectLayers() const;
-
-    void setObjectLayers(const std::vector<ObjectLayer> &objectLayers);
+    std::vector<ObjectLayer> getObjectLayers();
 
     int getTileheight() const;
 

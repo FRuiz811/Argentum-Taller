@@ -19,7 +19,6 @@ private:
     int width;
     int height;
     Texture& texture;
-    Point position;
     SDL_Rect src, dest;
 public:
     Tile(int x, int y, int tx, int ty, int width, int height, Texture &texture);

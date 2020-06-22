@@ -1,8 +1,8 @@
 #include "Spider.h"
 #include <SDL2/SDL.h>
 
-Spider::Spider(const TextureManager& manager, int posX, int posY) : 
-	Character(posX,posY), body(manager) {}
+Spider::Spider(const TextureManager& manager, int posX, int posY) :
+        Character(posX, posY), body(manager) {}
 
 void Spider::render(Camera& camera) {
 	body.render(posX-camera.getCameraPosition().x, posY-camera.getCameraPosition().y,directionBody);

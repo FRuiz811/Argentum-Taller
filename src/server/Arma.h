@@ -1,6 +1,6 @@
 #ifndef ARMA_H
 #define ARMA_H
-#include "GameObject.h"
+#include "../common/GameObject.h"
 #include "Excepciones.h"
 #include <functional>
 #include <iostream>

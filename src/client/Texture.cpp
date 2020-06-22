@@ -15,7 +15,7 @@ Texture::Texture(const std::string &fileName, SDL_Renderer& renderer) {
 		this->texture = IMG_LoadTexture(this->renderer, fileName.c_str());
 	}
 	if (!this->texture){
-		throw Exception("Fail IMG_LoadTexture: %s", IMG_GetError());
+		throw Exception("Fail IMG_LoadTexture: %s ", IMG_GetError());
 	}
 	int h,w;
 	SDL_QueryTexture(this->texture, NULL, NULL, &w, &h);

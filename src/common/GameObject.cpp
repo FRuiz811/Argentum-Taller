@@ -7,7 +7,7 @@
 //	Estado est(0,0);
 //	estado = est;
 //}
-GameObject::GameObject(GameObject&& other) {
+GameObject::GameObject(GameObject&& other)  noexcept {
     std::swap(position, other.position);
 }
 
@@ -15,8 +15,20 @@ GameObject::GameObject(Position aPosition): position(std::move(aPosition)){
 
 }
 
-const Position &GameObject::getPosition() const {
+Position &GameObject::getPosition() {
     return position;
+}
+
+GameObject &GameObject::operator=(GameObject &&other) noexcept{
+    if (&other == this) {
+        return *this;
+    }
+    std::swap(position, other.position);
+    return *this;
+}
+
+void GameObject::setPosition(const Position &position) {
+    GameObject::position = position;
 }
 
 GameObject::GameObject() = default;

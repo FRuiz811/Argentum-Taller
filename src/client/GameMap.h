@@ -2,7 +2,7 @@
 #define ARGENTUM_GAMEMAP_H
 
 #include "Tile.h"
-#include "TiledMap.h"
+#include "../common/TiledMap.h"
 #include "Texture.h"
 #include "Camera.h"
 #include <vector>

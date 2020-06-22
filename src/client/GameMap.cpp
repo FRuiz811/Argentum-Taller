@@ -4,6 +4,8 @@
 GameMap::GameMap(const TiledMap & tiledMap, SDL_Renderer& renderer) : renderer(renderer) {
     this->rows = tiledMap.getHeight();
     this->colums = tiledMap.getWidth();
+    this->width = tiledMap.getWidth() * tiledMap.getTilewidth();
+    this->height = tiledMap.getHeight() * tiledMap.getTileheight();
     _loadTileSets(tiledMap.getTilesets(), renderer);
 
     int tileWidth = tiledMap.getTilewidth();

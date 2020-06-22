@@ -1,6 +1,6 @@
-#include "Criatura.h"
-
-Criatura::Criatura(Position posicion) : GameObject(posicion){}
-
-
-Criatura::~Criatura(){}
+//#include "Criatura.h"
+//
+//Criatura::Criatura(Position posicion) : GameObject(posicion){}
+//
+//
+//Criatura::~Criatura(){}

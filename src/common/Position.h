@@ -12,8 +12,8 @@ public:
     Position();
 	Position(int x, int y, int width, int height);
 
-	Position(Position&& other)  noexcept ;
-    Position& operator=(Position&& other) noexcept ;
+//	Position(Position&& other)  noexcept ;
+//    Position& operator=(Position&& other) noexcept;
 
 	~Position();
 
@@ -24,6 +24,10 @@ public:
     int getRight() const;
 
     int getLeft() const;
+
+    void setX(int x);
+
+    void setY(int y);
 };
 
 #endif

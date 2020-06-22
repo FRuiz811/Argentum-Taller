@@ -3,10 +3,10 @@
 
 #include "GameObject.h"
 
-class Character : public GameObject{
+class GameCharacter : public GameObject{
 private:
-    int race;
-    int gameClass;
+    int race{};
+    int gameClass{};
 	//Inventario inventario;
 
 //	Arma arma;
@@ -19,18 +19,15 @@ public:
 	//Arma casco;
 
 	//ToDo: separar armadura-escudo-casco
-    Character();
-	Character(int raza, int clase, Position posicion);
-	bool move(int);
+    GameCharacter();
+	GameCharacter(int raza, int clase, Position posicion);
+	GameCharacter(GameCharacter&& other) noexcept;
+	GameCharacter& operator=(GameCharacter&& other) noexcept;
 //	void equiparArma(Arma arma);
 //
 //	void atacar(GameObject &atacado);
 
-	~Character();
-	/*Destructor del Character.*/
-
-private: 
-	//bool esAtacable();
+	~GameCharacter();
 };
 
 #endif

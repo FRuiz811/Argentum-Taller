@@ -1,16 +1,13 @@
 #include "SDL2/SDL.h"
-#include "SDL2/SDL_ttf.h"
 #include <utility>
 #include <unistd.h>
 #include "Window.h"
 #include "Chrono.h"
-#include "Texture.h"
 #include "Music.h"
 #include "MusicManager.h"
 #include "TextureManager.h"
 #include "TextureID.h"
 #include "MusicID.h"
-#include "Font.h"
 #include "Presentation.h"
 #include "Zombie.h"
 #include "GameMap.h"
@@ -19,7 +16,6 @@
 #include "Camera.h"
 #include "Point.h"
 #include "Priest.h"
-#include "../server/ServerProxy.h"
 
 
 #define ARGENTUM "Argentum Online"
@@ -32,9 +28,7 @@ int main(int argc, char* args[]) {
 	Window window(ARGENTUM);
     ServerProxy serverProxy;
     GameMap gameMap(serverProxy.getStaticMap(), window.getRenderer());
-	int mapHeight = gameMap.getMapHeight();
-	int mapWidth = gameMap.getMapWidth();
-    uint characterId = serverProxy.createCharacter(0, 0);
+    PlayerInfo playerInfo = serverProxy.createCharacter(0, 0);
 	SDL_Color textColor = {0x0, 0x0, 0x0};
 
 	TextureManager textureManager(window.getRenderer());
@@ -70,12 +64,12 @@ int main(int argc, char* args[]) {
 
 	Spider spider(textureManager, 250,475);
 	Priest priest(textureManager, 302, 1026);
-	Player player(textureManager,60,35);
+	Player player(textureManager, std::move(playerInfo));
 	Zombie zombie(textureManager, 478, 145);
 	Chrono chrono;
 	double initLoop, endLoop, sleep;
 
-	Camera camera(window,mapWidth,mapHeight);
+	Camera camera(window, gameMap.getMapWidth(), gameMap.getMapHeight());
 	while (!quit) {
 		initLoop = chrono.lap();
 		while (SDL_PollEvent(&event) != 0) {
@@ -85,7 +79,7 @@ int main(int argc, char* args[]) {
 				if (event.key.keysym.sym == SDLK_m) {
 					musica.pauseMusic();
 				}
-				player.handleEvent(event);
+				player.handleEvent(event, serverProxy);
 				priest.handleEvent(event);
 				zombie.handleEvent(event);
 			}
