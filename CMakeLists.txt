@@ -48,10 +48,10 @@ add_executable(client
         src/client/TileSet.h
         src/client/TileLayer.cpp
         src/client/TileLayer.h
-        src/JsonReader.cpp
-        src/JsonReader.h
-        src/MapTransformer.cpp
-        src/MapTransformer.h
+        src/server/JsonReader.cpp
+        src/server/JsonReader.h
+        src/server/MapTransformer.cpp
+        src/server/MapTransformer.h
         src/client/Player.cpp
         src/client/Player.h
         src/client/Spider.cpp

@@ -1,6 +1,6 @@
 #include "ServerProxy.h"
-#include "../JsonReader.h"
-#include "../MapTransformer.h"
+#include "JsonReader.h"
+#include "MapTransformer.h"
 #include "Collider.h"
 
 void ServerProxy::fillCollisionsObjects(const std::vector<ObjectLayer> &objectLayers) {

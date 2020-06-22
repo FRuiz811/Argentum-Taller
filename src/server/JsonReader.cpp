@@ -2,7 +2,7 @@
 #include <rapidjson/istreamwrapper.h>
 #include <iostream>
 #include "JsonReader.h"
-#include "client/Exception.h"
+#include "../client/Exception.h"
 
 JsonReader::JsonReader() = default;
 
