@@ -3,10 +3,10 @@
 MapObject::~MapObject() = default;
 
 MapObject::MapObject(rapidjson::Value &value) {
-    int x = value["x"].GetInt();
-    int y = value["y"].GetInt();
-    int width = value["width"].GetInt();
-    int height = value["height"].GetInt();
+    int x = value["x"].GetFloat();
+    int y = value["y"].GetFloat();
+    int width = value["width"].GetFloat();
+    int height = value["height"].GetFloat();
     position = Position(x, y, width, height);
     id = value["id"].GetInt();
 }

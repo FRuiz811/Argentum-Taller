@@ -23,7 +23,7 @@
 
 int main(int argc, char* args[]) {
 	//Debería ser 5 argc
-	//Realiar el connect al host & port indicado.
+	//Realizar el connect al host & port indicado.
 	ServerProxy serverProxy;
 	PlayerInfo playerInfo = serverProxy.createCharacter(0, 0);
 	bool quit = false;
@@ -107,10 +107,11 @@ int main(int argc, char* args[]) {
 		Point* center = player.getCenter();
 		camera.setPlayer(center);
 		camera.moveTo(*center);
-        gameMap.draw(camera);
+        gameMap.drawGround(camera);
 		player.render(camera);
 		priest.render(camera);
 		zombie.render(camera);
+		gameMap.draw(camera);
 		window.render();
 		endLoop = chrono.lap();
 		sleep = GAMELOOPTIME - (endLoop - initLoop);

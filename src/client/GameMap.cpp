@@ -45,7 +45,11 @@ GameMap::GameMap(const TiledMap & tiledMap, SDL_Renderer& renderer) : renderer(r
                 int yPos = y * tileHeight;
 
                 Tile aTile(xPos, yPos, regionX, regionY, tileWidth, tileHeight, loadTexture);
-                tiles.push_back(aTile);
+                if (layer.getName() == "groundLayer") {
+                    groundTiles.push_back(aTile);
+                } else {
+                    tiles.push_back(aTile);
+                }
             }
         }
     }
@@ -70,6 +74,12 @@ void GameMap::_loadTileSets(const std::vector<TileSet> &tileSets, SDL_Renderer &
 
 void GameMap::draw(Camera& camera) {
     for (Tile& tile: tiles) {
+        tile.draw(renderer, camera);
+    }
+}
+
+void GameMap::drawGround(Camera& camera) {
+    for (Tile& tile: groundTiles) {
         tile.draw(renderer, camera);
     }
 }

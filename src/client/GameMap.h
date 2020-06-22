@@ -11,6 +11,7 @@
 class GameMap {
 private:
     std::vector<Tile> tiles;
+    std::vector<Tile> groundTiles;
     std::map<int, Texture> tileSetMap;
     SDL_Renderer& renderer;
     int rows, colums;
@@ -22,6 +23,7 @@ public:
     virtual ~GameMap();
 
     void draw(Camera& camera);
+    void drawGround(Camera& camera);
 
     int getMapWidth();
     int getMapHeight();

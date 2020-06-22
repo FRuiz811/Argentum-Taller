@@ -49,16 +49,16 @@ bool ServerProxy::characterMove(uint id, int direction) {
     Position newPosition = aCharacter.getPosition();
     switch(direction) {
         case 0:
-            newPosition.setY(newPosition.getTop() - 32);
+            newPosition.setY(newPosition.getTop() - 15);
             break;
         case 1:
-            newPosition.setY(newPosition.getTop() + 32);
+            newPosition.setY(newPosition.getTop() + 15);
             break;
         case 2:
-            newPosition.setX(newPosition.getLeft() - 32);
+            newPosition.setX(newPosition.getLeft() - 15);
             break;
         case 3:
-            newPosition.setX(newPosition.getLeft() + 32);
+            newPosition.setX(newPosition.getLeft() + 15);
             break;
         default:
             throw Exception("Invalid Direction");

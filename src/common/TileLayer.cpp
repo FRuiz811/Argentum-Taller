@@ -29,3 +29,7 @@ TileLayer::TileLayer(rapidjson::Value & value) {
 const std::vector<int> &TileLayer::getData() const {
     return data;
 }
+
+const std::string &TileLayer::getName() const {
+    return name;
+}

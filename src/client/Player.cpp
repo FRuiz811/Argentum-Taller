@@ -42,7 +42,7 @@ void Player::render(Camera& camera) {
         this->helmet->render(int(posX+4-camera.getCameraPosition().x), int((posY-this->body->getHeight()/2)-camera.getCameraPosition().y), this->frameHead);
 	} else {
 
-	}	
+	}
 }
 
 void Player::update(double dt) {
