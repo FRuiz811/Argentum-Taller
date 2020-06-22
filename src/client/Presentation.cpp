@@ -6,8 +6,9 @@
 Presentation::Presentation(Window& window, TextureManager& manager) :
     window(window), manager(manager) {}
 
-void Presentation::run() {
+bool Presentation::run() {
     bool quit = false;
+    bool closeProgram = false;
 	int width_text, height_text;
     SDL_Event event;
     SDL_Rect dest;
@@ -25,6 +26,7 @@ void Presentation::run() {
 		while (SDL_PollEvent(&event) != 0) {
 			if (event.type == SDL_QUIT) {
 				quit = true;
+                closeProgram = true;
 			} else if(event.type == SDL_KEYDOWN) {
 				if (event.key.keysym.sym  == SDLK_RETURN){				
 					quit = true;
@@ -38,6 +40,7 @@ void Presentation::run() {
         }
     }
     SDL_DestroyTexture(messageTexture);
+    return closeProgram;
 }
 
 Presentation::~Presentation(){}

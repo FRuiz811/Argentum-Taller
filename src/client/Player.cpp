@@ -1,8 +1,8 @@
 #include "Player.h"
-#include <SDL2/SDL.h>
-#include "Items/PriestHead.h"
+#include "Items/ElfHead.h"
+#include "Items/MagicHat.h"
 #include "Items/LeatherArmor.h"
-#include "../common/ServerProxy.h"
+#include <SDL2/SDL.h>
 
 Player::Player(const TextureManager& manager, PlayerInfo playerInfo)
 	: center(), manager(manager), playerInfo(std::move(playerInfo)) {
@@ -19,31 +19,32 @@ Player::Player(const TextureManager& manager, PlayerInfo playerInfo)
 	this->animSpeed = 30;
 	Point aux(posX, posY);
 	this->center = aux;
+    this->body = std::shared_ptr<Body>(new LeatherArmor(this->manager));
 }
 
 void Player::render(Camera& camera) {
-	PriestHead elf(this->manager);
-	LeatherArmor armor(this->manager);
-    const Texture& shield = manager.getTexture(TextureID::TortleShield);
-    //const Texture& helmet = manager.getTexture(TextureID::IronHelmet);
-    const Texture& weapon = manager.getTexture(TextureID::AshStick);
-//	SDL_Rect srcHead = {widthHead * frameHead, 0, this->widthHead, this->heightHead};
-//	SDL_Rect dstHead = {static_cast<int>(posX + 4 - camera.getCameraPosition().x),
-//                     static_cast<int>((posY - heightBody/2 + (heightHead - 2)) - camera.getCameraPosition().y),
-//                     this->widthHead, this->heightHead};
-   // helmet.render(srcHead,dstHead);
-	SDL_Rect srcBody = {widthBody * frameBody,heightBody * rowBody, this->widthBody, this->heightBody};
-	SDL_Rect dstBody = {static_cast<int>(posX - camera.getCameraPosition().x), static_cast<int>(posY - camera.getCameraPosition().y), this->widthBody, this->heightBody};
-    armor.render(posX - camera.getCameraPosition().x, posY - camera.getCameraPosition().y,rowBody);
+    ElfHead elf(this->manager);
+    MagicHat hat(this->manager);
+    const Texture& shield = manager.getTexture(TextureID::IronShield);
+
+    const Texture& weapon = manager.getTexture(TextureID::LongSword);
+    SDL_Rect srcHead = {widthHead*frameHead, heightHead*0, this->widthHead, this->heightHead};
+    SDL_Rect dstHead = {int(posX+4-camera.getCameraPosition().x), int((posY-heightBody/2+(heightHead-2))-camera.getCameraPosition().y),this->widthHead, this->heightHead};
+    // helmet.render(srcHead,dstHead);
+    SDL_Rect srcBody = {widthBody*frameBody,heightBody*rowBody, this->widthBody, this->heightBody};
+    SDL_Rect dstBody = {int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y), this->widthBody, this->heightBody};
+    this->body->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y),rowBody);
     weapon.render(srcBody,dstBody);
     shield.render(srcBody,dstBody);
-	elf.render(posX + 4 - camera.getCameraPosition().x, (posY - heightBody/2) - camera.getCameraPosition().y, frameHead);
+    elf.render(int(posX+4-camera.getCameraPosition().x), int((posY-heightBody/2)-camera.getCameraPosition().y), frameHead);
+    hat.render(int(posX+4-camera.getCameraPosition().x), int((posY-heightBody/2)-camera.getCameraPosition().y), frameHead);
 }
 
 void Player::update(double dt) {
-	Point aux(posX, posY);		
-	this->center = aux;
-	this->frameBody = (SDL_GetTicks()/this->animSpeed) % this->totalFrames;
+    Point aux(posX, posY);
+    this->center = aux;
+    this->body->update(dt);
+    this->frameBody = (SDL_GetTicks()/this->animSpeed) % this->totalFrames;
 }
 
 void Player::moveUp() {
@@ -74,7 +75,7 @@ void Player::moveRight() {
     this->totalFrames = 5;
 }
 
-void Player::handleEvent(SDL_Event& event,ServerProxy& serverProxy) {
+void Player::handleEvent(SDL_Event& event, ServerProxy& serverProxy) {
 	bool needUpdate = true;
 	if(event.type == SDL_KEYDOWN && event.key.repeat == 0) {
         //Adjust the velocity

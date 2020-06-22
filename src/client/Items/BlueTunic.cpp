@@ -8,13 +8,21 @@ BlueTunic::BlueTunic(const TextureManager& manager) :
  Body(manager.getTexture(TextureID::BlueTunic),WIDTH_BODY,HEIGHT_BODY) {}
 
 void BlueTunic::render(int posX, int posY, int direction) {
+    setDirection(direction);
     SDL_Rect srcHead = {this->width*frame, this->height*direction, this->width, this->height};
 	SDL_Rect dstHead = {posX, posY, this->width, this->height};
     this->texture.render(srcHead, dstHead);
 }
 
-void BlueTunic::update(double dt, int animationSpeed,int totalFrames) {
-    this->frame = (SDL_GetTicks()/animationSpeed) % totalFrames;
+void BlueTunic::update(double dt) {
+    Body::update(dt);
+}
+
+void BlueTunic::setDirection(int direction) {
+    if (direction == 0 || direction == 1)
+        this->totalFrames = 6;
+    if (direction == 2|| direction == 3)
+        this->totalFrames = 5;   
 }
 
 BlueTunic::~BlueTunic(){}

@@ -11,7 +11,7 @@ private:
 public:
     Presentation(Window& window, TextureManager& manager);
 
-    void run();
+    bool run();
 
     ~Presentation();
 

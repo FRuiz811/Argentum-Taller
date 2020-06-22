@@ -20,11 +20,6 @@ void GoblinBody::update(double dt) {
     Body::update(dt);
 }
 
-void GoblinBody::setDirection(int direction) {
-    if (direction == 0 || direction == 1)
-        this->totalFrames = 6;
-    if (direction == 2|| direction == 3)
-        this->totalFrames = 5;   
-}
+void GoblinBody::setDirection(int direction) {}
 
 GoblinBody::~GoblinBody(){}

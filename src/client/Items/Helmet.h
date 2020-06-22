@@ -1,16 +1,16 @@
-#ifndef BODY_H
-#define BODY_H
+#ifndef HELMET_H
+#define HELMET_H
 
 #include "Item.h"
 #include "../Texture.h"
 
-class Body: public Item {
+class Helmet: public Item {
 protected:
     int frame{0};
     float animationSpeed{25.0f};
     int totalFrames{5};
 public:
-    Body(const Texture& texture, const int width, const int height) : 
+    Helmet(const Texture& texture, const int width, const int height) : 
         Item(texture, width, height){}
     
     virtual void render(int posX, int posY, int direction) = 0;
@@ -23,7 +23,7 @@ public:
         this->animationSpeed = speed;
     }
 
-    ~Body() {};
+    ~Helmet() {};
 };
 
 #endif

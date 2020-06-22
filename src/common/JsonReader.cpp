@@ -1,6 +1,7 @@
 #include <fstream>
 #include <rapidjson/istreamwrapper.h>
 #include <iostream>
+#include <utility>
 #include "JsonReader.h"
 #include <rapidjson/error/en.h>
 #include "../client/Exception.h"

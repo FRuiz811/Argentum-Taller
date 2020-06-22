@@ -5,7 +5,9 @@
 #define HEIGHT_BODY 35
 
 SpiderBody::SpiderBody(const TextureManager& manager):
-    Body(manager.getTexture(TextureID::Spider),WIDTH_BODY,HEIGHT_BODY) {}
+    Body(manager.getTexture(TextureID::Spider),WIDTH_BODY,HEIGHT_BODY) {
+        this->totalFrames = 4;
+    }
 
 void SpiderBody::render(int posX, int posY, int direction) {
     SDL_Rect srcBody = {this->width*frame, this->height*direction, this->width, this->height};

@@ -1,20 +1,20 @@
-#ifndef GREENCOMMONBODY_H
-#define GREENCOMMONBODY_H
+#ifndef TURTLESHIELD_H
+#define TURTLESHIELD_H
 
-#include "Body.h"
+#include "Shield.h"
 #include "../TextureManager.h"
 
-class GreenCommonBody: public Body {
+class TurtleShield: public Shield {
 private:
     void setDirection(int direction);
 public:
-    GreenCommonBody(const TextureManager& manager);
+    TurtleShield(const TextureManager& manager);
 
     virtual void render(int posX, int posY, int direction);
 
     virtual void update(double dt);
 
-    ~GreenCommonBody();
+    ~TurtleShield();
 
 };
 

@@ -19,7 +19,7 @@
 
 
 #define ARGENTUM "Argentum Online"
-#define GAMELOOPTIME 50000
+#define GAMELOOPTIME 60000
 
 int main(int argc, char* args[]) {
 	bool quit = false;
@@ -48,11 +48,27 @@ int main(int argc, char* args[]) {
 	textureManager.createTexture(TextureID::BlueCommonBody, "assets/img/Vestimenta Comun azul Sprite.png",textColor);
 	textureManager.createTexture(TextureID::GreenCommonBody, "assets/img/Vestimenta Comun verde Sprite.png",textColor);
 	textureManager.createTexture(TextureID::RedCommonBody, "assets/img/Vestimenta Comun roja Sprite.png",textColor);
-	textureManager.createTexture(TextureID::TortleShield, "assets/img/Escudo de Tortuga Sprite.png",textColor);
+	textureManager.createTexture(TextureID::TurtleShield, "assets/img/Escudo de Tortuga Sprite.png",textColor);
+	textureManager.createTexture(TextureID::IronShield, "assets/img/Escudo de Hierro Sprite.png",textColor);
 	textureManager.createTexture(TextureID::IronHelmet, "assets/img/Casco de Hierro Sprite.png", textColor);
-	textureManager.createTexture(TextureID::AshStick, "assets/img/Vara de Fresno Sprite.png", textColor);
+	textureManager.createTexture(TextureID::Hood, "assets/img/Capucha Sprite.png",textColor);
 	textureManager.createTexture(TextureID::MagicHat, "assets/img/Sombrero Magico Sprite.png", textColor);
+	textureManager.createTexture(TextureID::AshStick, "assets/img/Vara de Fresno Sprite.png", textColor);
+	textureManager.createTexture(TextureID::LongSword, "assets/img/Espada Larga Sprite.png", textColor);
+	textureManager.createTexture(TextureID::Hammer, "assets/img/Martillo Sprite.png", textColor);
+	textureManager.createTexture(TextureID::SimpleArc, "assets/img/Arco Simple Sprite.png", textColor);
+	textureManager.createTexture(TextureID::CompoundArc, "assets/img/Arco Compuesto Sprite.png", textColor);
+	textureManager.createTexture(TextureID::GnarledStick, "assets/img/Baston Nudoso.png", textColor);
+	textureManager.createTexture(TextureID::Crosier, "assets/img/Baculo Engarzado Sprite.png", textColor);
+	textureManager.createTexture(TextureID::Ax, "assets/img/Hacha Sprite.png", textColor);
+	textureManager.createTexture(TextureID::ElficFlaute, "assets/img/Flauta Elfica Sprite.png", textColor);
 	textureManager.createTexture(TextureID::Spider, "assets/img/Araña Sprite.png",textColor);
+
+	textureManager.createTexture(TextureID::Skeleton, "assets/img/Esqueleto Sprite.png", textColor);
+	textureManager.createTexture(TextureID::Banker, "assets/img/Banquero Sprite.png", textColor);
+	textureManager.createTexture(TextureID::Merchant, "assets/img/Comerciante Sprite.png", textColor);
+	textureManager.createTexture(TextureID::Goblin, "assets/img/Goblin.png", textColor);
+	textureManager.createTexture(TextureID::Ghost, "assets/img/Fantasma Sprite.png", textColor);
 
 	MusicManager musicManager;
 	musicManager.createMusic(MusicID::Start, "assets/sound/Musica Inicio.mp3");
@@ -60,8 +76,8 @@ int main(int argc, char* args[]) {
 	musica.playMusic(-1);
 
 	Presentation presentation(window, textureManager);
-	presentation.run();
-
+	if (presentation.run())
+		return 0;
 	Spider spider(textureManager, 250,475);
 	Priest priest(textureManager, 302, 1026);
 	Player player(textureManager, std::move(playerInfo));
@@ -99,5 +115,5 @@ int main(int argc, char* args[]) {
 		if (sleep > 0)
 			usleep(sleep);
 	}
-
+	return 0;
 }

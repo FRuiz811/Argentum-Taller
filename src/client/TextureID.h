@@ -18,7 +18,7 @@ enum class TextureID {
 	BlueCommonBody,
 	GreenCommonBody,
 	RedCommonBody,
-	TortleShield,
+	TurtleShield,
 	IronShield,
 	IronHelmet,
 	MagicHat,

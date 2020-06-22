@@ -5,12 +5,14 @@
 #include "../TextureManager.h"
 
 class PlateArmor: public Body {
+private:
+    void setDirection(int direction);
 public:
     PlateArmor(const TextureManager& manager);
 
     virtual void render(int posX, int posY, int direction);
 
-    virtual void update(double dt, int animationSpeed, int totalFrames);
+    virtual void update(double dt);
 
     ~PlateArmor();
 
