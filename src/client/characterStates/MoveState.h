@@ -8,11 +8,11 @@ public:
     MoveState();
     ~MoveState();
 
-    virtual InputID moveUp(Character& character);
-    virtual InputID moveDown(Character& character);
-    virtual InputID moveLeft(Character& character);
-    virtual InputID moveRight(Character& character);
-    virtual InputID stopMove(Character& character);
+    virtual InputInfo moveUp(Character& character);
+    virtual InputInfo moveDown(Character& character);
+    virtual InputInfo moveLeft(Character& character);
+    virtual InputInfo moveRight(Character& character);
+    virtual InputInfo stopMove(Character& character);
 };
 
 #endif

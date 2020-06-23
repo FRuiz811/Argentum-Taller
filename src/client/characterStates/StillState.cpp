@@ -5,22 +5,42 @@ StillState::StillState() :
 
 StillState::~StillState() {}
 
-InputID StillState::moveUp(Character& character){
-    return InputID::up;
+InputInfo StillState::moveUp(Character& character){
+    InputInfo info;
+    info.input = InputID::up;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    return info;
 }
 
-InputID StillState::moveDown(Character& character) {
-    return InputID::down;
+InputInfo StillState::moveDown(Character& character) {
+    InputInfo info;
+    info.input = InputID::down;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    return info;
 }
 
-InputID StillState::moveLeft(Character& character) {
-    return InputID::left;
+InputInfo StillState::moveLeft(Character& character) {
+    InputInfo info;
+    info.input = InputID::left;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    return info;
 }
 
-InputID StillState::moveRight(Character& character) {
-    return InputID::right;
+InputInfo StillState::moveRight(Character& character) {
+    InputInfo info;
+    info.input = InputID::right;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    return info;
 }
 
-InputID StillState::stopMove(Character& character) {
-    return InputID::stopMove;
+InputInfo StillState::stopMove(Character& character) {
+    InputInfo info;
+    info.input = InputID::stopMove;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    return info;
 }

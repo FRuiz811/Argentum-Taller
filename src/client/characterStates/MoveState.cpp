@@ -5,22 +5,42 @@ MoveState::MoveState() :
 
 MoveState::~MoveState() {}
 
-InputID MoveState::moveUp(Character& character){
-    return InputID::up;
+InputInfo MoveState::moveUp(Character& character){
+    InputInfo info;
+    info.input = InputID::up;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    return info;
 }
 
-InputID MoveState::moveDown(Character& character) {
-    return InputID::down;
+InputInfo MoveState::moveDown(Character& character) {
+    InputInfo info;
+    info.input = InputID::down;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    return info;
 }
 
-InputID MoveState::moveLeft(Character& character) {
-    return InputID::left;
+InputInfo MoveState::moveLeft(Character& character) {
+    InputInfo info;
+    info.input = InputID::left;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    return info;
 }
 
-InputID MoveState::moveRight(Character& character) {
-    return InputID::right;
+InputInfo MoveState::moveRight(Character& character) {
+    InputInfo info;
+    info.input = InputID::right;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    return info;
 }
 
-InputID MoveState::stopMove(Character& character) {
-    return InputID::stopMove;
+InputInfo MoveState::stopMove(Character& character) {
+    InputInfo info;
+    info.input = InputID::stopMove;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    return info;
 }

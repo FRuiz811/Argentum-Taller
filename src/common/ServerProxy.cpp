@@ -18,7 +18,7 @@ void ServerProxy::fillCollisionsObjects(std::vector<ObjectLayer> objectLayers) {
     }
 }
 
-ServerProxy::ServerProxy() {
+ServerProxy::ServerProxy() : queueInputs() {
     current_id = 0;
     rapidjson::Document jsonMap = JsonReader::read("json/bigMapCollisions.json");
     tiledMap = MapTransformer::transform(jsonMap);
@@ -36,11 +36,37 @@ PlayerInfo ServerProxy::createCharacter(int race, int gameClass) {
     GameCharacter aCharacter(race, gameClass, position);
     uint id = getNextId();
     gameObjects.insert(std::pair<int, GameObject&&>(id, std::move(aCharacter)));
-    return PlayerInfo(id, position.getLeft(), position.getTop(), 100, 100, 100, "ht:01|h:01|b:01|s01|w01");
+    this->player = PlayerInfo(id, position.getLeft(), position.getTop(), 100, 100, 100, "ht:01|h:01|b:01|s01|w01");
+    return std::move(this->player);
 }
 
 uint ServerProxy::getNextId() {
     return current_id++;
+}
+
+PlayerInfo ServerProxy::updateModel() {
+    while(!this->queueInputs.empty()) {
+        InputInfo inputInfo = this->queueInputs.pop();
+        switch(inputInfo.input) {
+            case InputID::nothing:
+                break;
+            case InputID::up:
+                characterMove(player.getId(),0);
+                break;
+            case InputID::down:
+                characterMove(player.getId(),1);
+                break;
+            case InputID::right:
+                characterMove(player.getId(),3);
+                break;
+            case InputID::left:
+                characterMove(player.getId(),2);
+                break;
+            case InputID::stopMove:
+                break;
+        }
+    }
+    return std::move(this->player);
 }
 
 bool ServerProxy::characterMove(uint id, int direction) {
@@ -80,8 +106,14 @@ bool ServerProxy::characterMove(uint id, int direction) {
     }
     if (canMove) {
         aCharacter.setPosition(newPosition);
+        this->player.setX(newPosition.getLeft());
+        this->player.setY(newPosition.getTop());
     }
     return canMove;
+}
+
+void ServerProxy::sendInput(InputInfo input) {
+    this->queueInputs.push(input);
 }
 
 ServerProxy::~ServerProxy() = default;

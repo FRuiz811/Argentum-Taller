@@ -33,8 +33,9 @@ Player::Player(const TextureManager& manager, PlayerInfo playerInfo) :
 	Character(playerInfo.getX(),playerInfo.getY()), center(playerInfo.getX(),playerInfo.getY()),
     manager(manager), playerInfo(std::move(playerInfo)) {
 	this->frameHead = 0;
+  this->state = std::shared_ptr<CharacterState>(new StillState());
 	setArmor((BodyID)6);
-	setHead((HeadID)2);
+	setHead((HeadID)3);
 	setHelmet((HelmetID)2);
 	setShield((ShieldID)0);
   setWeapon((WeaponID)7);
@@ -90,41 +91,75 @@ void Player::moveRight() {
 		directionBody = 3;
 }
 
-void Player::handleEvent(SDL_Event& event, ServerProxy& serverProxy) {
+void Player::updatePlayerInfo(PlayerInfo info) {
+  std::cout << "x: " << info.getX()<< "y: "<< info.getY() << std::endl;
+  this->posX = info.getX();
+  this->posY = info.getY();
+
+}
+
+InputInfo Player::handleEvent(SDL_Event& event, ServerProxy& serverProxy) {
 	bool needUpdate = true;
+  InputInfo input;
 	if(event.type == SDL_KEYDOWN) {
     //Adjust the velocity
     switch(event.key.keysym.sym) {
       case SDLK_w:
-        //this->state->moveUp(*this);
-        if (serverProxy.characterMove(playerInfo.getId(), 0)) {
+        input = this->state->moveUp(*this);
+       /* if (serverProxy.characterMove(playerInfo.getId(), 0)) {
           moveUp();
-        }
+        }*/
 				break;
     	case SDLK_s:
-				//this->state->moveDown(*this);
-        if (serverProxy.characterMove(playerInfo.getId(), 1)) {
+				input = this->state->moveDown(*this);
+        /*if (serverProxy.characterMove(playerInfo.getId(), 1)) {
           moveDown();
-        }
+        }*/
 				break;
       case SDLK_a:
-				//this->state->moveLeft(*this);
-        if (serverProxy.characterMove(playerInfo.getId(), 2)) {
+				input = this->state->moveLeft(*this);
+        /*if (serverProxy.characterMove(playerInfo.getId(), 2)) {
   		    moveLeft();
-        }
+        }*/
 				break;
       case SDLK_d:
-				//this->state->moveRight(*this);
-        if (serverProxy.characterMove(playerInfo.getId(), 3)) {
+				input = this->state->moveRight(*this);
+        /*if (serverProxy.characterMove(playerInfo.getId(), 3)) {
           moveRight();
-        }
+        }*/
+				break;
+      case SDLK_r:
+				break;
+			case SDLK_g:
+				break;
+			case SDLK_b:
+				break;
+			case SDLK_v:
+				break;
+			case SDLK_f:
 				break;
 			default:
 				needUpdate = false;
 		}
 		if (needUpdate)
 			update(0);
+	} else if (event.type == SDL_KEYUP) {
+		switch(event.key.keysym.sym) {
+			case SDLK_w: 	
+				input = this->state->stopMove(*this);
+				break;
+      case SDLK_s: 
+			  input = this->state->stopMove(*this);
+				break;
+      case SDLK_a: 
+				input = this->state->stopMove(*this);
+				break;
+      case SDLK_d:
+				input = this->state->stopMove(*this);
+				break;
+		}
 	}
+  return input;
 }
 
 void Player::setState(CharacterStateID newState) {

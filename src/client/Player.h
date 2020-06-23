@@ -56,8 +56,10 @@ public:
 
 	void setState(CharacterStateID newState);
 
+	void updatePlayerInfo(PlayerInfo info);
+
 	Point* getCenter();
-	void handleEvent(SDL_Event& event, ServerProxy&);
+	InputInfo handleEvent(SDL_Event& event, ServerProxy&);
 
 	~Player();
 };

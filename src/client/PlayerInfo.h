@@ -31,6 +31,10 @@ public:
 
     int getY() const;
 
+    void setX(uint x);
+
+    void setY(uint y);
+
     uint getGoldAmount() const;
 
     uint getLife() const;

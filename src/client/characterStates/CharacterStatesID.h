@@ -1,6 +1,8 @@
 #ifndef CHARACTERSTATESID_H
 #define CHARACTERSTATESID_H
 
+#include "../Point.h"
+
 enum class CharacterStateID {
     Still, //Aplica a NPC
     StartMoving, //Aplica a NPC
@@ -34,6 +36,12 @@ enum class InputID {
     item9,
     dropItem, //f
 };
+
+struct InputInfo {
+    InputID input;
+    Point position;
+};
+
 
 enum class HelmetID {
     Nothing,
@@ -77,6 +85,10 @@ enum class WeaponID {
     AshStick,
     GnarledStick,
     Crosier,
+};
+
+enum class ItemsInventoryID {
+
 };
 
 #endif

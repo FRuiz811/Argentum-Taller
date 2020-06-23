@@ -1,6 +1,7 @@
 #include "SDL2/SDL.h"
 #include <utility>
 #include <unistd.h>
+#include "characterStates/CharacterStatesID.h"
 #include "Window.h"
 #include "Chrono.h"
 #include "Music.h"
@@ -90,6 +91,8 @@ int main(int argc, char* args[]) {
 	double initLoop, endLoop, sleep;
 
 	Camera camera(window, gameMap.getMapWidth(), gameMap.getMapHeight());
+	InputInfo input;
+
 	while (!quit) {
 		initLoop = chrono.lap();
 		while (SDL_PollEvent(&event) != 0) {
@@ -99,12 +102,13 @@ int main(int argc, char* args[]) {
 				if (event.key.keysym.sym == SDLK_m) {
 					musica.pauseMusic();
 				}
-				player.handleEvent(event, serverProxy);
-				priest.handleEvent(event);
-				zombie.handleEvent(event);
+				input = player.handleEvent(event, serverProxy);
+				serverProxy.sendInput(input);
 			}
 			window.handleEvent(event);
 		}
+		playerInfo = serverProxy.updateModel();
+		player.updatePlayerInfo(std::move(playerInfo));
 		window.clearScreen();
 		Point* center = player.getCenter();
 		camera.setPlayer(center);

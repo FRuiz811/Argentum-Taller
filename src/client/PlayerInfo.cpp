@@ -61,5 +61,14 @@ int PlayerInfo::getY() const {
     return y;
 }
 
+void PlayerInfo::setX(uint x) {
+    this->x = x;
+}
+
+void PlayerInfo::setY(uint y) {
+    this->y = y;
+}
+
+
 PlayerInfo::PlayerInfo(uint id, int x, int y, uint goldAmount, uint life, uint mana, std::string textureHashId)
         : id(id), x(x), y(y), goldAmount(goldAmount), life(life), mana(mana), textureHashId(std::move(textureHashId)) {}

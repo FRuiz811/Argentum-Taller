@@ -14,11 +14,11 @@ public:
         return this->id;
     }
 
-    virtual InputID moveUp(Character& character) = 0;
-    virtual InputID moveDown(Character& character) = 0;
-    virtual InputID moveLeft(Character& character) = 0;
-    virtual InputID moveRight(Character& character) = 0;
-    virtual InputID stopMove(Character& character) = 0;
+    virtual InputInfo moveUp(Character& character) = 0;
+    virtual InputInfo moveDown(Character& character) = 0;
+    virtual InputInfo moveLeft(Character& character) = 0;
+    virtual InputInfo moveRight(Character& character) = 0;
+    virtual InputInfo stopMove(Character& character) = 0;
     
    /* virtual InputID selectItem1(Character& character) = 0;
     virtual InputID selectItem2(Character& character) = 0;
