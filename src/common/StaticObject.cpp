@@ -1,8 +1,8 @@
-#include "MapObject.h"
+#include "StaticObject.h"
 
-MapObject::~MapObject() = default;
+StaticObject::~StaticObject() = default;
 
-MapObject::MapObject(rapidjson::Value &value) {
+StaticObject::StaticObject(rapidjson::Value &value) {
     int x = value["x"].GetFloat();
     int y = value["y"].GetFloat();
     int width = value["width"].GetFloat();
@@ -11,16 +11,16 @@ MapObject::MapObject(rapidjson::Value &value) {
     id = value["id"].GetInt();
 }
 
-const Position &MapObject::getPosition() const {
+const Position &StaticObject::getPosition() const {
     return position;
 }
 
-//MapObject::MapObject(MapObject &&other) noexcept {
+//StaticObject::StaticObject(StaticObject &&other) noexcept {
 //    std::swap(position, other.position);
 //    std::swap(id, other.id);
 //}
 //
-//MapObject &MapObject::operator=(MapObject &&other) noexcept {
+//StaticObject &StaticObject::operator=(StaticObject &&other) noexcept {
 //    if (&other == this) {
 //        return *this;
 //    }

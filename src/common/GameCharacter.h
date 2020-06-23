@@ -2,32 +2,29 @@
 #define PERSONAJE_H
 
 #include "GameObject.h"
+#include "EventQueue.h"
 
 class GameCharacter : public GameObject{
 private:
     int race{};
     int gameClass{};
+    EventQueue eventQueue;
 	//Inventario inventario;
 
 //	Arma arma;
 //	Ataque ataque;
 //	void corroborarAtaque(GameObject &atacado);
 	
-public: 
-	//Arma armadura;
-	//Arma escudo;
-	//Arma casco;
-
-	//ToDo: separar armadura-escudo-casco
+public:
     GameCharacter();
 	GameCharacter(int raza, int clase, Position posicion);
+
 	GameCharacter(GameCharacter&& other) noexcept;
 	GameCharacter& operator=(GameCharacter&& other) noexcept;
-//	void equiparArma(Arma arma);
-//
-//	void atacar(GameObject &atacado);
 
-	~GameCharacter();
+    void update() override;
+
+    ~GameCharacter();
 };
 
 #endif

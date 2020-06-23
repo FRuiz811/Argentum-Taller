@@ -1,0 +1,10 @@
+#ifndef ARGENTUM_TALLER_EVENTQUEUE_H
+#define ARGENTUM_TALLER_EVENTQUEUE_H
+
+
+class EventQueue {
+    std::queue
+};
+
+
+#endif //ARGENTUM_TALLER_EVENTQUEUE_H

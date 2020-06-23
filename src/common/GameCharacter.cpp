@@ -1,7 +1,7 @@
 #include "GameCharacter.h"
 
-GameCharacter::GameCharacter(int race, int gameClass, Position posicion) :
-GameObject(std::move(posicion)), race(race), gameClass(gameClass) {
+GameCharacter::GameCharacter(int race, int gameClass, Position position) :
+GameObject(position), race(race), gameClass(gameClass) {
 
 }
 
@@ -19,6 +19,10 @@ GameCharacter &GameCharacter::operator=(GameCharacter &&other) noexcept {
     std::swap(gameClass, other.gameClass);
     std::swap(position, other.position);
     return *this;
+}
+
+void GameCharacter::update() {
+
 }
 
 GameCharacter::GameCharacter() = default;

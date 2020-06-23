@@ -8,6 +8,7 @@ MapTransformer::~MapTransformer() = default;
 void addLayers(rapidjson::Value::Array& layers,
         std::vector<TileLayer>& tileLayers,
         std::vector<ObjectLayer>& objectsLayers) {
+
     for (auto &aLayer : layers) {
         std::string type = aLayer["type"].GetString();
         if ("tilelayer" == type) {

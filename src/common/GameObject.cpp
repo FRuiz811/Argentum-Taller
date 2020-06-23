@@ -31,6 +31,14 @@ void GameObject::setPosition(const Position &position) {
     GameObject::position = position;
 }
 
+const GameObjectInfo &GameObject::getGameObjectInfo() const {
+    return gameObjectInfo;
+}
+
+void GameObject::setGameObjectInfo(const GameObjectInfo &gameObjectInfo) {
+    GameObject::gameObjectInfo = gameObjectInfo;
+}
+
 GameObject::GameObject() = default;
 
 GameObject::~GameObject()= default;

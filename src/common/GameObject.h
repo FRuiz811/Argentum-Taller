@@ -2,26 +2,31 @@
 #define OBJETOJUEGO_H
 #include <string>
 #include <iostream>
-#include "../server/Estado.h"
-#include "../server/Movimiento.h"
 #include "Position.h"
-#include "../server/Arma.h"
+#include "GameObjectInfo.h"
 
 class GameObject{
-protected: 
-//	Movimiento movimiento;
+protected:
     Position position;
+    GameObjectInfo gameObjectInfo;
+//  Estado
 
 public:
 	GameObject();
-	GameObject(Position);
-	GameObject(GameObject&&) noexcept;
+	explicit GameObject(Position);
 
-    GameObject& operator=(GameObject&& other)  noexcept;
+	GameObject(GameObject&&) noexcept;
+	GameObject& operator=(GameObject&& other)  noexcept;
 
     Position &getPosition();
 
     void setPosition(const Position &position);
+
+    const GameObjectInfo &getGameObjectInfo() const;
+
+    void setGameObjectInfo(const GameObjectInfo &gameObjectInfo);
+
+    virtual void update() = 0;
 
     ~GameObject();
 };

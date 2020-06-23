@@ -1,9 +1,9 @@
 #ifndef ARGENTUM_TALLER_SERVERPROXY_H
 #define ARGENTUM_TALLER_SERVERPROXY_H
 
-#include <map>
+#include <unordered_map>
 #include <vector>
-#include "MapObject.h"
+#include "StaticObject.h"
 #include "ObjectLayer.h"
 #include "GameCharacter.h"
 #include "../client/PlayerInfo.h"
@@ -12,9 +12,9 @@
 class ServerProxy {
 private:
     TiledMap tiledMap;
-    std::vector<MapObject> collisionObjects;
-    std::vector<MapObject> cities;
-    std::map<uint, GameObject> gameObjects;
+    std::vector<StaticObject> collisionObjects;
+    std::vector<StaticObject> cities;
+    std::unordered_map<uint, std::unique_ptr<GameObject>, std::hash<uint>> gameObjects;
     int width;
     int heigth;
     uint current_id;
@@ -31,6 +31,8 @@ public:
 
     PlayerInfo createCharacter(int race, int gameClass);
     bool characterMove(uint id, int direction);
+    std::vector<GameObjectInfo> getUpdatedGameObjects();
+    void update();
 };
 
 

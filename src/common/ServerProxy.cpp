@@ -1,3 +1,4 @@
+#include <memory>
 #include "ServerProxy.h"
 #include "JsonReader.h"
 #include "MapTransformer.h"
@@ -31,22 +32,24 @@ TiledMap& ServerProxy::getStaticMap() {
     return tiledMap;
 }
 
+
+
 PlayerInfo ServerProxy::createCharacter(int race, int gameClass) {
     Position position(1125, 550, 25, 60);
-    GameCharacter aCharacter(race, gameClass, position);
+    std::unique_ptr<GameObject> aCharacter(new GameCharacter(race, gameClass, position));
     uint id = getNextId();
-    gameObjects.insert(std::pair<int, GameObject&&>(id, std::move(aCharacter)));
+    this->gameObjects.insert(std::pair<unsigned int, std::unique_ptr<GameObject>>(getNextId(), aCharacter));
     return PlayerInfo(id, position.getLeft(), position.getTop(), 100, 100, 100, "ht:01|h:01|b:01|s01|w01");
 }
 
-uint ServerProxy::getNextId() {
+unsigned int ServerProxy::getNextId() {
     return current_id++;
 }
 
 bool ServerProxy::characterMove(uint id, int direction) {
     bool canMove = true;
     auto& aCharacter = (gameObjects.at(id));
-    Position newPosition = aCharacter.getPosition();
+    Position newPosition = aCharacter->getPosition();
     switch(direction) {
         case 0:
             newPosition.setY(newPosition.getTop() - 15);
@@ -79,9 +82,24 @@ bool ServerProxy::characterMove(uint id, int direction) {
         }
     }
     if (canMove) {
-        aCharacter.setPosition(newPosition);
+        aCharacter->setPosition(newPosition);
     }
     return canMove;
+}
+
+
+std::vector<GameObjectInfo> ServerProxy::getUpdatedGameObjects() {
+    std::vector<GameObjectInfo> gameObjectsInfo;
+    for (auto& gameObjectPair : gameObjects) {
+        gameObjectsInfo.push_back(gameObjectPair.second->getGameObjectInfo());
+    }
+    return gameObjectsInfo;
+}
+
+void ServerProxy::update() {
+    for (auto& gameObjectPair : gameObjects) {
+        gameObjectPair.second->update();
+    }
 }
 
 ServerProxy::~ServerProxy() = default;
