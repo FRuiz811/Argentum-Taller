@@ -1,4 +1,0 @@
-/home/deandre/Argentum-Taller/CMakeFiles/rebuild_cache.dir
-/home/deandre/Argentum-Taller/CMakeFiles/client.dir
-/home/deandre/Argentum-Taller/CMakeFiles/edit_cache.dir
-/home/deandre/Argentum-Taller/CMakeFiles/Server.dir
