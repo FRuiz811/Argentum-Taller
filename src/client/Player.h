@@ -9,6 +9,7 @@
 #include "Items/Body.h"
 #include "Items/Helmet.h"
 #include "Items/Shield.h"
+#include "Items/Weapon.h"
 #include "characterStates/CharacterState.h"
 #include "characterStates/CharacterStatesID.h"
 #include "Camera.h"
@@ -29,7 +30,7 @@ private:
 	std::shared_ptr<Head> head = nullptr;
 	std::shared_ptr<Helmet> helmet = nullptr;
 	std::shared_ptr<Shield> shield = nullptr;
-//	std::shared_ptr<Weapon> weapon = nullptr;
+	std::shared_ptr<Weapon> weapon = nullptr;
 	int frameHead;
 	bool isAlive{true};
 
@@ -45,15 +46,13 @@ private:
 	void setShield(ShieldID newShield);
 	void setHelmet(HelmetID newHelmet);
 	void setHead(HeadID head);
-
+	void setWeapon(WeaponID newWeapon);
 
 public:
 	Player(const TextureManager& manager, PlayerInfo playerInfo);
 
 	virtual void render(Camera& camera);
 	virtual void update(double dt);
-
-	//void setWeapon(Weapon newWeapon);
 
 	void setState(CharacterStateID newState);
 

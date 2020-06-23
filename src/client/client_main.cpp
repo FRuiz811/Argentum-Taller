@@ -16,6 +16,8 @@
 #include "Camera.h"
 #include "Point.h"
 #include "Priest.h"
+#include "Merchant.h"
+#include "Banker.h"
 
 
 #define ARGENTUM "Argentum Online"

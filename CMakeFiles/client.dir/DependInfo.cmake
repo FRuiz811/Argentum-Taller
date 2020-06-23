@@ -1,0 +1,96 @@
+# The set of languages for which implicit dependencies are needed:
+set(CMAKE_DEPENDS_LANGUAGES
+  "CXX"
+  )
+# The set of files for implicit dependencies of each language:
+set(CMAKE_DEPENDS_CHECK_CXX
+  "/home/deandre/Argentum-Taller/src/client/Banker.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Banker.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Camera.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Camera.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Chrono.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Chrono.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Exception.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Exception.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Font.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Font.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/GameMap.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/GameMap.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Goblin.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Goblin.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/AshStick.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/AshStick.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/Ax.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/Ax.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/BankerBody.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/BankerBody.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/BlueCommonBody.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/BlueCommonBody.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/BlueTunic.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/BlueTunic.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/CompoundArc.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/CompoundArc.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/Crosier.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/Crosier.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/DwarfHead.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/DwarfHead.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/ElfHead.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/ElfHead.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/ElficFlaute.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/ElficFlaute.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/GhostBody.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/GhostBody.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/GnarledStick.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/GnarledStick.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/GnomeHead.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/GnomeHead.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/GoblinBody.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/GoblinBody.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/GreenCommonBody.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/GreenCommonBody.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/Hammer.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/Hammer.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/Hood.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/Hood.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/HumanHead.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/HumanHead.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/IronHelmet.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/IronHelmet.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/IronShield.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/IronShield.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/LeatherArmor.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/LeatherArmor.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/LongSword.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/LongSword.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/MagicHat.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/MagicHat.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/MerchantBody.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/MerchantBody.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/PlateArmor.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/PlateArmor.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/PriestBody.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/PriestBody.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/PriestHead.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/PriestHead.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/RedCommonBody.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/RedCommonBody.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/SimpleArc.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/SimpleArc.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/SkeletonBody.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/SkeletonBody.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/SpiderBody.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/SpiderBody.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/TurtleShield.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/TurtleShield.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/ZombieBody.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/ZombieBody.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Items/ZombieHead.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Items/ZombieHead.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Merchant.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Merchant.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Music.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Music.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/MusicManager.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/MusicManager.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Player.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Player.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/PlayerInfo.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/PlayerInfo.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Point.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Point.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Presentation.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Presentation.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Priest.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Priest.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Skeleton.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Skeleton.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Spider.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Spider.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Texture.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Texture.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/TextureManager.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/TextureManager.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Tile.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Tile.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Window.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Window.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/Zombie.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/Zombie.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/characterStates/DeadState.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/characterStates/DeadState.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/characterStates/MoveState.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/characterStates/MoveState.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/characterStates/StartMovingState.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/characterStates/StartMovingState.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/characterStates/StillState.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/characterStates/StillState.cpp.o"
+  "/home/deandre/Argentum-Taller/src/client/client_main.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/client/client_main.cpp.o"
+  "/home/deandre/Argentum-Taller/src/common/Collider.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/common/Collider.cpp.o"
+  "/home/deandre/Argentum-Taller/src/common/GameCharacter.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/common/GameCharacter.cpp.o"
+  "/home/deandre/Argentum-Taller/src/common/GameObject.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/common/GameObject.cpp.o"
+  "/home/deandre/Argentum-Taller/src/common/JsonReader.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/common/JsonReader.cpp.o"
+  "/home/deandre/Argentum-Taller/src/common/MapObject.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/common/MapObject.cpp.o"
+  "/home/deandre/Argentum-Taller/src/common/MapTransformer.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/common/MapTransformer.cpp.o"
+  "/home/deandre/Argentum-Taller/src/common/ObjectLayer.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/common/ObjectLayer.cpp.o"
+  "/home/deandre/Argentum-Taller/src/common/Position.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/common/Position.cpp.o"
+  "/home/deandre/Argentum-Taller/src/common/ServerProxy.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/common/ServerProxy.cpp.o"
+  "/home/deandre/Argentum-Taller/src/common/TileLayer.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/common/TileLayer.cpp.o"
+  "/home/deandre/Argentum-Taller/src/common/TileSet.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/common/TileSet.cpp.o"
+  "/home/deandre/Argentum-Taller/src/common/TiledMap.cpp" "/home/deandre/Argentum-Taller/CMakeFiles/client.dir/src/common/TiledMap.cpp.o"
+  )
+set(CMAKE_CXX_COMPILER_ID "GNU")
+
+# The include file search paths:
+set(CMAKE_CXX_TARGET_INCLUDE_PATH
+  "/usr/include/SDL2"
+  "include"
+  "client"
+  "server"
+  )
+
+# Targets to which this target links.
+set(CMAKE_TARGET_LINKED_INFO_FILES
+  )
+
+# Fortran module output directory.
+set(CMAKE_Fortran_TARGET_MODULE_DIR "")
