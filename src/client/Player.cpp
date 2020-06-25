@@ -36,11 +36,11 @@ Player::Player(const TextureManager& manager, PlayerInfo playerInfo) :
   this->direction = playerInfo.getDirection();
 	this->frameHead = 0;
   this->state = std::shared_ptr<CharacterState>(new StillState());
-	setArmor((BodyID)6);
-	setHead((HeadID)3);
-	setHelmet((HelmetID)2);
-	setShield((ShieldID)0);
-  setWeapon((WeaponID)7);
+	setArmor(playerInfo.getBodyID());
+	setHead(playerInfo.getHeadID());
+	setHelmet(playerInfo.getHelmetID());
+	setShield(playerInfo.getShieldID());
+  setWeapon(playerInfo.getWeaponID());
 }
 
 void Player::render(Camera& camera) {

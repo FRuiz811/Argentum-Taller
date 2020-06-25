@@ -34,6 +34,8 @@ public:
     
     void moveTo(Point destiny);
 
+    Point calculateGlobalPosition(Point coordinates);
+
     ~Camera();
 };
 

@@ -49,6 +49,11 @@ public:
 
     const std::string &getTextureHashId() const;
 
+    HelmetID getHelmetID();
+    HeadID getHeadID();
+    BodyID getBodyID();
+    WeaponID getWeaponID();
+    ShieldID getShieldID();
 };
 
 

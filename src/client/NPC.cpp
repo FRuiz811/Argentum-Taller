@@ -43,11 +43,11 @@ NPC::NPC(const TextureManager& manager, PlayerInfo playerInfo):
     this->direction = playerInfo.getDirection();
 		this->frameHead = 0;
     this->state = std::shared_ptr<CharacterState>(new StillState());
-    setArmor((BodyID)12);
-		setHead((HeadID)0);
-		setHelmet((HelmetID)0);
-		setShield((ShieldID)0);
-    setWeapon((WeaponID)0);
+	  setArmor(playerInfo.getBodyID());
+	  setHead(playerInfo.getHeadID());
+	  setHelmet(playerInfo.getHelmetID());
+	  setShield(playerInfo.getShieldID());
+    setWeapon(playerInfo.getWeaponID());
 }
 
 void NPC::render(Camera& camera) {

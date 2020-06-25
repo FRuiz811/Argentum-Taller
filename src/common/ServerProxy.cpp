@@ -36,7 +36,7 @@ PlayerInfo ServerProxy::createCharacter(int race, int gameClass) {
     GameCharacter aCharacter(race, gameClass, position);
     uint id = getNextId();
     gameObjects.insert(std::pair<int, GameObject&&>(id, std::move(aCharacter)));
-    this->player = PlayerInfo(id, position.getLeft(), position.getTop(), 100, 100, 100, "ht:01|h:01|b:01|s01|w01",Direction::down);
+    this->player = PlayerInfo(id, position.getLeft(), position.getTop(), 100, 100, 100, "ht02|h03|b04|s00|w03",Direction::down);
     return this->player;
 }
 

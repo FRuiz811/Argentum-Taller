@@ -45,6 +45,11 @@ void Camera::limits(Point* destiny) {
 
 }
 
+Point Camera::calculateGlobalPosition(Point coordinates) {
+    float x = this->cam.x+coordinates.x;
+    float y = this->cam.y+coordinates.y;
+    return Point(x,y);
+}
 
 void Camera::update(float dt) {
     this->positionScreen.x = this->cam.x-this->window.getWidth()/2.0f;
