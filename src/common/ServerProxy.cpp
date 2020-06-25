@@ -16,7 +16,7 @@ void ServerProxy::fillCollisionsObjects(std::vector<ObjectLayer> objectLayers) {
             for (StaticObject& aCollisionObject : anObjectLayer.getObjects()) {
                 collisionObjects.push_back(aCollisionObject);
             }
-        } else if (anObjectLayer.getName() == "NPCServer") {
+        } else if (anObjectLayer.getName() == "NPC") {
             for (StaticObject& aNPCObject : anObjectLayer.getObjects()) {
                 uint id = getNextId();
                 std::shared_ptr<GameObject> aNPC(new NPCServer(id, aNPCObject.getPosition().getPoint(), aNPCObject.getName()));
