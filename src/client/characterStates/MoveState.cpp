@@ -44,3 +44,18 @@ InputInfo MoveState::stopMove(Character& character) {
     info.position = aux;
     return info;
 }
+
+InputInfo MoveState::selectItem(Character& character, int item) {
+    InputInfo info;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    info.input =InputID::nothing;
+    return info;
+}
+
+InputInfo MoveState::selectTarget(Character& character, Point position) {
+    InputInfo info;
+    info.position = position;
+    info.input =InputID::selectTarget;
+    return info;
+}

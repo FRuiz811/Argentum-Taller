@@ -28,7 +28,7 @@ const std::string &PlayerInfo::getTextureHashId() const {
     return textureHashId;
 }
 
-PlayerInfo &PlayerInfo::operator=(PlayerInfo &&other) noexcept {
+/*PlayerInfo &PlayerInfo::operator=(PlayerInfo &&other) noexcept {
     if (&other == this) {
         return *this;
     }
@@ -39,6 +39,7 @@ PlayerInfo &PlayerInfo::operator=(PlayerInfo &&other) noexcept {
     std::swap(x, other.x);
     std::swap(y, other.y);
     std::swap(textureHashId, other.textureHashId);
+    std::swap(direction,other.direction);
 
     return *this;
 }
@@ -51,7 +52,8 @@ PlayerInfo::PlayerInfo(PlayerInfo &&other) noexcept {
     std::swap(x, other.x);
     std::swap(y, other.y);
     std::swap(textureHashId, other.textureHashId);
-}
+    std::swap(direction,other.direction);
+}*/
 
 int PlayerInfo::getX() const {
     return x;
@@ -69,6 +71,14 @@ void PlayerInfo::setY(uint y) {
     this->y = y;
 }
 
+Direction PlayerInfo::getDirection() const {
+    return this->direction;
+}
 
-PlayerInfo::PlayerInfo(uint id, int x, int y, uint goldAmount, uint life, uint mana, std::string textureHashId)
-        : id(id), x(x), y(y), goldAmount(goldAmount), life(life), mana(mana), textureHashId(std::move(textureHashId)) {}
+void PlayerInfo::changeDirection(Direction newDirection) {
+    this->direction = newDirection;
+}
+
+
+PlayerInfo::PlayerInfo(uint id, int x, int y, uint goldAmount, uint life, uint mana, std::string textureHashId, Direction direction)
+        : id(id), x(x), y(y), goldAmount(goldAmount), life(life), mana(mana), textureHashId(std::move(textureHashId)), direction(direction) {}

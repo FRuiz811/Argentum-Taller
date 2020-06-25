@@ -1,7 +1,7 @@
 #ifndef CHARACTERSTATESID_H
 #define CHARACTERSTATESID_H
 
-#include "../Point.h"
+#include "Point.h"
 
 enum class CharacterStateID {
     Still, //Aplica a NPC
@@ -58,14 +58,24 @@ enum class BodyID {
     BlueTunic,
     LeatherArmor,
     PlateArmor,
+    Ghost,
+    Banker,
+    Goblin,
+    Merchant,
+    Priest,
+    Skeleton,
+    Spider,
+    Zombie,
 };
 
 enum class HeadID {
+    Nothing,
     Elf,
     Human,
     Gnome,
     Dwarf,
-    Other,
+    Priest,
+    Zombie,
 };
 
 enum class ShieldID {
@@ -89,6 +99,13 @@ enum class WeaponID {
 
 enum class ItemsInventoryID {
 
+};
+
+enum class Direction{
+    down,
+    up,
+    left,
+    right,
 };
 
 #endif

@@ -1,7 +1,6 @@
 #include "SDL2/SDL.h"
 #include <utility>
 #include <unistd.h>
-#include "characterStates/CharacterStatesID.h"
 #include "Window.h"
 #include "Chrono.h"
 #include "Music.h"
@@ -10,15 +9,10 @@
 #include "TextureID.h"
 #include "MusicID.h"
 #include "Presentation.h"
-#include "Zombie.h"
 #include "GameMap.h"
 #include "Player.h"
-#include "Spider.h"
 #include "Camera.h"
-#include "Point.h"
-#include "Priest.h"
-#include "Merchant.h"
-#include "Banker.h"
+#include "../common/Point.h"
 
 
 #define ARGENTUM "Argentum Online"
@@ -83,10 +77,7 @@ int main(int argc, char* args[]) {
 	Presentation presentation(window, textureManager);
 	if (presentation.run())
 		return 0;
-	Spider spider(textureManager, 250,475);
-	Priest priest(textureManager, 302, 1026);
 	Player player(textureManager, std::move(playerInfo));
-	Zombie zombie(textureManager, 478, 145);
 	Chrono chrono;
 	double initLoop, endLoop, sleep;
 
@@ -115,8 +106,6 @@ int main(int argc, char* args[]) {
 		camera.moveTo(*center);
         gameMap.drawGround(camera);
 		player.render(camera);
-		priest.render(camera);
-		zombie.render(camera);
 		gameMap.draw(camera);
 		window.render();
 		endLoop = chrono.lap();

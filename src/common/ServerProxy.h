@@ -7,7 +7,7 @@
 #include "ObjectLayer.h"
 #include "GameCharacter.h"
 #include "../client/PlayerInfo.h"
-#include "../client/characterStates/CharacterStatesID.h"
+#include "Identificators.h"
 #include "TiledMap.h"
 #include "InputQueue.h"
 
@@ -38,7 +38,7 @@ public:
     PlayerInfo updateModel();
 
     PlayerInfo createCharacter(int race, int gameClass);
-    bool characterMove(uint id, int direction);
+    bool characterMove(uint id, Direction direction);
 };
 
 

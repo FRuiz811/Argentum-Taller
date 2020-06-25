@@ -3,7 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include "Window.h"
-#include "Point.h"
+#include "../common/Point.h"
 
 class Camera {
 private:

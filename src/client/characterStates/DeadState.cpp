@@ -44,3 +44,19 @@ InputInfo DeadState::stopMove(Character& character) {
     info.position = aux;
     return info;
 }
+
+InputInfo DeadState::selectItem(Character& character, int item) {
+    InputInfo info;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    info.input =InputID::nothing;
+    return info;
+}
+
+InputInfo DeadState::selectTarget(Character& character, Point position) {
+    InputInfo info;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    info.input =InputID::nothing;
+    return info;
+}

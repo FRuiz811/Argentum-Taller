@@ -1,11 +1,12 @@
 #include "BankerBody.h"
 #include "../TextureID.h"
+#include "../../common/Identificators.h"
 
 #define WIDTH_BODY 25
 #define HEIGHT_BODY 45
 
 BankerBody::BankerBody(const TextureManager& manager) :
- Body(manager.getTexture(TextureID::Banker),WIDTH_BODY,HEIGHT_BODY) {}
+ Body(manager.getTexture(TextureID::Banker),WIDTH_BODY,HEIGHT_BODY,BodyID::Banker) {}
 
 void BankerBody::render(int posX, int posY, int direction) {
     setDirection(direction);

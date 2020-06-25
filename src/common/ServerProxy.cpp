@@ -36,8 +36,8 @@ PlayerInfo ServerProxy::createCharacter(int race, int gameClass) {
     GameCharacter aCharacter(race, gameClass, position);
     uint id = getNextId();
     gameObjects.insert(std::pair<int, GameObject&&>(id, std::move(aCharacter)));
-    this->player = PlayerInfo(id, position.getLeft(), position.getTop(), 100, 100, 100, "ht:01|h:01|b:01|s01|w01");
-    return std::move(this->player);
+    this->player = PlayerInfo(id, position.getLeft(), position.getTop(), 100, 100, 100, "ht:01|h:01|b:01|s01|w01",Direction::down);
+    return this->player;
 }
 
 uint ServerProxy::getNextId() {
@@ -51,39 +51,41 @@ PlayerInfo ServerProxy::updateModel() {
             case InputID::nothing:
                 break;
             case InputID::up:
-                characterMove(player.getId(),0);
+                characterMove(player.getId(),Direction::up);
                 break;
             case InputID::down:
-                characterMove(player.getId(),1);
+                characterMove(player.getId(),Direction::down);
                 break;
             case InputID::right:
-                characterMove(player.getId(),3);
+                characterMove(player.getId(),Direction::right);
                 break;
             case InputID::left:
-                characterMove(player.getId(),2);
+                characterMove(player.getId(),Direction::left);
                 break;
             case InputID::stopMove:
                 break;
         }
     }
-    return std::move(this->player);
+    return this->player;
 }
 
-bool ServerProxy::characterMove(uint id, int direction) {
+
+
+bool ServerProxy::characterMove(uint id, Direction direction) {
     bool canMove = true;
     auto& aCharacter = (gameObjects.at(id));
     Position newPosition = aCharacter.getPosition();
     switch(direction) {
-        case 0:
+        case Direction::up:
             newPosition.setY(newPosition.getTop() - 15);
             break;
-        case 1:
+        case Direction::down:
             newPosition.setY(newPosition.getTop() + 15);
             break;
-        case 2:
+        case Direction::left:
             newPosition.setX(newPosition.getLeft() - 15);
             break;
-        case 3:
+        case Direction::right:
             newPosition.setX(newPosition.getLeft() + 15);
             break;
         default:
@@ -108,12 +110,14 @@ bool ServerProxy::characterMove(uint id, int direction) {
         aCharacter.setPosition(newPosition);
         this->player.setX(newPosition.getLeft());
         this->player.setY(newPosition.getTop());
+        this->player.changeDirection(direction);
     }
     return canMove;
 }
 
 void ServerProxy::sendInput(InputInfo input) {
-    this->queueInputs.push(input);
+    if (input.input != InputID::nothing)
+        this->queueInputs.push(input);
 }
 
 ServerProxy::~ServerProxy() = default;

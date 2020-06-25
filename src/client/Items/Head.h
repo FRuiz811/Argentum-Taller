@@ -3,12 +3,12 @@
 
 #include "Item.h"
 #include "../Texture.h"
-#include "../characterStates/CharacterStatesID.h"
+#include "../../common/Identificators.h"
 
 class Head: public Item {
-    HeadID id{HeadID::Other};
+    HeadID id{HeadID::Nothing};
 public:
-    Head(const Texture& texture, const int width, const int height,HeadID id = HeadID::Other) : 
+    Head(const Texture& texture, const int width, const int height,HeadID id = HeadID::Nothing) : 
         Item(texture, width, height){}
     
     virtual void render(int posX, int posY, int direction) = 0;
