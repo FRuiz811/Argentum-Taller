@@ -52,29 +52,29 @@ unsigned int ServerProxy::getNextId() {
 }
 
 PlayerInfo ServerProxy::updateModel() {
-    auto& aCharacter = reinterpret_cast<GameCharacter &>(gameObjects.at(current_id));
+    std::shared_ptr<GameCharacter> aCharacter =  std::dynamic_pointer_cast<GameCharacter>(gameObjects.at(current_id - 1));
     while(!this->queueInputs.empty()) {
         InputInfo inputInfo = this->queueInputs.pop();
         switch(inputInfo.input) {
             case InputID::nothing:
                 break;
             case InputID::up:
-                aCharacter.move(Direction::up, gameObjects, collisionObjects);
+                aCharacter->move(Direction::up, gameObjects, collisionObjects);
                 break;
             case InputID::down:
-                aCharacter.move(Direction::down, gameObjects, collisionObjects);
+                aCharacter->move(Direction::down, gameObjects, collisionObjects);
                 break;
             case InputID::right:
-                aCharacter.move(Direction::right, gameObjects, collisionObjects);
+                aCharacter->move(Direction::right, gameObjects, collisionObjects);
                 break;
             case InputID::left:
-                aCharacter.move(Direction::left, gameObjects, collisionObjects);
+                aCharacter->move(Direction::left, gameObjects, collisionObjects);
                 break;
             case InputID::stopMove:
                 break;
         }
     }
-    return aCharacter.getPlayerInfo();
+    return aCharacter->getPlayerInfo();
 }
 
 void ServerProxy::sendInput(InputInfo input) {
