@@ -5,7 +5,7 @@
 #define HEIGHT_BODY 45
 
 ZombieBody::ZombieBody(const TextureManager& manager) :
- Body(manager.getTexture(TextureID::ZombieBody),WIDTH_BODY,HEIGHT_BODY) {}
+ Body(manager.getTexture(TextureID::ZombieBody),WIDTH_BODY,HEIGHT_BODY,BodyID::Zombie) {}
 
 void ZombieBody::render(int posX, int posY, int direction) {
     setDirection(direction);

@@ -5,7 +5,7 @@
 #define HEIGHT_BODY 30
 
 GhostBody::GhostBody(const TextureManager& manager) :
- Body(manager.getTexture(TextureID::Ghost),WIDTH_BODY,HEIGHT_BODY) {
+ Body(manager.getTexture(TextureID::Ghost),WIDTH_BODY,HEIGHT_BODY,BodyID::Ghost) {
      this->totalFrames = 3;
  }
 

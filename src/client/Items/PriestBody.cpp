@@ -1,11 +1,10 @@
 #include "PriestBody.h"
-#include "../TextureID.h"
 
 #define WIDTH_BODY 25
 #define HEIGHT_BODY 45
 
 PriestBody::PriestBody(const TextureManager& manager) :
- Body(manager.getTexture(TextureID::PriestBody),WIDTH_BODY,HEIGHT_BODY) {}
+ Body(manager.getTexture(TextureID::PriestBody),WIDTH_BODY,HEIGHT_BODY,BodyID::Priest) {}
 
 void PriestBody::render(int posX, int posY, int direction) {
     setDirection(direction);

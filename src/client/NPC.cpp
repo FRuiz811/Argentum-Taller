@@ -1,8 +1,10 @@
-#include "Player.h"
+#include "NPC.h"
 #include "Items/ElfHead.h"
 #include "Items/HumanHead.h"
 #include "Items/DwarfHead.h"
 #include "Items/GnomeHead.h"
+#include "Items/ZombieHead.h"
+#include "Items/PriestHead.h"
 #include "Items/MagicHat.h"
 #include "Items/Hood.h"
 #include "Items/IronHelmet.h"
@@ -15,6 +17,13 @@
 #include "Items/GhostBody.h"
 #include "Items/PlateArmor.h"
 #include "Items/BlueTunic.h"
+#include "Items/BankerBody.h"
+#include "Items/MerchantBody.h"
+#include "Items/SkeletonBody.h"
+#include "Items/SpiderBody.h"
+#include "Items/GoblinBody.h"
+#include "Items/PriestBody.h"
+#include "Items/ZombieBody.h"
 #include "Items/Ax.h"
 #include "Items/AshStick.h"
 #include "Items/Crosier.h"
@@ -24,27 +33,26 @@
 #include "Items/LongSword.h"
 #include "Items/Hammer.h"
 #include "Items/GnarledStick.h"
-#include <SDL2/SDL.h>
 #include "characterStates/StillState.h"
 #include "characterStates/MoveState.h"
 #include "characterStates/DeadState.h"
 #include "characterStates/StartMovingState.h"
 
-Player::Player(const TextureManager& manager, const PlayerInfo& playerInfo) :
-	Character(playerInfo.getX(), playerInfo.getY()), center(playerInfo.getX(), playerInfo.getY()),
-    manager(manager), playerInfo(playerInfo) {
-  this->direction = playerInfo.getDirection();
-	this->frameHead = 0;
-  this->state = std::shared_ptr<CharacterState>(new StillState());
-	setArmor(playerInfo.getBodyID());
-	setHead(playerInfo.getHeadID());
-	setHelmet(playerInfo.getHelmetID());
-	setShield(playerInfo.getShieldID());
-  setWeapon(playerInfo.getWeaponID());
+NPC::NPC(const TextureManager& manager, const GameObjectInfo& gameObjectInfo):
+  Character(gameObjectInfo.getX(), gameObjectInfo.getY()), manager(manager){
+    this->direction = gameObjectInfo.getDirection();
+		this->frameHead = 0;
+    this->state = std::shared_ptr<CharacterState>(new StillState());
+	  setArmor(gameObjectInfo.getBodyID());
+	  setHead(gameObjectInfo.getHeadID());
+	  setHelmet(gameObjectInfo.getHelmetID());
+	  setShield(gameObjectInfo.getShieldID());
+    setWeapon(gameObjectInfo.getWeaponID());
 }
 
-void Player::render(Camera& camera) {
- 	this->body->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y),int(this->direction));
+void NPC::render(Camera& camera) {
+	if (this->body != nullptr)
+ 		this->body->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y),int(this->direction));
   if (this->weapon != nullptr)
     this->weapon->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y),int(this->direction));
   if (this->shield != nullptr)
@@ -55,139 +63,40 @@ void Player::render(Camera& camera) {
     this->helmet->render(int(posX+4-camera.getCameraPosition().x), int((posY-this->body->getHeight()/2)-camera.getCameraPosition().y), this->frameHead);
 }
 
-void Player::update(double dt) {
-    Point aux(posX, posY);
-    this->center = aux;
-    this->body->update(dt);
+void NPC::update(double dt) {
+		if(this->body !=nullptr)
+    	this->body->update(dt);
     if (this->weapon != nullptr)
         this->weapon->update(dt);
     if (this->shield != nullptr)
         this->shield->update(dt);
 }
 
-void Player::setFrameHead() {
+void NPC::updatePlayerInfo(const GameObjectInfo &info) {
+    this->posX = info.getX();
+    this->posY = info.getY();
+    this->direction = info.getDirection();
+    setFrameHead();
+}
+
+void NPC::setFrameHead() {
     switch (this->direction) {
       case Direction::down:
         this->frameHead = 0;
         break;
       case Direction::right:
         this->frameHead = 1;
-        break;
+        break; 
       case Direction::left:
         this->frameHead = 2;
         break;
       case Direction::up:
         this->frameHead = 3;
-        break;
+        break; 
     }
 }
 
-
-void Player::updatePlayerInfo(PlayerInfo info) {
-  this->posX = info.getX();
-  this->posY = info.getY();
-  this->direction = info.getDirection();
-  setFrameHead();
-}
-
-InputInfo Player::handleEvent(SDL_Event& event, ServerProxy& serverProxy) {
-	bool needUpdate = true;
-  InputInfo input;
-	if(event.type == SDL_KEYDOWN) {
-    switch(event.key.keysym.sym) {
-      case SDLK_w:
-        input = this->state->moveUp(*this);
-				break;
-    	case SDLK_s:
-				input = this->state->moveDown(*this);
-				break;
-      case SDLK_a:
-				input = this->state->moveLeft(*this);
-				break;
-      case SDLK_d:
-				input = this->state->moveRight(*this);
-				break;
-      case SDLK_r:
-				break;
-			case SDLK_g:
-				break;
-			case SDLK_b:
-				break;
-			case SDLK_v:
-				break;
-			case SDLK_f:
-				break;
-      case SDLK_1:
-        input = this->state->selectItem(*this,1);
-        break;
-      case SDLK_2:
-        input = this->state->selectItem(*this,2);
-        break;
-      case SDLK_3:
-        input = this->state->selectItem(*this,3);
-        break;
-      case SDLK_4:
-        input = this->state->selectItem(*this,4);
-        break;
-      case SDLK_5:
-        input = this->state->selectItem(*this,5);
-        break;
-      case SDLK_6:
-        input = this->state->selectItem(*this,6);
-        break;
-      case SDLK_7:
-        input = this->state->selectItem(*this,7);
-        break;
-      case SDLK_8:
-        input = this->state->selectItem(*this,8);
-        break;
-      case SDLK_9:
-        input = this->state->selectItem(*this,9);
-        break;
-			default:
-				needUpdate = false;
-		}
-		if (needUpdate)
-			update(0);
-	} else if (event.type == SDL_KEYUP) {
-		switch(event.key.keysym.sym) {
-			case SDLK_w:
-				input = this->state->stopMove(*this);
-				break;
-      case SDLK_s:
-			  input = this->state->stopMove(*this);
-				break;
-      case SDLK_a:
-				input = this->state->stopMove(*this);
-				break;
-      case SDLK_d:
-				input = this->state->stopMove(*this);
-				break;
-		}
-	}
-  return input;
-}
-
-void Player::setState(CharacterStateID newState) {
-	if(this->state == nullptr || this->state->getState() != newState) {
-		switch (newState) {
-			case CharacterStateID::Still:
-				this->state = std::shared_ptr<CharacterState>(new StillState());
-				break;
-			case CharacterStateID::StartMoving:
-				this->state = std::shared_ptr<CharacterState>(new StartMovingState());
-				break;
-			case CharacterStateID::Move:
-				this->state = std::shared_ptr<CharacterState>(new MoveState());
-				break;
-			case CharacterStateID::Dead:
-				this->state = std::shared_ptr<CharacterState>(new DeadState());
-				break;
-		}
-	}
-}
-
-void Player::setHead(HeadID head) {
+void NPC::setHead(HeadID head) {
 	if (this->head == nullptr || head != this->head->getId()) {
 	  switch (head) {
       case HeadID::Nothing:
@@ -205,11 +114,17 @@ void Player::setHead(HeadID head) {
 			case HeadID::Gnome:
         this->head = std::shared_ptr<Head>(new GnomeHead(this->manager));
         break;
+			case HeadID::Priest:
+				this->head = std::shared_ptr<Head>(new PriestHead(this->manager));
+				break;
+			case HeadID::Zombie:
+				this->head = std::shared_ptr<Head>(new ZombieHead(this->manager));
+				break;
     }
   }
 }
 
-void Player::setArmor(BodyID newArmor) {
+void NPC::setArmor(BodyID newArmor) {
   if (this->body == nullptr || newArmor != this->body->getId()) {
 	  switch (newArmor) {
     	case BodyID::BlueCommon:
@@ -232,11 +147,36 @@ void Player::setArmor(BodyID newArmor) {
         break;
       case BodyID::Ghost:
         this->body = std::shared_ptr<Body>(new GhostBody(this->manager));
+				break;
+			case BodyID::Goblin:
+				this->body = std::shared_ptr<Body>(new GoblinBody(this->manager));
+				break;
+			case BodyID::Skeleton:
+				this->body = std::shared_ptr<Body>(new SkeletonBody(this->manager));
+				break;
+			case BodyID::Spider:
+				this->body = std::shared_ptr<Body>(new SpiderBody(this->manager));
+				break;
+			case BodyID::Zombie:
+				this->body = std::shared_ptr<Body>(new ZombieBody(this->manager));
+				break;
+			case BodyID::Priest:
+				this->body = std::shared_ptr<Body>(new PriestBody(this->manager));
+				break;
+			case BodyID::Merchant:
+				this->body = std::shared_ptr<Body>(new MerchantBody(this->manager));
+				break;
+			case BodyID::Banker:
+				this->body = std::shared_ptr<Body>(new BankerBody(this->manager));
+				break;
+			case BodyID::Nothing:
+				this->body = nullptr;
+				break;
     }
   }
 }
 
-void Player::setHelmet(HelmetID newHelmet) {
+void NPC::setHelmet(HelmetID newHelmet) {
   if (this->helmet == nullptr || newHelmet != this->helmet->getId()) {
 	  switch (newHelmet) {
     	case HelmetID::Nothing:
@@ -255,7 +195,7 @@ void Player::setHelmet(HelmetID newHelmet) {
   }
 }
 
-void Player::setShield(ShieldID newShield) {
+void NPC::setShield(ShieldID newShield) {
 	if (this->shield == nullptr || newShield != this->shield->getId()){
 		switch (newShield) {
     	case ShieldID::Nothing:
@@ -271,7 +211,7 @@ void Player::setShield(ShieldID newShield) {
 	}
 }
 
-void Player::setWeapon(WeaponID newWeapon){
+void NPC::setWeapon(WeaponID newWeapon){
   if (this->weapon == nullptr || newWeapon != this->weapon->getId()){
 		switch (newWeapon) {
     	case WeaponID::Nothing:
@@ -308,8 +248,4 @@ void Player::setWeapon(WeaponID newWeapon){
 	}
 }
 
-Point* Player::getCenter() {
-	return &center;
-}
-
-Player::~Player(){}
+NPC::~NPC()= default;

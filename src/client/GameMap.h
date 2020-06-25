@@ -22,7 +22,7 @@ public:
 
     virtual ~GameMap();
 
-    void draw(Camera& camera);
+    void drawHighLayers(Camera& camera);
     void drawGround(Camera& camera);
 
     int getMapWidth();

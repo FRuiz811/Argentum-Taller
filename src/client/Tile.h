@@ -4,7 +4,7 @@
 
 #include "Texture.h"
 #include "Camera.h"
-#include "Point.h"
+#include "../common/Point.h"
 
 class Tile {
 private:

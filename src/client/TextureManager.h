@@ -14,7 +14,9 @@ private:
 	SDL_Renderer& renderer;
 
 public:
-	TextureManager(SDL_Renderer& renderer);
+	explicit TextureManager(SDL_Renderer& renderer);
+
+	void loadTextures();
 
 	void createTexture(TextureID id, const std::string& path, SDL_Color color);
 	void createTexture(TextureID id, const std::string& path) ;

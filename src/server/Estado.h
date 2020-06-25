@@ -25,7 +25,7 @@ private:
 	void obtenerEstadosCriaturas();
 
 public: 
-	Estado(); //Para NPC
+	Estado(); //Para NPCServer
 	Estado(int numRaza, int numClase); //Para personas
 
 	float getAgilidad();

@@ -12,7 +12,7 @@ public:
     Item(const Texture& texture, const int width, const int height) : texture(texture),
         width(width), height(height) {}
 
-    virtual void render(int posX, int posY,int direction) = 0;
+    virtual void render(int posX, int posY, int direction) = 0;
     ~Item()= default;
 };
 

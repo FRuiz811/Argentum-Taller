@@ -2,10 +2,12 @@
 #define CHARACTER_H
 
 #include "Camera.h"
+#include "../common/Identificators.h"
 
 class Character {
 protected:
-	int posX, posY, directionBody{0};
+	int posX, posY;
+    Direction direction{Direction::down};
 
 public:
     Character(int posX, int posY) : posX(posX), posY(posY) {}

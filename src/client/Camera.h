@@ -3,7 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include "Window.h"
-#include "Point.h"
+#include "../common/Point.h"
 
 class Camera {
 private:
@@ -33,6 +33,8 @@ public:
     void update(float dt);
     
     void moveTo(Point destiny);
+
+    Point calculateGlobalPosition(Point coordinates);
 
     ~Camera();
 };

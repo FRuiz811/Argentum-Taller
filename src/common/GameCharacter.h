@@ -2,32 +2,30 @@
 #define PERSONAJE_H
 
 #include "GameObject.h"
+#include "../client/PlayerInfo.h"
+#include "StaticObject.h"
+#include <vector>
+#include <unordered_map>
+#include <memory>
 
 class GameCharacter : public GameObject{
 private:
     int race{};
     int gameClass{};
-	//Inventario inventario;
+    uint goldAmount;
+    uint life;
+    uint mana;
 
-//	Arma arma;
-//	Ataque ataque;
-//	void corroborarAtaque(GameObject &atacado);
-	
-public: 
-	//Arma armadura;
-	//Arma escudo;
-	//Arma casco;
+public:
+	GameCharacter(uint id, int aRace, int aClass, Point& point);
 
-	//ToDo: separar armadura-escudo-casco
-    GameCharacter();
-	GameCharacter(int raza, int clase, Position posicion);
-	GameCharacter(GameCharacter&& other) noexcept;
-	GameCharacter& operator=(GameCharacter&& other) noexcept;
-//	void equiparArma(Arma arma);
-//
-//	void atacar(GameObject &atacado);
+	PlayerInfo getPlayerInfo();
 
-	~GameCharacter();
+	void move(Direction aDirection,const std::unordered_map<uint, std::shared_ptr<GameObject>>&, const std::vector<StaticObject>&);
+
+	void update() override;
+
+    ~GameCharacter();
 };
 
 #endif

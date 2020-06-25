@@ -1,6 +1,9 @@
 #ifndef POSICION_H
 #define POSICION_H
 
+
+#include "Point.h"
+
 class Position {
 
 private: 
@@ -10,12 +13,15 @@ private:
 	int height{};
 public:
     Position();
+    Position(Point&, int, int);
 	Position(int x, int y, int width, int height);
 
 //	Position(Position&& other)  noexcept ;
 //    Position& operator=(Position&& other) noexcept;
 
 	~Position();
+
+	Point getPoint() const;
 
     int getBottom() const;
 
@@ -28,6 +34,14 @@ public:
     void setX(int x);
 
     void setY(int y);
+
+    void setWidth(int width);
+
+    void setHeight(int height);
+
+    int getWidth() const;
+
+    int getHeight() const;
 };
 
 #endif
