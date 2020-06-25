@@ -5,7 +5,7 @@
 #define HEIGHT_BODY 35
 
 SpiderBody::SpiderBody(const TextureManager& manager):
-    Body(manager.getTexture(TextureID::Spider),WIDTH_BODY,HEIGHT_BODY) {
+    Body(manager.getTexture(TextureID::Spider),WIDTH_BODY,HEIGHT_BODY,BodyID::Spider) {
         this->totalFrames = 4;
     }
 

@@ -136,7 +136,7 @@ public:
 	float sombreroDefensaMin;
 	float sombreroDefensaMax;
 
-	//Criaturas o NPC
+	//Criaturas o NPCServer
 	float probabilidadNada;
 	float probabilidadOro;
 	float probabilidadVidaOMana;
@@ -164,10 +164,10 @@ public:
 
 	
 	StatsJuego();
-	/*Constructor del NPC.*/
+	/*Constructor del NPCServer.*/
 
 	~StatsJuego();
-	/*Destructor del NPC.*/
+	/*Destructor del NPCServer.*/
 };
 
 #endif

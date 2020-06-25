@@ -5,7 +5,6 @@
 #include <zconf.h>
 #include <string>
 #include "Position.h"
-#include "../client/Point.h"
 
 class GameObjectInfo {
 protected:

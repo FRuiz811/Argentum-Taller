@@ -1,11 +1,13 @@
 #ifndef CHARACTERSTATESID_H
 #define CHARACTERSTATESID_H
 
+#include "Point.h"
+
 enum class CharacterStateID {
-    Still, //Aplica a NPC
-    StartMoving, //Aplica a NPC
-    Move,  //Aplica a NPC
-    Attack, //Aplica a NPC
+    Still, //Aplica a NPCServer
+    StartMoving, //Aplica a NPCServer
+    Move,  //Aplica a NPCServer
+    Attack, //Aplica a NPCServer
     Dying, 
     Dead,
     Interact,
@@ -35,6 +37,12 @@ enum class InputID {
     dropItem, //f
 };
 
+struct InputInfo {
+    InputID input;
+    Point position;
+};
+
+
 enum class HelmetID {
     Nothing,
     Hood,
@@ -50,14 +58,24 @@ enum class BodyID {
     BlueTunic,
     LeatherArmor,
     PlateArmor,
+    Ghost,
+    Banker,
+    Goblin,
+    Merchant,
+    Priest,
+    Skeleton,
+    Spider,
+    Zombie,
 };
 
 enum class HeadID {
+    Nothing,
     Elf,
     Human,
     Gnome,
     Dwarf,
-    Other,
+    Priest,
+    Zombie,
 };
 
 enum class ShieldID {
@@ -77,6 +95,17 @@ enum class WeaponID {
     AshStick,
     GnarledStick,
     Crosier,
+};
+
+enum class ItemsInventoryID {
+
+};
+
+enum class Direction{
+    down,
+    up,
+    left,
+    right,
 };
 
 #endif

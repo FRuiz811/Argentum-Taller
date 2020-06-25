@@ -4,7 +4,7 @@
 #include "MapTransformer.h"
 #include "Collider.h"
 #include "../client/Exception.h"
-#include "NPC.h"
+#include "NPCServer.h"
 
 void ServerProxy::fillCollisionsObjects(std::vector<ObjectLayer> objectLayers) {
     for (auto&& anObjectLayer : objectLayers) {
@@ -16,17 +16,17 @@ void ServerProxy::fillCollisionsObjects(std::vector<ObjectLayer> objectLayers) {
             for (StaticObject& aCollisionObject : anObjectLayer.getObjects()) {
                 collisionObjects.push_back(aCollisionObject);
             }
-        } else if (anObjectLayer.getName() == "NPC") {
+        } else if (anObjectLayer.getName() == "NPCServer") {
             for (StaticObject& aNPCObject : anObjectLayer.getObjects()) {
                 uint id = getNextId();
-                std::shared_ptr<GameObject> aNPC(new NPC(id, aNPCObject.getPosition().getPoint(), aNPCObject.getName()));
+                std::shared_ptr<GameObject> aNPC(new NPCServer(id, aNPCObject.getPosition().getPoint(), aNPCObject.getName()));
                 gameObjects.insert(std::pair<uint, std::shared_ptr<GameObject>>(getNextId(), aNPC));
             }
         }
     }
 }
 
-ServerProxy::ServerProxy() : initialPoint(1125, 550) {
+ServerProxy::ServerProxy() : queueInputs(), initialPoint(1125, 550) {
     current_id = 0;
     rapidjson::Document jsonMap = JsonReader::read("json/bigMapNPC.json");
     tiledMap = MapTransformer::transform(jsonMap);
@@ -51,45 +51,35 @@ unsigned int ServerProxy::getNextId() {
     return current_id++;
 }
 
-bool ServerProxy::characterMove(uint id, int direction) {
-    bool canMove = true;
-    auto& aCharacter = (gameObjects.at(id));
-    Position newPosition = aCharacter->getPosition();
-    switch(direction) {
-        case 0:
-            newPosition.setY(newPosition.getTop() - 15);
-            break;
-        case 1:
-            newPosition.setY(newPosition.getTop() + 15);
-            break;
-        case 2:
-            newPosition.setX(newPosition.getLeft() - 15);
-            break;
-        case 3:
-            newPosition.setX(newPosition.getLeft() + 15);
-            break;
-        default:
-            throw Exception("Invalid Direction");
-    }
-    for (auto& collisionObject : collisionObjects) {
-        if (Collider::checkCollision(newPosition, collisionObject.getPosition())) {
-            canMove = false;
-            break;
+PlayerInfo ServerProxy::updateModel() {
+    auto& aCharacter = reinterpret_cast<GameCharacter &>(gameObjects.at(current_id));
+    while(!this->queueInputs.empty()) {
+        InputInfo inputInfo = this->queueInputs.pop();
+        switch(inputInfo.input) {
+            case InputID::nothing:
+                break;
+            case InputID::up:
+                aCharacter.move(Direction::up, gameObjects, collisionObjects);
+                break;
+            case InputID::down:
+                aCharacter.move(Direction::down, gameObjects, collisionObjects);
+                break;
+            case InputID::right:
+                aCharacter.move(Direction::right, gameObjects, collisionObjects);
+                break;
+            case InputID::left:
+                aCharacter.move(Direction::left, gameObjects, collisionObjects);
+                break;
+            case InputID::stopMove:
+                break;
         }
     }
-    for (auto& gameObject : gameObjects) {
-        if (gameObject.first == id) {
-            continue;
-        }
-        if (Collider::checkCollision(newPosition, gameObject.second->getPosition())) {
-            canMove = false;
-            break;
-        }
-    }
-    if (canMove) {
-        aCharacter->setPosition(newPosition);
-    }
-    return canMove;
+    return aCharacter.getPlayerInfo();
+}
+
+void ServerProxy::sendInput(InputInfo input) {
+    if (input.input != InputID::nothing)
+        this->queueInputs.push(input);
 }
 
 

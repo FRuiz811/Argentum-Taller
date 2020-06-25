@@ -5,7 +5,7 @@
 #define HEIGHT_BODY 30
 
 GoblinBody::GoblinBody(const TextureManager& manager) :
- Body(manager.getTexture(TextureID::Goblin),WIDTH_BODY,HEIGHT_BODY) {
+ Body(manager.getTexture(TextureID::Goblin),WIDTH_BODY,HEIGHT_BODY, BodyID::Goblin) {
      this->totalFrames = 8;
  }
 

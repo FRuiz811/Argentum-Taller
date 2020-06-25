@@ -4,7 +4,7 @@
 #define HEIGHT_BODY 45
 
 MerchantBody::MerchantBody(const TextureManager& manager) :
- Body(manager.getTexture(TextureID::Merchant),WIDTH_BODY,HEIGHT_BODY) {}
+ Body(manager.getTexture(TextureID::Merchant),WIDTH_BODY,HEIGHT_BODY, BodyID::Merchant) {}
 
 void MerchantBody::render(int posX, int posY, int direction) {
     setDirection(direction);

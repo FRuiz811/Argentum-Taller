@@ -12,8 +12,18 @@
 #include "Items/BlueCommonBody.h"
 #include "Items/RedCommonBody.h"
 #include "Items/GreenCommonBody.h"
+#include "Items/GhostBody.h"
 #include "Items/PlateArmor.h"
 #include "Items/BlueTunic.h"
+#include "Items/Ax.h"
+#include "Items/AshStick.h"
+#include "Items/Crosier.h"
+#include "Items/ElficFlaute.h"
+#include "Items/SimpleArc.h"
+#include "Items/CompoundArc.h"
+#include "Items/LongSword.h"
+#include "Items/Hammer.h"
+#include "Items/GnarledStick.h"
 #include <SDL2/SDL.h>
 #include "characterStates/StillState.h"
 #include "characterStates/MoveState.h"
@@ -23,98 +33,139 @@
 Player::Player(const TextureManager& manager, const PlayerInfo& playerInfo) :
 	Character(playerInfo.getX(), playerInfo.getY()), center(playerInfo.getX(), playerInfo.getY()),
     manager(manager), playerInfo(playerInfo) {
+  this->direction = playerInfo.getDirection();
 	this->frameHead = 0;
-	setArmor((BodyID)3);
-	setHead((HeadID)3);
-	setHelmet((HelmetID)2);
-	setShield((ShieldID)2);
+  this->state = std::shared_ptr<CharacterState>(new StillState());
+	setArmor(playerInfo.getBodyID());
+	setHead(playerInfo.getHeadID());
+	setHelmet(playerInfo.getHelmetID());
+	setShield(playerInfo.getShieldID());
+  setWeapon(playerInfo.getWeaponID());
 }
 
 void Player::render(Camera& camera) {
-	if(this->isAlive){
- 	 	this->body->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y),this->directionBody);
-	  if (this->shield != nullptr)
-		  this->shield->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y),this->directionBody);
-   // if (this->weapon != nullptr)
-   //     this->weapon->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y),this->directionBody);
+ 	this->body->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y),int(this->direction));
+  if (this->weapon != nullptr)
+    this->weapon->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y),int(this->direction));
+  if (this->shield != nullptr)
+	  this->shield->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y),int(this->direction));
+  if (this->head != nullptr)
     this->head->render(int(posX+4-camera.getCameraPosition().x), int((posY-this->body->getHeight()/2)-camera.getCameraPosition().y), this->frameHead);
-    if (this->helmet != nullptr)
-        this->helmet->render(int(posX+4-camera.getCameraPosition().x), int((posY-this->body->getHeight()/2)-camera.getCameraPosition().y), this->frameHead);
-	} else {
-
-	}
+  if (this->helmet != nullptr)
+    this->helmet->render(int(posX+4-camera.getCameraPosition().x), int((posY-this->body->getHeight()/2)-camera.getCameraPosition().y), this->frameHead);
 }
 
 void Player::update(double dt) {
     Point aux(posX, posY);
     this->center = aux;
     this->body->update(dt);
+    if (this->weapon != nullptr)
+        this->weapon->update(dt);
     if (this->shield != nullptr)
         this->shield->update(dt);
-    //if (this->weapon != nullptr)
-    //    this->weapon->update(dt);
 }
 
-void Player::moveUp() {
-    this->posY -= 15;
-    frameHead = 3;
-		directionBody = 1;
-
-}
-void Player::moveDown() {
-    this->posY += 15;
-    frameHead = 0;
-		directionBody = 0;
-
-}
-
-void Player::moveLeft() {
-    this->posX -= 15;
-    frameHead = 2;
-		directionBody = 2;
+void Player::setFrameHead() {
+    switch (this->direction) {
+      case Direction::down:
+        this->frameHead = 0;
+        break;
+      case Direction::right:
+        this->frameHead = 1;
+        break;
+      case Direction::left:
+        this->frameHead = 2;
+        break;
+      case Direction::up:
+        this->frameHead = 3;
+        break;
+    }
 }
 
-void Player::moveRight() {
-    this->posX += 15;
-    frameHead = 1;
-		directionBody = 3;
+
+void Player::updatePlayerInfo(PlayerInfo info) {
+  this->posX = info.getX();
+  this->posY = info.getY();
+  this->direction = info.getDirection();
+  setFrameHead();
 }
 
-void Player::handleEvent(SDL_Event& event, ServerProxy& serverProxy) {
+InputInfo Player::handleEvent(SDL_Event& event, ServerProxy& serverProxy) {
 	bool needUpdate = true;
+  InputInfo input;
 	if(event.type == SDL_KEYDOWN) {
-    //Adjust the velocity
     switch(event.key.keysym.sym) {
       case SDLK_w:
-        //this->state->moveUp(*this);
-        if (serverProxy.characterMove(playerInfo.getId(), 0)) {
-          moveUp();
-        }
+        input = this->state->moveUp(*this);
 				break;
     	case SDLK_s:
-				//this->state->moveDown(*this);
-        if (serverProxy.characterMove(playerInfo.getId(), 1)) {
-          moveDown();
-        }
+				input = this->state->moveDown(*this);
 				break;
       case SDLK_a:
-				//this->state->moveLeft(*this);
-        if (serverProxy.characterMove(playerInfo.getId(), 2)) {
-  		    moveLeft();
-        }
+				input = this->state->moveLeft(*this);
 				break;
       case SDLK_d:
-				//this->state->moveRight(*this);
-        if (serverProxy.characterMove(playerInfo.getId(), 3)) {
-          moveRight();
-        }
+				input = this->state->moveRight(*this);
 				break;
+      case SDLK_r:
+				break;
+			case SDLK_g:
+				break;
+			case SDLK_b:
+				break;
+			case SDLK_v:
+				break;
+			case SDLK_f:
+				break;
+      case SDLK_1:
+        input = this->state->selectItem(*this,1);
+        break;
+      case SDLK_2:
+        input = this->state->selectItem(*this,2);
+        break;
+      case SDLK_3:
+        input = this->state->selectItem(*this,3);
+        break;
+      case SDLK_4:
+        input = this->state->selectItem(*this,4);
+        break;
+      case SDLK_5:
+        input = this->state->selectItem(*this,5);
+        break;
+      case SDLK_6:
+        input = this->state->selectItem(*this,6);
+        break;
+      case SDLK_7:
+        input = this->state->selectItem(*this,7);
+        break;
+      case SDLK_8:
+        input = this->state->selectItem(*this,8);
+        break;
+      case SDLK_9:
+        input = this->state->selectItem(*this,9);
+        break;
 			default:
 				needUpdate = false;
 		}
 		if (needUpdate)
 			update(0);
+	} else if (event.type == SDL_KEYUP) {
+		switch(event.key.keysym.sym) {
+			case SDLK_w:
+				input = this->state->stopMove(*this);
+				break;
+      case SDLK_s:
+			  input = this->state->stopMove(*this);
+				break;
+      case SDLK_a:
+				input = this->state->stopMove(*this);
+				break;
+      case SDLK_d:
+				input = this->state->stopMove(*this);
+				break;
+		}
 	}
+  return input;
 }
 
 void Player::setState(CharacterStateID newState) {
@@ -131,7 +182,6 @@ void Player::setState(CharacterStateID newState) {
 				break;
 			case CharacterStateID::Dead:
 				this->state = std::shared_ptr<CharacterState>(new DeadState());
-				this->isAlive = false;
 				break;
 		}
 	}
@@ -140,6 +190,9 @@ void Player::setState(CharacterStateID newState) {
 void Player::setHead(HeadID head) {
 	if (this->head == nullptr || head != this->head->getId()) {
 	  switch (head) {
+      case HeadID::Nothing:
+        this->head = nullptr;
+        break;
     	case HeadID::Elf:
         this->head = std::shared_ptr<Head>(new ElfHead(this->manager));
         break;
@@ -177,6 +230,8 @@ void Player::setArmor(BodyID newArmor) {
 			case BodyID::PlateArmor:
         this->body = std::shared_ptr<Body>(new PlateArmor(this->manager));
         break;
+      case BodyID::Ghost:
+        this->body = std::shared_ptr<Body>(new GhostBody(this->manager));
     }
   }
 }
@@ -214,7 +269,43 @@ void Player::setShield(ShieldID newShield) {
         break;
 		}
 	}
+}
 
+void Player::setWeapon(WeaponID newWeapon){
+  if (this->weapon == nullptr || newWeapon != this->weapon->getId()){
+		switch (newWeapon) {
+    	case WeaponID::Nothing:
+        this->weapon = nullptr;
+        break;
+      case WeaponID::Ax:
+        this->weapon = std::shared_ptr<Weapon>(new Ax(this->manager));
+        break;
+			case WeaponID::AshStick:
+        this->weapon = std::shared_ptr<Weapon>(new AshStick(this->manager));
+        break;
+      case WeaponID::GnarledStick:
+        this->weapon = std::shared_ptr<Weapon>(new GnarledStick(this->manager));
+        break;
+      case WeaponID::SimpleArc:
+        this->weapon = std::shared_ptr<Weapon>(new SimpleArc(this->manager));
+        break;
+			case WeaponID::CompoundArc:
+        this->weapon = std::shared_ptr<Weapon>(new CompoundArc(this->manager));
+        break;
+        case WeaponID::LongSword:
+        this->weapon = std::shared_ptr<Weapon>(new LongSword(this->manager));
+        break;
+			case WeaponID::Hammer:
+        this->weapon = std::shared_ptr<Weapon>(new Hammer(this->manager));
+        break;
+      case WeaponID::Crosier:
+        this->weapon = std::shared_ptr<Weapon>(new Crosier(this->manager));
+        break;
+			case WeaponID::ElficFlaute:
+        this->weapon = std::shared_ptr<Weapon>(new ElficFlaute(this->manager));
+        break;
+		}
+	}
 }
 
 Point* Player::getCenter() {

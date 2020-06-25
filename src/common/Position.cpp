@@ -46,6 +46,14 @@ Point Position::getPoint() const {
 Position::Position(Point &aPoint, int aWidth, int aHeight):
 x(aPoint.x), y(aPoint.y), width(aWidth), height(aHeight) {}
 
+int Position::getWidth() const {
+    return width;
+}
+
+int Position::getHeight() const {
+    return height;
+}
+
 
 
 

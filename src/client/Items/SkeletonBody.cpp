@@ -5,7 +5,7 @@
 #define HEIGHT_BODY 52
 
 SkeletonBody::SkeletonBody(const TextureManager& manager) :
- Body(manager.getTexture(TextureID::Skeleton),WIDTH_BODY,HEIGHT_BODY) {}
+ Body(manager.getTexture(TextureID::Skeleton),WIDTH_BODY,HEIGHT_BODY,BodyID::Skeleton) {}
 
 void SkeletonBody::render(int posX, int posY, int direction) {
     setDirection(direction);

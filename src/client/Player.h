@@ -1,17 +1,16 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "Texture.h"
 #include "Character.h"
 #include "TextureManager.h"
-#include "Point.h"
+#include "../common/Point.h"
 #include "Items/Head.h"
 #include "Items/Body.h"
 #include "Items/Helmet.h"
 #include "Items/Shield.h"
+#include "Items/Weapon.h"
 #include "characterStates/CharacterState.h"
-#include "characterStates/CharacterStatesID.h"
-#include "Camera.h"
+#include "../common/Identificators.h"
 #include "../common/ServerProxy.h"
 #include "PlayerInfo.h"
 #include <memory>
@@ -21,6 +20,7 @@ union SDL_Event;
 
 class Player : public Character {
 private:
+	//int id{0};
 	Point center;
 	const TextureManager& manager;
 	PlayerInfo playerInfo;	
@@ -29,23 +29,16 @@ private:
 	std::shared_ptr<Head> head = nullptr;
 	std::shared_ptr<Helmet> helmet = nullptr;
 	std::shared_ptr<Shield> shield = nullptr;
-//	std::shared_ptr<Weapon> weapon = nullptr;
+	std::shared_ptr<Weapon> weapon = nullptr;
 	int frameHead;
-	bool isAlive{true};
-
-    void moveUp();
-
-    void moveDown();
-
-    void moveLeft();
-
-    void moveRight();
+	int health,gold,mana;
 
 	void setArmor(BodyID newArmor);
 	void setShield(ShieldID newShield);
 	void setHelmet(HelmetID newHelmet);
 	void setHead(HeadID head);
-
+	void setWeapon(WeaponID newWeapon);
+	void setFrameHead();
 
 public:
 	Player(const TextureManager& manager, const PlayerInfo& playerInfo);
@@ -53,12 +46,12 @@ public:
 	virtual void render(Camera& camera);
 	virtual void update(double dt);
 
-	//void setWeapon(Weapon newWeapon);
-
 	void setState(CharacterStateID newState);
 
+	void updatePlayerInfo(PlayerInfo info);
+
 	Point* getCenter();
-	void handleEvent(SDL_Event& event, ServerProxy&);
+	InputInfo handleEvent(SDL_Event& event, ServerProxy&);
 
 	~Player();
 };

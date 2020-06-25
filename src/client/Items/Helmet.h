@@ -3,7 +3,7 @@
 
 #include "Item.h"
 #include "../Texture.h"
-#include "../characterStates/CharacterStatesID.h"
+#include "../../common/Identificators.h"
 
 class Helmet: public Item {
 protected:

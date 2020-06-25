@@ -1,11 +1,13 @@
 #include "GameCharacter.h"
+#include "../client/Exception.h"
+#include "Collider.h"
 
 void GameCharacter::update() {
 
 }
 
 PlayerInfo GameCharacter::getPlayerInfo() {
-    return PlayerInfo(id, position.getPoint(), 100, 100, 100, "ht:01|h:01|b:01|s01|w01");
+    return PlayerInfo(id, position.getPoint(), 100, 100, 100, "ht:01|h:01|b:01|s01|w01", direction);
 }
 
 GameCharacter::GameCharacter(uint id, int aRace, int aClass, Point &point):  GameObject(id), race(aRace), gameClass(aClass) {
@@ -13,6 +15,49 @@ GameCharacter::GameCharacter(uint id, int aRace, int aClass, Point &point):  Gam
     life = 100;
     goldAmount = 100;
     mana = 100;
+    direction = Direction::down;
+}
+
+void GameCharacter::move(Direction aDirection, const std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects,
+                         const std::vector<StaticObject> &collisionObjects) {
+    bool canMove;
+    Point newPoint = position.getPoint();
+    switch(direction) {
+        case Direction::up:
+            newPoint.y -= 15;
+            break;
+        case Direction::down:
+            newPoint.y += 15;
+            break;
+        case Direction::left:
+            newPoint.x -= 15;
+            break;
+        case Direction::right:
+            newPoint.x += 15;
+            break;
+        default:
+            throw Exception("Invalid Direction");
+    }
+    Position newPosition(newPoint, position.getWidth(), position.getHeight());
+    for (auto& collisionObject : collisionObjects) {
+        if (Collider::checkCollision(newPosition, collisionObject.getPosition())) {
+            canMove = false;
+            break;
+        }
+    }
+    for (auto& gameObject : gameObjects) {
+        if (gameObject.first == id) {
+            continue;
+        }
+        if (Collider::checkCollision(newPosition, gameObject.second->getPosition())) {
+            canMove = false;
+            break;
+        }
+    }
+    if (canMove) {
+        position.setX(newPoint.x);
+        position.setY(newPoint.y);
+    }
 }
 
 //void GameCharacter::corroborarAtaque(GameObject &atacado){

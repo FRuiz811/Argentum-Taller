@@ -1,7 +1,8 @@
 #ifndef POSICION_H
 #define POSICION_H
 
-#include "../client/Point.h"
+
+#include "Point.h"
 
 class Position {
 
@@ -37,6 +38,10 @@ public:
     void setWidth(int width);
 
     void setHeight(int height);
+
+    int getWidth() const;
+
+    int getHeight() const;
 };
 
 #endif
