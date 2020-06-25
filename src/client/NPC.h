@@ -36,12 +36,12 @@ private:
 	void setFrameHead();
 
 public:
-    NPC(const TextureManager& manager, PlayerInfo playerinfo);
+    NPC(const TextureManager& manager, const GameObjectInfo& gameObjectInfo);
 
     virtual void render(Camera& camera);
 	virtual void update(double dt);
 
-    void updatePlayerInfo(PlayerInfo info);
+    void updatePlayerInfo(const GameObjectInfo& info);
 
     ~NPC();
 

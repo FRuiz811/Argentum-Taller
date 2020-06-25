@@ -4,12 +4,14 @@
 #include <iostream>
 #include "Position.h"
 #include "GameObjectInfo.h"
+#include "Identificators.h"
 
 class GameObject{
 protected:
     Position position;
     uint id{};
     std::string textureHashId;
+    Direction direction;
 
 public:
 	GameObject();
@@ -19,9 +21,9 @@ public:
 	GameObject& operator=(GameObject&& other)  noexcept;
 
     Position &getPosition();
-
     void setPosition(const Position &position);
 
+    GameObjectInfo getGameObjectInfo();
     virtual void update() = 0;
 
     ~GameObject();

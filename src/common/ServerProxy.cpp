@@ -83,13 +83,13 @@ void ServerProxy::sendInput(InputInfo input) {
 }
 
 
-//std::vector<GameObjectInfo> ServerProxy::getUpdatedGameObjects() {
-//    std::vector<GameObjectInfo> gameObjectsInfo;
-//    for (auto& gameObjectPair : gameObjects) {
-//        gameObjectsInfo.push_back(gameObjectPair.second->getGameObjectInfo());
-//    }
-//    return gameObjectsInfo;
-//}
+std::vector<GameObjectInfo> ServerProxy::getUpdatedGameObjects() {
+    std::vector<GameObjectInfo> gameObjectsInfo;
+    for (auto& gameObjectPair : gameObjects) {
+        gameObjectsInfo.push_back(gameObjectPair.second->getGameObjectInfo());
+    }
+    return gameObjectsInfo;
+}
 
 void ServerProxy::update() {
     for (auto& gameObjectPair : gameObjects) {

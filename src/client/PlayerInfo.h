@@ -12,15 +12,12 @@ private:
     uint goldAmount{};
     uint life{};
     uint mana{};
-    Direction direction;
 
 public:
     PlayerInfo();
     PlayerInfo(uint id, Point point, uint goldAmount, uint life, uint mana, std::string textureHashId, Direction direction);
 
     ~PlayerInfo() override;
-
-    void changeDirection(Direction newDirection);
 
     uint getGoldAmount() const;
 
@@ -30,11 +27,7 @@ public:
 
     Direction getDirection() const;
 
-    HelmetID getHelmetID() const ;
-    HeadID getHeadID() const ;
-    BodyID getBodyID() const ;
-    WeaponID getWeaponID() const ;
-    ShieldID getShieldID() const ;
+
 };
 
 

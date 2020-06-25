@@ -15,7 +15,6 @@ private:
     uint goldAmount;
     uint life;
     uint mana;
-    Direction direction;
 
 public:
 	GameCharacter(uint id, int aRace, int aClass, Point& point);
