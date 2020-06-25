@@ -7,7 +7,7 @@ void GameCharacter::update() {
 }
 
 PlayerInfo GameCharacter::getPlayerInfo() {
-    return PlayerInfo(id, position.getPoint(), 100, 100, 100, "ht01|h01|b01|s01|w01", direction);
+    return PlayerInfo(id, position.getPoint(), goldAmount, life, mana, textureHashId, direction);
 }
 
 GameCharacter::GameCharacter(uint id, int aRace, int aClass, Point &point):  GameObject(id), race(aRace), gameClass(aClass) {
@@ -16,6 +16,7 @@ GameCharacter::GameCharacter(uint id, int aRace, int aClass, Point &point):  Gam
     goldAmount = 100;
     mana = 100;
     direction = Direction::down;
+    textureHashId = "ht01|h01|b01|s01|w01";
 }
 
 void GameCharacter::move(Direction aDirection, const std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects,
