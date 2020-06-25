@@ -20,9 +20,9 @@
 #include "characterStates/DeadState.h"
 #include "characterStates/StartMovingState.h"
 
-Player::Player(const TextureManager& manager, PlayerInfo playerInfo) :
-	Character(playerInfo.getX(),playerInfo.getY()), center(playerInfo.getX(),playerInfo.getY()),
-    manager(manager), playerInfo(std::move(playerInfo)) {
+Player::Player(const TextureManager& manager, const PlayerInfo& playerInfo) :
+	Character(playerInfo.getX(), playerInfo.getY()), center(playerInfo.getX(), playerInfo.getY()),
+    manager(manager), playerInfo(playerInfo) {
 	this->frameHead = 0;
 	setArmor((BodyID)3);
 	setHead((HeadID)3);

@@ -82,7 +82,7 @@ int main(int argc, char* args[]) {
 		return 0;
 	Spider spider(textureManager, 250,475);
 	Priest priest(textureManager, 302, 1026);
-	Player player(textureManager, std::move(playerInfo));
+	Player player(textureManager, playerInfo);
 	Zombie zombie(textureManager, 478, 145);
 	Chrono chrono;
 	double initLoop, endLoop, sleep;

@@ -8,16 +8,18 @@
 #include "GameCharacter.h"
 #include "../client/PlayerInfo.h"
 #include "TiledMap.h"
+#include <memory>
 
 class ServerProxy {
 private:
     TiledMap tiledMap;
     std::vector<StaticObject> collisionObjects;
     std::vector<StaticObject> cities;
-    std::unordered_map<uint, std::unique_ptr<GameObject>, std::hash<uint>> gameObjects;
+    std::unordered_map<uint, std::shared_ptr<GameObject>, std::hash<uint>> gameObjects;
     int width;
     int heigth;
     uint current_id;
+    Point initialPoint;
 
     void fillCollisionsObjects(std::vector<ObjectLayer>);
     uint getNextId();

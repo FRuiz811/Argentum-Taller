@@ -1,18 +1,7 @@
 #include "GameObject.h"
 
-//GameObject::GameObject() : movimiento(Movimiento(Position(-1,-1))),  estado(Estado(0, 0)){}
-//	Position pos(-1,-1);
-//	Movimiento mov(pos);
-//	movimiento = mov;
-//	Estado est(0,0);
-//	estado = est;
-//}
 GameObject::GameObject(GameObject&& other)  noexcept {
     std::swap(position, other.position);
-}
-
-GameObject::GameObject(Position aPosition): position(std::move(aPosition)){
-
 }
 
 Position &GameObject::getPosition() {
@@ -31,13 +20,7 @@ void GameObject::setPosition(const Position &position) {
     GameObject::position = position;
 }
 
-const GameObjectInfo &GameObject::getGameObjectInfo() const {
-    return gameObjectInfo;
-}
-
-void GameObject::setGameObjectInfo(const GameObjectInfo &gameObjectInfo) {
-    GameObject::gameObjectInfo = gameObjectInfo;
-}
+GameObject::GameObject(uint id): id(id) {}
 
 GameObject::GameObject() = default;
 

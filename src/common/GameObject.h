@@ -8,12 +8,12 @@
 class GameObject{
 protected:
     Position position;
-    GameObjectInfo gameObjectInfo;
-//  Estado
+    uint id{};
+    std::string textureHashId;
 
 public:
 	GameObject();
-	explicit GameObject(Position);
+	explicit GameObject(uint id);
 
 	GameObject(GameObject&&) noexcept;
 	GameObject& operator=(GameObject&& other)  noexcept;
@@ -21,10 +21,6 @@ public:
     Position &getPosition();
 
     void setPosition(const Position &position);
-
-    const GameObjectInfo &getGameObjectInfo() const;
-
-    void setGameObjectInfo(const GameObjectInfo &gameObjectInfo);
 
     virtual void update() = 0;
 

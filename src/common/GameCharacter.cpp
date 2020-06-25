@@ -1,31 +1,19 @@
 #include "GameCharacter.h"
 
-GameCharacter::GameCharacter(int race, int gameClass, Position position) :
-GameObject(position), race(race), gameClass(gameClass) {
-
-}
-
-GameCharacter::GameCharacter(GameCharacter &&other) noexcept : GameObject(std::move(other)) {
-    std::swap(race, other.race);
-    std::swap(gameClass, other.gameClass);
-    std::swap(position, other.position);
-}
-
-GameCharacter &GameCharacter::operator=(GameCharacter &&other) noexcept {
-   if (&other == this) {
-       return *this;
-   }
-    std::swap(race, other.race);
-    std::swap(gameClass, other.gameClass);
-    std::swap(position, other.position);
-    return *this;
-}
-
 void GameCharacter::update() {
 
 }
 
-GameCharacter::GameCharacter() = default;
+PlayerInfo GameCharacter::getPlayerInfo() {
+    return PlayerInfo(id, position.getPoint(), 100, 100, 100, "ht:01|h:01|b:01|s01|w01");
+}
+
+GameCharacter::GameCharacter(uint id, int aRace, int aClass, Point &point):  GameObject(id), race(aRace), gameClass(aClass) {
+    position = Position(point, 25, 60);
+    life = 100;
+    goldAmount = 100;
+    mana = 100;
+}
 
 //void GameCharacter::corroborarAtaque(GameObject &atacado){
 //	if(!arma.esArmaDistancia() &&

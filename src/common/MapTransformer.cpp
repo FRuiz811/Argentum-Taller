@@ -16,7 +16,7 @@ void addLayers(rapidjson::Value::Array& layers,
             tileLayers.push_back(tileSet);
         } else if ("objectgroup" == type) {
             ObjectLayer objectLayer(aLayer);
-            objectsLayers.push_back(std::move(objectLayer));
+            objectsLayers.push_back(objectLayer);
         }
     }
 }
@@ -31,7 +31,7 @@ TiledMap MapTransformer::transform(rapidjson::Document & json) {
     addLayers(layers, tileLayers, objectLayers);
 
     tiledMap.setTileLayers(tileLayers);
-    tiledMap.setObjectLayers(std::move(objectLayers));
+    tiledMap.setObjectLayers(objectLayers);
     tiledMap.setTileheight(json["tileheight"].GetInt());
 
     rapidjson::Value::Array tileSetArray = json["tilesets"].GetArray();

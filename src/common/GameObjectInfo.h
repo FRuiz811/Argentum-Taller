@@ -5,14 +5,29 @@
 #include <zconf.h>
 #include <string>
 #include "Position.h"
+#include "../client/Point.h"
 
 class GameObjectInfo {
-private:
-    Position position;
-    uint16_t goldAmount{};
-    uint16_t life{};
-    uint16_t mana{};
+protected:
+    uint id{};
+    Point point;
     std::string textureHashId;
+public:
+    GameObjectInfo();
+    GameObjectInfo(uint id, const Point &point, std::string textureHashId);
+
+    const Point &getPoint() const;
+
+    const std::string &getTextureHashId() const;
+
+    virtual ~GameObjectInfo();
+
+    uint getId() const;
+
+    uint getX() const;
+
+    uint getY() const;
+
 };
 
 

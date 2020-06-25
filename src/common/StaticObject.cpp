@@ -8,24 +8,13 @@ StaticObject::StaticObject(rapidjson::Value &value) {
     int width = value["width"].GetFloat();
     int height = value["height"].GetFloat();
     position = Position(x, y, width, height);
-    id = value["id"].GetInt();
+    name = value["name"].GetString();
 }
 
 const Position &StaticObject::getPosition() const {
     return position;
 }
 
-//StaticObject::StaticObject(StaticObject &&other) noexcept {
-//    std::swap(position, other.position);
-//    std::swap(id, other.id);
-//}
-//
-//StaticObject &StaticObject::operator=(StaticObject &&other) noexcept {
-//    if (&other == this) {
-//        return *this;
-//    }
-//    std::swap(position, other.position);
-//    std::swap(id, other.id);
-//    return *this;
-//}
-
+const std::string &StaticObject::getName() const {
+    return name;
+}

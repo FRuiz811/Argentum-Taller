@@ -4,24 +4,31 @@
 #include "MapTransformer.h"
 #include "Collider.h"
 #include "../client/Exception.h"
+#include "NPC.h"
 
 void ServerProxy::fillCollisionsObjects(std::vector<ObjectLayer> objectLayers) {
     for (auto&& anObjectLayer : objectLayers) {
         if (anObjectLayer.getName() == "cities") {
-            for (auto&& aCity : anObjectLayer.getObjects()) {
-                cities.push_back(std::move(aCity));
+            for (StaticObject& aCity : anObjectLayer.getObjects()) {
+                cities.push_back(aCity);
             }
         } else if (anObjectLayer.getName() == "collisionObjects") {
-            for (auto&& aCollisionObject : anObjectLayer.getObjects()) {
-                collisionObjects.push_back(std::move(aCollisionObject));
+            for (StaticObject& aCollisionObject : anObjectLayer.getObjects()) {
+                collisionObjects.push_back(aCollisionObject);
+            }
+        } else if (anObjectLayer.getName() == "NPC") {
+            for (StaticObject& aNPCObject : anObjectLayer.getObjects()) {
+                uint id = getNextId();
+                std::shared_ptr<GameObject> aNPC(new NPC(id, aNPCObject.getPosition().getPoint(), aNPCObject.getName()));
+                gameObjects.insert(std::pair<uint, std::shared_ptr<GameObject>>(getNextId(), aNPC));
             }
         }
     }
 }
 
-ServerProxy::ServerProxy() {
+ServerProxy::ServerProxy() : initialPoint(1125, 550) {
     current_id = 0;
-    rapidjson::Document jsonMap = JsonReader::read("json/bigMapCollisions.json");
+    rapidjson::Document jsonMap = JsonReader::read("json/bigMapNPC.json");
     tiledMap = MapTransformer::transform(jsonMap);
     fillCollisionsObjects(tiledMap.getObjectLayers());
     this->width = tiledMap.getWidth() * tiledMap.getTilewidth();
@@ -33,13 +40,11 @@ TiledMap& ServerProxy::getStaticMap() {
 }
 
 
-
 PlayerInfo ServerProxy::createCharacter(int race, int gameClass) {
-    Position position(1125, 550, 25, 60);
-    std::unique_ptr<GameObject> aCharacter(new GameCharacter(race, gameClass, position));
     uint id = getNextId();
-    this->gameObjects.insert(std::pair<unsigned int, std::unique_ptr<GameObject>>(getNextId(), aCharacter));
-    return PlayerInfo(id, position.getLeft(), position.getTop(), 100, 100, 100, "ht:01|h:01|b:01|s01|w01");
+    std::shared_ptr<GameCharacter> aCharacter(new GameCharacter(id, race, gameClass, initialPoint));
+    this->gameObjects.insert(std::pair<uint, std::shared_ptr<GameObject>>(id, aCharacter));
+    return aCharacter->getPlayerInfo();
 }
 
 unsigned int ServerProxy::getNextId() {
@@ -76,7 +81,7 @@ bool ServerProxy::characterMove(uint id, int direction) {
         if (gameObject.first == id) {
             continue;
         }
-        if (Collider::checkCollision(newPosition, gameObject.second.getPosition())) {
+        if (Collider::checkCollision(newPosition, gameObject.second->getPosition())) {
             canMove = false;
             break;
         }
@@ -88,13 +93,13 @@ bool ServerProxy::characterMove(uint id, int direction) {
 }
 
 
-std::vector<GameObjectInfo> ServerProxy::getUpdatedGameObjects() {
-    std::vector<GameObjectInfo> gameObjectsInfo;
-    for (auto& gameObjectPair : gameObjects) {
-        gameObjectsInfo.push_back(gameObjectPair.second->getGameObjectInfo());
-    }
-    return gameObjectsInfo;
-}
+//std::vector<GameObjectInfo> ServerProxy::getUpdatedGameObjects() {
+//    std::vector<GameObjectInfo> gameObjectsInfo;
+//    for (auto& gameObjectPair : gameObjects) {
+//        gameObjectsInfo.push_back(gameObjectPair.second->getGameObjectInfo());
+//    }
+//    return gameObjectsInfo;
+//}
 
 void ServerProxy::update() {
     for (auto& gameObjectPair : gameObjects) {

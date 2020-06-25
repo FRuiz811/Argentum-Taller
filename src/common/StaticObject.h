@@ -7,13 +7,16 @@
 class StaticObject {
 private:
     Position position;
-    unsigned int id{};
+    std::string name;
+
 public:
     explicit StaticObject(rapidjson::Value &value);
 
     ~StaticObject();
 
     const Position &getPosition() const;
+
+    const std::string &getName() const;
 };
 
 
