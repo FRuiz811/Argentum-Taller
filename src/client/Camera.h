@@ -10,9 +10,11 @@ private:
     Window& window;
     float width, height; //Limites del mapa
     float scale; //Escala de pixel/metro 
-    Point* player = nullptr; //Jugador en el cual se debe centrar la camara.
+    Point* playerTarget = nullptr; //Jugador en el cual se debe centrar la camara.
     Point positionScreen;
     SDL_Rect cam;
+
+    void limits(Point* destiny);
 public:
     Camera(Window& window, float widthMap, float heightMap);
 
@@ -26,14 +28,10 @@ public:
     
     float getScale() const;
 
-    void limits(Point* destiny);
-
     void setPlayer(Point* player);
 
-    void update(float dt);
+    void update(Point destiny);
     
-    void moveTo(Point destiny);
-
     Point calculateGlobalPosition(Point coordinates);
 
     ~Camera();

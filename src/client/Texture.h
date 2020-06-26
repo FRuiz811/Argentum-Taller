@@ -22,6 +22,8 @@ public:
 	int render() const;
 
     int getWidth() const;
+
+	SDL_Texture* getTexture() const;
 };
 
 #endif

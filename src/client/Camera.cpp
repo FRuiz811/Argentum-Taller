@@ -1,11 +1,11 @@
 #include "Camera.h"
 #include <algorithm>
+#include <SDL2/SDL.h>
 
 Camera::Camera(Window& window, float widthMap, float heightMap) : window(window),
     width(widthMap), height(heightMap), scale(1.0f) {
     this->positionScreen = Point(0.0,float(this->window.getHeight())/2.0);
-    this->cam = {0,0,this->window.getWidth(), this->window.getHeight()};
-
+    this->cam = {0,50,this->window.getWidth(), this->window.getHeight()-50};
 }
 
 float Camera::getCameraWidth() const {
@@ -29,11 +29,11 @@ Point Camera::getCameraPosition() const {
 }
 
 void Camera::setPlayer(Point* player){
-    this->player = player;
+    this->playerTarget = player;
 }
 
 void Camera::limits(Point* destiny) {
-    if (this->player != nullptr) {  
+    if (this->playerTarget != nullptr) {  
         float limitWidth = this->window.getWidth() / 2.0f;
         float limitHeight = this->window.getHeight() / 2.0f;
 
@@ -51,18 +51,16 @@ Point Camera::calculateGlobalPosition(Point coordinates) {
     return Point(x,y);
 }
 
-void Camera::update(float dt) {
-    this->positionScreen.x = this->cam.x-this->window.getWidth()/2.0f;
-    this->positionScreen.y = this->cam.y-this->window.getHeight()/2.0f;
-}
-
-void Camera::moveTo(Point destiny) {
+void Camera::update(Point destiny) {
     limits(&destiny);
     this->cam.x = destiny.x;
     this->cam.y = destiny.y;
     this->cam.h = this->window.getHeight();
     this->cam.w = this->window.getWidth();
-    update(0);
+    this->positionScreen.x = this->cam.x-this->window.getWidth()/2.0f;
+    this->positionScreen.y = this->cam.y-this->window.getHeight()/2.0f;
+    SDL_Rect display = {0,50,this->window.getWidth(),this->window.getHeight()-50};
+    SDL_RenderSetViewport(&(this->window.getRenderer()), &display);
 }
 
 Camera::~Camera(){}

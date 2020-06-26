@@ -4,6 +4,7 @@
 enum class TextureID {
 	LobbyBackground,
 	PresentationImage,
+	TopBar,
 	ZombieHead,
 	ElfHead,
 	HumanHead,

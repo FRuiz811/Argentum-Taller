@@ -33,6 +33,13 @@
 Player::Player(const TextureManager& manager, PlayerInfo playerInfo) :
 	Character(playerInfo.getX(),playerInfo.getY()), center(playerInfo.getX(),playerInfo.getY()),
     manager(manager), playerInfo(std::move(playerInfo)) {
+  this->gold = 200;
+  this->health = 100;
+  this->mana = 100;
+  this->maxHealth = 100;
+  this->maxMana = 100;
+  this->level = 1;
+  this->safeGold = 100;
   this->direction = playerInfo.getDirection();
 	this->frameHead = 0;
   this->state = std::shared_ptr<CharacterState>(new StillState());
@@ -87,6 +94,9 @@ void Player::updatePlayerInfo(PlayerInfo info) {
   this->posX = info.getX();
   this->posY = info.getY();
   this->direction = info.getDirection();
+  this->mana = info.getMana();
+  this->health = info.getLife();
+  this->gold = info.getGoldAmount();
   setFrameHead();
 }
 
@@ -310,6 +320,34 @@ void Player::setWeapon(WeaponID newWeapon){
 
 Point* Player::getCenter() {
 	return &center;
+}
+
+int Player::getLevel() {
+  return this->level;
+}
+
+int Player::getHealth() {
+  return this->health;
+}
+
+int Player::getMana() {
+  return this->mana;
+}
+
+int Player::getGold() {
+  return this->gold;
+}
+
+int Player::getMaxHealth() {
+  return this->maxHealth;
+}
+
+int Player::getMaxMana() {
+  return this->maxMana;
+}
+
+int Player::getSafeGold() {
+  return this->safeGold;
 }
 
 Player::~Player(){}

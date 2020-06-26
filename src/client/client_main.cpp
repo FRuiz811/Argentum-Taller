@@ -12,6 +12,7 @@
 #include "GameMap.h"
 #include "Player.h"
 #include "Camera.h"
+#include "UI.h"
 #include "../common/Point.h"
 
 
@@ -90,8 +91,8 @@ int main(int argc, char* args[]) {
 	textureManager.createTexture(TextureID::ItemBlueTunic, "assets/img/Tunica Azul.png", textColor);
 	textureManager.createTexture(TextureID::ItemLeatherArmor, "assets/img/Armadura de Cuero.png", textColor);
 	textureManager.createTexture(TextureID::ItemPlateArmor, "assets/img/Armadura de Placas.png", textColor);
+	textureManager.createTexture(TextureID::TopBar, "assets/img/Fondo Barra Superior.jpg");
 
-	
 	MusicManager musicManager;
 	musicManager.createMusic(MusicID::Start, "assets/sound/Musica Inicio.mp3");
 	const Music& musica = musicManager.getMusic(MusicID::Start);
@@ -103,8 +104,8 @@ int main(int argc, char* args[]) {
 	Player player(textureManager, std::move(playerInfo));
 	Chrono chrono;
 	double initLoop, endLoop, sleep;
-
 	Camera camera(window, gameMap.getMapWidth(), gameMap.getMapHeight());
+	UI ui(window, &player, textureManager);
 	InputInfo input;
 
 	while (!quit) {
@@ -123,10 +124,11 @@ int main(int argc, char* args[]) {
 		}
 		playerInfo = serverProxy.updateModel();
 		player.updatePlayerInfo(std::move(playerInfo));
-		window.clearScreen();
 		Point* center = player.getCenter();
+		window.clearScreen();
+		ui.render();
 		camera.setPlayer(center);
-		camera.moveTo(*center);
+		camera.update(*center);
         gameMap.drawGround(camera);
 		player.render(camera);
 		gameMap.draw(camera);
