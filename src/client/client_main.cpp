@@ -17,7 +17,7 @@
 
 
 #define ARGENTUM "Argentum Online"
-#define GAMELOOPTIME 60000
+#define GAMELOOPTIME (1/30.f) * 1000
 
 int main(int argc, char* args[]) {
 	//Debería ser 5 argc
