@@ -4,40 +4,20 @@
 #include <zconf.h>
 #include <string>
 #include "../common/Position.h"
+#include "../common/GameObjectInfo.h"
 #include "../common/Identificators.h"
 
-class PlayerInfo {
+class PlayerInfo : public GameObjectInfo{
 private:
-    uint id{};
-    int x;
-    int y;
     uint goldAmount{};
     uint life{};
     uint mana{};
-    std::string textureHashId;
-    Direction direction;
 
 public:
     PlayerInfo();
+    PlayerInfo(uint id, Point point, uint goldAmount, uint life, uint mana, std::string textureHashId, Direction direction);
 
-    PlayerInfo(uint id, int x, int y, uint goldAmount, uint life, uint mana, std::string textureHashId, Direction direction);
-
-    ~PlayerInfo();
-
-    //PlayerInfo(PlayerInfo&& other) noexcept ;
-    //PlayerInfo& operator=(PlayerInfo&& other) noexcept ;
-
-    uint getId() const;
-
-    int getX() const;
-
-    int getY() const;
-
-    void setX(uint x);
-
-    void setY(uint y);
-
-    void changeDirection(Direction newDirection);
+    ~PlayerInfo() override;
 
     uint getGoldAmount() const;
 
@@ -47,13 +27,7 @@ public:
 
     Direction getDirection() const;
 
-    const std::string &getTextureHashId() const;
 
-    HelmetID getHelmetID();
-    HeadID getHeadID();
-    BodyID getBodyID();
-    WeaponID getWeaponID();
-    ShieldID getShieldID();
 };
 
 

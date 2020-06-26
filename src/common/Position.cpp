@@ -1,4 +1,3 @@
-#include <algorithm>
 #include "Position.h"
 
 Position::~Position()= default;
@@ -7,24 +6,6 @@ Position::Position() = default;
 
 Position::Position(int x, int y, int width, int height):
 x(x), y(y), width(width), height(height){}
-
-//Position::Position(Position &&other) noexcept {
-//    std::swap(x, other.x);
-//    std::swap(y, other.y);
-//    std::swap(width, other.width);
-//    std::swap(height, other.height);
-//}
-//
-//Position &Position::operator=(Position &&other) noexcept {
-//    if (&other == this) {
-//        return *this;
-//    }
-//    std::swap(x, other.x);
-//    std::swap(y, other.y);
-//    std::swap(width, other.width);
-//    std::swap(height, other.height);
-//    return *this;
-//}
 
 int Position::getBottom() const {
     return y + height;
@@ -48,6 +29,29 @@ void Position::setX(int x) {
 
 void Position::setY(int y) {
     Position::y = y;
+}
+
+void Position::setWidth(int width) {
+    Position::width = width;
+}
+
+void Position::setHeight(int height) {
+    Position::height = height;
+}
+
+Point Position::getPoint() const {
+    return Point(x,y);
+}
+
+Position::Position(Point &aPoint, int aWidth, int aHeight):
+x(aPoint.x), y(aPoint.y), width(aWidth), height(aHeight) {}
+
+int Position::getWidth() const {
+    return width;
+}
+
+int Position::getHeight() const {
+    return height;
 }
 
 

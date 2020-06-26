@@ -43,7 +43,7 @@ private:
 	void setFrameHead();
 
 public:
-	Player(const TextureManager& manager, PlayerInfo playerInfo);
+	Player(const TextureManager& manager, const PlayerInfo& playerInfo);
 
 	virtual void render(Camera& camera);
 	virtual void update(double dt);

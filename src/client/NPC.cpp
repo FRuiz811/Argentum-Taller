@@ -38,16 +38,16 @@
 #include "characterStates/DeadState.h"
 #include "characterStates/StartMovingState.h"
 
-NPC::NPC(const TextureManager& manager, PlayerInfo playerInfo):
-  Character(playerInfo.getX(),playerInfo.getY()), manager(manager){
-    this->direction = playerInfo.getDirection();
+NPC::NPC(const TextureManager& manager, const GameObjectInfo& gameObjectInfo):
+  Character(gameObjectInfo.getX(), gameObjectInfo.getY()), manager(manager){
+    this->direction = gameObjectInfo.getDirection();
 		this->frameHead = 0;
     this->state = std::shared_ptr<CharacterState>(new StillState());
-	  setArmor(playerInfo.getBodyID());
-	  setHead(playerInfo.getHeadID());
-	  setHelmet(playerInfo.getHelmetID());
-	  setShield(playerInfo.getShieldID());
-    setWeapon(playerInfo.getWeaponID());
+	  setArmor(gameObjectInfo.getBodyID());
+	  setHead(gameObjectInfo.getHeadID());
+	  setHelmet(gameObjectInfo.getHelmetID());
+	  setShield(gameObjectInfo.getShieldID());
+    setWeapon(gameObjectInfo.getWeaponID());
 }
 
 void NPC::render(Camera& camera) {
@@ -72,6 +72,13 @@ void NPC::update(double dt) {
         this->shield->update(dt);
 }
 
+void NPC::updatePlayerInfo(const GameObjectInfo &info) {
+    this->posX = info.getX();
+    this->posY = info.getY();
+    this->direction = info.getDirection();
+    setFrameHead();
+}
+
 void NPC::setFrameHead() {
     switch (this->direction) {
       case Direction::down:
@@ -87,14 +94,6 @@ void NPC::setFrameHead() {
         this->frameHead = 3;
         break; 
     }
-}
-
-
-void NPC::updatePlayerInfo(PlayerInfo info) {
-  this->posX = info.getX();
-  this->posY = info.getY();
-  this->direction = info.getDirection();
-  setFrameHead();
 }
 
 void NPC::setHead(HeadID head) {
@@ -249,5 +248,4 @@ void NPC::setWeapon(WeaponID newWeapon){
 	}
 }
 
-
-NPC::~NPC(){}
+NPC::~NPC()= default;

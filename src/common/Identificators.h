@@ -4,10 +4,10 @@
 #include "Point.h"
 
 enum class CharacterStateID {
-    Still, //Aplica a NPC
-    StartMoving, //Aplica a NPC
-    Move,  //Aplica a NPC
-    Attack, //Aplica a NPC
+    Still, //Aplica a NPCServer
+    StartMoving, //Aplica a NPCServer
+    Move,  //Aplica a NPCServer
+    Attack, //Aplica a NPCServer
     Dying, 
     Dead,
     Interact,

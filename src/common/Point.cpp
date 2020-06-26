@@ -1,5 +1,6 @@
 #include "Point.h"
-#include <math.h>
+
+#include <cmath>
 
 Point::Point(float x, float y) : x(x), y(y) {}
 
@@ -43,5 +44,5 @@ bool operator!=(Point p1, const Point& p2) {
 
 float Point::distance(const Point& p2) {
     Point dist = *this - p2;
-    return sqrt(dist.x * dist.x + dist.y * dist.y);
+    return std::sqrt(dist.x * dist.x + dist.y * dist.y);
 }

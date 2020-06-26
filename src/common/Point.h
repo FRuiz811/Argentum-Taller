@@ -1,12 +1,11 @@
 #ifndef POINT_H
 #define POINT_H
-#include <math.h>
-
+#include <cmath>
 class Point {
 public:
     float x,y;
 
-    Point(float x=0, float y=0);
+    explicit Point(float x=0, float y=0);
 
     Point& operator=(const Point& p2);
 

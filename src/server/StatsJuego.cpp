@@ -68,7 +68,7 @@ StatsJuego::StatsJuego(){
 	sombreroDefensaMin = 4;
 	sombreroDefensaMax = 12;
 
-	//Criaturas o NPC
+	//Criaturas o NPCServer
 	probabilidadNada = 0.8;
 	probabilidadOro = 0.08;
 	probabilidadVidaOMana = 0.1;

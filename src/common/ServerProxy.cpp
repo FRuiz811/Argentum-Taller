@@ -1,26 +1,34 @@
+#include <memory>
 #include "ServerProxy.h"
 #include "JsonReader.h"
 #include "MapTransformer.h"
 #include "Collider.h"
 #include "../client/Exception.h"
+#include "NPCServer.h"
 
 void ServerProxy::fillCollisionsObjects(std::vector<ObjectLayer> objectLayers) {
     for (auto&& anObjectLayer : objectLayers) {
         if (anObjectLayer.getName() == "cities") {
-            for (auto&& aCity : anObjectLayer.getObjects()) {
-                cities.push_back(std::move(aCity));
+            for (StaticObject& aCity : anObjectLayer.getObjects()) {
+                cities.push_back(aCity);
             }
         } else if (anObjectLayer.getName() == "collisionObjects") {
-            for (auto&& aCollisionObject : anObjectLayer.getObjects()) {
-                collisionObjects.push_back(std::move(aCollisionObject));
+            for (StaticObject& aCollisionObject : anObjectLayer.getObjects()) {
+                collisionObjects.push_back(aCollisionObject);
+            }
+        } else if (anObjectLayer.getName() == "NPC") {
+            for (StaticObject& aNPCObject : anObjectLayer.getObjects()) {
+                uint id = getNextId();
+                std::shared_ptr<GameObject> aNPC(new NPCServer(id, aNPCObject.getPosition().getPoint(), aNPCObject.getName()));
+                gameObjects.insert(std::pair<uint, std::shared_ptr<GameObject>>(getNextId(), aNPC));
             }
         }
     }
 }
 
-ServerProxy::ServerProxy() : queueInputs() {
+ServerProxy::ServerProxy() : queueInputs(), initialPoint(1125, 550) {
     current_id = 0;
-    rapidjson::Document jsonMap = JsonReader::read("json/bigMapCollisions.json");
+    rapidjson::Document jsonMap = JsonReader::read("json/bigMapNPC.json");
     tiledMap = MapTransformer::transform(jsonMap);
     fillCollisionsObjects(tiledMap.getObjectLayers());
     this->width = tiledMap.getWidth() * tiledMap.getTilewidth();
@@ -31,93 +39,62 @@ TiledMap& ServerProxy::getStaticMap() {
     return tiledMap;
 }
 
+
 PlayerInfo ServerProxy::createCharacter(int race, int gameClass) {
-    Position position(1125, 550, 25, 60);
-    GameCharacter aCharacter(race, gameClass, position);
     uint id = getNextId();
-    gameObjects.insert(std::pair<int, GameObject&&>(id, std::move(aCharacter)));
-    this->player = PlayerInfo(id, position.getLeft(), position.getTop(), 100, 100, 100, "ht02|h03|b04|s00|w03",Direction::down);
-    return this->player;
+    std::shared_ptr<GameCharacter> aCharacter(new GameCharacter(id, race, gameClass, initialPoint));
+    this->gameObjects.insert(std::pair<uint, std::shared_ptr<GameObject>>(id, aCharacter));
+    return aCharacter->getPlayerInfo();
 }
 
-uint ServerProxy::getNextId() {
+unsigned int ServerProxy::getNextId() {
     return current_id++;
 }
 
 PlayerInfo ServerProxy::updateModel() {
+    std::shared_ptr<GameCharacter> aCharacter =  std::dynamic_pointer_cast<GameCharacter>(gameObjects.at(current_id - 1));
     while(!this->queueInputs.empty()) {
         InputInfo inputInfo = this->queueInputs.pop();
         switch(inputInfo.input) {
             case InputID::nothing:
                 break;
             case InputID::up:
-                characterMove(player.getId(),Direction::up);
+                aCharacter->move(Direction::up, gameObjects, collisionObjects);
                 break;
             case InputID::down:
-                characterMove(player.getId(),Direction::down);
+                aCharacter->move(Direction::down, gameObjects, collisionObjects);
                 break;
             case InputID::right:
-                characterMove(player.getId(),Direction::right);
+                aCharacter->move(Direction::right, gameObjects, collisionObjects);
                 break;
             case InputID::left:
-                characterMove(player.getId(),Direction::left);
+                aCharacter->move(Direction::left, gameObjects, collisionObjects);
                 break;
             case InputID::stopMove:
                 break;
         }
     }
-    return this->player;
-}
-
-
-
-bool ServerProxy::characterMove(uint id, Direction direction) {
-    bool canMove = true;
-    auto& aCharacter = (gameObjects.at(id));
-    Position newPosition = aCharacter.getPosition();
-    switch(direction) {
-        case Direction::up:
-            newPosition.setY(newPosition.getTop() - 15);
-            break;
-        case Direction::down:
-            newPosition.setY(newPosition.getTop() + 15);
-            break;
-        case Direction::left:
-            newPosition.setX(newPosition.getLeft() - 15);
-            break;
-        case Direction::right:
-            newPosition.setX(newPosition.getLeft() + 15);
-            break;
-        default:
-            throw Exception("Invalid Direction");
-    }
-    for (auto& collisionObject : collisionObjects) {
-        if (Collider::checkCollision(newPosition, collisionObject.getPosition())) {
-            canMove = false;
-            break;
-        }
-    }
-    for (auto& gameObject : gameObjects) {
-        if (gameObject.first == id) {
-            continue;
-        }
-        if (Collider::checkCollision(newPosition, gameObject.second.getPosition())) {
-            canMove = false;
-            break;
-        }
-    }
-    if (canMove) {
-        aCharacter.setPosition(newPosition);
-        this->player.setX(newPosition.getLeft());
-        this->player.setY(newPosition.getTop());
-        this->player.changeDirection(direction);
-    }
-    return canMove;
+    return aCharacter->getPlayerInfo();
 }
 
 void ServerProxy::sendInput(InputInfo input) {
     if (input.input != InputID::nothing)
         this->queueInputs.push(input);
+}
+
+
+std::vector<GameObjectInfo> ServerProxy::getUpdatedGameObjects() {
+    std::vector<GameObjectInfo> gameObjectsInfo;
+    for (auto& gameObjectPair : gameObjects) {
+        gameObjectsInfo.push_back(gameObjectPair.second->getGameObjectInfo());
+    }
+    return gameObjectsInfo;
+}
+
+void ServerProxy::update() {
+    for (auto& gameObjectPair : gameObjects) {
+        gameObjectPair.second->update();
+    }
 }
 
 ServerProxy::~ServerProxy() = default;

@@ -30,8 +30,8 @@
 #include "characterStates/DeadState.h"
 #include "characterStates/StartMovingState.h"
 
-Player::Player(const TextureManager& manager, PlayerInfo playerInfo) :
-	Character(playerInfo.getX(),playerInfo.getY()), center(playerInfo.getX(),playerInfo.getY()),
+Player::Player(const TextureManager& manager, const PlayerInfo& playerInfo) : 
+  Character(playerInfo.getX(),playerInfo.getY()), center(playerInfo.getX(),playerInfo.getY()),
     manager(manager), playerInfo(std::move(playerInfo)) {
   this->gold = 200;
   this->health = 100;
@@ -79,13 +79,13 @@ void Player::setFrameHead() {
         break;
       case Direction::right:
         this->frameHead = 1;
-        break; 
+        break;
       case Direction::left:
         this->frameHead = 2;
         break;
       case Direction::up:
         this->frameHead = 3;
-        break; 
+        break;
     }
 }
 
@@ -161,13 +161,13 @@ InputInfo Player::handleEvent(SDL_Event& event, ServerProxy& serverProxy) {
 			update(0);
 	} else if (event.type == SDL_KEYUP) {
 		switch(event.key.keysym.sym) {
-			case SDLK_w: 	
+			case SDLK_w:
 				input = this->state->stopMove(*this);
 				break;
-      case SDLK_s: 
+      case SDLK_s:
 			  input = this->state->stopMove(*this);
 				break;
-      case SDLK_a: 
+      case SDLK_a:
 				input = this->state->stopMove(*this);
 				break;
       case SDLK_d:

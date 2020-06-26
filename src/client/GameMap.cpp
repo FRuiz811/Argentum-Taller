@@ -72,7 +72,7 @@ void GameMap::_loadTileSets(const std::vector<TileSet> &tileSets, SDL_Renderer &
     }
 }
 
-void GameMap::draw(Camera& camera) {
+void GameMap::drawHighLayers(Camera& camera) {
     for (Tile& tile: tiles) {
         tile.draw(renderer, camera);
     }
