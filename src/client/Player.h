@@ -15,6 +15,7 @@
 #include "../common/ServerProxy.h"
 #include "PlayerInfo.h"
 #include <memory>
+#include <string>
 
 union SDL_Event;
 
@@ -22,6 +23,7 @@ union SDL_Event;
 class Player : public Character {
 private:
 	//int id{0};
+	std::string name{"Fran"};
 	Point center;
 	const TextureManager& manager;
 	PlayerInfo playerInfo;	
@@ -32,8 +34,6 @@ private:
 	std::shared_ptr<Shield> shield = nullptr;
 	std::shared_ptr<Weapon> weapon = nullptr;
 	int frameHead;
-	int health,gold,mana, level;
-	int maxHealth, maxMana, safeGold;
 
 	void setArmor(BodyID newArmor);
 	void setShield(ShieldID newShield);
@@ -56,13 +56,19 @@ public:
 
 	Point* getCenter();
 
-	int getLevel();
-	int getHealth();
-	int getMana();
-	int getGold();
-	int getMaxMana();
-	int getMaxHealth();
-	int getSafeGold();
+	std::string getName();
+	uint getLevel();
+	uint getHealth();
+	uint getMana();
+	uint getGold();
+	uint getMaxMana();
+	uint getMaxHealth();
+	uint getSafeGold();
+	uint getExp();
+	uint getMaxExp();
+	std::string getInventory();
+	CharacterStateID& getState();
+	PlayerInfo getInfo();
 
 	~Player();
 };

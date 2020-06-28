@@ -12,6 +12,13 @@ private:
     uint goldAmount{};
     uint life{};
     uint mana{};
+    uint level{2};
+    uint exp{125};
+    uint maxLife{100};
+    uint maxMana{100};
+    uint maxExp{1500};
+    uint safeGold{50};
+    std::string inventory;
 
 public:
     PlayerInfo();
@@ -27,7 +34,19 @@ public:
 
     Direction getDirection() const;
 
+    uint getExp() const;
 
+    uint getLevel() const;
+
+    uint getSafeGold() const;
+
+    uint getMaxLife() const;
+
+    uint getMaxMana() const;
+
+    uint getMaxExp() const;
+
+    std::string getInventory() const;
 };
 
 

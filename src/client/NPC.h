@@ -22,7 +22,6 @@ private:
 	std::shared_ptr<Helmet> helmet = nullptr;
 	std::shared_ptr<Shield> shield = nullptr;
 	std::shared_ptr<Weapon> weapon = nullptr;
-    std::shared_ptr<CharacterState> state = nullptr;
     //Agregar Item en caso de que no sea un jugador;
     int frameHead{0};
     bool isAlive{true};

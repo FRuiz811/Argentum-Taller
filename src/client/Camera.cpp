@@ -2,10 +2,12 @@
 #include <algorithm>
 #include <SDL2/SDL.h>
 
+#define WIDTHSEGMENT 8
+
 Camera::Camera(Window& window, float widthMap, float heightMap) : window(window),
     width(widthMap), height(heightMap), scale(1.0f) {
     this->positionScreen = Point(0.0,float(this->window.getHeight())/2.0);
-    this->cam = {0,50,this->window.getWidth(), this->window.getHeight()-50};
+    this->cam = {(this->window.getWidth()/WIDTHSEGMENT)*2,60,(this->window.getWidth()/WIDTHSEGMENT)*6, this->window.getHeight()-60};
 }
 
 float Camera::getCameraWidth() const {
@@ -34,8 +36,8 @@ void Camera::setPlayer(Point* player){
 
 void Camera::limits(Point* destiny) {
     if (this->playerTarget != nullptr) {  
-        float limitWidth = this->window.getWidth() / 2.0f;
-        float limitHeight = this->window.getHeight() / 2.0f;
+        float limitWidth = ((this->window.getWidth()/WIDTHSEGMENT)*6) / 2.0f;
+        float limitHeight = (this->window.getHeight()-60) / 2.0f;
 
         destiny->y = std::max(destiny->y,limitHeight);
         destiny->y = std::min(destiny->y, this->height-limitHeight);
@@ -57,9 +59,10 @@ void Camera::update(Point destiny) {
     this->cam.y = destiny.y;
     this->cam.h = this->window.getHeight();
     this->cam.w = this->window.getWidth();
-    this->positionScreen.x = this->cam.x-this->window.getWidth()/2.0f;
-    this->positionScreen.y = this->cam.y-this->window.getHeight()/2.0f;
-    SDL_Rect display = {0,50,this->window.getWidth(),this->window.getHeight()-50};
+    this->positionScreen.x = this->cam.x-(((this->window.getWidth()/WIDTHSEGMENT)*6) / 2.0f);
+    this->positionScreen.y = this->cam.y-((this->window.getHeight()-60) / 2.0f);
+    SDL_Rect display = {(this->window.getWidth()/WIDTHSEGMENT)*2,60,
+            (this->window.getWidth()/WIDTHSEGMENT)*6,this->window.getHeight()-60};
     SDL_RenderSetViewport(&(this->window.getRenderer()), &display);
 }
 

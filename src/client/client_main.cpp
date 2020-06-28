@@ -24,7 +24,7 @@ int main(int argc, char* args[]) {
 	//Debería ser 5 argc
 	//Realizar el connect al host & port indicado.
 	ServerProxy serverProxy;
-	PlayerInfo playerInfo = serverProxy.createCharacter(0, 0);
+	PlayerInfo playerInfo = serverProxy.createCharacter(2, 1);
 	bool quit = false;
 	SDL_Event event;
 
@@ -66,13 +66,13 @@ int main(int argc, char* args[]) {
 			}
 			window.handleEvent(event);
 		}
-			playerInfo = serverProxy.updateModel();
-			player.updatePlayerInfo(playerInfo);
-			for (GameObjectInfo& aGameObjectInfo : serverProxy.getUpdatedGameObjects()) {
-		    	if (aGameObjectInfo.getId() == playerInfo.getId()) {
-               	 	continue;
-		    }
-		    npcs.emplace_back(textureManager, aGameObjectInfo);
+		playerInfo = serverProxy.updateModel();
+		player.updatePlayerInfo(playerInfo);
+		for (GameObjectInfo& aGameObjectInfo : serverProxy.getUpdatedGameObjects()) {
+	   		if (aGameObjectInfo.getId() == playerInfo.getId()) {
+          	 	continue;
+	    }
+	    	npcs.emplace_back(textureManager, aGameObjectInfo);
 		}
 		window.clearScreen();
 		Point* center = player.getCenter();

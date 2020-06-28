@@ -44,12 +44,12 @@ BodyID GameObjectInfo::getBodyID() const {
     return (BodyID)id;
 }
 WeaponID GameObjectInfo::getWeaponID() const {
-    std::string stringId = this->textureHashId.substr(14,2);
+    std::string stringId = this->textureHashId.substr(18,2);
     int id = std::stoi(stringId);
     return (WeaponID)id;
 }
 ShieldID GameObjectInfo::getShieldID() const {
-    std::string stringId = this->textureHashId.substr(18,2);
+    std::string stringId = this->textureHashId.substr(14,2);
     int id = std::stoi(stringId);
     return (ShieldID)id;
 }

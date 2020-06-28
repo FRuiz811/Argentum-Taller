@@ -28,18 +28,14 @@
 #include "characterStates/StillState.h"
 #include "characterStates/MoveState.h"
 #include "characterStates/DeadState.h"
-#include "characterStates/StartMovingState.h"
+#include "characterStates/MeditateState.h"
+#include "characterStates/InteractState.h"
+#include "characterStates/AttackState.h"
+
 
 Player::Player(const TextureManager& manager, const PlayerInfo& playerInfo) : 
   Character(playerInfo.getX(),playerInfo.getY()), center(playerInfo.getX(),playerInfo.getY()),
-    manager(manager), playerInfo(std::move(playerInfo)) {
-  this->gold = 200;
-  this->health = 100;
-  this->mana = 100;
-  this->maxHealth = 100;
-  this->maxMana = 100;
-  this->level = 1;
-  this->safeGold = 100;
+    manager(manager), playerInfo(playerInfo) {
   this->direction = playerInfo.getDirection();
 	this->frameHead = 0;
   this->state = std::shared_ptr<CharacterState>(new StillState());
@@ -94,30 +90,32 @@ void Player::updatePlayerInfo(PlayerInfo info) {
   this->posX = info.getX();
   this->posY = info.getY();
   this->direction = info.getDirection();
-  this->mana = info.getMana();
-  this->health = info.getLife();
-  this->gold = info.getGoldAmount();
   setFrameHead();
 }
 
 InputInfo Player::handleEvent(SDL_Event& event, ServerProxy& serverProxy) {
-	bool needUpdate = true;
+	bool needUpdate = false;
   InputInfo input;
 	if(event.type == SDL_KEYDOWN) {
     switch(event.key.keysym.sym) {
       case SDLK_w:
         input = this->state->moveUp(*this);
+        needUpdate = true;
 				break;
     	case SDLK_s:
 				input = this->state->moveDown(*this);
+        needUpdate = true;
 				break;
       case SDLK_a:
 				input = this->state->moveLeft(*this);
+        needUpdate = true;
 				break;
       case SDLK_d:
 				input = this->state->moveRight(*this);
+        needUpdate = true;
 				break;
       case SDLK_r:
+        input = this->state->resurrect(*this);
 				break;
 			case SDLK_g:
 				break;
@@ -125,7 +123,14 @@ InputInfo Player::handleEvent(SDL_Event& event, ServerProxy& serverProxy) {
 				break;
 			case SDLK_v:
 				break;
-			case SDLK_f:
+      case SDLK_t:
+        input = this->state->takeItem(*this);
+        break;
+      case SDLK_h:
+        input = this->state->cure(*this);
+        break;
+			case SDLK_y:
+        input = this->state->meditate(*this);
 				break;
       case SDLK_1:
         input = this->state->selectItem(*this,1);
@@ -184,8 +189,8 @@ void Player::setState(CharacterStateID newState) {
 			case CharacterStateID::Still:
 				this->state = std::shared_ptr<CharacterState>(new StillState());
 				break;
-			case CharacterStateID::StartMoving:
-				this->state = std::shared_ptr<CharacterState>(new StartMovingState());
+			case CharacterStateID::Interact:
+				this->state = std::shared_ptr<CharacterState>(new InteractState());
 				break;
 			case CharacterStateID::Move:
 				this->state = std::shared_ptr<CharacterState>(new MoveState());
@@ -193,6 +198,11 @@ void Player::setState(CharacterStateID newState) {
 			case CharacterStateID::Dead:
 				this->state = std::shared_ptr<CharacterState>(new DeadState());
 				break;
+      case CharacterStateID::Meditate:
+        this->state = std::shared_ptr<CharacterState>(new MeditateState());
+        break;
+      case CharacterStateID::Attack:
+        this->state = std::shared_ptr<CharacterState>(new AttackState());
 		}
 	}
 }
@@ -322,32 +332,56 @@ Point* Player::getCenter() {
 	return &center;
 }
 
-int Player::getLevel() {
-  return this->level;
+uint Player::getLevel() {
+  return this->playerInfo.getLevel();
 }
 
-int Player::getHealth() {
-  return this->health;
+uint Player::getHealth() {
+  return this->playerInfo.getLife();
 }
 
-int Player::getMana() {
-  return this->mana;
+uint Player::getMana() {
+  return this->playerInfo.getMana();
 }
 
-int Player::getGold() {
-  return this->gold;
+uint Player::getGold() {
+  return this->playerInfo.getGoldAmount();
 }
 
-int Player::getMaxHealth() {
-  return this->maxHealth;
+uint Player::getMaxHealth() {
+  return this->playerInfo.getMaxLife();
 }
 
-int Player::getMaxMana() {
-  return this->maxMana;
+uint Player::getMaxMana() {
+  return this->playerInfo.getMaxMana();
 }
 
-int Player::getSafeGold() {
-  return this->safeGold;
+uint Player::getSafeGold() {
+  return this->playerInfo.getSafeGold();
+}
+
+uint Player::getExp() {
+  return this->playerInfo.getExp();
+}
+
+uint Player::getMaxExp() {
+  return this->playerInfo.getMaxExp();
+}
+
+std::string Player::getInventory() {
+  return this->playerInfo.getInventory();
+}
+
+std::string Player::getName() {
+  return this->name;
+}
+
+CharacterStateID& Player::getState() {
+  return this->state->getState();
+}
+
+PlayerInfo Player::getInfo() {
+  return this->playerInfo;
 }
 
 Player::~Player(){}

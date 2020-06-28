@@ -1,12 +1,12 @@
-#ifndef STILLSTATE_H
-#define STILLSTATE_H
+#ifndef MEDITATESTATE_H
+#define MEDITATESTATE_H
 
 #include "CharacterState.h"
 
-class StillState: public CharacterState {
+class MeditateState: public CharacterState {
 public:
-    StillState();
-    ~StillState();
+    MeditateState();
+    ~MeditateState();
 
     virtual InputInfo moveUp(Character& character);
     virtual InputInfo moveDown(Character& character);

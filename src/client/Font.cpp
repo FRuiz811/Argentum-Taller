@@ -32,6 +32,10 @@ TTF_Font* Font::getFont() const {
 	return this->font;
 }
 
+void Font::deleteText(SDL_Texture* text) {
+	SDL_DestroyTexture(text);
+}
+
 Font::~Font(){
 	if(this->font)
 		TTF_CloseFont(this->font);

@@ -5,6 +5,9 @@ enum class TextureID {
 	LobbyBackground,
 	PresentationImage,
 	TopBar,
+	StatsBackground,
+	Button,
+	Star,
 	ZombieHead,
 	ElfHead,
 	HumanHead,
@@ -43,6 +46,8 @@ enum class TextureID {
 	ExplotionEffect,
 	MagicArrowEffect,
 	MissileEffect,
+	MeditateEffect,
+	ArcEffect,
 	ManaPotion,
 	HealthPotion,
 	Gold,
@@ -66,6 +71,7 @@ enum class TextureID {
 	ItemBlueCommonBody,
 	ItemGreenCommonBody,
 	ItemRedCommonBody,
+	ItemNothing,
 };
 
 #endif

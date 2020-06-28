@@ -5,10 +5,9 @@
 
 enum class CharacterStateID {
     Still, //Aplica a NPCServer
-    StartMoving, //Aplica a NPCServer
     Move,  //Aplica a NPCServer
     Attack, //Aplica a NPCServer
-    Dying, 
+    Meditate, 
     Dead,
     Interact,
 };
@@ -20,10 +19,13 @@ enum class InputID {
     down, //s
     left, //a
     right, //d
+    meditate, //y
     resurrect, //r
+    cure, //h
     buy,       //b
     sell,      //v
-    deposit,   //g
+    deposit,   //x
+    retire, //z
     selectTarget, //click
     item1, 
     item2,
@@ -34,7 +36,8 @@ enum class InputID {
     item7,
     item8,
     item9,
-    dropItem, //f
+    dropItem, //g
+    takeItem, //t
 };
 
 struct InputInfo {
@@ -98,7 +101,29 @@ enum class WeaponID {
 };
 
 enum class ItemsInventoryID {
-
+    Nothing,
+    SimpleArc,
+    CompoundArc,
+    LongSword,
+    Hammer,
+    Ax,
+    ElficFlaute,
+    AshStick,
+    GnarledStick,
+    Crosier,
+    TurtleShield,
+    IronShield,
+    Hood,
+    IronHelmet,
+    MagicHat,
+    RedCommon,
+    BlueCommon,
+    GreenCommon,
+    BlueTunic,
+    LeatherArmor,
+    PlateArmor,
+    HealthPotion,
+    ManaPotion,
 };
 
 enum class Direction{

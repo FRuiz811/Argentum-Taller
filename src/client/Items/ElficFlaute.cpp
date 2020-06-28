@@ -1,8 +1,8 @@
 #include "ElficFlaute.h"
 #include "../TextureID.h"
 
-#define WIDTH_BODY 25
-#define HEIGHT_BODY 45
+#define WIDTH_BODY 42
+#define HEIGHT_BODY 64
 
 ElficFlaute::ElficFlaute(const TextureManager& manager):
     Weapon(manager.getTexture(TextureID::ElficFlaute),WIDTH_BODY,HEIGHT_BODY, WeaponID::ElficFlaute) {}
@@ -10,7 +10,7 @@ ElficFlaute::ElficFlaute(const TextureManager& manager):
 void ElficFlaute::render(int posX, int posY, int direction) {
     setDirection(direction);
     SDL_Rect srcHead = {this->width*frame, this->height*direction, this->width, this->height};
-	SDL_Rect dstHead = {posX, posY, this->width, this->height};
+	SDL_Rect dstHead = {posX-5, posY-5-this->height/4, this->width, this->height};
     this->texture.render(srcHead, dstHead);
 }
 

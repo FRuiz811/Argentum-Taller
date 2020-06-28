@@ -5,19 +5,38 @@
 #include "Window.h"
 #include "../common/Point.h"
 #include "Player.h"
+#include "Font.h"
+#include <vector>
+
+union SDL_Event;
 
 class UI {
 private:
     Player* playerTarget = nullptr; //Jugador del cual debe mostrar estadisticas.
     Window& window;
     const TextureManager& manager;
-
+    Font font;
+    std::vector<SDL_Texture*> texts;
+    std::vector<SDL_Texture*> info;
+    int widthSegment;
+    int itemSelected = -1;
     void updateStates();
-    
+    void updateHealth();
+    void updateMana();
+    void updateGold();
+    void updateLevelAndExpirience();
+    void deleteInfo();
+    void updateInventory();
+    void updateItems();
+    void updateEquipment();
+    void updateInteract();
+    void updateBuild();
 public:
     UI(Window& window, Player* player, const TextureManager& manager);
 
     void render();
+
+    void handleClick(SDL_Event& event);
 
     ~UI();
 };

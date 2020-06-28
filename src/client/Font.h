@@ -21,6 +21,8 @@ public:
 
 	TTF_Font* getFont() const;
 
+	void  deleteText(SDL_Texture* text);
+
 	~Font();
 };
 

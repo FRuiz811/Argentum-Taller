@@ -16,6 +16,14 @@ public:
 
     virtual void update(double dt) = 0;
 
+    Direction getDirection() const {
+        return this->direction;
+    }
+    
+    Point getPosition() {
+        return Point(posX,posY);
+    }
+
     ~Character() {}
 
 };

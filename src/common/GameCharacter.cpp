@@ -14,9 +14,9 @@ GameCharacter::GameCharacter(uint id, int aRace, int aClass, Point &point):  Gam
     position = Position(point, 25, 60);
     life = 100;
     goldAmount = 100;
-    mana = 100;
+    mana = 50;
     direction = Direction::down;
-    textureHashId = "ht01|h01|b01|s01|w01";
+    textureHashId = "ht03|h02|b05|s00|w06";
 }
 
 void GameCharacter::move(Direction aDirection, const std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects,

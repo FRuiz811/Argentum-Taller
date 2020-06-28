@@ -23,6 +23,14 @@ public:
     virtual InputInfo selectItem(Character& character, int item) = 0;
 
     //virtual InputInfo dropItem(Character& character) = 0;
+    virtual InputInfo takeItem(Character& character) = 0;
+    virtual InputInfo resurrect(Character& character) = 0;
+    virtual InputInfo meditate(Character& character) = 0;
+    virtual InputInfo cure(Character& character) = 0;
+    //virtual InputInfo buyItem(Character& character) = 0;
+    //virtual InputInfo sellItem(Character& character) = 0;
+    //virtual InputInfo deposit(Character& character) = 0;
+    //virtual InputInfo retire(Character& character) = 0;
     virtual InputInfo selectTarget(Character& character, Point position) = 0;
 
 };

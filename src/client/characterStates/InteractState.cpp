@@ -1,51 +1,43 @@
-#include "MoveState.h"
+#include "InteractState.h"
 
-MoveState::MoveState() : 
-    CharacterState(CharacterStateID::Move){}
+InteractState::InteractState() : 
+    CharacterState(CharacterStateID::Interact){}
 
-MoveState::~MoveState() {}
+InteractState::~InteractState() {}
 
-InputInfo MoveState::moveUp(Character& character){
+InputInfo InteractState::moveUp(Character& character){
     InputInfo info;
     info.input = InputID::up;
-    if (character.getDirection() == Direction::up) 
-        info.input = InputID::nothing;
     Point aux(0.0,0.0);
     info.position = aux;
     return info;
 }
 
-InputInfo MoveState::moveDown(Character& character) {
+InputInfo InteractState::moveDown(Character& character) {
     InputInfo info;
     info.input = InputID::down;
-    if (character.getDirection() == Direction::down) 
-        info.input = InputID::nothing;
     Point aux(0.0,0.0);
     info.position = aux;
     return info;
 }
 
-InputInfo MoveState::moveLeft(Character& character) {
+InputInfo InteractState::moveLeft(Character& character) {
     InputInfo info;
     info.input = InputID::left;
-    if (character.getDirection() == Direction::left) 
-        info.input = InputID::nothing;
     Point aux(0.0,0.0);
     info.position = aux;
     return info;
 }
 
-InputInfo MoveState::moveRight(Character& character) {
+InputInfo InteractState::moveRight(Character& character) {
     InputInfo info;
     info.input = InputID::right;
-    if (character.getDirection() == Direction::right) 
-        info.input = InputID::nothing;
     Point aux(0.0,0.0);
     info.position = aux;
     return info;
 }
 
-InputInfo MoveState::stopMove(Character& character) {
+InputInfo InteractState::stopMove(Character& character) {
     InputInfo info;
     info.input = InputID::stopMove;
     Point aux(0.0,0.0);
@@ -53,7 +45,7 @@ InputInfo MoveState::stopMove(Character& character) {
     return info;
 }
 
-InputInfo MoveState::selectItem(Character& character, int item) {
+InputInfo InteractState::selectItem(Character& character, int item) {
     InputInfo info;
     Point aux(0.0,0.0);
     info.position = aux;
@@ -61,14 +53,14 @@ InputInfo MoveState::selectItem(Character& character, int item) {
     return info;
 }
 
-InputInfo MoveState::selectTarget(Character& character, Point position) {
+InputInfo InteractState::selectTarget(Character& character, Point position) {
     InputInfo info;
     info.position = position;
     info.input =InputID::selectTarget;
     return info;
 }
 
-InputInfo MoveState::meditate(Character& character) {
+InputInfo InteractState::meditate(Character& character) {
     InputInfo info;
     Point aux(0.0,0.0);
     info.position = aux;
@@ -76,23 +68,23 @@ InputInfo MoveState::meditate(Character& character) {
     return info;
 }
 
-InputInfo MoveState::resurrect(Character& character) {
+InputInfo InteractState::resurrect(Character& character) {
     InputInfo info;
     Point aux(0.0,0.0);
     info.position = aux;
-    info.input =InputID::nothing;
+    info.input =InputID::resurrect;
     return info;
 }
 
-InputInfo MoveState::cure(Character& character) {
+InputInfo InteractState::cure(Character& character) {
     InputInfo info;
     Point aux(0.0,0.0);
     info.position = aux;
-    info.input =InputID::nothing;
+    info.input =InputID::cure;
     return info;
 }
 
-InputInfo MoveState::takeItem(Character& character) {
+InputInfo InteractState::takeItem(Character& character) {
     InputInfo info;
     Point aux(0.0,0.0);
     info.position = aux;
