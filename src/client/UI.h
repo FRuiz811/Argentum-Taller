@@ -6,6 +6,8 @@
 #include "../common/Point.h"
 #include "Player.h"
 #include "Font.h"
+#include "SelectButton.h"
+#include "RaisedButton.h"
 #include <vector>
 
 union SDL_Event;
@@ -18,6 +20,8 @@ private:
     Font font;
     std::vector<SDL_Texture*> texts;
     std::vector<SDL_Texture*> info;
+    std::vector<std::shared_ptr<RaisedButton>> buttonsInventory;
+    std::vector<std::shared_ptr<SelectButton>> buttonsItems;
     int widthSegment;
     int itemSelected = -1;
     void updateStates();

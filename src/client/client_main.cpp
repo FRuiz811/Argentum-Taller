@@ -15,19 +15,30 @@
 #include "UI.h"
 #include "../common/Point.h"
 #include "NPC.h"
-
+#include "../common/Socket.h"
+#include "../common/CommunicationProtocol.h"
 
 #define ARGENTUM "Argentum Online"
 #define GAMELOOPTIME 60000
+#define INVALID_ARGUMENTS "Error: argumentos invalidos."
 
-int main(int argc, char* args[]) {
+int main(int argc, char* argv[]) {
 	//Debería ser 5 argc
 	//Realizar el connect al host & port indicado.
+
 	ServerProxy serverProxy;
 	PlayerInfo playerInfo = serverProxy.createCharacter(2, 1);
 	bool quit = false;
 	SDL_Event event;
-
+	if(argc == 3) {
+		Socket socket;
+		socket.connect(argv[1], argv[2]);
+		CommunicationProtocol protocol;
+		std::vector<uint8_t> encoding = protocol.encodePlayerInfo(playerInfo);
+		//socket.send(encoding.data(),encoding.size());
+		//PlayerInfo info = protocol.decodePlayerInfo(encoding);
+		return 0;
+	}
 	Window window(ARGENTUM);
     GameMap gameMap(serverProxy.getStaticMap(), window.getRenderer());
 
@@ -64,6 +75,7 @@ int main(int argc, char* args[]) {
 				input = player.handleEvent(event, serverProxy);
 				serverProxy.sendInput(input);
 			}
+			ui.handleClick(event);
 			window.handleEvent(event);
 		}
 		playerInfo = serverProxy.updateModel();

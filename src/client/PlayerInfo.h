@@ -9,20 +9,23 @@
 
 class PlayerInfo : public GameObjectInfo{
 private:
-    uint goldAmount{};
-    uint life{};
-    uint mana{};
-    uint level{2};
-    uint exp{125};
+    uint goldAmount{0};
+    uint life{100};
+    uint mana{100};
+    uint level{1};
+    uint exp{0};
     uint maxLife{100};
     uint maxMana{100};
-    uint maxExp{1500};
+    uint maxExp{1000};
     uint safeGold{50};
     std::string inventory;
+    std::string name;
+    CharacterStateID state{CharacterStateID::Still};
 
 public:
     PlayerInfo();
-    PlayerInfo(uint id, Point point, uint goldAmount, uint life, uint mana, std::string textureHashId, Direction direction);
+    PlayerInfo(uint id, Point point, uint goldAmount, uint life, uint mana,const std::string& textureHashId, Direction direction,
+        uint safeGold, uint maxLife, uint maxMana, uint exp, uint maxExp, uint level,const std::string& inventory, CharacterStateID state);
 
     ~PlayerInfo() override;
 
@@ -46,7 +49,11 @@ public:
 
     uint getMaxExp() const;
 
+    std::string getName() const;
+
     std::string getInventory() const;
+
+    CharacterStateID getState() const;
 };
 
 

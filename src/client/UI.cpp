@@ -22,7 +22,19 @@ window(window), playerTarget(player), manager(manager),
     SDL_Texture* name = font.createText(this->playerTarget->getName(),
         &(window.getRenderer()), &width_text, &height_text);
     this->texts.push_back(name);
-
+    SDL_Rect buttonRect;
+    for (int i = 0; i<9; i++) {
+        buttonRect = {9+(i%3)*50,50+(i/3)*50,32,32};
+        std::shared_ptr<SelectButton> button = std::shared_ptr<SelectButton>(new 
+            SelectButton(&(window.getRenderer()),buttonRect,manager,i));
+        this->buttonsItems.push_back(button);
+    }
+    std::shared_ptr<RaisedButton> equipButton = std::shared_ptr<RaisedButton>(new 
+        RaisedButton(&(window.getRenderer()),font,"Equipar",{9,205,70,25}, manager));
+    std::shared_ptr<RaisedButton> dropButton = std::shared_ptr<RaisedButton>(new 
+        RaisedButton(&(window.getRenderer()),font,"Tirar",{109,205,70,25}, manager));
+    this->buttonsInventory.push_back(dropButton);
+    this->buttonsInventory.push_back(equipButton); 
 }
 
 void UI::updateHealth(){
@@ -164,11 +176,15 @@ void UI::updateItems() {
     int idItem;
 
     SDL_Rect src = {0,0,52,52};
-    SDL_Rect dst;
+    SDL_Rect dst,buttonRect;
     for (int i = 0; i<9; i++) {
         item = items.substr(2*i+i,2);
         idItem = std::stoi(item);
         const Texture& item = manager.getTexture((ItemsInventoryID)idItem);
+        if (idItem > 0) {
+            buttonsItems[i]->setViewport({0,60,widthSegment*2,(this->window.getHeight()-60)/2});
+            buttonsItems[i]->render();
+        }
         dst = {9+(i%3)*50,50+(i/3)*50,32,32};
         item.render(src,dst);
     }   
@@ -181,6 +197,10 @@ void UI::updateInventory() {
     SDL_Rect dst = {0,0,widthSegment*2,(this->window.getHeight()-60)/2};
     SDL_RenderCopy(&(this->window.getRenderer()), statBackground.getTexture(), NULL, &dst);
     updateItems();
+    for (auto& button: buttonsInventory){
+        button->setViewport({0,60,widthSegment*2,(this->window.getHeight()-60)/2});
+        button->render();
+    }
 }
 
 void UI::updateInteract() {}
@@ -225,7 +245,32 @@ void UI::render() {
 }
 
 void UI::handleClick(SDL_Event& event) {
-
+    int x,y;
+    bool newItemSelected = false;
+    if (event.type == SDL_MOUSEMOTION || event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP)
+        SDL_GetMouseState(&x, &y);
+    switch(event.type){
+        case SDL_MOUSEBUTTONDOWN:
+            for(auto& button: buttonsItems){      
+                newItemSelected = button->inside(x,y);
+                if (newItemSelected) {
+                    if(itemSelected == -1) {
+                        itemSelected = button->getId();
+                    } else if (itemSelected == button->getId()) {
+                        itemSelected = -1;
+                    } else if (itemSelected != button->getId()) {
+                        buttonsItems[itemSelected]->onClick();
+                        itemSelected = button->getId();
+                    }
+                }        
+            }
+            if (this->buttonsInventory[0]->inside(x,y))
+                //this->playerTarget->
+                std::cout << "Drop item " << std::endl;
+            if (this->buttonsInventory[1]->inside(x,y))
+                std::cout << "Equip item " << std::endl;
+            break;
+    }
 }
 
 UI::~UI() {

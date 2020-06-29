@@ -7,7 +7,8 @@ void GameCharacter::update() {
 }
 
 PlayerInfo GameCharacter::getPlayerInfo() {
-    return PlayerInfo(id, position.getPoint(), goldAmount, life, mana, textureHashId, direction);
+    return PlayerInfo(id, position.getPoint(), goldAmount, life, mana, textureHashId, direction,150,
+        100,100,125,1500,2,"02|20|12|10|03|00|00|00|00",CharacterStateID::Still);
 }
 
 GameCharacter::GameCharacter(uint id, int aRace, int aClass, Point &point):  GameObject(id), race(aRace), gameClass(aClass) {
