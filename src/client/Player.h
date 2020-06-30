@@ -31,7 +31,7 @@ private:
 	std::shared_ptr<Shield> shield = nullptr;
 	std::shared_ptr<Weapon> weapon = nullptr;
 	int frameHead;
-	int health,gold,mana;
+	uint health,gold,mana;
 
 	void setArmor(BodyID newArmor);
 	void setShield(ShieldID newShield);
@@ -51,7 +51,7 @@ public:
 	void updatePlayerInfo(PlayerInfo info);
 
 	Point* getCenter();
-	InputInfo handleEvent(SDL_Event& event, ServerProxy&);
+	InputInfo handleEvent(SDL_Event& event);
 
 	~Player();
 };

@@ -7,14 +7,14 @@
 class Position {
 
 private: 
-	int x{};
-	int y{};
-    int width{};
-	int height{};
+	float x{};
+	float y{};
+    float width{};
+	float height{};
 public:
     Position();
-    Position(Point&, int, int);
-	Position(int x, int y, int width, int height);
+    Position(Point&, float, float);
+	Position(float x, float y, float width, float height);
 
 //	Position(Position&& other)  noexcept ;
 //    Position& operator=(Position&& other) noexcept;
@@ -23,21 +23,21 @@ public:
 
 	Point getPoint() const;
 
-    int getBottom() const;
+    float getBottom() const;
 
-    int getTop() const;
+    float getTop() const;
 
-    int getRight() const;
+    float getRight() const;
 
-    int getLeft() const;
+    float getLeft() const;
 
-    void setX(int x);
+    void setX(float x);
 
-    void setY(int y);
+    void setY(float y);
 
-    void setWidth(int width);
+    void setWidth(float width);
 
-    void setHeight(int height);
+    void setHeight(float height);
 
     int getWidth() const;
 

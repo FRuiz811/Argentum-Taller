@@ -1,31 +1,52 @@
 #ifndef PERSONAJE_H
 #define PERSONAJE_H
 
-#include "GameObject.h"
+
 #include "../client/PlayerInfo.h"
 #include "StaticObject.h"
+#include "State.h"
+#include "InputQueue.h"
 #include <vector>
 #include <unordered_map>
 #include <memory>
+#include "GameStats.h"
 
 class GameCharacter : public GameObject{
 private:
-    int race{};
-    int gameClass{};
+    RaceID race{};
+    GameClassID gameClass{};
     uint goldAmount;
     uint life;
     uint mana;
+    float exp;
+    uint level;
+    std::unique_ptr<State> state;
+    InputQueue queueInputs;
 
 public:
-	GameCharacter(uint id, int aRace, int aClass, Point& point);
+	GameCharacter(uint id, RaceID aRace, GameClassID aClass, Point& point);
 
 	PlayerInfo getPlayerInfo();
 
-	void move(Direction aDirection,const std::unordered_map<uint, std::shared_ptr<GameObject>>&, const std::vector<StaticObject>&);
+	void update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board, GameStatsConfig& gameStatsConfig) override;
 
-	void update() override;
+    void receiveInput(InputInfo inputInfo);
 
     ~GameCharacter();
+
+    RaceID getRace() const;
+
+    GameClassID getGameClass() const;
+
+    uint getGoldAmount() const;
+
+    uint getLife() const;
+
+    uint getMana() const;
+
+    float getExp() const;
+
+    uint getLevel() const;
 };
 
 #endif

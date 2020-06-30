@@ -128,12 +128,12 @@ StatsJuego::StatsJuego(){
 	this->fRazaMana[1] = fRazaManaElfos;	
 	this->fRazaRecuperacion[2] = fRazaRecuperacionEnanos;
 	this->fRazaVida[2] = fRazaVidaEnanos;
-	this->fRazaMana[2] = fRazaManaEnanos;	
+	this->fRazaMana[2] = fRazaManaEnanos;
 	this->fRazaRecuperacion[3] = fRazaRecuperacionGnomos;
 	this->fRazaVida[3] = fRazaVidaGnomos;
 	this->fRazaMana[3] = fRazaManaGnomos;	
 
-	//Clses
+	//Clases
 	//Mago 
 	constitucionMago = 0.8;
 	inteligenciaMago = 1.8;
@@ -170,28 +170,27 @@ StatsJuego::StatsJuego(){
 	this->constitucionClase[0] = constitucionMago;
 	this->inteligenciaClase[0] = inteligenciaMago;	
 	this->agilidadClase[0] = agilidadMago;
+    this->fClaseRecuperacion[0] = fClaseRecuperacionMago;
+    this->fClaseVida[0] = fClaseVidaMago;
+    this->fClaseMana[0] = fClaseManaMago;
+    this->fClaseMeditacion[0] = fClaseMeditacionMago;
 	this->constitucionClase[1] = constitucionClerigo;
 	this->inteligenciaClase[1] = inteligenciaClerigo;	
 	this->agilidadClase[1] = agilidadClerigo;
+    this->fClaseRecuperacion[1] = fClaseRecuperacionClerigo;
+    this->fClaseVida[1] = fClaseVidaClerigo;
+    this->fClaseMana[1] = fClaseManaClerigo;
+    this->fClaseMeditacion[1] = fClaseMeditacionClerigo;
 	this->constitucionClase[2] = constitucionPaladin;
 	this->inteligenciaClase[2] = inteligenciaPaladin;	
 	this->agilidadClase[2] = agilidadPaladin;
+    this->fClaseRecuperacion[2] = fClaseRecuperacionPaladin;
+    this->fClaseVida[2] = fClaseVidaPaladin;
+    this->fClaseMana[2] = fClaseManaPaladin;
+    this->fClaseMeditacion[2] = fClaseMeditacionPaladin;
 	this->constitucionClase[3] = constitucionGuerrero;
 	this->inteligenciaClase[3] = inteligenciaGuerrero;	
 	this->agilidadClase[3] = agilidadGuerrero;
-
-	this->fClaseRecuperacion[0] = fClaseRecuperacionMago;
-	this->fClaseVida[0] = fClaseVidaMago;
-	this->fClaseMana[0] = fClaseManaMago;	
-	this->fClaseMeditacion[0] = fClaseMeditacionMago;
-	this->fClaseRecuperacion[1] = fClaseRecuperacionClerigo;
-	this->fClaseVida[1] = fClaseVidaClerigo;
-	this->fClaseMana[1] = fClaseManaClerigo;	
-	this->fClaseMeditacion[1] = fClaseMeditacionClerigo;
-	this->fClaseRecuperacion[2] = fClaseRecuperacionPaladin;
-	this->fClaseVida[2] = fClaseVidaPaladin;
-	this->fClaseMana[2] = fClaseManaPaladin;	
-	this->fClaseMeditacion[2] = fClaseMeditacionPaladin;
 	this->fClaseRecuperacion[3] = fClaseRecuperacionGuerrero;
 	this->fClaseVida[3] = fClaseVidaGuerrero;
 	this->fClaseMana[3] = fClaseManaGuerrero;	

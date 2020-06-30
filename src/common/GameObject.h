@@ -1,10 +1,12 @@
 #ifndef OBJETOJUEGO_H
 #define OBJETOJUEGO_H
+
 #include <string>
-#include <iostream>
 #include "Position.h"
-#include "GameObjectInfo.h"
 #include "Identificators.h"
+#include "GameObjectInfo.h"
+#include "GameStatsConfig.h"
+#include "Board.h"
 
 class GameObject{
 protected:
@@ -20,11 +22,19 @@ public:
 	GameObject(GameObject&&) noexcept;
 	GameObject& operator=(GameObject&& other)  noexcept;
 
-    Position &getPosition();
+    GameObjectInfo getGameObjectInfo();
+
+    uint getId() const;
+
     void setPosition(const Position &position);
 
-    GameObjectInfo getGameObjectInfo();
-    virtual void update() = 0;
+    Position &getPosition();
+
+    void setDirection(Direction direction);
+
+    void setTextureHashId(const std::string &textureHashId);
+
+    virtual void update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board& board, GameStatsConfig& gameStatsConfig) = 0;
 
     ~GameObject();
 };

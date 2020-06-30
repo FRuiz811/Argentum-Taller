@@ -1,29 +1,26 @@
 #include "SDL2/SDL.h"
-#include <utility>
 #include <unistd.h>
 #include "Window.h"
 #include "Chrono.h"
 #include "Music.h"
 #include "MusicManager.h"
 #include "TextureManager.h"
-#include "TextureID.h"
 #include "MusicID.h"
 #include "Presentation.h"
 #include "GameMap.h"
 #include "Player.h"
 #include "Camera.h"
-#include "../common/Point.h"
 #include "NPC.h"
 
 
 #define ARGENTUM "Argentum Online"
-#define GAMELOOPTIME (1/30.f) * 1000
+#define GAMELOOPTIME 1000/30.0
 
 int main(int argc, char* args[]) {
 	//Debería ser 5 argc
 	//Realizar el connect al host & port indicado.
 	ServerProxy serverProxy;
-	PlayerInfo playerInfo = serverProxy.createCharacter(0, 0);
+	PlayerInfo playerInfo = serverProxy.createCharacter(RaceID::Human, GameClassID::Paladin);
 	bool quit = false;
 	SDL_Event event;
 
@@ -60,12 +57,13 @@ int main(int argc, char* args[]) {
 				if (event.key.keysym.sym == SDLK_m) {
 					musica.pauseMusic();
 				}
-				input = player.handleEvent(event, serverProxy);
-				serverProxy.sendInput(input);
+				input = player.handleEvent(event);
+				serverProxy.sendInput(input, playerInfo.getId());
 			}
 			window.handleEvent(event);
 		}
-		playerInfo = serverProxy.updateModel();
+        serverProxy.update();
+		playerInfo = serverProxy.getUpdatedPlayerInfo(playerInfo.getId());
 		player.updatePlayerInfo(playerInfo);
 		for (GameObjectInfo& aGameObjectInfo : serverProxy.getUpdatedGameObjects()) {
 		    if (aGameObjectInfo.getId() == playerInfo.getId()) {

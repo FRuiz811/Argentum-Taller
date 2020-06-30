@@ -1,0 +1,91 @@
+{
+  "races": [
+    {
+      "id": 1,
+      "name": "Human",
+      "intelligent": 2,
+      "recoveryTime": 2,
+      "constitution": 3,
+      "strength": 3,
+      "agility": 2,
+      "health": 4,
+      "mana": 4
+    },
+    {
+      "id": 2,
+      "name": "Elf",
+      "intelligent": 5,
+      "recoveryTime": 3,
+      "constitution": 1,
+      "strength": 2,
+      "agility": 4,
+      "health": 3,
+      "mana": 5
+    },
+    {
+      "id": 3,
+      "name": "Dwarf",
+      "intelligent": 1,
+      "recoveryTime": 3,
+      "constitution": 5,
+      "strength": 4,
+      "agility": 1,
+      "health": 5,
+      "mana": 2
+    },
+    {
+      "id": 4,
+      "name": "Gnome",
+      "intelligent": 4,
+      "recoveryTime": 3,
+      "constitution": 3,
+      "strength": 3,
+      "agility": 3,
+      "health": 4,
+      "mana": 3
+    }
+  ],
+  "classes": [
+    {
+      "id": 1,
+      "name": "Mage",
+      "health": 2,
+      "mana": 5,
+      "meditation": 5
+    },
+    {
+      "id": 2,
+      "name": "Cleric",
+      "health": 3,
+      "mana": 4,
+      "meditation": 4
+    },
+    {
+      "id": 3,
+      "name": "Paladin",
+      "health": 4,
+      "mana": 3,
+      "meditation": 4
+    },
+    {
+      "id": 4,
+      "name": "Warrior",
+      "health": 5,
+      "mana": 0,
+      "meditation": 0
+    }
+  ],
+  "goldRandMin": 0,
+  "goldRandMax": 0.2,
+  "goldMaxMult": 100,
+  "goldMaxPot": 1.1,
+  "expMaxMult": 1000,
+  "expMaxPot": 1.8,
+  "expRandMin": 0,
+  "expRandMax": 0.1,
+  "evadeRandMin": 0,
+  "evadeRandMax": 1,
+  "evadeProbability": 0.001,
+  "levelDifference": 10,
+  "maxAgility": 5
+}
