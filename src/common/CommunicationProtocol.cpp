@@ -10,6 +10,7 @@
 #define COMMANDMSG 0x03
 #define OBJECTLENGTH 27
 #define PLAYERINFOLENGTH 70
+#define COMMANDLENGTH 20
 #define ITEM 0x01
 #define CHARACTER 0x00
 
@@ -25,6 +26,12 @@ uint32_t CommunicationProtocol::conversorTo32(uint8_t* value){
 	return *temp32;
 }
 
+void CommunicationProtocol::conversorTo8(uint32_t value) {
+    uint8_t* ptr = (uint8_t*) &value;
+    for(int i = 0; i < 4; i++)
+        this->encodeMsg.push_back(*(ptr+i));
+}
+
 void CommunicationProtocol::encodeStatsPlayer(const PlayerInfo info) {
     uint32_t life,maxLife, mana, maxMana,exp, maxExp, level, gold, safeGold;
     life = htonl(info.getLife());
@@ -36,42 +43,15 @@ void CommunicationProtocol::encodeStatsPlayer(const PlayerInfo info) {
     level = htonl(info.getLevel());
     gold = htonl(info.getGoldAmount()); 
     safeGold = htonl(info.getSafeGold());
-    uint8_t* lifePtr = (uint8_t*) &life;
-    for(int i = 0; i < 4; i++) {
-        this->encodeMsg.push_back(*(lifePtr+i));
-    }
-    uint8_t* maxLifePtr = (uint8_t*) &maxLife;
-    for(int i = 0; i < 4; i++) {
-        this->encodeMsg.push_back(*(maxLifePtr+i));
-    }
-    uint8_t* manaPtr = (uint8_t*) &mana;
-    for(int i = 0; i < 4; i++) {
-        this->encodeMsg.push_back(*(manaPtr+i));
-    }
-     uint8_t* maxManaPtr = (uint8_t*) &maxMana;
-    for(int i = 0; i < 4; i++) {
-        this->encodeMsg.push_back(*(maxManaPtr+i));
-    }
-     uint8_t* expPtr = (uint8_t*) &exp;
-    for(int i = 0; i < 4; i++) {
-        this->encodeMsg.push_back(*(expPtr+i));
-    }
-     uint8_t* maxExpPtr = (uint8_t*) &maxExp;
-    for(int i = 0; i < 4; i++) {
-        this->encodeMsg.push_back(*(maxExpPtr+i));
-    }
-     uint8_t* levelPtr = (uint8_t*) &level;
-    for(int i = 0; i < 4; i++) {
-        this->encodeMsg.push_back(*(levelPtr+i));
-    }
-    uint8_t* goldPtr = (uint8_t*) &gold;
-    for(int i = 0; i < 4; i++) {
-        this->encodeMsg.push_back(*(goldPtr+i));
-    }
-    uint8_t* safeGoldPtr = (uint8_t*) &safeGold;
-    for(int i = 0; i < 4; i++) {
-        this->encodeMsg.push_back(*(safeGoldPtr+i));
-    }
+    conversorTo8(life);
+    conversorTo8(maxLife);
+    conversorTo8(mana);
+    conversorTo8(maxMana);
+    conversorTo8(exp);
+    conversorTo8(maxExp);
+    conversorTo8(level);
+    conversorTo8(gold);
+    conversorTo8(safeGold);
 }
 
 void CommunicationProtocol::encodeInventory(const PlayerInfo info) {
@@ -104,36 +84,22 @@ void CommunicationProtocol::encodeStatePlayer(const GameObjectInfo info) {
     uint32_t dir = htonl((uint32_t) info.getDirection());
     uint32_t posX = htonl(info.getPoint().x);
     uint32_t posY = htonl(info.getPoint().y);
-
-    uint8_t* statePtr = (uint8_t*) &state;
-    for(int i = 0; i<4; i++)
-        this->encodeMsg.push_back(*(statePtr+i));
-    uint8_t* dirPtr = (uint8_t*) &dir;
-    for(int i = 0; i<4; i++)
-        this->encodeMsg.push_back(*(dirPtr+i));
-    uint8_t* posXptr = (uint8_t*) &posX;
-    for(int i = 0; i<4; i++)
-        this->encodeMsg.push_back(*(posXptr+i));
-    uint8_t* posYptr = (uint8_t*) &posY;
-    for(int i = 0; i<4; i++)
-        this->encodeMsg.push_back(*(posYptr+i));
+    conversorTo8(state);
+    conversorTo8(dir);
+    conversorTo8(posX);
+    conversorTo8(posY);
 }
 
 std::vector<uint8_t> CommunicationProtocol::encodePlayerInfo(const PlayerInfo info) {
     this->encodeMsg.clear();
     uint32_t length = PLAYERINFOLENGTH;
-    //Hago lugar para lo que será la longitud del mensaje
     length = htonl(length);
-    uint8_t* lengthPtr = (uint8_t*) &length;
-    for (int i=0; i < 4; i++)
-        this->encodeMsg.push_back(*(lengthPtr+i));
+    conversorTo8(length);
     uint8_t type = PLAYERINFOMSG;
     this->encodeMsg.push_back(type);
     uint32_t id = info.getId();
     id = htonl(id);
-    uint8_t* idPtr = (uint8_t*) &id;
-    for (int i=0; i < 4; i++)
-        this->encodeMsg.push_back(*(idPtr+i));
+    conversorTo8(id);
     encodeStatsPlayer(info);
     encodeEquipmentPlayer(info);
     encodeInventory(info);
@@ -246,13 +212,8 @@ void CommunicationProtocol::encodeItem(GameObjectInfo object) {
 
     uint32_t posX = htonl(object.getPoint().x);
     uint32_t posY = htonl(object.getPoint().y);
-    uint8_t* posXptr = (uint8_t*) &posX;
-    for(int i = 0; i<4; i++)
-        this->encodeMsg.push_back(*(posXptr+i));
-    uint8_t* posYptr = (uint8_t*) &posY;
-    for(int i = 0; i<4; i++)
-        this->encodeMsg.push_back(*(posYptr+i));
-    
+    conversorTo8(posX);
+    conversorTo8(posY);    
 }   
 
 void CommunicationProtocol::encodeCharacter(GameObjectInfo object) {
@@ -280,20 +241,13 @@ std::vector<uint8_t> CommunicationProtocol::encodeGameObjects(const std::vector<
     length = htonl(length);
     cantObjects = htonl(cantObjects);
     uint8_t type = OBJECTSINFOMSG;
-    uint8_t* lengthPtr = (uint8_t*) &length;
-    for (int i=0; i < 4; i++)
-        this->encodeMsg.push_back(*(lengthPtr+i));
+    conversorTo8(length);
     this->encodeMsg.push_back(type);
-    uint8_t* cantObjectsPtr = (uint8_t*) &cantObjects;
-    for (int i=0; i < 4; i++)
-        this->encodeMsg.push_back(*(cantObjectsPtr+i));
+    conversorTo8(cantObjects);
     uint32_t id;
-    uint8_t* idPtr;
     for(auto& object: objects) {
         id = htonl(object.getId());
-        idPtr = (uint8_t*) &id;
-        for (int i=0; i < 4; i++)
-            this->encodeMsg.push_back(*(idPtr+i));
+        conversorTo8(id);
         if(object.isItem()) {   
             encodeItem(object);
         } else {
@@ -322,5 +276,38 @@ std::vector<GameObjectInfo> CommunicationProtocol::decodeGameObjects(std::vector
     }
     return std::move(objects);
 }
+
+std::vector<uint8_t> CommunicationProtocol::encodeCommand(InputInfo input) {
+    this->encodeMsg.clear();
+    uint32_t length = COMMANDLENGTH;
+    length = htonl(length);
+    conversorTo8(length);
+    uint8_t type = COMMANDMSG;
+    this->encodeMsg.push_back(type);
+    uint32_t id = htonl(input.idPlayer);
+    conversorTo8(id);
+    uint32_t inputId = (uint32_t) input.input;
+    inputId = htonl(inputId);
+    conversorTo8(inputId);
+    uint32_t x = htonl(input.position.x);
+    conversorTo8(x);
+    uint32_t y = htonl(input.position.y);
+    conversorTo8(y);
+    uint32_t adition = htonl(input.aditional);
+    conversorTo8(adition);
+
+    return std::move(this->encodeMsg);
+    
+}
+
+ InputInfo CommunicationProtocol::decodeCommand(std::vector<uint8_t> msg) {
+    InputInfo input;
+    input.idPlayer = conversorTo32(msg.data());
+    input.input = (InputID) conversorTo32(msg.data()+4);
+    input.position.x = conversorTo32(msg.data()+8);
+    input.position.y = conversorTo32(msg.data()+12);
+    input.aditional = conversorTo32(msg.data()+16);
+    return input;
+ }
 
 CommunicationProtocol::~CommunicationProtocol() {}

@@ -43,7 +43,7 @@ enum class InputID {
 struct InputInfo {
     InputID input = InputID::nothing;
     Point position;
-    int aditional = -1;
+    int aditional = 0;
     int idPlayer;
 };
 
