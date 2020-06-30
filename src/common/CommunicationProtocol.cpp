@@ -300,7 +300,7 @@ std::vector<uint8_t> CommunicationProtocol::encodeCommand(InputInfo input) {
     
 }
 
- InputInfo CommunicationProtocol::decodeCommand(std::vector<uint8_t> msg) {
+InputInfo CommunicationProtocol::decodeCommand(std::vector<uint8_t> msg) {
     InputInfo input;
     input.idPlayer = conversorTo32(msg.data());
     input.input = (InputID) conversorTo32(msg.data()+4);

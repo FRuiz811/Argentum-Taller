@@ -50,8 +50,10 @@ public:
 
 	void updatePlayerInfo(PlayerInfo info);
 
-	InputInfo handleEvent(SDL_Event& event, ServerProxy&);
-
+	InputInfo handleEvent(SDL_Event& event, Camera& camera);
+	InputInfo dropItem(int itemNumber);
+	InputInfo selectItem(int itemNumber);
+	
 	Point* getCenter();
 
 	uint getLevel();

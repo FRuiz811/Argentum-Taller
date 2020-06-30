@@ -17,7 +17,7 @@ GameCharacter::GameCharacter(uint id, int aRace, int aClass, Point &point):  Gam
     goldAmount = 100;
     mana = 50;
     direction = Direction::down;
-    textureHashId = "ht03|h02|b05|s00|w06";
+    textureHashId = "ht01|h04|b02|s02|w04";
 }
 
 void GameCharacter::move(Direction aDirection, const std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects,

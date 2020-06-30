@@ -244,8 +244,10 @@ void UI::render() {
     updateStates();
 }
 
-void UI::handleClick(SDL_Event& event) {
+InputInfo UI::handleClick(SDL_Event& event) {
     int x,y;
+    InputInfo info;
+    info.input  = InputID::nothing;
     bool newItemSelected = false;
     if (event.type == SDL_MOUSEMOTION || event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP)
         SDL_GetMouseState(&x, &y);
@@ -265,12 +267,12 @@ void UI::handleClick(SDL_Event& event) {
                 }        
             }
             if (this->buttonsInventory[0]->inside(x,y))
-                //this->playerTarget->
-                std::cout << "Drop item " << std::endl;
+                info = this->playerTarget->dropItem(itemSelected+1);
             if (this->buttonsInventory[1]->inside(x,y))
-                std::cout << "Equip item " << std::endl;
+                info = this->playerTarget->selectItem(itemSelected+1);
             break;
     }
+    return info;
 }
 
 UI::~UI() {

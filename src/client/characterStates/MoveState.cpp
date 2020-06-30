@@ -99,3 +99,12 @@ InputInfo MoveState::takeItem(Character& character) {
     info.input =InputID::nothing;
     return info;
 }
+
+InputInfo MoveState::dropItem(Character& character, int item) {
+    InputInfo info;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    info.input =InputID::dropItem;
+    info.aditional = item;
+    return info;
+}

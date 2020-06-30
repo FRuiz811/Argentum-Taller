@@ -72,10 +72,11 @@ int main(int argc, char* argv[]) {
 				if (event.key.keysym.sym == SDLK_m) {
 					musica.pauseMusic();
 				}
-				input = player.handleEvent(event, serverProxy);
+				input = player.handleEvent(event, camera);
 				serverProxy.sendInput(input);
 			}
-			ui.handleClick(event);
+			input = ui.handleClick(event);
+			serverProxy.sendInput(input);
 			window.handleEvent(event);
 		}
 		playerInfo = serverProxy.updateModel();
@@ -83,7 +84,7 @@ int main(int argc, char* argv[]) {
 		for (GameObjectInfo& aGameObjectInfo : serverProxy.getUpdatedGameObjects()) {
 	   		if (aGameObjectInfo.getId() == playerInfo.getId()) {
           	 	continue;
-	    }
+	    	}
 	    	npcs.emplace_back(textureManager, aGameObjectInfo);
 		}
 		window.clearScreen();
