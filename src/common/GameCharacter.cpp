@@ -4,7 +4,8 @@
 #include "GameStatsConfig.h"
 
 PlayerInfo GameCharacter::getPlayerInfo() {
-    return PlayerInfo(id, position.getPoint(), goldAmount, life, mana, textureHashId, direction);
+    return PlayerInfo(id, position.getPoint(), goldAmount, life, mana, textureHashId, direction,150,
+        100,100,125,1500,2,"02|20|12|10|03|00|00|00|00",CharacterStateID::Still);
 }
 
 GameCharacter::GameCharacter(uint id, RaceID aRace, GameClassID aClass, Point &point):
@@ -12,15 +13,14 @@ GameObject(id), race(aRace), gameClass(aClass), queueInputs() {
     this->position = Position(point, 25, 60);
     this->life = 100;
     this->goldAmount = 100;
-    this->mana = 100;
+    this->mana = 50;
     this->exp = 0;
     this->direction = Direction::down;
-    this->textureHashId = "ht01|h01|b01|s01|w01";
+    this->textureHashId = "ht03|h02|b05|s00|w06";
     InputInfo anInputInfo;
     anInputInfo.input = InputID::nothing;
     anInputInfo.position = Point(0.0, 0.0);
     this->state = std::unique_ptr<State>(new ServerStillState(anInputInfo));
-
 }
 
 void GameCharacter::receiveInput(InputInfo anInputInfo) {
@@ -35,6 +35,7 @@ void GameCharacter::update(std::unordered_map<uint, std::shared_ptr<GameObject>>
             state = state->getNextState();
         } else {
             state->resetState();
+            state = state->getNextState();
         }
     }
     state->performTask(id, gameObjects, board, gameStatsConfig);

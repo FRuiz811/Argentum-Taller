@@ -1,11 +1,11 @@
-#include "DeadState.h"
+#include "AttackState.h"
 
-DeadState::DeadState() : 
-    CharacterState(CharacterStateID::Dead){}
+AttackState::AttackState() : 
+    CharacterState(CharacterStateID::Attack){}
 
-DeadState::~DeadState() {}
+AttackState::~AttackState() {}
 
-InputInfo DeadState::moveUp(Character& character){
+InputInfo AttackState::moveUp(Character& character){
     InputInfo info;
     info.input = InputID::up;
     if (character.getDirection() == Direction::up) 
@@ -15,7 +15,7 @@ InputInfo DeadState::moveUp(Character& character){
     return info;
 }
 
-InputInfo DeadState::moveDown(Character& character) {
+InputInfo AttackState::moveDown(Character& character) {
     InputInfo info;
     info.input = InputID::down;
     if (character.getDirection() == Direction::down) 
@@ -25,7 +25,7 @@ InputInfo DeadState::moveDown(Character& character) {
     return info;
 }
 
-InputInfo DeadState::moveLeft(Character& character) {
+InputInfo AttackState::moveLeft(Character& character) {
     InputInfo info;
     info.input = InputID::left;
     if (character.getDirection() == Direction::left) 
@@ -35,7 +35,7 @@ InputInfo DeadState::moveLeft(Character& character) {
     return info;
 }
 
-InputInfo DeadState::moveRight(Character& character) {
+InputInfo AttackState::moveRight(Character& character) {
     InputInfo info;
     info.input = InputID::right;
     if (character.getDirection() == Direction::right) 
@@ -45,7 +45,7 @@ InputInfo DeadState::moveRight(Character& character) {
     return info;
 }
 
-InputInfo DeadState::stopMove(Character& character) {
+InputInfo AttackState::stopMove(Character& character) {
     InputInfo info;
     info.input = InputID::stopMove;
     Point aux(0.0,0.0);
@@ -53,7 +53,7 @@ InputInfo DeadState::stopMove(Character& character) {
     return info;
 }
 
-InputInfo DeadState::selectItem(Character& character, int item) {
+InputInfo AttackState::selectItem(Character& character, int item) {
     InputInfo info;
     Point aux(0.0,0.0);
     info.position = aux;
@@ -61,7 +61,14 @@ InputInfo DeadState::selectItem(Character& character, int item) {
     return info;
 }
 
-InputInfo DeadState::selectTarget(Character& character, Point position) {
+InputInfo AttackState::selectTarget(Character& character, Point position) {
+    InputInfo info;
+    info.position = position;
+    info.input =InputID::selectTarget;
+    return info;
+}
+
+InputInfo AttackState::meditate(Character& character) {
     InputInfo info;
     Point aux(0.0,0.0);
     info.position = aux;
@@ -69,7 +76,7 @@ InputInfo DeadState::selectTarget(Character& character, Point position) {
     return info;
 }
 
-InputInfo DeadState::meditate(Character& character) {
+InputInfo AttackState::resurrect(Character& character) {
     InputInfo info;
     Point aux(0.0,0.0);
     info.position = aux;
@@ -77,15 +84,7 @@ InputInfo DeadState::meditate(Character& character) {
     return info;
 }
 
-InputInfo DeadState::resurrect(Character& character) {
-    InputInfo info;
-    Point aux(0.0,0.0);
-    info.position = aux;
-    info.input =InputID::resurrect;
-    return info;
-}
-
-InputInfo DeadState::cure(Character& character) {
+InputInfo AttackState::cure(Character& character) {
     InputInfo info;
     Point aux(0.0,0.0);
     info.position = aux;
@@ -93,7 +92,7 @@ InputInfo DeadState::cure(Character& character) {
     return info;
 }
 
-InputInfo DeadState::takeItem(Character& character) {
+InputInfo AttackState::takeItem(Character& character) {
     InputInfo info;
     Point aux(0.0,0.0);
     info.position = aux;

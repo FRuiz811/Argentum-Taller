@@ -23,7 +23,7 @@ void GameObject::setPosition(const Position &position) {
 GameObject::GameObject(uint id): id(id) {}
 
 GameObjectInfo GameObject::getGameObjectInfo() {
-    return GameObjectInfo(id, position.getPoint(), textureHashId, direction);
+    return GameObjectInfo(id, position.getPoint(), textureHashId, direction,CharacterStateID::Still,false);
 }
 
 uint GameObject::getId() const {

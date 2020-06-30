@@ -1,11 +1,11 @@
-#include "StillState.h"
+#include "MeditateState.h"
 
-StillState::StillState() : 
-    CharacterState(CharacterStateID::Still){}
+MeditateState::MeditateState() : 
+    CharacterState(CharacterStateID::Meditate){}
 
-StillState::~StillState() {}
+MeditateState::~MeditateState() {}
 
-InputInfo StillState::moveUp(Character& character){
+InputInfo MeditateState::moveUp(Character& character){
     InputInfo info;
     info.input = InputID::up;
     Point aux(0.0,0.0);
@@ -13,7 +13,7 @@ InputInfo StillState::moveUp(Character& character){
     return info;
 }
 
-InputInfo StillState::moveDown(Character& character) {
+InputInfo MeditateState::moveDown(Character& character) {
     InputInfo info;
     info.input = InputID::down;
     Point aux(0.0,0.0);
@@ -21,7 +21,7 @@ InputInfo StillState::moveDown(Character& character) {
     return info;
 }
 
-InputInfo StillState::moveLeft(Character& character) {
+InputInfo MeditateState::moveLeft(Character& character) {
     InputInfo info;
     info.input = InputID::left;
     Point aux(0.0,0.0);
@@ -29,7 +29,7 @@ InputInfo StillState::moveLeft(Character& character) {
     return info;
 }
 
-InputInfo StillState::moveRight(Character& character) {
+InputInfo MeditateState::moveRight(Character& character) {
     InputInfo info;
     info.input = InputID::right;
     Point aux(0.0,0.0);
@@ -37,7 +37,7 @@ InputInfo StillState::moveRight(Character& character) {
     return info;
 }
 
-InputInfo StillState::stopMove(Character& character) {
+InputInfo MeditateState::stopMove(Character& character) {
     InputInfo info;
     info.input = InputID::stopMove;
     Point aux(0.0,0.0);
@@ -45,7 +45,7 @@ InputInfo StillState::stopMove(Character& character) {
     return info;
 }
 
-InputInfo StillState::selectItem(Character& character, int item) {
+InputInfo MeditateState::selectItem(Character& character, int item) {
     InputInfo info;
     Point aux(0.0,0.0);
     info.position = aux;
@@ -84,23 +84,14 @@ InputInfo StillState::selectItem(Character& character, int item) {
     return info;
 }
 
-
-InputInfo StillState::selectTarget(Character& character, Point position) {
+InputInfo MeditateState::selectTarget(Character& character, Point position) {
     InputInfo info;
     info.position = position;
     info.input =InputID::selectTarget;
     return info;
 }
 
-InputInfo StillState::meditate(Character& character) {
-    InputInfo info;
-    Point aux(0.0,0.0);
-    info.position = aux;
-    info.input =InputID::meditate;
-    return info;
-}
-
-InputInfo StillState::resurrect(Character& character) {
+InputInfo MeditateState::meditate(Character& character) {
     InputInfo info;
     Point aux(0.0,0.0);
     info.position = aux;
@@ -108,7 +99,7 @@ InputInfo StillState::resurrect(Character& character) {
     return info;
 }
 
-InputInfo StillState::cure(Character& character) {
+InputInfo MeditateState::resurrect(Character& character) {
     InputInfo info;
     Point aux(0.0,0.0);
     info.position = aux;
@@ -116,9 +107,19 @@ InputInfo StillState::cure(Character& character) {
     return info;
 }
 
-InputInfo StillState::takeItem(Character& character) {
+InputInfo MeditateState::cure(Character& character) {
     InputInfo info;
-    info.position = character.getPosition();
-    info.input =InputID::takeItem;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    info.input =InputID::nothing;
     return info;
 }
+
+InputInfo MeditateState::takeItem(Character& character) {
+    InputInfo info;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    info.input =InputID::nothing;
+    return info;
+}
+

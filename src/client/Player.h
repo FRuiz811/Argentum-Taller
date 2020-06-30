@@ -2,6 +2,7 @@
 #define PLAYER_H
 
 #include "Character.h"
+#include "Camera.h"
 #include "TextureManager.h"
 #include "../common/Point.h"
 #include "Items/Head.h"
@@ -14,13 +15,13 @@
 #include "../common/ServerProxy.h"
 #include "PlayerInfo.h"
 #include <memory>
+#include <string>
 
 union SDL_Event;
 
 
 class Player : public Character {
 private:
-	//int id{0};
 	Point center;
 	const TextureManager& manager;
 	PlayerInfo playerInfo;	
@@ -50,8 +51,22 @@ public:
 
 	void updatePlayerInfo(PlayerInfo info);
 
-	Point* getCenter();
 	InputInfo handleEvent(SDL_Event& event);
+
+	Point* getCenter();
+
+	uint getLevel();
+	uint getHealth();
+	uint getMana();
+	uint getGold();
+	uint getMaxMana();
+	uint getMaxHealth();
+	uint getSafeGold();
+	uint getExp();
+	uint getMaxExp();
+	std::string getInventory();
+	CharacterStateID& getState();
+	PlayerInfo getInfo();
 
 	~Player();
 };

@@ -11,7 +11,7 @@ StatsJuego::StatsJuego(){
 	oroMaxPot = 1.1;
 
 	//Inventario
-	limiteInventario = 10;
+	limiteInventario = 9;
 
 	//Experiencia
 	ptoExperienciaMult = 1000;

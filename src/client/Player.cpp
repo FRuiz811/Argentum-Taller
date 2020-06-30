@@ -28,10 +28,13 @@
 #include "characterStates/StillState.h"
 #include "characterStates/MoveState.h"
 #include "characterStates/DeadState.h"
-#include "characterStates/StartMovingState.h"
+#include "characterStates/MeditateState.h"
+#include "characterStates/InteractState.h"
+#include "characterStates/AttackState.h"
+
 
 Player::Player(const TextureManager& manager, const PlayerInfo& playerInfo) :
-	Character(playerInfo.getX(), playerInfo.getY()), center(playerInfo.getX(), playerInfo.getY()),
+  Character(playerInfo.getX(),playerInfo.getY(),playerInfo.getId()), center(playerInfo.getX(),playerInfo.getY()),
     manager(manager), playerInfo(playerInfo) {
   this->direction = playerInfo.getDirection();
 	this->frameHead = 0;
@@ -91,23 +94,23 @@ void Player::updatePlayerInfo(PlayerInfo info) {
 }
 
 InputInfo Player::handleEvent(SDL_Event& event) {
-	bool needUpdate = true;
+	bool needUpdate = false;
   InputInfo input;
 	if(event.type == SDL_KEYDOWN) {
         switch(event.key.keysym.sym) {
             case SDLK_w:
                 input = this->state->moveUp(*this);
-                break;
+                needUpdate = true;break;
             case SDLK_s:
-                input = this->state->moveDown(*this);
+                input = this->state->moveDown(*this);needUpdate = true;
                 break;
             case SDLK_a:
-                input = this->state->moveLeft(*this);
+                input = this->state->moveLeft(*this);needUpdate = true;
                 break;
             case SDLK_d:
-                input = this->state->moveRight(*this);
+                input = this->state->moveRight(*this);needUpdate = true;
                 break;
-            case SDLK_r:
+            case SDLK_r:input = this->state->resurrect(*this);
                 break;
             case SDLK_g:
                 break;
@@ -115,7 +118,14 @@ InputInfo Player::handleEvent(SDL_Event& event) {
                 break;
             case SDLK_v:
                 break;
-            case SDLK_f:
+            case SDLK_t:
+        input = this->state->takeItem(*this);
+        break;
+      case SDLK_h:
+        input = this->state->cure(*this);
+        break;
+			case SDLK_y:
+        input = this->state->meditate(*this);
                 break;
             case SDLK_1:
                 input = this->state->selectItem(*this,1);
@@ -164,6 +174,7 @@ InputInfo Player::handleEvent(SDL_Event& event) {
                 break;
 		}
 	}
+  input.idPlayer = this->id;
   return input;
 }
 
@@ -173,8 +184,8 @@ void Player::setState(CharacterStateID newState) {
 			case CharacterStateID::Still:
 				this->state = std::shared_ptr<CharacterState>(new StillState());
 				break;
-			case CharacterStateID::StartMoving:
-				this->state = std::shared_ptr<CharacterState>(new StartMovingState());
+			case CharacterStateID::Interact:
+				this->state = std::shared_ptr<CharacterState>(new InteractState());
 				break;
 			case CharacterStateID::Move:
 				this->state = std::shared_ptr<CharacterState>(new MoveState());
@@ -182,6 +193,11 @@ void Player::setState(CharacterStateID newState) {
 			case CharacterStateID::Dead:
 				this->state = std::shared_ptr<CharacterState>(new DeadState());
 				break;
+      case CharacterStateID::Meditate:
+        this->state = std::shared_ptr<CharacterState>(new MeditateState());
+        break;
+      case CharacterStateID::Attack:
+        this->state = std::shared_ptr<CharacterState>(new AttackState());
 		}
 	}
 }
@@ -310,6 +326,54 @@ void Player::setWeapon(WeaponID newWeapon){
 
 Point* Player::getCenter() {
 	return &center;
+}
+
+uint Player::getLevel() {
+  return this->playerInfo.getLevel();
+}
+
+uint Player::getHealth() {
+  return this->playerInfo.getLife();
+}
+
+uint Player::getMana() {
+  return this->playerInfo.getMana();
+}
+
+uint Player::getGold() {
+  return this->playerInfo.getGoldAmount();
+}
+
+uint Player::getMaxHealth() {
+  return this->playerInfo.getMaxLife();
+}
+
+uint Player::getMaxMana() {
+  return this->playerInfo.getMaxMana();
+}
+
+uint Player::getSafeGold() {
+  return this->playerInfo.getSafeGold();
+}
+
+uint Player::getExp() {
+  return this->playerInfo.getExp();
+}
+
+uint Player::getMaxExp() {
+  return this->playerInfo.getMaxExp();
+}
+
+std::string Player::getInventory() {
+  return this->playerInfo.getInventory();
+}
+
+CharacterStateID& Player::getState() {
+  return this->state->getState();
+}
+
+PlayerInfo Player::getInfo() {
+  return this->playerInfo;
 }
 
 Player::~Player(){}

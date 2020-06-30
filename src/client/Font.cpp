@@ -13,6 +13,10 @@ void Font::setColor(SDL_Color color) {
 	this->color = color;
 }
 
+void Font::setSize(int size) {
+	this->size = size;
+}
+
 SDL_Texture* Font::createText(const std::string& text, SDL_Renderer* renderer, int* width, int* height) {
 	SDL_Surface* textSurface = TTF_RenderText_Solid(this->font, text.c_str(), this->color);
 	if (!textSurface)
@@ -30,6 +34,10 @@ SDL_Texture* Font::createText(const std::string& text, SDL_Renderer* renderer, i
 
 TTF_Font* Font::getFont() const {
 	return this->font;
+}
+
+void Font::deleteText(SDL_Texture* text) {
+	SDL_DestroyTexture(text);
 }
 
 Font::~Font(){

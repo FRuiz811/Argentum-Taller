@@ -2,6 +2,7 @@
 #include "ServerMoveState.h"
 #include "Collider.h"
 #include "GameCharacter.h"
+#include "ServerStillState.h"
 
 ServerMoveState::~ServerMoveState() = default;
 
@@ -30,6 +31,7 @@ void ServerMoveState::performTask(uint id,
     if (amountMovements == 0) {
         float timeInSeconds = gameStatsConfig.getTimeInSeconds(aCharacter->getRace(), distance);
         amountMovements = (distance/timeInSeconds);
+        std::cout << amountMovements << std::endl;
         aCharacter->setDirection(direction);
     }
     Point newPoint = aCharacter->getPosition().getPoint();
@@ -74,13 +76,11 @@ void ServerMoveState::setNextState(InputInfo info) {
         info.input == InputID::left || info.input == InputID::right) {
         this->nextState = std::unique_ptr<State>(new ServerMoveState(info));
     } else {
-        nextState = std::unique_ptr<State>(this);
+        nextState = std::unique_ptr<State>(new ServerMoveState(info));
     }
 }
 
 void ServerMoveState::resetState() {
-    finalized = false;
-    amountMovements = 0;
-    actualMovement = 0;
+    nextState = std::unique_ptr<State>(new ServerStillState(inputInfo));
 }
 

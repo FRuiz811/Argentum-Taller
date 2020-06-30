@@ -39,7 +39,7 @@ bool Presentation::run() {
 		window.render();
         }
     }
-    SDL_DestroyTexture(messageTexture);
+    font.deleteText(messageTexture);
     return closeProgram;
 }
 

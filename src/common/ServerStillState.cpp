@@ -19,9 +19,11 @@ void ServerStillState::setNextState(InputInfo info) {
         info.input == InputID::left || info.input == InputID::right) {
         this->nextState = std::unique_ptr<State>(new ServerMoveState(info));
     } else {
-        nextState = std::unique_ptr<State>(this);
+        nextState = std::unique_ptr<State>(new ServerStillState(info));
     }
 }
 
-void ServerStillState::resetState() {}
+void ServerStillState::resetState() {
+    nextState = std::unique_ptr<State>(new ServerStillState(inputInfo));
+}
 
