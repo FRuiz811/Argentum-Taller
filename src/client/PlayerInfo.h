@@ -20,7 +20,6 @@ private:
     uint safeGold{50};
     std::string inventory;
     std::string name;
-    CharacterStateID state{CharacterStateID::Still};
 
 public:
     PlayerInfo();
@@ -52,8 +51,6 @@ public:
     std::string getName() const;
 
     std::string getInventory() const;
-
-    CharacterStateID getState() const;
 };
 
 

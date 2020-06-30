@@ -22,8 +22,6 @@ union SDL_Event;
 
 class Player : public Character {
 private:
-	//int id{0};
-	std::string name{"Fran"};
 	Point center;
 	const TextureManager& manager;
 	PlayerInfo playerInfo;	
@@ -56,7 +54,6 @@ public:
 
 	Point* getCenter();
 
-	std::string getName();
 	uint getLevel();
 	uint getHealth();
 	uint getMana();

@@ -34,7 +34,7 @@
 
 
 Player::Player(const TextureManager& manager, const PlayerInfo& playerInfo) : 
-  Character(playerInfo.getX(),playerInfo.getY()), center(playerInfo.getX(),playerInfo.getY()),
+  Character(playerInfo.getX(),playerInfo.getY(),playerInfo.getId()), center(playerInfo.getX(),playerInfo.getY()),
     manager(manager), playerInfo(playerInfo) {
   this->direction = playerInfo.getDirection();
 	this->frameHead = 0;
@@ -180,6 +180,7 @@ InputInfo Player::handleEvent(SDL_Event& event, ServerProxy& serverProxy) {
 				break;
 		}
 	}
+  input.idPlayer = this->id;
   return input;
 }
 
@@ -370,10 +371,6 @@ uint Player::getMaxExp() {
 
 std::string Player::getInventory() {
   return this->playerInfo.getInventory();
-}
-
-std::string Player::getName() {
-  return this->name;
 }
 
 CharacterStateID& Player::getState() {

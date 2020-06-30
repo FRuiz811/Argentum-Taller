@@ -3,8 +3,9 @@
 
 GameObjectInfo::~GameObjectInfo() = default;
 
-GameObjectInfo::GameObjectInfo(uint id, const Point &point, std::string textureHashId, Direction aDirection):
-        id(id), point(point), textureHashId(std::move(textureHashId)), direction(aDirection) {}
+GameObjectInfo::GameObjectInfo(uint id, const Point &point, std::string textureHashId, Direction aDirection,
+     CharacterStateID state, bool item) : id(id), point(point), textureHashId(std::move(textureHashId)),
+     direction(aDirection), state(state), item(item) {}
 
 uint GameObjectInfo::getId() const {
     return id;
@@ -54,8 +55,22 @@ ShieldID GameObjectInfo::getShieldID() const {
     return (ShieldID)id;
 }
 
+ItemsInventoryID GameObjectInfo::getItemID() const {
+    std::string stringId = this->textureHashId.substr(22,2);
+    int id = std::stoi(stringId);
+    return (ItemsInventoryID)id;
+}
+
 Direction GameObjectInfo::getDirection() const {
     return direction;
+}
+
+bool GameObjectInfo::isItem() const {
+    return this->item;
+}
+
+CharacterStateID GameObjectInfo::getState() const {
+    return this->state;
 }
 
 GameObjectInfo::GameObjectInfo() = default;

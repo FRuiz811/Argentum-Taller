@@ -18,9 +18,9 @@ uint PlayerInfo::getMana() const {
 
 PlayerInfo::PlayerInfo(uint id, Point point, uint goldAmount, uint life, uint mana,const std::string& textureHashId, Direction direction,
      uint safeGold, uint maxLife, uint maxMana, uint exp, uint maxExp, uint level,const std::string& inventory, CharacterStateID state):
-    GameObjectInfo(id, point, std::move(textureHashId), direction),
+    GameObjectInfo(id, point, std::move(textureHashId), direction,state, false),
     goldAmount(goldAmount), life(life), mana(mana), safeGold(safeGold), maxLife(maxLife), maxMana(maxMana),
-    exp(exp), maxExp(maxExp), level(level), inventory(inventory), state(state) {}
+    exp(exp), maxExp(maxExp), level(level), inventory(inventory) {}
 
 PlayerInfo::PlayerInfo() : GameObjectInfo() {}
 
@@ -58,8 +58,4 @@ std::string PlayerInfo::getName() const {
 
 std::string PlayerInfo::getInventory() const {
     return this->inventory;
-}
-
-CharacterStateID PlayerInfo::getState() const {
-    return this->state;
 }

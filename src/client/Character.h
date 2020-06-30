@@ -6,11 +6,12 @@
 
 class Character {
 protected:
+    int id;
 	int posX, posY;
     Direction direction{Direction::down};
 
 public:
-    Character(int posX, int posY) : posX(posX), posY(posY) {}
+    Character(int posX, int posY,int id) : posX(posX), posY(posY), id(id) {}
 
     virtual void render(Camera& camera) = 0;
 
@@ -23,7 +24,10 @@ public:
     Point getPosition() {
         return Point(posX,posY);
     }
-
+    int getId() const {
+        return id;
+    }
+    
     ~Character() {}
 
 };

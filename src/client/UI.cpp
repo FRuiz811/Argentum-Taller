@@ -19,9 +19,9 @@ window(window), playerTarget(player), manager(manager),
     SDL_Texture* inventory = font.createText("Inventario",
         &(window.getRenderer()), &width_text, &height_text);
     this->texts.push_back(inventory);
-    SDL_Texture* name = font.createText(this->playerTarget->getName(),
+    SDL_Texture* equipment = font.createText("Equipacion",
         &(window.getRenderer()), &width_text, &height_text);
-    this->texts.push_back(name);
+    this->texts.push_back(equipment);
     SDL_Rect buttonRect;
     for (int i = 0; i<9; i++) {
         buttonRect = {9+(i%3)*50,50+(i/3)*50,32,32};
@@ -231,8 +231,8 @@ void UI::updateEquipment() {
     } else {
         int w,h;
         SDL_QueryTexture(this->texts[5], NULL, NULL, &w, &h);
-        SDL_Rect nameText = {15,15,w,h};
-        SDL_RenderCopy(&(window.getRenderer()), this->texts[5], NULL, &nameText);
+        SDL_Rect equipment = {15,15,w,h};
+        SDL_RenderCopy(&(window.getRenderer()), this->texts[5], NULL, &equipment);
         updateBuild();
     }
 }

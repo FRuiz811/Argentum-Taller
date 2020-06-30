@@ -35,8 +35,8 @@ int main(int argc, char* argv[]) {
 		socket.connect(argv[1], argv[2]);
 		CommunicationProtocol protocol;
 		std::vector<uint8_t> encoding = protocol.encodePlayerInfo(playerInfo);
-		//socket.send(encoding.data(),encoding.size());
-		//PlayerInfo info = protocol.decodePlayerInfo(encoding);
+		socket.send(encoding.data(),encoding.size());
+		PlayerInfo info = protocol.decodePlayerInfo(encoding);
 		return 0;
 	}
 	Window window(ARGENTUM);

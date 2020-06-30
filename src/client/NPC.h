@@ -15,7 +15,6 @@
 
 class NPC : public Character {
 private:
-    //int id;
     const TextureManager& manager;
     std::shared_ptr<Body>  body = nullptr;
 	std::shared_ptr<Head> head = nullptr;
@@ -25,7 +24,7 @@ private:
     //Agregar Item en caso de que no sea un jugador;
     int frameHead{0};
     bool isAlive{true};
-    //bool isItem{false};
+    bool isItem{false};
 
     void setArmor(BodyID newArmor);
 	void setShield(ShieldID newShield);

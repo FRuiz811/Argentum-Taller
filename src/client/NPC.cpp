@@ -38,7 +38,7 @@
 #include "characterStates/DeadState.h"
 
 NPC::NPC(const TextureManager& manager, const GameObjectInfo& gameObjectInfo):
-  Character(gameObjectInfo.getX(), gameObjectInfo.getY()), manager(manager){
+  Character(gameObjectInfo.getX(), gameObjectInfo.getY(), gameObjectInfo.getId()), manager(manager){
     this->direction = gameObjectInfo.getDirection();
 		this->frameHead = 0;
 	  setArmor(gameObjectInfo.getBodyID());
