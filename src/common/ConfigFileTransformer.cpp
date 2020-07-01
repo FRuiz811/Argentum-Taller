@@ -1,4 +1,5 @@
 #include "ConfigFileTransformer.h"
+#include "Identificators.h"
 
 ConfigFileTransformer::ConfigFileTransformer() = default;
 

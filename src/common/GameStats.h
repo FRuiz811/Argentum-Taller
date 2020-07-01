@@ -19,21 +19,4 @@ struct GameClassInfo {
     uint8_t meditation;
 };
 
-enum class RaceID {
-    Nothing,
-    Human,
-    Elf,
-    Dwarf,
-    Gnome,
-};
-
-enum class GameClassID {
-    Nothing,
-    Mage,
-    Cleric,
-    Paladin,
-    Warrior,
-};
-
-
 #endif //ARGENTUM_TALLER_GAMESTATS_H

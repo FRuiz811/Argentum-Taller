@@ -91,3 +91,11 @@ InputInfo InteractState::takeItem(Character& character) {
     info.input =InputID::nothing;
     return info;
 }
+
+InputInfo InteractState::dropItem(Character& character, int item) {
+    InputInfo info;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    info.input =InputID::nothing;
+    return info;
+}

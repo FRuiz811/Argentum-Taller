@@ -4,6 +4,7 @@
 
 #include <rapidjson/document.h>
 #include "GameStatsConfig.h"
+#include "Identificators.h"
 
 class ConfigFileTransformer {
 private:

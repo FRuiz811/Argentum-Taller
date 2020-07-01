@@ -40,7 +40,7 @@ public:
 
     void render();
 
-    void handleClick(SDL_Event& event);
+    InputInfo handleClick(SDL_Event& event);
 
     ~UI();
 };

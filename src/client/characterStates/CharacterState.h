@@ -22,7 +22,7 @@ public:
 
     virtual InputInfo selectItem(Character& character, int item) = 0;
 
-    //virtual InputInfo dropItem(Character& character) = 0;
+    virtual InputInfo dropItem(Character& character, int item) = 0;
     virtual InputInfo takeItem(Character& character) = 0;
     virtual InputInfo resurrect(Character& character) = 0;
     virtual InputInfo meditate(Character& character) = 0;

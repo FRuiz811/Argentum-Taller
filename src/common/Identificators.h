@@ -44,7 +44,6 @@ struct InputInfo {
     InputID input = InputID::nothing;
     Point position;
     int aditional = 0;
-    int idPlayer;
 };
 
 
@@ -133,6 +132,22 @@ enum class Direction{
     up,
     left,
     right,
+};
+
+enum class RaceID {
+    Nothing,
+    Human,
+    Elf,
+    Dwarf,
+    Gnome,
+};
+
+enum class GameClassID {
+    Nothing,
+    Mage,
+    Cleric,
+    Paladin,
+    Warrior,
 };
 
 #endif

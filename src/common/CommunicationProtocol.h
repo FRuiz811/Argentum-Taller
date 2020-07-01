@@ -17,8 +17,9 @@ private:
     void encodeEquipmentPlayer(const PlayerInfo info);
     void encodeInventory(const PlayerInfo info);
     void encodeStatePlayer(const GameObjectInfo info);
-    void conversorTo8(uint32_t value);
+    void conversorTo8(uint32_t value,int from);
     uint32_t conversorTo32(uint8_t* value);
+    uint16_t conversorTo16(uint8_t* value);
     std::string decodeEquipment(uint8_t* idsEquipment,bool isGameObject=false);
     std::string decodeInventory(uint8_t* idsInventory);
     void encodeItem(GameObjectInfo object);
@@ -39,6 +40,8 @@ public:
     InputInfo decodeCommand(std::vector<uint8_t> msg);
 
     std::vector<uint8_t> encodeCommand(InputInfo input);
+
+    std::vector<uint8_t> encodeInit(RaceID race, GameClassID gameClass);
 
     ~CommunicationProtocol();
 };

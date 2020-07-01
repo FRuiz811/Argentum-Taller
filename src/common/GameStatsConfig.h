@@ -3,6 +3,7 @@
 
 #include <unordered_map>
 #include "GameStats.h"
+#include "Identificators.h"
 
 class GameStatsConfig {
 private:

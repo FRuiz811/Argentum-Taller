@@ -101,7 +101,17 @@ void Player::updatePlayerInfo(PlayerInfo info) {
   setFrameHead();
 }
 
-InputInfo Player::handleEvent(SDL_Event& event) {
+InputInfo Player::dropItem(int itemNumber) {
+  InputInfo info = this->state->dropItem(*this, itemNumber);
+  return info;
+}
+
+InputInfo Player::selectItem(int itemNumber) {
+  InputInfo info = this->state->selectItem(*this, itemNumber);
+  return info;
+}
+
+InputInfo Player::handleEvent(SDL_Event& event, Camera& camera) {
 	bool needUpdate = false;
   InputInfo input;
 	if(event.type == SDL_KEYDOWN) {
@@ -181,8 +191,12 @@ InputInfo Player::handleEvent(SDL_Event& event) {
                 input = this->state->stopMove(*this);
                 break;
 		}
-	}
-  input.idPlayer = this->id;
+	} else if (event.type == SDL_MOUSEBUTTONDOWN) {
+    int x,y;
+    SDL_GetMouseState(&x, &y);
+    Point coord = camera.calculateGlobalPosition(Point(x,y));
+    input = this->state->selectTarget(*this, coord);
+  }
   return input;
 }
 
