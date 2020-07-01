@@ -58,7 +58,7 @@ float GameStatsConfig::getDefense() {
 
 float GameStatsConfig::getTimeInSeconds(RaceID raceId, uint distance) {
     RaceInfo raceInfo = races.at(raceId);
-    return 2 * (1 - raceInfo.agility/maxAgility) + 1;
+    return  (1 - raceInfo.agility/maxAgility) + 0.5;
 }
 
 void GameStatsConfig::setGoldRandMin(float goldRandMin) {

@@ -20,7 +20,7 @@ private:
     Board board;
     GameStatsConfig gameStatsConfig;
     std::unordered_map<uint, std::shared_ptr<GameObject>, std::hash<uint>> gameObjects;
-    uint current_id;
+    uint current_id = 0;
 
     uint getNextId();
 public:

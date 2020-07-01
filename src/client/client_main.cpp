@@ -11,21 +11,20 @@
 #include "Player.h"
 #include "Camera.h"
 #include "UI.h"
-#include "../common/Point.h"
 #include "NPC.h"
 #include "../common/Socket.h"
 #include "../common/CommunicationProtocol.h"
 
 #define ARGENTUM "Argentum Online"
 #define INVALID_ARGUMENTS "Error: argumentos invalidos."
-#define GAMELOOPTIME 1000/30.0
+#define GAMELOOPTIME 1000000/30.0
 
 int main(int argc, char* argv[]) {
 	//Debería ser 5 argc
 	//Realizar el connect al host & port indicado.
 
 	ServerProxy serverProxy;
-	PlayerInfo playerInfo = serverProxy.createCharacter(RaceID::Human, GameClassID::Paladin);
+	PlayerInfo playerInfo = serverProxy.createCharacter(RaceID::Elf, GameClassID::Paladin);
 	bool quit = false;
 	SDL_Event event;
 	if(argc == 3) {

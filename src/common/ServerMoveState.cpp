@@ -21,6 +21,7 @@ ServerMoveState::ServerMoveState(const InputInfo &info) : State(info) {
             direction = Direction::right;
             break;
     }
+    stateId = CharacterStateID::Move;
 }
 
 void ServerMoveState::performTask(uint id,
@@ -30,7 +31,7 @@ void ServerMoveState::performTask(uint id,
     std::shared_ptr<GameCharacter> aCharacter = std::dynamic_pointer_cast<GameCharacter>(gameObjects.at(id));
     if (amountMovements == 0) {
         float timeInSeconds = gameStatsConfig.getTimeInSeconds(aCharacter->getRace(), distance);
-        amountMovements = (distance/timeInSeconds);
+        amountMovements = timeInSeconds * 30;
         std::cout << amountMovements << std::endl;
         aCharacter->setDirection(direction);
     }

@@ -72,8 +72,6 @@ void ServerProxy::addNPCs(std::vector<ObjectLayer> objectLayers) {
 
 ServerProxy::~ServerProxy() = default;
 
-
-
 //PlayerInfo ServerProxy::updateModel() {
 //    std::shared_ptr<GameCharacter> aCharacter =  std::dynamic_pointer_cast<GameCharacter>(gameObjects.at(current_id - 1));
 //    while(!this->queueInputs.empty()) {

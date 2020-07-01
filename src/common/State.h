@@ -14,10 +14,13 @@ protected:
     bool finalized = false;
     std::unique_ptr<State> nextState = nullptr;
     InputInfo inputInfo;
+    CharacterStateID stateId;
 public:
     explicit State(InputInfo);
 
     virtual ~State();
+
+    CharacterStateID getStateId() const;
 
     virtual void performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board, GameStatsConfig &gameStatsConfig) = 0;
 

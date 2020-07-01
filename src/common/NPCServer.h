@@ -7,7 +7,7 @@ class NPCServer : public GameObject{
 private:
     //TODO agregar items que puedan tener ( unorded_map<Id, Precio>)
 public:
-	NPCServer(uint id, Point point, std::string type);
+	NPCServer(uint id, Point point, const std::string& type);
 
     virtual ~NPCServer();
 

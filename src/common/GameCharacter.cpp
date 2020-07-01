@@ -5,7 +5,7 @@
 
 PlayerInfo GameCharacter::getPlayerInfo() {
     return PlayerInfo(id, position.getPoint(), goldAmount, life, mana, textureHashId, direction,150,
-        100,100,125,1500,2,"02|20|12|10|03|00|00|00|00",CharacterStateID::Still);
+        100,100,125,1500,2,"02|20|12|10|03|00|00|00|00",state->getStateId());
 }
 
 GameCharacter::GameCharacter(uint id, RaceID aRace, GameClassID aClass, Point &point):

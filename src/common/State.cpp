@@ -18,4 +18,8 @@ std::unique_ptr<State> State::getNextState() {
     return std::move(nextState);
 }
 
+CharacterStateID State::getStateId() const {
+    return stateId;
+}
+
 

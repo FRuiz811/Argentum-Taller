@@ -90,6 +90,14 @@ void Player::updatePlayerInfo(PlayerInfo info) {
   this->posX = info.getX();
   this->posY = info.getY();
   this->direction = info.getDirection();
+  switch(info.getState()) {
+      case CharacterStateID::Still:
+          state = std::shared_ptr<CharacterState>(new StillState());
+          break;
+      case CharacterStateID::Move:
+          state = std::shared_ptr<CharacterState>(new MoveState());
+          break;
+  }
   setFrameHead();
 }
 
