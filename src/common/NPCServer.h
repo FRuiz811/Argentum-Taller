@@ -7,11 +7,11 @@ class NPCServer : public GameObject{
 private:
     //TODO agregar items que puedan tener ( unorded_map<Id, Precio>)
 public:
-	explicit NPCServer(uint id, Point point, std::string type);
+	NPCServer(uint id, Point point, const std::string& type);
 
-    void update() override;
+    virtual ~NPCServer();
 
-	virtual ~NPCServer();
+    void update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board, GameStatsConfig &gameStatsConfig) override;
 };
 
 #endif

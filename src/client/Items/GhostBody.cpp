@@ -2,7 +2,7 @@
 #include "../TextureID.h"
 
 #define WIDTH_BODY 29
-#define HEIGHT_BODY 30
+#define HEIGHT_BODY 32
 
 GhostBody::GhostBody(const TextureManager& manager) :
  Body(manager.getTexture(TextureID::Ghost),WIDTH_BODY,HEIGHT_BODY,BodyID::Ghost) {

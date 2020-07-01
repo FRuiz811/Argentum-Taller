@@ -15,7 +15,10 @@ public:
     virtual InputInfo stopMove(Character& character);
 
     virtual InputInfo selectItem(Character& character, int item);
-
+    virtual InputInfo resurrect(Character& character);
+    virtual InputInfo cure(Character& character);
+    virtual InputInfo meditate(Character& character);
+    virtual InputInfo takeItem(Character& character);
     virtual InputInfo selectTarget(Character& character, Point position);
 };
 

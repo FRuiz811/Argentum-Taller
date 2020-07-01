@@ -1,7 +1,3 @@
-//
-// Created by victorbelosevich on 14/06/20.
-//
-
 #ifndef ARGENTUM_JSONREADER_H
 #define ARGENTUM_JSONREADER_H
 

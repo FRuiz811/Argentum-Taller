@@ -164,10 +164,8 @@ public:
 
 	
 	StatsJuego();
-	/*Constructor del NPCServer.*/
 
 	~StatsJuego();
-	/*Destructor del NPCServer.*/
 };
 
 #endif

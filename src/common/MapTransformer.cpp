@@ -1,6 +1,5 @@
 #include "MapTransformer.h"
 
-
 MapTransformer::MapTransformer() = default;
 
 MapTransformer::~MapTransformer() = default;

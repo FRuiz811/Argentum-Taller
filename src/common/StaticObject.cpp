@@ -3,10 +3,10 @@
 StaticObject::~StaticObject() = default;
 
 StaticObject::StaticObject(rapidjson::Value &value) {
-    int x = value["x"].GetFloat();
-    int y = value["y"].GetFloat();
-    int width = value["width"].GetFloat();
-    int height = value["height"].GetFloat();
+    float x = value["x"].GetFloat();
+    float y = value["y"].GetFloat();
+    float width = value["width"].GetFloat();
+    float height = value["height"].GetFloat();
     position = Position(x, y, width, height);
     name = value["name"].GetString();
 }

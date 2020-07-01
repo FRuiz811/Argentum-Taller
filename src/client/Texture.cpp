@@ -67,3 +67,7 @@ Texture::~Texture() {
 int Texture::getWidth() const {
     return width;
 }
+
+SDL_Texture* Texture::getTexture() const {
+	return this->texture;
+}

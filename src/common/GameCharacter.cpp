@@ -1,65 +1,74 @@
 #include "GameCharacter.h"
-#include "../client/Exception.h"
 #include "Collider.h"
-
-void GameCharacter::update() {
-
-}
+#include "ServerStillState.h"
+#include "GameStatsConfig.h"
 
 PlayerInfo GameCharacter::getPlayerInfo() {
-    return PlayerInfo(id, position.getPoint(), goldAmount, life, mana, textureHashId, direction);
+    return PlayerInfo(id, position.getPoint(), goldAmount, life, mana, textureHashId, direction,150,
+        100,100,125,1500,2,"02|20|12|10|03|00|00|00|00",state->getStateId());
 }
 
-GameCharacter::GameCharacter(uint id, int aRace, int aClass, Point &point):  GameObject(id), race(aRace), gameClass(aClass) {
-    position = Position(point, 25, 60);
-    life = 100;
-    goldAmount = 100;
-    mana = 100;
-    direction = Direction::down;
-    textureHashId = "ht01|h01|b01|s01|w01";
+GameCharacter::GameCharacter(uint id, RaceID aRace, GameClassID aClass, Point &point):
+GameObject(id), race(aRace), gameClass(aClass), queueInputs() {
+    this->position = Position(point, 25, 60);
+    this->life = 100;
+    this->goldAmount = 100;
+    this->mana = 50;
+    this->exp = 0;
+    this->direction = Direction::down;
+    this->textureHashId = "ht03|h02|b05|s00|w06";
+    InputInfo anInputInfo;
+    anInputInfo.input = InputID::nothing;
+    anInputInfo.position = Point(0.0, 0.0);
+    this->state = std::unique_ptr<State>(new ServerStillState(anInputInfo));
 }
 
-void GameCharacter::move(Direction aDirection, const std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects,
-                         const std::vector<StaticObject> &collisionObjects) {
-    bool canMove = true;
-    Point newPoint = position.getPoint();
-    switch(aDirection) {
-        case Direction::up:
-            newPoint.y -= 15;
-            break;
-        case Direction::down:
-            newPoint.y += 15;
-            break;
-        case Direction::left:
-            newPoint.x -= 15;
-            break;
-        case Direction::right:
-            newPoint.x += 15;
-            break;
-        default:
-            throw Exception("Invalid Direction");
-    }
-    direction = aDirection;
-    Position newPosition(newPoint, position.getWidth(), position.getHeight());
-    for (auto& collisionObject : collisionObjects) {
-        if (Collider::checkCollision(newPosition, collisionObject.getPosition())) {
-            canMove = false;
-            break;
-        }
-    }
-    for (auto& gameObject : gameObjects) {
-        if (gameObject.first == id) {
-            continue;
-        }
-        if (Collider::checkCollision(newPosition, gameObject.second->getPosition())) {
-            canMove = false;
-            break;
-        }
-    }
-    if (canMove) {
-        this->setPosition(newPosition);
-    }
+void GameCharacter::receiveInput(InputInfo anInputInfo) {
+    queueInputs.push(anInputInfo);
 }
+
+void GameCharacter::update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board,
+                           GameStatsConfig &gameStatsConfig) {
+    if (state->isOver()) {
+        if (!state->hasNextState() && !queueInputs.empty()) {
+            state->setNextState(queueInputs.pop());
+            state = state->getNextState();
+        } else {
+            state->resetState();
+            state = state->getNextState();
+        }
+    }
+    state->performTask(id, gameObjects, board, gameStatsConfig);
+}
+
+RaceID GameCharacter::getRace() const {
+    return race;
+}
+
+GameClassID GameCharacter::getGameClass() const {
+    return gameClass;
+}
+
+uint GameCharacter::getGoldAmount() const {
+    return goldAmount;
+}
+
+uint GameCharacter::getLife() const {
+    return life;
+}
+
+uint GameCharacter::getMana() const {
+    return mana;
+}
+
+float GameCharacter::getExp() const {
+    return exp;
+}
+
+uint GameCharacter::getLevel() const {
+    return level;
+}
+
 
 //void GameCharacter::corroborarAtaque(GameObject &atacado){
 //	if(!arma.esArmaDistancia() &&

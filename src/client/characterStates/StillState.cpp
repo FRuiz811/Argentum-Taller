@@ -91,3 +91,34 @@ InputInfo StillState::selectTarget(Character& character, Point position) {
     info.input =InputID::selectTarget;
     return info;
 }
+
+InputInfo StillState::meditate(Character& character) {
+    InputInfo info;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    info.input =InputID::meditate;
+    return info;
+}
+
+InputInfo StillState::resurrect(Character& character) {
+    InputInfo info;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    info.input =InputID::nothing;
+    return info;
+}
+
+InputInfo StillState::cure(Character& character) {
+    InputInfo info;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    info.input =InputID::nothing;
+    return info;
+}
+
+InputInfo StillState::takeItem(Character& character) {
+    InputInfo info;
+    info.position = character.getPosition();
+    info.input =InputID::takeItem;
+    return info;
+}

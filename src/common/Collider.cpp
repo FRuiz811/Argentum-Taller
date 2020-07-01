@@ -1,7 +1,3 @@
-//
-// Created by victorbelosevich on 21/6/20.
-//
-
 #include "Collider.h"
 
 Collider::Collider() = default;
