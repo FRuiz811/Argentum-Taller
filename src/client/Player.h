@@ -32,6 +32,7 @@ private:
 	std::shared_ptr<Shield> shield = nullptr;
 	std::shared_ptr<Weapon> weapon = nullptr;
 	int frameHead;
+	uint health,gold,mana;
 
 	void setArmor(BodyID newArmor);
 	void setShield(ShieldID newShield);

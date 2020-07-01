@@ -1,33 +1,30 @@
 #include "SDL2/SDL.h"
-#include <utility>
 #include <unistd.h>
 #include "Window.h"
 #include "Chrono.h"
 #include "Music.h"
 #include "MusicManager.h"
 #include "TextureManager.h"
-#include "TextureID.h"
 #include "MusicID.h"
 #include "Presentation.h"
 #include "GameMap.h"
 #include "Player.h"
 #include "Camera.h"
 #include "UI.h"
-#include "../common/Point.h"
 #include "NPC.h"
 #include "../common/Socket.h"
 #include "../common/CommunicationProtocol.h"
 
 #define ARGENTUM "Argentum Online"
-#define GAMELOOPTIME 60000
 #define INVALID_ARGUMENTS "Error: argumentos invalidos."
+#define GAMELOOPTIME 1000000/30.0
 
 int main(int argc, char* argv[]) {
 	//Debería ser 5 argc
 	//Realizar el connect al host & port indicado.
 
 	ServerProxy serverProxy;
-	PlayerInfo playerInfo = serverProxy.createCharacter(2, 1);
+	PlayerInfo playerInfo = serverProxy.createCharacter(RaceID::Elf, GameClassID::Paladin);
 	bool quit = false;
 	SDL_Event event;
 	if(argc == 3) {
@@ -72,14 +69,15 @@ int main(int argc, char* argv[]) {
 				if (event.key.keysym.sym == SDLK_m) {
 					musica.pauseMusic();
 				}
-				input = player.handleEvent(event, camera);
-				serverProxy.sendInput(input);
+				input = player.handleEvent(event,camera);
+				serverProxy.sendInput(input, playerInfo.getId());
 			}
 			input = ui.handleClick(event);
-			serverProxy.sendInput(input);
+			serverProxy.sendInput(input, player.getId());
 			window.handleEvent(event);
 		}
-		playerInfo = serverProxy.updateModel();
+        serverProxy.update();
+		playerInfo = serverProxy.getUpdatedPlayerInfo(playerInfo.getId());
 		player.updatePlayerInfo(playerInfo);
 		for (GameObjectInfo& aGameObjectInfo : serverProxy.getUpdatedGameObjects()) {
 	   		if (aGameObjectInfo.getId() == playerInfo.getId()) {

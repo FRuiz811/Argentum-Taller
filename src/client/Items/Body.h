@@ -8,7 +8,7 @@
 class Body: public Item {
 protected:
     int frame{0};
-    float animationSpeed{25.0f};
+    float animationSpeed{20.0f};
     int totalFrames{5};
     BodyID id{BodyID::Nothing};
 public:

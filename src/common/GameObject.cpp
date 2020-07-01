@@ -26,6 +26,18 @@ GameObjectInfo GameObject::getGameObjectInfo() {
     return GameObjectInfo(id, position.getPoint(), textureHashId, direction,CharacterStateID::Still,false);
 }
 
+uint GameObject::getId() const {
+    return id;
+}
+
+void GameObject::setDirection(Direction direction) {
+    GameObject::direction = direction;
+}
+
+void GameObject::setTextureHashId(const std::string &textureHashId) {
+    GameObject::textureHashId = textureHashId;
+}
+
 GameObject::GameObject() = default;
 
 GameObject::~GameObject()= default;

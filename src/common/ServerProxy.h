@@ -10,23 +10,19 @@
 #include "Identificators.h"
 #include "TiledMap.h"
 #include "InputQueue.h"
+#include "Board.h"
+#include "GameStatsConfig.h"
 #include <memory>
 
 class ServerProxy {
 private:
     TiledMap tiledMap;
-    std::vector<StaticObject> collisionObjects;
-    std::vector<StaticObject> cities;
-    std::unordered_map<uint, std::shared_ptr<GameObject>> gameObjects;
-    InputQueue queueInputs;
-    int width;
-    int heigth;
-    uint current_id;
-    Point initialPoint;
+    Board board;
+    GameStatsConfig gameStatsConfig;
+    std::unordered_map<uint, std::shared_ptr<GameObject>, std::hash<uint>> gameObjects;
+    uint current_id = 0;
 
-    void fillCollisionsObjects(std::vector<ObjectLayer>);
     uint getNextId();
-
 public:
     ServerProxy();
 
@@ -34,14 +30,17 @@ public:
 
     TiledMap& getStaticMap();
 
-    void sendInput(InputInfo input);
+    void sendInput(InputInfo input, uint id);
 
-    PlayerInfo updateModel();
+    PlayerInfo createCharacter(RaceID race, GameClassID gameClass);
 
-    PlayerInfo createCharacter(int race, int gameClass);
-    bool characterMove(uint id, Direction direction);
     std::vector<GameObjectInfo> getUpdatedGameObjects();
+
     void update();
+
+    PlayerInfo getUpdatedPlayerInfo(uint id);
+
+    void addNPCs(std::vector<ObjectLayer> objectLayers);
 };
 
 

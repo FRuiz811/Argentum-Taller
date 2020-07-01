@@ -21,7 +21,7 @@ void TiledMap::setTileLayers(const std::vector<TileLayer> &tileLayers) {
 }
 
 std::vector<ObjectLayer> TiledMap::getObjectLayers() {
-    return std::move(objectLayers);
+    return objectLayers;
 }
 
 int TiledMap::getTileheight() const {

@@ -4,47 +4,47 @@ Position::~Position()= default;
 
 Position::Position() = default;
 
-Position::Position(int x, int y, int width, int height):
+Position::Position(Point &aPoint, float aWidth, float aHeight):
+        x(aPoint.x), y(aPoint.y), width(aWidth), height(aHeight) {}
+
+Position::Position(float x, float y, float width, float height):
 x(x), y(y), width(width), height(height){}
 
-int Position::getBottom() const {
+float Position::getBottom() const {
     return y + height;
 }
 
-int Position::getTop() const {
+float Position::getTop() const {
     return y;
 }
 
-int Position::getRight() const {
+float Position::getRight() const {
     return x + width;
 }
 
-int Position::getLeft() const {
+float Position::getLeft() const {
     return x;
 }
 
-void Position::setX(int x) {
+void Position::setX(float x) {
     Position::x = x;
 }
 
-void Position::setY(int y) {
+void Position::setY(float y) {
     Position::y = y;
 }
 
-void Position::setWidth(int width) {
+void Position::setWidth(float width) {
     Position::width = width;
 }
 
-void Position::setHeight(int height) {
+void Position::setHeight(float height) {
     Position::height = height;
 }
 
 Point Position::getPoint() const {
     return Point(x,y);
 }
-
-Position::Position(Point &aPoint, int aWidth, int aHeight):
-x(aPoint.x), y(aPoint.y), width(aWidth), height(aHeight) {}
 
 int Position::getWidth() const {
     return width;
