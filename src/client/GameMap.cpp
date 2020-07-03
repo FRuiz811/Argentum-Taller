@@ -4,16 +4,16 @@
 GameMap::GameMap(const TiledMap & tiledMap, SDL_Renderer& renderer) : renderer(renderer) {
     this->rows = tiledMap.getHeight();
     this->colums = tiledMap.getWidth();
-    this->width = tiledMap.getWidth() * tiledMap.getTilewidth();
-    this->height = tiledMap.getHeight() * tiledMap.getTileheight();
+    this->width = tiledMap.getWidth() * tiledMap.getTileWidth();
+    this->height = tiledMap.getHeight() * tiledMap.getTileHeight();
     _loadTileSets(tiledMap.getTilesets(), renderer);
 
-    int tileWidth = tiledMap.getTilewidth();
-    int tileHeight = tiledMap.getTileheight();
+    int tileWidth = tiledMap.getTileWidth();
+    int tileHeight = tiledMap.getTileHeight();
 
     for (auto& layer : tiledMap.getTileLayers()) {
 
-        std::vector<int> layerData = layer.getData();
+        std::vector<uint16_t> layerData = layer.getData();
 
         for (int y = 0; y < rows; ++y) {
             for (int x = 0; x < colums; ++x) {
@@ -45,7 +45,7 @@ GameMap::GameMap(const TiledMap & tiledMap, SDL_Renderer& renderer) : renderer(r
                 int yPos = y * tileHeight;
 
                 Tile aTile(xPos, yPos, regionX, regionY, tileWidth, tileHeight, loadTexture);
-                if (layer.getName() == "groundLayer") {
+                if (layer.isGroundLayer()) {
                     groundTiles.push_back(aTile);
                 } else {
                     tiles.push_back(aTile);

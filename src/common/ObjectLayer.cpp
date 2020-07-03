@@ -2,7 +2,6 @@
 
 ObjectLayer::ObjectLayer(rapidjson::Value &value) {
     name = value["name"].GetString();
-    type = value["type"].GetString();
     rapidjson::Value::Array objectsArray = value["objects"].GetArray();
     for (auto &objectValue : objectsArray) {
         StaticObject mapObject(objectValue);

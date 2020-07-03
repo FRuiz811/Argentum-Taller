@@ -1,11 +1,10 @@
 #include "Dispatcher.h"
 #include <vector>
 #include <iostream>
-
-
+#include "../common/Decoder.h"
 
 Dispatcher::Dispatcher(CommunicationProtocol& protocol, InputQueue& queue) :
-    queue(queue), keepTalking(false), protocol(std::move(protocol)) {}
+    queue(queue), keepTalking(false), protocol(protocol) {}
 
 void Dispatcher::run() {
     InputInfo info;
@@ -13,8 +12,8 @@ void Dispatcher::run() {
     while (this->keepTalking) {
         try{
             info = this->queue.pop();
-            msg = this->protocol.encodeCommand(info);
-            this->socket.send(msg.data(),msg.size());
+            msg = Decoder::encodeCommand(info);
+            this->protocol.send(msg);
         } catch (const std::exception& e) {
             this->keepTalking = false;
             std::cerr << "Error en Dispatcher::run()" << e.what() << std::endl;

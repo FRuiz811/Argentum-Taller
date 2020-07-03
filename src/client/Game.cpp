@@ -4,6 +4,7 @@
 #include "Chrono.h"
 #include "../common/TiledMap.h"
 #include <arpa/inet.h>
+#include "../common/Decoder.h"
 
 #define WRONGRACE "Raza invalida. Seleccione entre: elfo, gnomo, humano, enano."
 #define WRONGCLASS "Clase invalida. Seleccione entre: mago, clerigo, paladin, guerrero"
@@ -12,53 +13,40 @@
 #define PLAYERINFOMSG 0x01
 #define OBJECTSINFOMSG 0x02
 
-Game::Game() : protocol(), socket(), window(ARGENTUM), textureManager(window.getRenderer()),
-    musicManager(), npcs(), commandQueue(true), dataQueue(false) {}
+Game::Game() : window(ARGENTUM), protocol(Socket()), textureManager(window.getRenderer()),
+    musicManager(), npcs(), commandQueue(true), dataQueue(false),
+    dispatcher(protocol,commandQueue), receiver(protocol,dataQueue) {}
 
 void Game::recieveMapAndPlayer() {
-    uint8_t length[5];
-    this->socket.recieve(&length, 5);
-    uint32_t* temp32 = (uint32_t*) length;
-	uint32_t length_message = ntohl(*temp32);
-    uint8_t type = length[4];
 
-    std::vector<uint8_t> buffer(length_message,0);
-    uint8_t* buf = buffer.data();
-    this->socket.recieve(buf, length_message);
-    //TileMap& tileMap = this->protocol.decodeMap(buffer);
+    Message msgMap = this->protocol.recieve();
+    TiledMap tiledMap = Decoder::decodeMap(msgMap);
  
-    this->socket.recieve(&length, 5);
-    temp32 = (uint32_t*) length;
-	length_message = ntohl(*temp32);
-    type = length[4];
-
-    buffer.resize(length_message,0);
-    buf = buffer.data();
-    this->socket.recieve(buf, length_message);
-    PlayerInfo info = this->protocol.decodePlayerInfo(buffer);
+    Message msgPlayerInfo = this->protocol.recieve();
+    PlayerInfo info = Decoder::decodePlayerInfo(msgPlayerInfo);
     
-    //this->map = std::shared_ptr<GameMap>(new GameMap(tileMap,this->window.getRenderer()));
+    this->map = std::shared_ptr<GameMap>(new GameMap(tiledMap,this->window.getRenderer()));
     this->player = std::shared_ptr<Player>(new Player(this->textureManager, info));
 }
 
 bool Game::init(char* argv[]) {
     try{
-        this->socket.connect(argv[3], argv[4]);
+        this->protocol.connect(argv[3], argv[4]);
         std::vector<uint8_t> initMsg;
-        initMsg = protocol.encodeInit(translateRace(argv[1]),translateGameClass(argv[2]));
-        this->socket.send(initMsg.data(),initMsg.size());
+        initMsg = Decoder::encodeInit(translateRace(argv[1]),translateGameClass(argv[2]));
+        this->protocol.send(initMsg);
 
         recieveMapAndPlayer();
 
-        //Lanzar a correr ambos hilos
         this->textureManager.loadTextures();
         this->musicManager.loadSounds();
 
-       //this->dispatcher.run();
-       //this->receiver.run();
+        this->dispatcher.run();
+        this->receiver.run();
     } catch (...) {
-
+        return false;
     }
+    return true;
 }
 
 int Game::run() {

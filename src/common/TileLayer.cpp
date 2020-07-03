@@ -1,5 +1,7 @@
 #include "TileLayer.h"
 
+#include <utility>
+
 TileLayer::TileLayer() = default;
 
 TileLayer::~TileLayer() = default;
@@ -10,26 +12,16 @@ TileLayer::TileLayer(rapidjson::Value & value) {
             data.push_back(a.GetInt64());
         }
     }
-
-    if (value.HasMember("height")) {
-        height = value["height"].GetInt();
-    }
-
-    name = value["name"].GetString();
-    type = value["type"].GetString();
-
-    if (value.HasMember("width")) {
-        width = value["width"].GetInt();
-    }
-
-    x = value["x"].GetInt();
-    y = value["y"].GetInt();
+    std::string layerName = value["name"].GetString();
+    isGround = "groundLayer" == layerName;
 }
 
-const std::vector<int> &TileLayer::getData() const {
+const std::vector<uint16_t> &TileLayer::getData() const {
     return data;
 }
 
-const std::string &TileLayer::getName() const {
-    return name;
+bool TileLayer::isGroundLayer() const {
+    return isGround;
 }
+
+TileLayer::TileLayer(std::vector<uint16_t> data, bool isGround): data(std::move(data)), isGround(isGround) {}

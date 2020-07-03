@@ -4,15 +4,17 @@
 #include "../common/Message.h"
 
 Receiver::Receiver(CommunicationProtocol& protocol, DataQueue& queue) :
-    queue(queue), keepTalking(false), protocol(std::move(protocol)) {}
+    queue(queue), keepTalking(false), protocol(protocol) {}
 
 void Receiver::run() {
     Message msg;
-    try {
-        //msg = this->protocol.recieve();
-        this->queue.push(msg);
-    } catch (...) {
+    while (this->keepTalking){
+        try {
+            msg = this->protocol.recieve();
+            this->queue.push(msg);
+        }   catch (...) {
 
+        }
     }
 }
 

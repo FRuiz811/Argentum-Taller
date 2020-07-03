@@ -18,9 +18,8 @@
 
 class Game {
 private:
-    CommunicationProtocol protocol;
-    Socket socket;
     Window window;
+    CommunicationProtocol protocol;
     TextureManager textureManager;
     MusicManager musicManager;
     std::vector<NPC> npcs;
@@ -28,12 +27,16 @@ private:
     std::shared_ptr<GameMap> map = nullptr;
     InputQueue commandQueue;
     DataQueue dataQueue;
-    //Dispatcher dispatcher;
-    //Receiver receiver;
+    Dispatcher dispatcher;
+    Receiver receiver;
 
     RaceID translateRace(const std::string& race);
     GameClassID translateGameClass(const std::string& gameClass);
     void recieveMapAndPlayer();
+
+    void update();
+
+    void render(UI* ui, Camera* camera);
 
 public:
     Game();
@@ -41,10 +44,6 @@ public:
     bool init(char* argv[]);
 
     int run();
-
-    void update();
-
-    void render(UI* ui, Camera* camera);
 
     ~Game();
 

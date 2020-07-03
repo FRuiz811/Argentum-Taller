@@ -7,23 +7,19 @@
 
 class TileLayer {
 private:
-    std::vector<int> data;
-    int height;
-    std::string name;
-    std::string type;
-    int width;
-    int x;
-    int y;
+    std::vector<uint16_t> data;
+    bool isGround;
 
 public:
     TileLayer();
     explicit TileLayer(rapidjson::Value&);
+    TileLayer(std::vector<uint16_t> data, bool isGround);
 
     virtual ~TileLayer();
 
-    const std::vector<int> &getData() const;
+    const std::vector<uint16_t> &getData() const;
 
-    const std::string &getName() const;
+    bool isGroundLayer() const;
 };
 
 

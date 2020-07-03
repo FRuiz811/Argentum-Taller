@@ -27,15 +27,20 @@ int main(int argc, char* argv[]) {
 	//	return 1;
 	//}
 
+	if(argc == 5) {
+		Game game;
+		game.init(argv);
+		
+		game.run();
+		
+		
+		return 0;
+	}
+
 	ServerProxy serverProxy;
 	PlayerInfo playerInfo = serverProxy.createCharacter(RaceID::Elf, GameClassID::Paladin);
 	bool quit = false;
 	SDL_Event event;
-	if(argc == 3) {
-		Game game;
-		//game.init(argv);
-		return 0;
-	}
 	Window window(ARGENTUM);
 
 	TextureManager textureManager(window.getRenderer());

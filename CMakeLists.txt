@@ -27,11 +27,9 @@ file(GLOB_RECURSE COMMON_SOURCES
         src/common/*.h
         src/common/*.cpp)
 
-add_executable(client1 ${CLIENT_SOURCES} ${COMMON_SOURCES})
+add_executable(client ${CLIENT_SOURCES} ${COMMON_SOURCES} src/common/Message.cpp src/common/Message.h src/common/Decoder.cpp src/common/Decoder.h)
 
 add_executable(Server ${SERVER_SOURCES})
 
-target_link_libraries(client1
+target_link_libraries(client
         SDL2main SDL2 SDL2_image SDL2_ttf SDL2_mixer pthread) 
-
-
