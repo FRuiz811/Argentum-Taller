@@ -1,7 +1,6 @@
 #include <memory>
 #include "ServerProxy.h"
 #include "JsonReader.h"
-#include "MapTransformer.h"
 #include "Collider.h"
 #include "NPCServer.h"
 #include "ConfigFileTransformer.h"
@@ -9,10 +8,10 @@
 ServerProxy::ServerProxy() {
     rapidjson::Document jsonMap = JsonReader::read("json/bigMapNPC.json");
     rapidjson::Document jsonConfigStats = JsonReader::read("json/gameStats.json");
-    tiledMap = MapTransformer::transform(jsonMap);
+    tiledMap = TiledMap(jsonMap);
     board = Board(tiledMap.getObjectLayers(),
-                  tiledMap.getWidth() * tiledMap.getTilewidth(),
-                  tiledMap.getHeight() * tiledMap.getTileheight());
+                  tiledMap.getWidth() * tiledMap.getTileWidth(),
+                  tiledMap.getHeight() * tiledMap.getTileHeight());
     gameStatsConfig = ConfigFileTransformer::transform(jsonConfigStats);
     addNPCs(tiledMap.getObjectLayers());
 }

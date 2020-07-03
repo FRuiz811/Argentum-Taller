@@ -1,11 +1,9 @@
 #include "TileSet.h"
 
-TileSet::TileSet(rapidjson::Value& tilesetDoc) {
+TileSet::TileSet(rapidjson::Value & tilesetDoc, uint8_t id) {
     firstgid = tilesetDoc["firstgid"].GetInt();
     image = tilesetDoc["image"].GetString();
-    imageHeight = tilesetDoc["imageheight"].GetInt();
-    imageWidth = tilesetDoc["imagewidth"].GetInt();
-    name = tilesetDoc["name"].GetString();
+    id = id;
 }
 
 int TileSet::getFirstgid() const {
@@ -16,18 +14,12 @@ const std::string &TileSet::getImage() const {
     return image;
 }
 
-int TileSet::getImageHeight() const {
-    return imageHeight;
+uint8_t TileSet::getId() const {
+    return id;
 }
 
-int TileSet::getImageWidth() const {
-    return imageWidth;
-}
-
-const std::string &TileSet::getName() const {
-    return name;
+TileSet::TileSet(uint16_t firstGid, uint8_t id): firstgid(firstGid), id(id) {
+    image = "assets/img/map/" + std::to_string(id) + ".png";
 }
 
 TileSet::~TileSet() = default;
-
-

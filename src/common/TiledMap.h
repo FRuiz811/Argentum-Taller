@@ -10,49 +10,38 @@
 
 class TiledMap {
 private:
-    int height;
-    int width;
-    int tileHeight;
-    int tileWidth;
+    uint16_t width{};
+    uint16_t height{};
+    uint8_t tileWidth{};
+    uint8_t tileHeight{};
     std::vector<TileLayer> tileLayers;
     std::vector<ObjectLayer> objectLayers;
     std::vector<TileSet> tilesets;
 public:
     TiledMap();
+    explicit TiledMap(rapidjson::Document & json);
+
+    TiledMap(uint16_t width, uint16_t height, uint8_t tileWidth, uint8_t tileHeight,
+             const std::vector<TileLayer> &tileLayers, const std::vector<TileSet> &tilesets);
 
     ~TiledMap();
 
     TiledMap(TiledMap&& other) noexcept ;
     TiledMap& operator=(TiledMap&& other) noexcept ;
 
-    int getHeight() const;
-
-    void setObjectLayers(const std::vector<ObjectLayer> &objectLayers);
-
-    void setHeight(int aHeight);
+    std::vector<ObjectLayer> getObjectLayers();
 
     const std::vector<TileLayer> &getTileLayers() const;
 
-    void setTileLayers(const std::vector<TileLayer> &tileLayers);
-
-    std::vector<ObjectLayer> getObjectLayers();
-
-    int getTileheight() const;
-
-    void setTileheight(int tileheight);
-
     const std::vector<TileSet> &getTilesets() const;
 
-    void setTilesets(const std::vector<TileSet> &tilesets);
+    uint16_t getHeight() const;
 
-    int getTilewidth() const;
+    uint16_t getWidth() const;
 
-    void setTilewidth(int tilewidth);
+    uint8_t getTileHeight() const;
 
-    int getWidth() const;
-
-    void setWidth(int width);
-
+    uint8_t getTileWidth() const;
 };
 
 
