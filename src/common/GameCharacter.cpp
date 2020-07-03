@@ -9,7 +9,7 @@ PlayerInfo GameCharacter::getPlayerInfo() {
 }
 
 GameCharacter::GameCharacter(uint id, RaceID aRace, GameClassID aClass, Point &point):
-GameObject(id), race(aRace), gameClass(aClass), queueInputs() {
+GameObject(id), race(aRace), gameClass(aClass), queueInputs(true) {
     this->position = Position(point, 25, 60);
     this->life = 100;
     this->goldAmount = 100;

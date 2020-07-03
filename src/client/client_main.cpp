@@ -1,5 +1,6 @@
 #include "SDL2/SDL.h"
 #include <unistd.h>
+#include <iostream>
 #include "Window.h"
 #include "Chrono.h"
 #include "Music.h"
@@ -14,38 +15,38 @@
 #include "NPC.h"
 #include "../common/Socket.h"
 #include "../common/CommunicationProtocol.h"
+#include "Game.h"
 
 #define ARGENTUM "Argentum Online"
-#define INVALID_ARGUMENTS "Error: argumentos invalidos."
+#define INVALID_ARGUMENTS "USO: ./client <raza> <clase> <host> <puerto>"
 #define GAMELOOPTIME 1000000/30.0
 
 int main(int argc, char* argv[]) {
-	//Debería ser 5 argc
-	//Realizar el connect al host & port indicado.
+	//if (argc != 5) {
+	//	std::cout << INVALID_ARGUMENTS << std::endl;
+	//	return 1;
+	//}
 
 	ServerProxy serverProxy;
 	PlayerInfo playerInfo = serverProxy.createCharacter(RaceID::Elf, GameClassID::Paladin);
 	bool quit = false;
 	SDL_Event event;
 	if(argc == 3) {
-		Socket socket;
-		socket.connect(argv[1], argv[2]);
-		CommunicationProtocol protocol;
-		std::vector<uint8_t> encoding = protocol.encodePlayerInfo(playerInfo);
-		socket.send(encoding.data(),encoding.size());
-		PlayerInfo info = protocol.decodePlayerInfo(encoding);
+		Game game;
+		//game.init(argv);
 		return 0;
 	}
 	Window window(ARGENTUM);
-    GameMap gameMap(serverProxy.getStaticMap(), window.getRenderer());
 
 	TextureManager textureManager(window.getRenderer());
 	textureManager.loadTextures();
 
 	MusicManager musicManager;
-	musicManager.createMusic(MusicID::Start, "assets/sound/Musica Inicio.mp3");
+	musicManager.loadSounds();
 	const Music& musica = musicManager.getMusic(MusicID::Start);
 	musica.playMusic(-1);
+
+	GameMap gameMap(serverProxy.getStaticMap(), window.getRenderer());
 
 	Presentation presentation(window, textureManager);
 	if (presentation.run())

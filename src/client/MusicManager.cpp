@@ -1,5 +1,6 @@
 #include "MusicManager.h"
 #include <utility>
+#include "MusicID.h"
 
 MusicManager::MusicManager() : songs() {}
 
@@ -15,6 +16,10 @@ void MusicManager::dropMusic(MusicID id) {
 
 const Music& MusicManager::getMusic(MusicID id) const {
 	return this->songs.at(id);
+}
+
+void MusicManager::loadSounds() {
+	createMusic(MusicID::Start, "assets/sound/Musica Inicio.mp3");
 }
 
 MusicManager::~MusicManager() {}
