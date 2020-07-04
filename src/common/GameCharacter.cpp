@@ -15,7 +15,6 @@ GameObject(id), race(aRace), gameClass(aClass), queueInputs() {
     this->goldAmount = 100;
     this->mana = 50;
     this->exp = 0;
-    this->direction = Direction::down;
     this->textureHashId = "ht03|h02|b05|s00|w06";
     InputInfo anInputInfo;
     anInputInfo.input = InputID::nothing;

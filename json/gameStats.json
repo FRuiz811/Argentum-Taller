@@ -87,5 +87,7 @@
   "evadeRandMax": 1,
   "evadeProbability": 0.001,
   "levelDifference": 10,
-  "maxAgility": 5
+  "maxAgility": 5,
+  "creaturesLimit": 20,
+  "nestCreaturesLimit": 3
 }

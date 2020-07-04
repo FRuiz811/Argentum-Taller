@@ -1,5 +1,4 @@
 #include "SpiderBody.h"
-#include "../TextureID.h"
 
 #define WIDTH_BODY 53
 #define HEIGHT_BODY 35

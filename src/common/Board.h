@@ -10,6 +10,8 @@
 #include "../client/PlayerInfo.h"
 #include "GameStats.h"
 #include "GameStatsConfig.h"
+#include "NestPoint.h"
+#include "NestPointContainer.h"
 
 class Board {
 private:
@@ -18,17 +20,19 @@ private:
     Point initialPoint;
     std::vector<StaticObject> collisionObjects;
     std::vector<StaticObject> cities;
+    NestPointContainer nestPointContainer;
 public:
     Board();
-    Board(std::vector<ObjectLayer> objectLayers, uint width, uint height);
+    Board(std::vector<ObjectLayer> objectLayers, uint width,
+            uint height, uint8_t nestCreaturesLimit);
 
     virtual ~Board();
-
-    void update(GameStatsConfig& gameStatsConfig);
 
     bool checkCollisions(Position& position, uint id);
 
     Point &getInitialPoint();
+
+    Point getNextAvailableNestPoint();
 };
 
 

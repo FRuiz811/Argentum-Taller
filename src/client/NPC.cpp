@@ -33,36 +33,33 @@
 #include "Items/LongSword.h"
 #include "Items/Hammer.h"
 #include "Items/GnarledStick.h"
-#include "characterStates/StillState.h"
-#include "characterStates/MoveState.h"
-#include "characterStates/DeadState.h"
 
 NPC::NPC(const TextureManager& manager, const GameObjectInfo& gameObjectInfo):
   Character(gameObjectInfo.getX(), gameObjectInfo.getY(), gameObjectInfo.getId()), manager(manager){
     this->direction = gameObjectInfo.getDirection();
-		this->frameHead = 0;
-	  setArmor(gameObjectInfo.getBodyID());
-	  setHead(gameObjectInfo.getHeadID());
-	  setHelmet(gameObjectInfo.getHelmetID());
-	  setShield(gameObjectInfo.getShieldID());
+    this->frameHead = 0;
+    setArmor(gameObjectInfo.getBodyID());
+    setHead(gameObjectInfo.getHeadID());
+    setHelmet(gameObjectInfo.getHelmetID());
+    setShield(gameObjectInfo.getShieldID());
     setWeapon(gameObjectInfo.getWeaponID());
 }
 
 void NPC::render(Camera& camera) {
-	if (this->body != nullptr)
+    if (this->body != nullptr)
  		this->body->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y),int(this->direction));
-  if (this->weapon != nullptr)
-    this->weapon->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y),int(this->direction));
-  if (this->shield != nullptr)
-	  this->shield->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y),int(this->direction));
-  if (this->head != nullptr)
-    this->head->render(int(posX+4-camera.getCameraPosition().x), int((posY-this->body->getHeight()/2)-camera.getCameraPosition().y), this->frameHead);
-  if (this->helmet != nullptr)
-    this->helmet->render(int(posX+4-camera.getCameraPosition().x), int((posY-this->body->getHeight()/2)-camera.getCameraPosition().y), this->frameHead);
+    if (this->weapon != nullptr)
+        this->weapon->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y),int(this->direction));
+    if (this->shield != nullptr)
+	    this->shield->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y),int(this->direction));
+    if (this->head != nullptr)
+        this->head->render(int(posX+4-camera.getCameraPosition().x), int((posY-this->body->getHeight()/2)-camera.getCameraPosition().y), this->frameHead);
+    if (this->helmet != nullptr)
+        this->helmet->render(int(posX+4-camera.getCameraPosition().x), int((posY-this->body->getHeight()/2)-camera.getCameraPosition().y), this->frameHead);
 }
 
 void NPC::update(double dt) {
-		if(this->body !=nullptr)
+    if(this->body !=nullptr)
     	this->body->update(dt);
     if (this->weapon != nullptr)
         this->weapon->update(dt);
@@ -97,27 +94,27 @@ void NPC::setFrameHead() {
 void NPC::setHead(HeadID head) {
 	if (this->head == nullptr || head != this->head->getId()) {
 	  switch (head) {
-      case HeadID::Nothing:
-        this->head = nullptr;
-        break;
+        case HeadID::Nothing:
+            this->head = nullptr;
+            break;
     	case HeadID::Elf:
-        this->head = std::shared_ptr<Head>(new ElfHead(this->manager));
-        break;
-      case HeadID::Human:
-        this->head = std::shared_ptr<Head>(new HumanHead(this->manager));
-        break;
-			case HeadID::Dwarf:
-        this->head = std::shared_ptr<Head>(new DwarfHead(this->manager));
-        break;
-			case HeadID::Gnome:
-        this->head = std::shared_ptr<Head>(new GnomeHead(this->manager));
-        break;
-			case HeadID::Priest:
-				this->head = std::shared_ptr<Head>(new PriestHead(this->manager));
-				break;
-			case HeadID::Zombie:
-				this->head = std::shared_ptr<Head>(new ZombieHead(this->manager));
-				break;
+            this->head = std::shared_ptr<Head>(new ElfHead(this->manager));
+            break;
+        case HeadID::Human:
+            this->head = std::shared_ptr<Head>(new HumanHead(this->manager));
+            break;
+        case HeadID::Dwarf:
+            this->head = std::shared_ptr<Head>(new DwarfHead(this->manager));
+            break;
+        case HeadID::Gnome:
+            this->head = std::shared_ptr<Head>(new GnomeHead(this->manager));
+            break;
+        case HeadID::Priest:
+            this->head = std::shared_ptr<Head>(new PriestHead(this->manager));
+            break;
+        case HeadID::Zombie:
+            this->head = std::shared_ptr<Head>(new ZombieHead(this->manager));
+            break;
     }
   }
 }
@@ -126,50 +123,50 @@ void NPC::setArmor(BodyID newArmor) {
   if (this->body == nullptr || newArmor != this->body->getId()) {
 	  switch (newArmor) {
     	case BodyID::BlueCommon:
-        this->body = std::shared_ptr<Body>(new BlueCommonBody(this->manager));
-        break;
-      case BodyID::RedCommon:
-        this->body = std::shared_ptr<Body>(new RedCommonBody(this->manager));
-        break;
-			case BodyID::GreenCommon:
-        this->body = std::shared_ptr<Body>(new GreenCommonBody(this->manager));
-        break;
-			case BodyID::BlueTunic:
-        this->body = std::shared_ptr<Body>(new BlueTunic(this->manager));
-        break;
-			case BodyID::LeatherArmor:
-        this->body = std::shared_ptr<Body>(new LeatherArmor(this->manager));
-        break;
-			case BodyID::PlateArmor:
-        this->body = std::shared_ptr<Body>(new PlateArmor(this->manager));
-        break;
-      case BodyID::Ghost:
-        this->body = std::shared_ptr<Body>(new GhostBody(this->manager));
-				break;
-			case BodyID::Goblin:
-				this->body = std::shared_ptr<Body>(new GoblinBody(this->manager));
-				break;
-			case BodyID::Skeleton:
-				this->body = std::shared_ptr<Body>(new SkeletonBody(this->manager));
-				break;
-			case BodyID::Spider:
-				this->body = std::shared_ptr<Body>(new SpiderBody(this->manager));
-				break;
-			case BodyID::Zombie:
-				this->body = std::shared_ptr<Body>(new ZombieBody(this->manager));
-				break;
-			case BodyID::Priest:
-				this->body = std::shared_ptr<Body>(new PriestBody(this->manager));
-				break;
-			case BodyID::Merchant:
-				this->body = std::shared_ptr<Body>(new MerchantBody(this->manager));
-				break;
-			case BodyID::Banker:
-				this->body = std::shared_ptr<Body>(new BankerBody(this->manager));
-				break;
-			case BodyID::Nothing:
-				this->body = nullptr;
-				break;
+            this->body = std::shared_ptr<Body>(new BlueCommonBody(this->manager));
+            break;
+        case BodyID::RedCommon:
+            this->body = std::shared_ptr<Body>(new RedCommonBody(this->manager));
+            break;
+        case BodyID::GreenCommon:
+            this->body = std::shared_ptr<Body>(new GreenCommonBody(this->manager));
+            break;
+        case BodyID::BlueTunic:
+            this->body = std::shared_ptr<Body>(new BlueTunic(this->manager));
+            break;
+        case BodyID::LeatherArmor:
+            this->body = std::shared_ptr<Body>(new LeatherArmor(this->manager));
+            break;
+        case BodyID::PlateArmor:
+            this->body = std::shared_ptr<Body>(new PlateArmor(this->manager));
+            break;
+        case BodyID::Ghost:
+            this->body = std::shared_ptr<Body>(new GhostBody(this->manager));
+            break;
+        case BodyID::Goblin:
+            this->body = std::shared_ptr<Body>(new GoblinBody(this->manager));
+            break;
+        case BodyID::Skeleton:
+            this->body = std::shared_ptr<Body>(new SkeletonBody(this->manager));
+            break;
+        case BodyID::Spider:
+            this->body = std::shared_ptr<Body>(new SpiderBody(this->manager));
+            break;
+        case BodyID::Zombie:
+            this->body = std::shared_ptr<Body>(new ZombieBody(this->manager));
+            break;
+        case BodyID::Priest:
+            this->body = std::shared_ptr<Body>(new PriestBody(this->manager));
+            break;
+        case BodyID::Merchant:
+            this->body = std::shared_ptr<Body>(new MerchantBody(this->manager));
+            break;
+        case BodyID::Banker:
+            this->body = std::shared_ptr<Body>(new BankerBody(this->manager));
+            break;
+        case BodyID::Nothing:
+            this->body = nullptr;
+            break;
     }
   }
 }

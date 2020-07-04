@@ -47,5 +47,3 @@ uint32_t Message::read32() {
 const std::vector<uint8_t> &Message::getData() const {
     return data;
 }
-
-

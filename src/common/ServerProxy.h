@@ -12,6 +12,7 @@
 #include "InputQueue.h"
 #include "Board.h"
 #include "GameStatsConfig.h"
+#include "Creature.h"
 #include <memory>
 
 class ServerProxy {
@@ -41,6 +42,10 @@ public:
     PlayerInfo getUpdatedPlayerInfo(uint id);
 
     void addNPCs(std::vector<ObjectLayer> objectLayers);
+
+    void addCreatures();
+
+    void generateCreature();
 };
 
 
