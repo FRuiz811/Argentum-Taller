@@ -139,7 +139,7 @@ enum class RaceID {
     Human,
     Elf,
     Dwarf,
-    Gnome,
+    Gnome
 };
 
 enum class GameClassID {
@@ -147,7 +147,15 @@ enum class GameClassID {
     Mage,
     Cleric,
     Paladin,
-    Warrior,
+    Warrior
+};
+
+enum class CreatureID {
+    Nothing,
+    Goblin,
+    Skeleton,
+    Spider,
+    Zombie
 };
 
 #endif

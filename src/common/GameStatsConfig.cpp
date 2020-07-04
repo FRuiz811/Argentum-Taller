@@ -1,135 +1,119 @@
 #include "GameStatsConfig.h"
 
-GameStatsConfig::GameStatsConfig() {
+GameStatsConfig::GameStatsConfig(rapidjson::Document &json) {
+    GameStatsConfig gameStatsConfig;
 
+    goldRandMin = json["goldRandMin"].GetFloat();
+    goldRandMax = json["goldRandMax"].GetFloat();
+    goldMaxMult = json["goldMaxMult"].GetFloat();
+    goldMaxPot = json["goldMaxPot"].GetFloat();
+    expRandMin = json["expRandMin"].GetFloat();
+    expRandMax = json["expRandMax"].GetFloat();
+    expMaxMult = json["expMaxMult"].GetFloat();
+    expMaxPot = json["expMaxPot"].GetFloat();
+    evadeRandMin = json["evadeRandMin"].GetFloat();
+    evadeRandMax = json["evadeRandMax"].GetFloat();
+    evadeProbability = json["evadeProbability"].GetFloat();
+    levelDifference = json["levelDifference"].GetFloat();
+    maxAgility = json["maxAgility"].GetFloat();
+    creaturesLimit = json["creaturesLimit"].GetInt();
+    nestCreaturesLimit = json["nestCreaturesLimit"].GetInt();
+
+    rapidjson::Value::Array racesArray = json["races"].GetArray();
+    for (auto &aRace : racesArray) {
+        races.insert(std::pair<RaceID, RaceInfo>(RaceID(aRace["id"].GetInt()), createRaceInfo(aRace)));
+    }
+    rapidjson::Value::Array gameClassesArray = json["classes"].GetArray();
+    for (auto &aGameClass : gameClassesArray) {
+        gameClasses.insert(std::pair<GameClassID, GameClassInfo>(GameClassID(aGameClass["id"].GetInt()), createGameClass(aGameClass)));
+    }
 }
 
-float GameStatsConfig::getMaxHealth(RaceID, GameClassID, uint level) {
+RaceInfo GameStatsConfig::createRaceInfo(rapidjson::Value &value) {
+    RaceInfo aRaceInfo{};
+    aRaceInfo.intelligent = value["intelligent"].GetInt();
+    aRaceInfo.recoveryTime = value["recoveryTime"].GetInt();
+    aRaceInfo.constitution = value["constitution"].GetInt();
+    aRaceInfo.strength = value["strength"].GetInt();
+    aRaceInfo.agility = value["agility"].GetInt();
+    aRaceInfo.health = value["health"].GetInt();
+    aRaceInfo.mana = value["mana"].GetInt();
+    return aRaceInfo;
+}
+
+GameClassInfo GameStatsConfig::createGameClass(rapidjson::Value &value) {
+    GameClassInfo aGameClassInfo{};
+    aGameClassInfo.health = value["health"].GetInt();
+    aGameClassInfo.mana = value["mana"].GetInt();
+    aGameClassInfo.meditation = value["meditation"].GetInt();
+    return aGameClassInfo;
+}
+
+float GameStatsConfig::getMaxHealth(RaceID, GameClassID, uint level) const {
     return 0;
 }
 
-float GameStatsConfig::getRecoveryHealth(RaceID, GameClassID) {
+float GameStatsConfig::getRecoveryHealth(RaceID, GameClassID) const {
     return 0;
 }
 
-float GameStatsConfig::getMaxMana(RaceID, GameClassID, uint exp) {
+float GameStatsConfig::getMaxMana(RaceID, GameClassID, uint exp) const {
     return 0;
 }
 
-float GameStatsConfig::getRecoveryMana(RaceID, GameClassID) {
+float GameStatsConfig::getRecoveryMana(RaceID, GameClassID) const {
     return 0;
 }
 
-float GameStatsConfig::getRecoveryManaMeditation(RaceID, GameClassID) {
+float GameStatsConfig::getRecoveryManaMeditation(RaceID, GameClassID) const {
     return 0;
 }
 
-float GameStatsConfig::getGoldDrop(uint maxHealthNPC) {
+float GameStatsConfig::getGoldDrop(uint maxHealthNPC) const{
     return 0;
 }
 
-float GameStatsConfig::getMaxGold(uint level) {
+float GameStatsConfig::getMaxGold(uint level) const{
     return 0;
 }
 
-float GameStatsConfig::getNextLevelLimit(uint level) {
+float GameStatsConfig::getNextLevelLimit(uint level) const{
     return 0;
 }
 
-float GameStatsConfig::getExp(RaceID, GameClassID, uint level, uint enemyLevel) {
+float GameStatsConfig::getExp(RaceID, GameClassID, uint level, uint enemyLevel) const {
     return 0;
 }
 
-float GameStatsConfig::getAdditionalExp(RaceID, GameClassID, uint level, uint enemyLevel) {
+float GameStatsConfig::getAdditionalExp(RaceID, GameClassID, uint level, uint enemyLevel) const{
     return 0;
 }
 
-float GameStatsConfig::getDamage(RaceID, GameClassID) {
+float GameStatsConfig::getDamage(RaceID, GameClassID) const{
     return 0;
 }
 
-bool GameStatsConfig::canEvade(RaceID) {
+bool GameStatsConfig::canEvade(RaceID) const{
     return false;
 }
 
-float GameStatsConfig::getDefense() {
+float GameStatsConfig::getDefense() const{
     return 0;
 }
 
-float GameStatsConfig::getTimeInSeconds(RaceID raceId, uint distance) {
+uint8_t GameStatsConfig::getAmountMovements(RaceID raceId) const {
     RaceInfo raceInfo = races.at(raceId);
-    return  (1 - raceInfo.agility/maxAgility) + 0.5;
+    return  3 + (maxAgility - raceInfo.agility);
 }
 
-std::string GameStatsConfig::getPort() const {
-    return std::move(GameStatsConfig::port);
+uint8_t GameStatsConfig::getCreaturesLimit() const {
+    return creaturesLimit;
 }
 
-//Recordar que todo esto debe pasarse al constructor y eliminar el setter.
-
-void GameStatsConfig::setPort(const std::string& port) {
-    GameStatsConfig::port = port;
+uint8_t GameStatsConfig::getNestCreatureLimit() const {
+    return nestCreaturesLimit;
 }
 
-void GameStatsConfig::setGoldRandMin(float goldRandMin) {
-    GameStatsConfig::goldRandMin = goldRandMin;
-}
-
-void GameStatsConfig::setGoldRandMax(float goldRandMax) {
-    GameStatsConfig::goldRandMax = goldRandMax;
-}
-
-void GameStatsConfig::setGoldMaxMult(float goldMaxMult) {
-    GameStatsConfig::goldMaxMult = goldMaxMult;
-}
-
-void GameStatsConfig::setGoldMaxPot(float goldMaxPot) {
-    GameStatsConfig::goldMaxPot = goldMaxPot;
-}
-
-void GameStatsConfig::setExpMaxMult(float expMaxMult) {
-    GameStatsConfig::expMaxMult = expMaxMult;
-}
-
-void GameStatsConfig::setExpMaxPot(float expMaxPot) {
-    GameStatsConfig::expMaxPot = expMaxPot;
-}
-
-void GameStatsConfig::setEvadeRandMin(float evadeRandMin) {
-    GameStatsConfig::evadeRandMin = evadeRandMin;
-}
-
-void GameStatsConfig::setEvadeRandMax(float evadeRandMax) {
-    GameStatsConfig::evadeRandMax = evadeRandMax;
-}
-
-void GameStatsConfig::setEvadeProbability(float evadeProbability) {
-    GameStatsConfig::evadeProbability = evadeProbability;
-}
-
-void GameStatsConfig::setExpRandMin(float expRandMin) {
-    GameStatsConfig::expRandMin = expRandMin;
-}
-
-void GameStatsConfig::setExpRandMax(float expRandMax) {
-    GameStatsConfig::expRandMax = expRandMax;
-}
-
-void GameStatsConfig::setLevelDifference(float levelDifference) {
-    GameStatsConfig::levelDifference = levelDifference;
-}
-
-void GameStatsConfig::setMaxAgility(float maxAgility) {
-    GameStatsConfig::maxAgility = maxAgility;
-}
-
-void GameStatsConfig::insertRace(RaceID id, RaceInfo info) {
-    races.insert(std::pair<RaceID, RaceInfo>(id, info));
-}
-
-void GameStatsConfig::insertGameClass(GameClassID id, GameClassInfo info) {
-    gameClasses.insert(std::pair<GameClassID, GameClassInfo>(id, info));
-}
-
+GameStatsConfig::GameStatsConfig() = default;
 
 GameStatsConfig::~GameStatsConfig() = default;

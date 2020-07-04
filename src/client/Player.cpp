@@ -34,16 +34,17 @@
 
 
 Player::Player(const TextureManager& manager, const PlayerInfo& playerInfo) :
-  Character(playerInfo.getX(),playerInfo.getY(),playerInfo.getId()), center(playerInfo.getX(),playerInfo.getY()),
-    manager(manager), playerInfo(playerInfo) {
-  this->direction = playerInfo.getDirection();
+  Character(playerInfo.getX(),playerInfo.getY(),playerInfo.getId()),
+  center(playerInfo.getX(),playerInfo.getY()), manager(manager), playerInfo(playerInfo) {
+
+    this->direction = playerInfo.getDirection();
 	this->frameHead = 0;
-  this->state = std::shared_ptr<CharacterState>(new StillState());
+    this->state = std::shared_ptr<CharacterState>(new StillState());
 	setArmor(playerInfo.getBodyID());
 	setHead(playerInfo.getHeadID());
 	setHelmet(playerInfo.getHelmetID());
 	setShield(playerInfo.getShieldID());
-  setWeapon(playerInfo.getWeaponID());
+    setWeapon(playerInfo.getWeaponID());
 }
 
 void Player::render(Camera& camera) {
@@ -126,7 +127,7 @@ InputInfo Player::selectItem(int itemNumber) {
 
 InputInfo Player::handleEvent(SDL_Event& event, Camera& camera) {
 	bool needUpdate = false;
-  InputInfo input;
+    InputInfo input;
 	if(event.type == SDL_KEYDOWN) {
     switch(event.key.keysym.sym) {
       case SDLK_w:
@@ -203,12 +204,12 @@ InputInfo Player::handleEvent(SDL_Event& event, Camera& camera) {
         break;
 		}
 	} else if (event.type == SDL_MOUSEBUTTONDOWN) {
-    int x,y;
-    SDL_GetMouseState(&x, &y);
-    Point coord = camera.calculateGlobalPosition(Point(x,y));
-    input = this->state->selectTarget(*this, coord);
-  }
-  return input;
+        int x,y;
+        SDL_GetMouseState(&x, &y);
+        Point coord = camera.calculateGlobalPosition(Point(x,y));
+        input = this->state->selectTarget(*this, coord);
+    }
+    return input;
 }
 
 void Player::setState(CharacterStateID newState) {
@@ -226,11 +227,11 @@ void Player::setState(CharacterStateID newState) {
 			case CharacterStateID::Dead:
 				this->state = std::shared_ptr<CharacterState>(new DeadState());
 				break;
-      case CharacterStateID::Meditate:
-        this->state = std::shared_ptr<CharacterState>(new MeditateState());
-        break;
-      case CharacterStateID::Attack:
-        this->state = std::shared_ptr<CharacterState>(new AttackState());
+            case CharacterStateID::Meditate:
+                this->state = std::shared_ptr<CharacterState>(new MeditateState());
+                break;
+            case CharacterStateID::Attack:
+                this->state = std::shared_ptr<CharacterState>(new AttackState());
 		}
 	}
 }
@@ -409,4 +410,4 @@ PlayerInfo Player::getInfo() {
   return this->playerInfo;
 }
 
-Player::~Player(){}
+Player::~Player()= default;

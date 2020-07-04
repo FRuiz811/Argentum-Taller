@@ -17,7 +17,7 @@ protected:
 
 public:
 	GameObject();
-	explicit GameObject(uint id);
+	explicit GameObject(uint id, Direction direction = Direction::down);
 
 	GameObject(GameObject&&) noexcept;
 	GameObject& operator=(GameObject&& other)  noexcept;

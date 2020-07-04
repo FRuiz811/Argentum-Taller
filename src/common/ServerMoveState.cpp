@@ -30,8 +30,7 @@ void ServerMoveState::performTask(uint id,
 
     std::shared_ptr<GameCharacter> aCharacter = std::dynamic_pointer_cast<GameCharacter>(gameObjects.at(id));
     if (amountMovements == 0) {
-        float timeInSeconds = gameStatsConfig.getTimeInSeconds(aCharacter->getRace(), distance);
-        amountMovements = timeInSeconds * 30;
+        amountMovements = gameStatsConfig.getAmountMovements(aCharacter->getRace());
         std::cout << amountMovements << std::endl;
         aCharacter->setDirection(direction);
     }

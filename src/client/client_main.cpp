@@ -70,7 +70,7 @@ int main(int argc, char* argv[]) {
 		while (SDL_PollEvent(&event) != 0) {
 			if (event.type == SDL_QUIT) {
 				quit = true;
-			} else if(event.type == SDL_KEYDOWN) {
+			} else if (event.type == SDL_KEYDOWN) {
 				if (event.key.keysym.sym == SDLK_m) {
 					musica.pauseMusic();
 				}
@@ -84,6 +84,7 @@ int main(int argc, char* argv[]) {
         serverProxy.update();
 		playerInfo = serverProxy.getUpdatedPlayerInfo(playerInfo.getId());
 		player.updatePlayerInfo(playerInfo);
+		npcs.clear();
 		for (GameObjectInfo& aGameObjectInfo : serverProxy.getUpdatedGameObjects()) {
 	   		if (aGameObjectInfo.getId() == playerInfo.getId()) {
           	 	continue;

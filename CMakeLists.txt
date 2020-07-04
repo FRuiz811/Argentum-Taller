@@ -27,7 +27,7 @@ file(GLOB_RECURSE COMMON_SOURCES
         src/common/*.h
         src/common/*.cpp)
 
-add_executable(client ${CLIENT_SOURCES} ${COMMON_SOURCES} src/common/Message.cpp src/common/Message.h src/common/Decoder.cpp src/common/Decoder.h)
+add_executable(client1 ${CLIENT_SOURCES} ${COMMON_SOURCES})
 
 add_executable(server ${SERVER_SOURCES} ${COMMON_SOURCES})
 
