@@ -25,6 +25,7 @@
 #include "Items/Hammer.h"
 #include "Items/GnarledStick.h"
 #include <SDL2/SDL.h>
+#include <iostream>
 #include "characterStates/StillState.h"
 #include "characterStates/MoveState.h"
 #include "characterStates/DeadState.h"
@@ -116,20 +117,25 @@ InputInfo Player::handleEvent(SDL_Event& event, Camera& camera) {
 	bool needUpdate = false;
     InputInfo input;
 	if(event.type == SDL_KEYDOWN) {
-        switch(event.key.keysym.sym) {
+        switch (event.key.keysym.sym) {
             case SDLK_w:
                 input = this->state->moveUp(*this);
-                needUpdate = true;break;
+//                needUpdate = true;
+                break;
             case SDLK_s:
-                input = this->state->moveDown(*this);needUpdate = true;
+                input = this->state->moveDown(*this);
+//                needUpdate = true;
                 break;
             case SDLK_a:
-                input = this->state->moveLeft(*this);needUpdate = true;
+                input = this->state->moveLeft(*this);
+//                needUpdate = true;
                 break;
             case SDLK_d:
-                input = this->state->moveRight(*this);needUpdate = true;
+                input = this->state->moveRight(*this);
+//                needUpdate = true;
                 break;
-            case SDLK_r:input = this->state->resurrect(*this);
+            case SDLK_r:
+                input = this->state->resurrect(*this);
                 break;
             case SDLK_g:
                 break;
@@ -143,41 +149,41 @@ InputInfo Player::handleEvent(SDL_Event& event, Camera& camera) {
             case SDLK_h:
                 input = this->state->cure(*this);
                 break;
-			case SDLK_y:
+            case SDLK_y:
                 input = this->state->meditate(*this);
                 break;
             case SDLK_1:
-                input = this->state->selectItem(*this,1);
+                input = this->state->selectItem(*this, 1);
                 break;
             case SDLK_2:
-                input = this->state->selectItem(*this,2);
+                input = this->state->selectItem(*this, 2);
                 break;
             case SDLK_3:
-                input = this->state->selectItem(*this,3);
+                input = this->state->selectItem(*this, 3);
                 break;
             case SDLK_4:
-                input = this->state->selectItem(*this,4);
+                input = this->state->selectItem(*this, 4);
                 break;
             case SDLK_5:
-                input = this->state->selectItem(*this,5);break;
+                input = this->state->selectItem(*this, 5);
+                break;
             case SDLK_6:
-                input = this->state->selectItem(*this,6);
+                input = this->state->selectItem(*this, 6);
                 break;
             case SDLK_7:
-                input = this->state->selectItem(*this,7);
+                input = this->state->selectItem(*this, 7);
                 break;
             case SDLK_8:
-                input = this->state->selectItem(*this,8);
+                input = this->state->selectItem(*this, 8);
                 break;
             case SDLK_9:
-                input = this->state->selectItem(*this,9);
+                input = this->state->selectItem(*this, 9);
                 break;
             default:
                 needUpdate = false;
+        }
     }
-    if (needUpdate)
-			update(0);
-	} else if (event.type == SDL_KEYUP) {
+    if (event.type == SDL_KEYUP) {
 		switch(event.key.keysym.sym) {
 		    case SDLK_w:
 				input = this->state->stopMove(*this);
@@ -192,12 +198,14 @@ InputInfo Player::handleEvent(SDL_Event& event, Camera& camera) {
                 input = this->state->stopMove(*this);
                 break;
 		}
-	} else if (event.type == SDL_MOUSEBUTTONDOWN) {
+	}
+    if (event.type == SDL_MOUSEBUTTONDOWN) {
         int x,y;
         SDL_GetMouseState(&x, &y);
         Point coord = camera.calculateGlobalPosition(Point(x,y));
         input = this->state->selectTarget(*this, coord);
     }
+    update(0);
     return input;
 }
 

@@ -31,7 +31,7 @@ void ServerMoveState::performTask(uint id,
     std::shared_ptr<GameCharacter> aCharacter = std::dynamic_pointer_cast<GameCharacter>(gameObjects.at(id));
     if (amountMovements == 0) {
         amountMovements = gameStatsConfig.getAmountMovements(aCharacter->getRace());
-        std::cout << amountMovements << std::endl;
+//        std::cout << std::to_string(amountMovements) << std::endl;
         aCharacter->setDirection(direction);
     }
     Point newPoint = aCharacter->getPosition().getPoint();
@@ -50,7 +50,6 @@ void ServerMoveState::performTask(uint id,
             break;
     }
     Position newPosition(newPoint, aCharacter->getPosition().getWidth(), aCharacter->getPosition().getHeight());
-    bool isColliding = false;
     for (auto& gameObject : gameObjects) {
         if (gameObject.first == id) {
             continue;
@@ -63,6 +62,7 @@ void ServerMoveState::performTask(uint id,
     if (!isColliding && !board.checkCollisions(newPosition, aCharacter->getId())) {
         aCharacter->setPosition(newPosition);
     } else {
+        isColliding = true;
         finalized = true;
     }
     actualMovement++;
@@ -75,12 +75,18 @@ void ServerMoveState::setNextState(InputInfo info) {
     if (info.input == InputID::up || info.input == InputID::down ||
         info.input == InputID::left || info.input == InputID::right) {
         this->nextState = std::unique_ptr<State>(new ServerMoveState(info));
-    } else {
-        nextState = std::unique_ptr<State>(new ServerMoveState(info));
+    } else if(info.input == InputID::stopMove) {
+        nextState = std::unique_ptr<State>(new ServerStillState(info));
     }
 }
 
 void ServerMoveState::resetState() {
-    nextState = std::unique_ptr<State>(new ServerStillState(inputInfo));
+    if (isColliding) {
+        nextState = std::unique_ptr<State>(new ServerStillState(inputInfo));
+    } else {
+        amountMovements = 0;
+        actualMovement = 0;
+        finalized = false;
+    }
 }
 

@@ -29,11 +29,12 @@ void GameCharacter::receiveInput(InputInfo anInputInfo) {
 void GameCharacter::update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board,
                            GameStatsConfig &gameStatsConfig) {
     if (state->isOver()) {
-        if (!state->hasNextState() && !queueInputs.empty()) {
+        if (!queueInputs.empty()) {
             state->setNextState(queueInputs.pop());
-            state = state->getNextState();
         } else {
             state->resetState();
+        }
+        if (state->hasNextState()) {
             state = state->getNextState();
         }
     }

@@ -7,9 +7,11 @@
 class ServerMoveState : public State {
 private:
     Direction direction;
-    uint amountMovements = 0;
-    uint actualMovement = 0;
+    uint8_t amountMovements = 0;
+    uint8_t actualMovement = 0;
+    bool isColliding = false;
     float distance = 15.0;
+
 public:
     explicit ServerMoveState(const InputInfo &info);
 
