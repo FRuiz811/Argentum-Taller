@@ -14,8 +14,8 @@ private:
     std::vector<Tile> groundTiles;
     std::map<int, Texture> tileSetMap;
     SDL_Renderer& renderer;
-    int rows, colums;
-    int width, height;
+    uint16_t rows, colums;
+    uint16_t width, height;
     void _loadTileSets(const std::vector<TileSet>&, SDL_Renderer&);
 public:
     explicit GameMap(const TiledMap&, SDL_Renderer&);

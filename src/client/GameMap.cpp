@@ -8,8 +8,8 @@ GameMap::GameMap(const TiledMap & tiledMap, SDL_Renderer& renderer) : renderer(r
     this->height = tiledMap.getHeight() * tiledMap.getTileHeight();
     _loadTileSets(tiledMap.getTilesets(), renderer);
 
-    int tileWidth = tiledMap.getTileWidth();
-    int tileHeight = tiledMap.getTileHeight();
+    uint8_t tileWidth = tiledMap.getTileWidth();
+    uint8_t tileHeight = tiledMap.getTileHeight();
 
     for (auto& layer : tiledMap.getTileLayers()) {
 

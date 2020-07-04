@@ -1,4 +1,5 @@
 #include "Creature.h"
+#include "StillStateCreature.h"
 
 Creature::Creature() = default;
 
@@ -27,6 +28,7 @@ GameObject(id), creatureId(creatureId) {
             this->textureHashId = "ht00|h06|b14|s00|w00";
             break;
     }
+    this->state = std::unique_ptr<State>(new StillStateCreature());
 }
 
 Creature::~Creature() = default;

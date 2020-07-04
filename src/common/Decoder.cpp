@@ -7,11 +7,11 @@
 #define OBJECTSINFOMSG 0x02
 #define COMMANDMSG 0x03
 #define INITMSG 0x04
-#define INITLENGTH 2
-#define OBJECTLENGTH 17
-#define PLAYERINFOLENGTH 44
-#define COMMANDLENGTH 7
-#define MAPLENGTH 240043
+#define INITLENGTH 3
+#define OBJECTLENGTH 18
+#define PLAYERINFOLENGTH 45
+#define COMMANDLENGTH 8
+#define MAPLENGTH 240047
 #define ITEM 0x01
 #define CHARACTER 0x00
 
@@ -332,8 +332,8 @@ InputInfo Decoder::decodeCommand(Message msg) {
 std::vector<uint8_t> Decoder::encodeInit(RaceID race, GameClassID gameClass) {
     std::vector<uint8_t> encodeMsg;
     uint32_t length = INITLENGTH;
-    encodeMsg.push_back(INITMSG);
     conversorTo8(htonl(length),32, encodeMsg);
+    encodeMsg.push_back(INITMSG);
     auto breed = (uint8_t) race;
     auto playerClass = (uint8_t) gameClass;
     encodeMsg.push_back(breed);
@@ -344,8 +344,8 @@ std::vector<uint8_t> Decoder::encodeInit(RaceID race, GameClassID gameClass) {
 std::vector<uint8_t> Decoder::encodeMap(const TiledMap &tiledMap) {
     std::vector<uint8_t> encodeMsg;
     uint32_t length = MAPLENGTH;
-    encodeMsg.push_back(MAPMSG);
     conversorTo8(htonl(length), 32, encodeMsg);
+    encodeMsg.push_back(MAPMSG);
     conversorTo8(htons(tiledMap.getWidth()), 16, encodeMsg);
     conversorTo8(htons(tiledMap.getHeight()), 16, encodeMsg);
     encodeMsg.push_back(tiledMap.getTileWidth());

@@ -2,6 +2,8 @@
 
 #include <utility>
 
+State::State() = default;
+
 State::State(InputInfo anInputInfo): inputInfo(std::move(anInputInfo)) {}
 
 State::~State() = default;
@@ -21,5 +23,7 @@ std::unique_ptr<State> State::getNextState() {
 CharacterStateID State::getStateId() const {
     return stateId;
 }
+
+
 
 

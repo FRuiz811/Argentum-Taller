@@ -10,7 +10,7 @@ private:
     std::vector<uint8_t> data;
     uint32_t length{};
     uint8_t type{};
-    uint32_t pos = 0;
+    uint32_t pos = 4;
 
     uint32_t read(uint8_t bytesToRead);
 

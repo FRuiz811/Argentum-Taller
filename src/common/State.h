@@ -16,6 +16,7 @@ protected:
     InputInfo inputInfo;
     CharacterStateID stateId;
 public:
+    State();
     explicit State(InputInfo);
 
     virtual ~State();
