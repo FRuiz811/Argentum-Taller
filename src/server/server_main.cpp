@@ -1,7 +1,6 @@
 #include <iostream>
 #include "World.h"
 #include "../common/JsonReader.h"
-#include "../common/ConfigFileTransformer.h"
 #include "PlayerAcceptor.h"
 #include <iostream>
 #include <string>
@@ -15,7 +14,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
     rapidjson::Document jsonConfigStats = JsonReader::read(argv[1]);
-    GameStatsConfig gameStatsConfig = ConfigFileTransformer::transform(jsonConfigStats);
+    GameStatsConfig gameStatsConfig(jsonConfigStats);
     
     World world(gameStatsConfig);
     PlayerAcceptor acceptor(gameStatsConfig.getPort(),world);

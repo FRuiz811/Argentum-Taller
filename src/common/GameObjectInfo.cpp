@@ -19,11 +19,11 @@ const std::string &GameObjectInfo::getTextureHashId() const {
     return textureHashId;
 }
 
-uint GameObjectInfo::getX() const {
+float GameObjectInfo::getX() const {
     return point.x;
 }
 
-uint GameObjectInfo::getY() const {
+float GameObjectInfo::getY() const {
     return point.y;
 }
 

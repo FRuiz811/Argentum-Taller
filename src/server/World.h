@@ -35,6 +35,10 @@ public:
 
     TiledMap& getStaticMap();
 
+    void addCreatures();
+
+    void generateCreature();
+
     PlayerInfo createCharacter(RaceID race, GameClassID gameClass);
 
     virtual void run();

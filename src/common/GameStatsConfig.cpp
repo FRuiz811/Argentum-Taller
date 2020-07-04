@@ -2,7 +2,7 @@
 
 GameStatsConfig::GameStatsConfig(rapidjson::Document &json) {
     GameStatsConfig gameStatsConfig;
-
+    port = json["port"].GetString();
     goldRandMin = json["goldRandMin"].GetFloat();
     goldRandMax = json["goldRandMax"].GetFloat();
     goldMaxMult = json["goldMaxMult"].GetFloat();
@@ -112,6 +112,10 @@ uint8_t GameStatsConfig::getCreaturesLimit() const {
 
 uint8_t GameStatsConfig::getNestCreatureLimit() const {
     return nestCreaturesLimit;
+}
+
+std::string GameStatsConfig::getPort() const {
+    return port;
 }
 
 GameStatsConfig::GameStatsConfig() = default;

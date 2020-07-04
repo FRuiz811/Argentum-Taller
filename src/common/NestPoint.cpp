@@ -1,5 +1,5 @@
 #include "NestPoint.h"
-#include "../client/Exception.h"
+#include "Exception.h"
 
 NestPoint::NestPoint(Point point, uint8_t nestLimit): point(point), nestLimit(nestLimit){}
 

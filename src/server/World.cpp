@@ -1,8 +1,8 @@
 #include "World.h"
 #include "../common/JsonReader.h"
-#include "../common/ConfigFileTransformer.h"
 #include "../common/NPCServer.h"
 #include "../common/GameCharacter.h"
+#include "../common/Creature.h"
 #include <iostream>
 
 World::World(GameStatsConfig& configuration) : gameStatsConfig(configuration), 
@@ -11,8 +11,11 @@ World::World(GameStatsConfig& configuration) : gameStatsConfig(configuration),
     this->map = TiledMap(jsonMap);
     this->board = Board(map.getObjectLayers(),
                   map.getWidth() * map.getTileWidth(),
-                  map.getHeight() * map.getTileHeight());
+                  map.getHeight() * map.getTileHeight(),
+                  gameStatsConfig.getNestCreatureLimit());
     addNPCs(map.getObjectLayers());
+    std::srand((int)std::time(nullptr));
+    addCreatures();
 }
 
 
@@ -32,6 +35,19 @@ PlayerInfo World::createCharacter(RaceID race, GameClassID gameClass) {
 
 void World::run(){
 
+}
+
+void World::addCreatures() {
+    for (int i = 0; i < gameStatsConfig.getCreaturesLimit(); ++i) {
+        generateCreature();
+    }
+}
+
+void World::generateCreature() {
+    uint id = getNextId();
+    uint8_t randomId = 1 + std::rand() % 4;
+    std::shared_ptr<Creature> aCreature(new Creature(id, CreatureID(randomId), board.getNextAvailableNestPoint()));
+    gameObjects.insert(std::pair<uint, std::shared_ptr<GameObject>>(id, aCreature));
 }
 
 

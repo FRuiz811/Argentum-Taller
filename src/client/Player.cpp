@@ -25,6 +25,7 @@
 #include "Items/Hammer.h"
 #include "Items/GnarledStick.h"
 #include <SDL2/SDL.h>
+#include <iostream>
 #include "characterStates/StillState.h"
 #include "characterStates/MoveState.h"
 #include "characterStates/DeadState.h"
@@ -203,12 +204,14 @@ InputInfo Player::handleEvent(SDL_Event& event, Camera& camera) {
         input = this->state->stopMove(*this);
         break;
 		}
-	} else if (event.type == SDL_MOUSEBUTTONDOWN) {
+	}
+    if (event.type == SDL_MOUSEBUTTONDOWN) {
         int x,y;
         SDL_GetMouseState(&x, &y);
         Point coord = camera.calculateGlobalPosition(Point(x,y));
         input = this->state->selectTarget(*this, coord);
     }
+    update(0);
     return input;
 }
 
