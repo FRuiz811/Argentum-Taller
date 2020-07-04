@@ -22,10 +22,13 @@ private:
     float expRandMax;
     float levelDifference;
     float maxAgility;
+    std::string port;
 public:
     GameStatsConfig();
 
     virtual ~GameStatsConfig();
+
+    void setPort(const std::string& port);
 
     void setGoldRandMin(float goldRandMin);
 
@@ -67,6 +70,7 @@ public:
     bool canEvade(RaceID);
     float getDefense();
     float getTimeInSeconds(RaceID raceId, uint distance);
+    std::string getPort() const;
 
     void insertRace(RaceID id, RaceInfo info);
 

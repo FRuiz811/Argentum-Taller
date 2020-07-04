@@ -13,7 +13,7 @@
 #include "characterStates/CharacterState.h"
 #include "../common/Identificators.h"
 #include "../common/ServerProxy.h"
-#include "PlayerInfo.h"
+#include "../common/PlayerInfo.h"
 #include <memory>
 #include <string>
 

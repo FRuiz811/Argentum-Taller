@@ -33,7 +33,6 @@ int main(int argc, char* argv[]) {
 		
 		game.run();
 		
-		
 		return 0;
 	}
 
@@ -91,6 +90,9 @@ int main(int argc, char* argv[]) {
 	    	}
 	    	npcs.emplace_back(textureManager, aGameObjectInfo);
 		}
+		player.update(GAMELOOPTIME);
+        for (auto& npc: npcs)
+            npc.update(GAMELOOPTIME);
 		window.clearScreen();
 		Point* center = player.getCenter();
 		window.clearScreen();

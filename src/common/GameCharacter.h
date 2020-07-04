@@ -2,7 +2,7 @@
 #define PERSONAJE_H
 
 
-#include "../client/PlayerInfo.h"
+#include "PlayerInfo.h"
 #include "StaticObject.h"
 #include "State.h"
 #include "InputQueue.h"

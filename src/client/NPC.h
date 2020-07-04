@@ -9,8 +9,8 @@
 #include "Items/Weapon.h"
 #include "TextureManager.h"
 #include "../common/Identificators.h"
+#include "../common/GameObjectInfo.h"
 #include "characterStates/CharacterState.h"
-#include "PlayerInfo.h"
 #include <memory>
 
 class NPC : public Character {

@@ -8,6 +8,7 @@ ConfigFileTransformer::~ConfigFileTransformer() = default;
 GameStatsConfig ConfigFileTransformer::transform(rapidjson::Document &json) {
     GameStatsConfig gameStatsConfig;
 
+    gameStatsConfig.setPort(json["port"].GetString());
     gameStatsConfig.setGoldRandMin(json["goldRandMin"].GetFloat());
     gameStatsConfig.setGoldRandMax(json["goldRandMax"].GetFloat());
     gameStatsConfig.setGoldMaxMult(json["goldMaxMult"].GetFloat());

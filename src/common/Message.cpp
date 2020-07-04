@@ -1,7 +1,7 @@
 #include "Message.h"
 
 #include <utility>
-#include "../client/Exception.h"
+#include "Exception.h"
 
 
 Message::~Message() = default;
@@ -19,7 +19,7 @@ uint32_t Message::read(uint8_t bytesToRead) {
     return *(data.data() + pos + bytesToRead);
 }
 
-Message::Message(std::vector<uint8_t> data, uint32_t length, uint8_t type) :
+Message::Message(std::vector<uint8_t>& data, uint32_t length, uint8_t type) :
 data(std::move(data)), length(length), type(type) {}
 
 void Message::clear() {
@@ -45,7 +45,7 @@ uint32_t Message::read32() {
 }
 
 const std::vector<uint8_t> &Message::getData() const {
-    return data;
+    return std::move(data);
 }
 
 

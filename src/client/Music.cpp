@@ -1,6 +1,6 @@
 #include "Music.h"
 #include <SDL2/SDL_mixer.h>
-#include "Exception.h"
+#include "../common/Exception.h"
 
 
 Music::Music(const std::string& fileName) : reproduce(false) {

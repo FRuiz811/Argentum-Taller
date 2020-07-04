@@ -16,7 +16,7 @@ GameObject(id), race(aRace), gameClass(aClass), queueInputs(true) {
     this->mana = 50;
     this->exp = 0;
     this->direction = Direction::down;
-    this->textureHashId = "ht03|h02|b05|s00|w06";
+    this->textureHashId = "ht01|h03|b01|s02|w05";
     InputInfo anInputInfo;
     anInputInfo.input = InputID::nothing;
     anInputInfo.position = Point(0.0, 0.0);

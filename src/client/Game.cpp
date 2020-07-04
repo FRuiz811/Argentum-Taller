@@ -4,6 +4,7 @@
 #include "Chrono.h"
 #include "../common/TiledMap.h"
 #include <arpa/inet.h>
+#include <iostream>
 #include "../common/Decoder.h"
 
 #define WRONGRACE "Raza invalida. Seleccione entre: elfo, gnomo, humano, enano."
@@ -13,18 +14,19 @@
 #define PLAYERINFOMSG 0x01
 #define OBJECTSINFOMSG 0x02
 
-Game::Game() : window(ARGENTUM), protocol(Socket()), textureManager(window.getRenderer()),
+Game::Game() : window(ARGENTUM), protocol(), textureManager(window.getRenderer()),
     musicManager(), npcs(), commandQueue(true), dataQueue(false),
     dispatcher(protocol,commandQueue), receiver(protocol,dataQueue) {}
 
 void Game::recieveMapAndPlayer() {
 
     Message msgMap = this->protocol.recieve();
+
     TiledMap tiledMap = Decoder::decodeMap(msgMap);
  
     Message msgPlayerInfo = this->protocol.recieve();
     PlayerInfo info = Decoder::decodePlayerInfo(msgPlayerInfo);
-    
+    std::cout << "Recibi toda la informacion para comenzar a jugar" << std::endl;
     this->map = std::shared_ptr<GameMap>(new GameMap(tiledMap,this->window.getRenderer()));
     this->player = std::shared_ptr<Player>(new Player(this->textureManager, info));
 }
@@ -32,17 +34,17 @@ void Game::recieveMapAndPlayer() {
 bool Game::init(char* argv[]) {
     try{
         this->protocol.connect(argv[3], argv[4]);
+        std::cout << "me conecte a " << argv[4] << std::endl;
         std::vector<uint8_t> initMsg;
         initMsg = Decoder::encodeInit(translateRace(argv[1]),translateGameClass(argv[2]));
         this->protocol.send(initMsg);
-
+        std::cout << "Envie mi codificacion de usuario"<< std::endl;
         recieveMapAndPlayer();
 
         this->textureManager.loadTextures();
         this->musicManager.loadSounds();
-
-        this->dispatcher.run();
-        this->receiver.run();
+       // this->dispatcher.run();
+       // this->receiver.run();
     } catch (...) {
         return false;
     }
@@ -114,6 +116,9 @@ void Game::update() {
 	    	this->npcs.emplace_back(this->textureManager, npc);
 		} 
         }*/
+        this->player->update(GAMELOOPTIME);
+        for (auto& npc: this->npcs)
+            npc.update(GAMELOOPTIME);
     }
 }
 

@@ -59,13 +59,15 @@ void Player::render(Camera& camera) {
 }
 
 void Player::update(double dt) {
+  if(this->state->getState() == CharacterStateID::Move) {
     Point aux(posX, posY);
     this->center = aux;
     this->body->update(dt);
     if (this->weapon != nullptr)
-        this->weapon->update(dt);
+      this->weapon->update(dt);
     if (this->shield != nullptr)
-        this->shield->update(dt);
+      this->shield->update(dt);
+  }
 }
 
 void Player::setFrameHead() {
@@ -85,18 +87,29 @@ void Player::setFrameHead() {
     }
 }
 
-
 void Player::updatePlayerInfo(PlayerInfo info) {
   this->posX = info.getX();
   this->posY = info.getY();
   this->direction = info.getDirection();
   switch(info.getState()) {
-      case CharacterStateID::Still:
-          state = std::shared_ptr<CharacterState>(new StillState());
-          break;
-      case CharacterStateID::Move:
-          state = std::shared_ptr<CharacterState>(new MoveState());
-          break;
+    case CharacterStateID::Still:
+      state = std::shared_ptr<CharacterState>(new StillState());
+      break;
+    case CharacterStateID::Move:
+      state = std::shared_ptr<CharacterState>(new MoveState());
+      break;
+    case CharacterStateID::Attack:
+      state = std::shared_ptr<CharacterState>(new AttackState());
+      break;
+    case CharacterStateID::Dead:
+      state = std::shared_ptr<CharacterState>(new DeadState());
+      break;
+    case CharacterStateID::Interact:
+      state = std::shared_ptr<CharacterState>(new InteractState());
+      break;
+    case CharacterStateID::Meditate:
+      state = std::shared_ptr<CharacterState>(new MeditateState());
+      break;
   }
   setFrameHead();
 }
@@ -115,28 +128,29 @@ InputInfo Player::handleEvent(SDL_Event& event, Camera& camera) {
 	bool needUpdate = false;
   InputInfo input;
 	if(event.type == SDL_KEYDOWN) {
-        switch(event.key.keysym.sym) {
-            case SDLK_w:
-                input = this->state->moveUp(*this);
-                needUpdate = true;break;
-            case SDLK_s:
-                input = this->state->moveDown(*this);needUpdate = true;
-                break;
-            case SDLK_a:
-                input = this->state->moveLeft(*this);needUpdate = true;
-                break;
-            case SDLK_d:
-                input = this->state->moveRight(*this);needUpdate = true;
-                break;
-            case SDLK_r:input = this->state->resurrect(*this);
-                break;
-            case SDLK_g:
-                break;
-            case SDLK_b:
-                break;
-            case SDLK_v:
-                break;
-            case SDLK_t:
+    switch(event.key.keysym.sym) {
+      case SDLK_w:
+        input = this->state->moveUp(*this);
+        break;
+      case SDLK_s:
+        input = this->state->moveDown(*this);
+        break;
+      case SDLK_a:
+        input = this->state->moveLeft(*this);
+        break;
+      case SDLK_d:
+        input = this->state->moveRight(*this);
+        break;
+      case SDLK_r:
+        input = this->state->resurrect(*this);
+        break;
+      case SDLK_g:
+        break;
+      case SDLK_b:
+        break;
+      case SDLK_v:
+        break;
+      case SDLK_t:
         input = this->state->takeItem(*this);
         break;
       case SDLK_h:
@@ -144,52 +158,49 @@ InputInfo Player::handleEvent(SDL_Event& event, Camera& camera) {
         break;
 			case SDLK_y:
         input = this->state->meditate(*this);
-                break;
-            case SDLK_1:
-                input = this->state->selectItem(*this,1);
-                break;
-            case SDLK_2:
-                input = this->state->selectItem(*this,2);
-                break;
-            case SDLK_3:
-                input = this->state->selectItem(*this,3);
-                break;
-            case SDLK_4:
-                input = this->state->selectItem(*this,4);
-                break;
-            case SDLK_5:
-                input = this->state->selectItem(*this,5);break;
-            case SDLK_6:
-                input = this->state->selectItem(*this,6);
-                break;
-            case SDLK_7:
-                input = this->state->selectItem(*this,7);
-                break;
-            case SDLK_8:
-                input = this->state->selectItem(*this,8);
-                break;
-            case SDLK_9:
-                input = this->state->selectItem(*this,9);
-                break;
-            default:
-                needUpdate = false;
+        break;
+      case SDLK_1:
+        input = this->state->selectItem(*this,1);
+        break;
+      case SDLK_2:
+        input = this->state->selectItem(*this,2);
+        break;
+      case SDLK_3:
+        input = this->state->selectItem(*this,3);
+        break;
+      case SDLK_4:
+        input = this->state->selectItem(*this,4);
+        break;
+      case SDLK_5:
+        input = this->state->selectItem(*this,5);
+        break;
+      case SDLK_6:
+        input = this->state->selectItem(*this,6);
+        break;
+      case SDLK_7:
+        input = this->state->selectItem(*this,7);
+        break;
+      case SDLK_8:
+        input = this->state->selectItem(*this,8);
+        break;
+      case SDLK_9:
+        input = this->state->selectItem(*this,9);
+        break;
     }
-    if (needUpdate)
-			update(0);
 	} else if (event.type == SDL_KEYUP) {
 		switch(event.key.keysym.sym) {
-		    case SDLK_w:
+		  case SDLK_w:
 				input = this->state->stopMove(*this);
 				break;
-            case SDLK_s:
-                input = this->state->stopMove(*this);
-                break;
-            case SDLK_a:
-                input = this->state->stopMove(*this);
-                break;
-            case SDLK_d:
-                input = this->state->stopMove(*this);
-                break;
+      case SDLK_s:
+        input = this->state->stopMove(*this);
+        break;
+      case SDLK_a:
+        input = this->state->stopMove(*this);
+        break;
+      case SDLK_d:
+        input = this->state->stopMove(*this);
+        break;
 		}
 	} else if (event.type == SDL_MOUSEBUTTONDOWN) {
     int x,y;

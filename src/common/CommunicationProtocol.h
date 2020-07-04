@@ -2,7 +2,7 @@
 #define COMMUNICATIONPROTOCOL_H
 
 #include <vector>
-#include "../client/PlayerInfo.h"
+#include "PlayerInfo.h"
 #include <cstdint>
 #include "GameObjectInfo.h"
 #include "../client/GameMap.h"
@@ -16,16 +16,17 @@
 class CommunicationProtocol {
 private:
     Socket socket;
-
 public:
-
+    CommunicationProtocol();
     CommunicationProtocol(Socket socket);
 
     void connect(const char* host, const char* port);
 
-    void send(std::vector<uint8_t> msg);
+    void send(std::vector<uint8_t> msg) const;
 
-    Message recieve();
+    Message recieve() const;
+
+    void stop();
 
     ~CommunicationProtocol();
 };

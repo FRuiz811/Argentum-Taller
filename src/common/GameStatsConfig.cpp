@@ -61,6 +61,16 @@ float GameStatsConfig::getTimeInSeconds(RaceID raceId, uint distance) {
     return  (1 - raceInfo.agility/maxAgility) + 0.5;
 }
 
+std::string GameStatsConfig::getPort() const {
+    return std::move(GameStatsConfig::port);
+}
+
+//Recordar que todo esto debe pasarse al constructor y eliminar el setter.
+
+void GameStatsConfig::setPort(const std::string& port) {
+    GameStatsConfig::port = port;
+}
+
 void GameStatsConfig::setGoldRandMin(float goldRandMin) {
     GameStatsConfig::goldRandMin = goldRandMin;
 }

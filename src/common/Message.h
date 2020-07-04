@@ -17,7 +17,7 @@ private:
 public:
     Message();
 
-    Message(std::vector<uint8_t> data, uint32_t length, uint8_t type);
+    Message(std::vector<uint8_t>& data, uint32_t length, uint8_t type);
 
     ~Message();
 
