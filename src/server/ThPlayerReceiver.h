@@ -12,6 +12,7 @@ private:
     std::atomic<bool> keepTalking;
     CommunicationProtocol& protocol;
     InputQueue& queue;
+    uint id{0};
     
 public:
     explicit ThPlayerReceiver(CommunicationProtocol& protocol, InputQueue& queue);
@@ -19,6 +20,8 @@ public:
     virtual void run();
 
     void stop();
+
+    void setId(uint id);
 
     virtual ~ThPlayerReceiver();
 };
