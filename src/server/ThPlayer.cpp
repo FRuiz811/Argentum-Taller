@@ -17,6 +17,8 @@ void ThPlayer::run() {
     std::cout << map.size() << std::endl;
     this->protocol.send(map);
     this->protocol.send(Decoder::encodePlayerInfo(this->player));
+    this->receiver.setId(this->player.getId());
+    this->receiver.start();
     //while (this->keepTalking) {
 
     //}
@@ -25,7 +27,7 @@ void ThPlayer::run() {
 
 void ThPlayer::stop() {
     this->keepTalking = false;
-   // this->receiver.stop();
+    this->receiver.stop();
     this->protocol.stop();
 }
 

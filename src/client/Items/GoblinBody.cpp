@@ -1,5 +1,4 @@
 #include "GoblinBody.h"
-#include "../TextureID.h"
 
 #define WIDTH_BODY 24
 #define HEIGHT_BODY 30

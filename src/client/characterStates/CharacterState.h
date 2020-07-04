@@ -8,7 +8,7 @@ class CharacterState {
 private:
     CharacterStateID id;
 public:
-    CharacterState(CharacterStateID state) : id(state) {}
+    explicit CharacterState(CharacterStateID state) : id(state) {}
     virtual ~CharacterState() = default;
     virtual CharacterStateID& getState() {
         return this->id;

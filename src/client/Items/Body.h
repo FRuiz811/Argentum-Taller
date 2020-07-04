@@ -14,7 +14,7 @@ protected:
     BodyID id{BodyID::Nothing};
 public:
     Body(const Texture& texture, const int width, const int height, BodyID id = BodyID::Nothing) : 
-        Item(texture, width, height) {}
+        Item(texture, width, height), id(id) {}
     
     virtual void render(int posX, int posY, int direction) = 0;
 

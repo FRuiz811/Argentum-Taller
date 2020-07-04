@@ -32,7 +32,7 @@ public:
 
     void update(Point destiny);
     
-    Point calculateGlobalPosition(Point coordinates);
+    Point calculateGlobalPosition(Point coordinates) const;
 
     ~Camera();
 };

@@ -27,9 +27,9 @@ public:
 
     uint getId() const;
 
-    uint getX() const;
+    float getX() const;
 
-    uint getY() const;
+    float getY() const;
 
     Direction getDirection() const;
 

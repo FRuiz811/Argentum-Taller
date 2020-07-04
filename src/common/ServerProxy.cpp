@@ -1,19 +1,23 @@
 #include <memory>
 #include "ServerProxy.h"
 #include "JsonReader.h"
-#include "Collider.h"
 #include "NPCServer.h"
-#include "ConfigFileTransformer.h"
+#include "Creature.h"
+#include <cstdlib>
+#include <ctime>
 
 ServerProxy::ServerProxy() {
-    rapidjson::Document jsonMap = JsonReader::read("json/bigMapNPC.json");
+    rapidjson::Document jsonMap = JsonReader::read("json/finishedMap.json");
     rapidjson::Document jsonConfigStats = JsonReader::read("json/gameStats.json");
     tiledMap = TiledMap(jsonMap);
+    gameStatsConfig = GameStatsConfig(jsonConfigStats);
     board = Board(tiledMap.getObjectLayers(),
                   tiledMap.getWidth() * tiledMap.getTileWidth(),
-                  tiledMap.getHeight() * tiledMap.getTileHeight());
-    gameStatsConfig = ConfigFileTransformer::transform(jsonConfigStats);
+                  tiledMap.getHeight() * tiledMap.getTileHeight(),
+                  gameStatsConfig.getNestCreatureLimit());
     addNPCs(tiledMap.getObjectLayers());
+    std::srand((int)std::time(nullptr));
+    addCreatures();
 }
 
 TiledMap& ServerProxy::getStaticMap() {
@@ -69,30 +73,17 @@ void ServerProxy::addNPCs(std::vector<ObjectLayer> objectLayers) {
     }
 }
 
-ServerProxy::~ServerProxy() = default;
+void ServerProxy::addCreatures() {
+    for (int i = 0; i < gameStatsConfig.getCreaturesLimit(); ++i) {
+        generateCreature();
+    }
+}
 
-//PlayerInfo ServerProxy::updateModel() {
-//    std::shared_ptr<GameCharacter> aCharacter =  std::dynamic_pointer_cast<GameCharacter>(gameObjects.at(current_id - 1));
-//    while(!this->queueInputs.empty()) {
-//        InputInfo inputInfo = this->queueInputs.pop();
-//        switch(inputInfo.input) {
-//            case InputID::nothing:
-//                break;
-//            case InputID::up:
-//                aCharacter->move(Direction::up, gameObjects, collisionObjects);
-//                break;
-//            case InputID::down:
-//                aCharacter->move(Direction::down, gameObjects, collisionObjects);
-//                break;
-//            case InputID::right:
-//                aCharacter->move(Direction::right, gameObjects, collisionObjects);
-//                break;
-//            case InputID::left:
-//                aCharacter->move(Direction::left, gameObjects, collisionObjects);
-//                break;
-//            case InputID::stopMove:
-//                break;
-//        }
-//    }
-//    return aCharacter->getPlayerInfo();
-//}
+void ServerProxy::generateCreature() {
+    uint id = getNextId();
+    uint8_t randomId = 1 + std::rand() % 4;
+    std::shared_ptr<Creature> aCreature(new Creature(id, CreatureID(randomId), board.getNextAvailableNestPoint()));
+    gameObjects.insert(std::pair<uint, std::shared_ptr<GameObject>>(id, aCreature));
+}
+
+ServerProxy::~ServerProxy() = default;
