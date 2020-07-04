@@ -27,8 +27,8 @@ public:
     void drawHighLayers(Camera& camera);
     void drawGround(Camera& camera);
 
-    int getMapWidth();
-    int getMapHeight();
+    int getMapWidth() const;
+    int getMapHeight() const;
 
 };
 

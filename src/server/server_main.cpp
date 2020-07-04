@@ -28,8 +28,7 @@ int main(int argc, char* argv[]) {
 		std::cin >> input;
 	}
 
-    
-    world.join();
+	world.join();
     acceptor.stop();
     acceptor.join();
     return 0;

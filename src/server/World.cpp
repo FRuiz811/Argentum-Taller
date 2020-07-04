@@ -34,7 +34,6 @@ void World::run(){
 
 }
 
-
 TiledMap& World::getStaticMap() {
     return this->map;
 }

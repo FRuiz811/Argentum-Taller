@@ -1,7 +1,4 @@
 #include "ThPlayer.h"
-#include "../common/Message.h"
-#include "../common/Decoder.h"
-#include "../common/Identificators.h"
 #include <iostream>
 
 #define INITMSG 0x04
@@ -12,10 +9,9 @@ ThPlayer::ThPlayer(Socket socket, World& world) : protocol(std::move(socket)),
 void ThPlayer::run() {
     Message welcomeMsg = this->protocol.recieve();
     if (welcomeMsg.getType() == INITMSG) {
-        std::vector<uint8_t> msg = welcomeMsg.getData();
-        RaceID race =  (RaceID) msg[0];
-        GameClassID gameClass =  (GameClassID) msg[1];
-        this->player = world.createCharacter(race,gameClass);
+        RaceID race =  (RaceID) welcomeMsg.read8();
+        GameClassID gameClass =  (GameClassID) welcomeMsg.read8();
+        this->player = world.createCharacter(race, gameClass);
     }
     std::vector<uint8_t> map = Decoder::encodeMap(this->world.getStaticMap());
     std::cout << map.size() << std::endl;
@@ -37,4 +33,4 @@ bool ThPlayer::is_alive() const {
     return this->keepTalking;
 }
 
-ThPlayer::~ThPlayer(){}
+ThPlayer::~ThPlayer()= default;

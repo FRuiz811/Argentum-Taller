@@ -21,7 +21,7 @@ private:
     std::unordered_map<uint, std::shared_ptr<GameObject>, std::hash<uint>> gameObjects;
     uint current_id;
     InputQueue inputQueue;
-     std::atomic<bool> keepTalking;
+    std::atomic<bool> keepTalking;
     mutable std::mutex m;
     
     void addNPCs(std::vector<ObjectLayer> objectLayers);

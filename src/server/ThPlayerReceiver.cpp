@@ -11,4 +11,4 @@ void ThPlayerReceiver::stop(){
 
 }
 
-ThPlayerReceiver::~ThPlayerReceiver() {}
+ThPlayerReceiver::~ThPlayerReceiver() = default;

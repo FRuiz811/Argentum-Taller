@@ -55,11 +55,11 @@ GameMap::GameMap(const TiledMap & tiledMap, SDL_Renderer& renderer) : renderer(r
     }
 
 }
-int GameMap::getMapHeight() {
+int GameMap::getMapHeight() const {
     return this->height;
 }
 
-int GameMap::getMapWidth() {
+int GameMap::getMapWidth() const {
     return this->width;
 }
 

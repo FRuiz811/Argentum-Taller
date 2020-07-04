@@ -18,27 +18,6 @@
 
 Decoder::Decoder() = default;
 
-uint32_t Decoder::conversorTo32(uint8_t* value) {
-    uint8_t temp[4];
-    uint32_t* temp32;
-    for (int j = 0; j < 4; j++) {
-        temp[j] = value[j];
-    }
-    temp32 = (uint32_t*) temp;
-    return *temp32;
-}
-
-uint16_t Decoder::conversorTo16(uint8_t* value) {
-    uint8_t temp[4];
-    uint16_t* temp16;
-    for (int j = 0; j < 2; j++) {
-        temp[j] = value[j];
-    }
-    temp16 = (uint16_t*) temp;
-    return *temp16;
-}
-
-
 void Decoder::conversorTo8(uint32_t value, uint8_t from, std::vector<uint8_t>& encodeMsg) {
     int max;
     if (from == 16) {
@@ -356,7 +335,7 @@ std::vector<uint8_t> Decoder::encodeMap(const TiledMap &tiledMap) {
     encodeMsg.push_back(amountLayers);
     conversorTo8(htons(dataSize), 16, encodeMsg);
     for (auto &aTileLayer : tilesLayers) {
-        encodeMsg.push_back(aTileLayer.isGroundLayer() ? ZERO : 0X01);
+        encodeMsg.push_back(aTileLayer.isGroundLayer() ? 0X01 : ZERO);
         for (auto &aDataTile : aTileLayer.getData()) {
             conversorTo8(htons(aDataTile), 16, encodeMsg);
         }
@@ -383,7 +362,7 @@ TiledMap Decoder::decodeMap(Message msg) {
         std::vector<uint16_t> data;
         bool isGround = msg.read8();
         for (size_t j = 0; j < dataSize; ++j) {
-            data[j] = ntohs(msg.read16());
+            data.push_back(ntohs(msg.read16()));
         }
         tileLayers.emplace_back(data, isGround);
     }

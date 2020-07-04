@@ -15,8 +15,6 @@ private:
     static void encodeInventory(const PlayerInfo &info, std::vector<uint8_t>&);
     static void encodeStatePlayer(const GameObjectInfo &info, std::vector<uint8_t>&);
     static void conversorTo8(uint32_t value, uint8_t from, std::vector<uint8_t>& encodeMsg);
-    static uint32_t conversorTo32(uint8_t* value);
-    static uint16_t conversorTo16(uint8_t* value);
     static std::string decodeEquipment(Message msg, bool isGameObject=false);
     static std::string decodeInventory(Message msg);
     static void encodeItem(GameObjectInfo object, std::vector<uint8_t>&);

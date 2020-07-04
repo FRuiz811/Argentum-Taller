@@ -1,4 +1,5 @@
 #include "Game.h"
+#include <memory>
 #include <stdexcept>
 #include "Presentation.h"
 #include "Chrono.h"
@@ -27,8 +28,8 @@ void Game::recieveMapAndPlayer() {
     Message msgPlayerInfo = this->protocol.recieve();
     PlayerInfo info = Decoder::decodePlayerInfo(msgPlayerInfo);
     std::cout << "Recibi toda la informacion para comenzar a jugar" << std::endl;
-    this->map = std::shared_ptr<GameMap>(new GameMap(tiledMap,this->window.getRenderer()));
-    this->player = std::shared_ptr<Player>(new Player(this->textureManager, info));
+    this->map = std::make_shared<GameMap>(tiledMap,this->window.getRenderer());
+    this->player = std::make_shared<Player>(this->textureManager, info);
 }
 
 bool Game::init(char* argv[]) {
@@ -39,10 +40,12 @@ bool Game::init(char* argv[]) {
         initMsg = Decoder::encodeInit(translateRace(argv[1]),translateGameClass(argv[2]));
         this->protocol.send(initMsg);
         std::cout << "Envie mi codificacion de usuario"<< std::endl;
-        recieveMapAndPlayer();
-
         this->textureManager.loadTextures();
         this->musicManager.loadSounds();
+        recieveMapAndPlayer();
+
+
+
        // this->dispatcher.run();
        // this->receiver.run();
     } catch (...) {
