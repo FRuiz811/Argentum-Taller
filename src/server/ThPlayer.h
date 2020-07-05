@@ -10,14 +10,14 @@
 
 class ThPlayer : public Thread {
 private:
-    CommunicationProtocol protocol;
+    std::shared_ptr<CommunicationProtocol> protocol;
     std::atomic<bool> keepTalking;
     std::shared_ptr<GameCharacter> character;
     ThPlayerReceiver receiver;
     bool canUpdate = false;
     std::vector<GameObjectInfo> gameObjectsInfo;
 public:
-    ThPlayer(CommunicationProtocol protocol, std::shared_ptr<GameCharacter> aCharacter);
+    ThPlayer(std::shared_ptr<CommunicationProtocol> protocol, std::shared_ptr<GameCharacter> aCharacter);
 
     virtual void run();
 

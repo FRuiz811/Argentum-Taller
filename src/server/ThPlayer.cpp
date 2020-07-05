@@ -4,16 +4,18 @@
 
 
 
-ThPlayer::ThPlayer(CommunicationProtocol protocol, std::shared_ptr<GameCharacter> aCharacter) :
-protocol(std::move(protocol)), keepTalking(true), character(std::move(aCharacter)), receiver(protocol, character->getQueueInputs()) {}
+ThPlayer::ThPlayer(std::shared_ptr<CommunicationProtocol> protocol, std::shared_ptr<GameCharacter> aCharacter) :
+protocol(protocol), keepTalking(true), character(std::move(aCharacter)), receiver(protocol, character->getQueueInputs()) {}
 
 void ThPlayer::run() {
     this->receiver.setId(character->getId());
     this->receiver.start();
     while (this->keepTalking) {
         if (canUpdate) {
-            this->protocol.send(Decoder::encodePlayerInfo(character->getPlayerInfo()));
-            this->protocol.send(Decoder::encodeGameObjects(gameObjectsInfo));
+            this->protocol->send(Decoder::encodePlayerInfo(character->getPlayerInfo()));
+            std::cout << "Se envió player info" << std::endl;
+            this->protocol->send(Decoder::encodeGameObjects(gameObjectsInfo));
+            std::cout << "Se envió gameObjectsInfo" << std::endl;
             canUpdate = false;
         }
     }
@@ -22,7 +24,7 @@ void ThPlayer::run() {
 void ThPlayer::stop() {
     this->keepTalking = false;
     this->receiver.stop();
-    this->protocol.stop();
+    this->protocol->stop();
 }
 
 bool ThPlayer::is_alive() const {

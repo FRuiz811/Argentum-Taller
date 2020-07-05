@@ -37,10 +37,10 @@ void PlayerAcceptor::run() {
 }
 
 void PlayerAcceptor::stop_players() {
-    for (size_t i = 0; i < this->players.size(); i++) {
-		this->players[i]->stop();
-        this->players[i]->join();
-        delete this->players[i];
+    for (auto & player : this->players) {
+		player->stop();
+        player->join();
+        delete player;
   }
 }
 

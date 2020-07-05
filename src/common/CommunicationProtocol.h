@@ -20,9 +20,6 @@ public:
     CommunicationProtocol();
     explicit CommunicationProtocol(Socket socket);
 
-    CommunicationProtocol(CommunicationProtocol&& other) noexcept ;
-
-
     void connect(const char* host, const char* port);
 
     void send(std::vector<uint8_t> msg) const;

@@ -11,7 +11,7 @@ class ThLobbyPlayer : public Thread {
 private:
     std::atomic<bool> keepTalking;
     World& world;
-    CommunicationProtocol protocol;
+    std::shared_ptr<CommunicationProtocol> protocol;
 public:
     ThLobbyPlayer(Socket socket, World& world);
 

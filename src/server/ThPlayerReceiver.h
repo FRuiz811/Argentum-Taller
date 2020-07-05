@@ -10,12 +10,12 @@
 class ThPlayerReceiver: public Thread {
 private:
     std::atomic<bool> keepTalking;
-    CommunicationProtocol& protocol;
+    std::shared_ptr<CommunicationProtocol> protocol;
     InputQueue& queue;
     uint id{0};
     
 public:
-    explicit ThPlayerReceiver(CommunicationProtocol& protocol, InputQueue& queue);
+    explicit ThPlayerReceiver(std::shared_ptr<CommunicationProtocol> protocol, InputQueue& queue);
 
     virtual void run();
 

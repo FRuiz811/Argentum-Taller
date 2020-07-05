@@ -1,18 +1,3 @@
-#include "SDL2/SDL.h"
-#include <unistd.h>
-#include <iostream>
-#include "Window.h"
-#include "../common/Chrono.h"
-#include "Music.h"
-#include "MusicManager.h"
-#include "TextureManager.h"
-#include "MusicID.h"
-#include "Presentation.h"
-#include "GameMap.h"
-#include "Player.h"
-#include "Camera.h"
-#include "UI.h"
-#include "NPC.h"
 #include "../common/Socket.h"
 #include "../common/CommunicationProtocol.h"
 #include "Game.h"
@@ -30,7 +15,7 @@ int main(int argc, char* argv[]) {
 	if(argc == 5) {
 		Game game;
 
-		if (game.init(argv)) {
+		if (!game.init(argv)) {
 			return 1;
 		}
 		

@@ -27,16 +27,12 @@ Message CommunicationProtocol::receive() const {
     std::vector<uint8_t> buffer(length_message,0);
     uint8_t* buf = buffer.data();
     this->socket.recieve(buf, length_message);
-    return std::move(Message(buffer,length_message,type));
+    return Message(buffer,length_message,type);
 }
 
 void CommunicationProtocol::stop() {
     this->socket.shutdown(SHUT_RDWR);
     this->socket.close();
-}
-
-CommunicationProtocol::CommunicationProtocol(CommunicationProtocol &&other) noexcept {
-    std::swap(socket, other.socket);
 }
 
 CommunicationProtocol::~CommunicationProtocol() = default;

@@ -1,8 +1,10 @@
 #include "ThPlayerReceiver.h"
+
+#include <utility>
 #include "../common/Message.h"
 #include "../common/Decoder.h"
 
-ThPlayerReceiver::ThPlayerReceiver(CommunicationProtocol& protocol, InputQueue& queue) :
+ThPlayerReceiver::ThPlayerReceiver(std::shared_ptr<CommunicationProtocol> protocol, InputQueue& queue) :
     keepTalking(true), protocol(protocol), queue(queue) {}
 
 void ThPlayerReceiver::setId(uint id) {
@@ -14,7 +16,7 @@ void ThPlayerReceiver::run() {
     Message msg;
     InputInfo input;
     while(this->keepTalking) {
-        msg = this->protocol.receive();
+        msg = this->protocol->receive();
         input = Decoder::decodeCommand(msg);
         this->queue.push(std::move(input));
     }

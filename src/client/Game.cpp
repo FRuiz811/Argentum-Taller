@@ -78,11 +78,16 @@ int Game::run() {
 		while (SDL_PollEvent(&event) != 0) {
 			if (event.type == SDL_QUIT) {
 				quit = true;
-			} else if(event.type == SDL_KEYDOWN) {
+			}
+			if(event.type == SDL_KEYDOWN) {
 				if (event.key.keysym.sym == SDLK_m) {
 					musica.pauseMusic();
 				}
 				input = player->handleEvent(event,*camera);
+                this->commandQueue.push(input);
+			}
+			if (event.type == SDL_KEYUP) {
+                input = player->handleEvent(event,*camera);
                 this->commandQueue.push(input);
 			}
 			input = ui->handleClick(event);
@@ -115,9 +120,6 @@ void Game::update() {
         } else if (msg.getType() == OBJECTSINFOMSG) {
             objects = Decoder::decodeGameObjects(msg);
             for (GameObjectInfo& npc : objects) {
-	   		    if (npc.getId() == this->player->getId()) {
-          	 	    continue;
-	    	    }
 	    	    this->npcs.emplace_back(this->textureManager, npc);
 		    }
         } else if (msg.getType() == INTERACTMSG) {
