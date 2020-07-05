@@ -29,7 +29,10 @@ int main(int argc, char* argv[]) {
 
 	if(argc == 5) {
 		Game game;
-		game.init(argv);
+
+		if (game.init(argv)) {
+			return 1;
+		}
 		
 		game.run();
 		
