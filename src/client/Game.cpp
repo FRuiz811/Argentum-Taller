@@ -45,12 +45,12 @@ bool Game::init(char* argv[]) {
         this->musicManager.loadSounds();
         recieveMapAndPlayer();
 
-        this->camera = new Camera(this->window, this->map->getMapWidth(), this->map->getMapHeight());
-        this->ui = new UI(this->window, &(*this->player), this->textureManager);
+        this->camera = std::shared_ptr<Camera>(new Camera(this->window, this->map->getMapWidth(), this->map->getMapHeight()));
+        this->ui = std::shared_ptr<UI>(new UI(this->window, &(*this->player), this->textureManager));
 
 
-        this->dispatcher.run();
-        this->receiver.run();
+        this->dispatcher.start();
+        this->receiver.start();
     } catch (const SocketException& e) {
         std::cout << INITERROR << e.what() << std::endl;
         return false;
@@ -103,6 +103,13 @@ int Game::run() {
 		if (sleep > 0)
 			usleep(sleep);
 	}
+
+    if (quit) {
+        this->receiver.stop();
+        this->receiver.join();
+        this->dispatcher.stop();
+        this->dispatcher.join();
+    }
     return 0;
 
 }
@@ -126,20 +133,20 @@ void Game::update() {
             //items = Decoder::decodeInteractNPC(msg);
             //this->ui->setNPCInfo(items);
         }
-        this->player->update(GAMELOOPTIME);
-        for (auto& npc: this->npcs)
-            npc.update(GAMELOOPTIME);
-        //this->ui->update();
-        Point* center = this->player->getCenter();
-        camera->setPlayer(center);
-		camera->update(*center);
     }
+    this->player->update(GAMELOOPTIME);
+    for (auto& npc: this->npcs)
+        npc.update(GAMELOOPTIME);
+    //this->ui->update();
 }
 
 void Game::render() {
 		window.clearScreen();
 
 		ui->render();
+        Point* center = this->player->getCenter();
+        camera->setPlayer(center);
+	    camera->render(*center);
         this->map->drawGround(*camera);
 		this->player->render(*camera);
 

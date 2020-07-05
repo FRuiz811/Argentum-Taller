@@ -5,7 +5,7 @@
 #include "../common/Decoder.h"
 
 Dispatcher::Dispatcher(CommunicationProtocol& protocol, InputQueue& queue) :
-    queue(queue), keepTalking(false), protocol(protocol) {}
+    queue(queue), keepTalking(true), protocol(protocol) {}
 
 void Dispatcher::run() {
     InputInfo info;

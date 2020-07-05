@@ -31,8 +31,8 @@ private:
     DataQueue dataQueue;
     Dispatcher dispatcher;
     Receiver receiver;
-    Camera* camera{nullptr};
-    UI* ui{nullptr};
+    std::shared_ptr<Camera> camera{nullptr};
+    std::shared_ptr<UI> ui{nullptr};
 
     RaceID translateRace(const std::string& race);
     GameClassID translateGameClass(const std::string& gameClass);

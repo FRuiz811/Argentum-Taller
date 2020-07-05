@@ -5,7 +5,7 @@
 #include "../common/SocketException.h"
 
 Receiver::Receiver(CommunicationProtocol& protocol, DataQueue& queue) :
-    queue(queue), keepTalking(false), protocol(protocol) {}
+    queue(queue), keepTalking(true), protocol(protocol) {}
 
 void Receiver::run() {
     Message msg;
