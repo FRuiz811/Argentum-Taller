@@ -8,6 +8,8 @@
 #include "GameMap.h"
 #include "Player.h"
 #include "NPC.h"
+#include "Camera.h"
+#include "UI.h"
 #include "../common/InputQueue.h"
 #include "../common/DataQueue.h"
 #include "../common/Socket.h"
@@ -29,6 +31,8 @@ private:
     DataQueue dataQueue;
     Dispatcher dispatcher;
     Receiver receiver;
+    Camera* camera{nullptr};
+    UI* ui{nullptr};
 
     RaceID translateRace(const std::string& race);
     GameClassID translateGameClass(const std::string& gameClass);
@@ -36,7 +40,7 @@ private:
 
     void update();
 
-    void render(UI* ui, Camera* camera);
+    void render();
 
 public:
     Game();

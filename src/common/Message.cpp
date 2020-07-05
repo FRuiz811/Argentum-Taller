@@ -3,6 +3,7 @@
 #include <utility>
 #include "Exception.h"
 
+#define ERRORREAD "Se quiere ingresar a una posicion no valida"
 
 Message::~Message() = default;
 
@@ -45,8 +46,8 @@ uint16_t conversorTo16(const uint8_t* value) {
 }
 
 uint8_t Message::read8() {
-    if (pos >= length) {
-        throw Exception("Se quiere ingresar a una posicion no valida");
+    if (pos > length) {
+        throw Exception(ERRORREAD);
     }
     uint8_t value = *(data.data() + pos);
     pos++;
@@ -54,8 +55,8 @@ uint8_t Message::read8() {
 }
 
 uint16_t Message::read16() {
-    if (pos + 2 >= length) {
-        throw Exception("Se quiere ingresar a una posicion no valida");
+    if (pos + 2 > length) {
+        throw Exception(ERRORREAD);
     }
     uint16_t value = conversorTo16(data.data() + pos);
     pos += 2;
@@ -63,8 +64,8 @@ uint16_t Message::read16() {
 }
 
 uint32_t Message::read32() {
-    if (pos + 4 >= length) {
-        throw Exception("Se quiere ingresar a una posicion no valida");
+    if (pos + 4 > length) {
+        throw Exception(ERRORREAD);
     }
     uint32_t value = conversorTo32(data.data() + pos);
     pos += 4;

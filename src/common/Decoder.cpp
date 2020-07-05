@@ -7,9 +7,10 @@
 #define OBJECTSINFOMSG 0x02
 #define COMMANDMSG 0x03
 #define INITMSG 0x04
+#define INTERACTMSG 0x05
 #define INITLENGTH 2
 #define OBJECTLENGTH 17
-#define PLAYERINFOLENGTH 44
+#define PLAYERINFOLENGTH 46
 #define COMMANDLENGTH 7
 #define MAPLENGTH 240046
 #define ITEM 0x01
@@ -106,7 +107,7 @@ std::vector<uint8_t> Decoder::encodePlayerInfo(const PlayerInfo &info) {
     return std::move(encodeMsg);
 }
 
-std::string Decoder::decodeEquipment(Message msg, bool isGameObject) {
+std::string Decoder::decodeEquipment(Message& msg, bool isGameObject) {
     std::string equipment;
     uint8_t id;
     std::string temp;
@@ -151,7 +152,7 @@ std::string Decoder::decodeEquipment(Message msg, bool isGameObject) {
     return std::move(equipment);
 }
 
-std::string Decoder::decodeInventory(Message msg) {
+std::string Decoder::decodeInventory(Message& msg) {
     std::string inventory;
     uint8_t id;
     std::string temp;

@@ -7,13 +7,16 @@
 #include <arpa/inet.h>
 #include <iostream>
 #include "../common/Decoder.h"
+#include "../common/SocketException.h"
 
 #define WRONGRACE "Raza invalida. Seleccione entre: elfo, gnomo, humano, enano."
 #define WRONGCLASS "Clase invalida. Seleccione entre: mago, clerigo, paladin, guerrero"
 #define ARGENTUM "Argentum Online Taller"
+#define INITERROR "Error en Game::init: "
 #define GAMELOOPTIME 1000000/30.0
 #define PLAYERINFOMSG 0x01
 #define OBJECTSINFOMSG 0x02
+#define INTERACTMSG 0x05
 
 Game::Game() : window(ARGENTUM), protocol(), textureManager(window.getRenderer()),
     musicManager(), npcs(), commandQueue(true), dataQueue(false),
@@ -22,12 +25,11 @@ Game::Game() : window(ARGENTUM), protocol(), textureManager(window.getRenderer()
 void Game::recieveMapAndPlayer() {
 
     Message msgMap = this->protocol.receive();
-
     TiledMap tiledMap = Decoder::decodeMap(msgMap);
  
     Message msgPlayerInfo = this->protocol.receive();
     PlayerInfo info = Decoder::decodePlayerInfo(msgPlayerInfo);
-    std::cout << "Recibi toda la informacion para comenzar a jugar" << std::endl;
+
     this->map = std::make_shared<GameMap>(tiledMap,this->window.getRenderer());
     this->player = std::make_shared<Player>(this->textureManager, info);
 }
@@ -39,16 +41,18 @@ bool Game::init(char* argv[]) {
         std::vector<uint8_t> initMsg;
         initMsg = Decoder::encodeInit(translateRace(argv[1]),translateGameClass(argv[2]));
         this->protocol.send(initMsg);
-        std::cout << "Envie mi codificacion de usuario"<< std::endl;
         this->textureManager.loadTextures();
         this->musicManager.loadSounds();
         recieveMapAndPlayer();
 
+        this->camera = new Camera(this->window, this->map->getMapWidth(), this->map->getMapHeight());
+        this->ui = new UI(this->window, &(*this->player), this->textureManager);
 
 
-       // this->dispatcher.run();
-       // this->receiver.run();
-    } catch (...) {
+        this->dispatcher.run();
+        this->receiver.run();
+    } catch (const SocketException& e) {
+        std::cout << INITERROR << e.what() << std::endl;
         return false;
     }
     return true;
@@ -67,8 +71,6 @@ int Game::run() {
 
     Chrono chrono;
 	double initLoop, endLoop, sleep;
-	Camera camera(window, this->map->getMapWidth(), this->map->getMapHeight());
-	UI ui(window, &(*player), textureManager);
 	InputInfo input;
 
 	while (!quit) {
@@ -80,16 +82,16 @@ int Game::run() {
 				if (event.key.keysym.sym == SDLK_m) {
 					musica.pauseMusic();
 				}
-				input = player->handleEvent(event,camera);
+				input = player->handleEvent(event,*camera);
                 this->commandQueue.push(input);
 			}
-			input = ui.handleClick(event);
+			input = ui->handleClick(event);
 			this->commandQueue.push(input);
 			window.handleEvent(event);
 		}
         
         this->update();
-        this->render(&ui, &camera);
+        this->render();
 
 		endLoop = chrono.lap();
 		sleep = GAMELOOPTIME - (endLoop - initLoop);
@@ -104,34 +106,38 @@ void Game::update() {
     Message msg;
     PlayerInfo playerInfo;
     std::vector<GameObjectInfo> objects;
-
+    //NPCMessage items;
     while (!this->dataQueue.empty()){
         msg = this->dataQueue.pop();
-        /* if (msg.getType() == PLAYERINFOMSG) {
-            Traducir el player info
+        if (msg.getType() == PLAYERINFOMSG) {
+            playerInfo = Decoder::decodePlayerInfo(msg);
             this->player->updatePlayerInfo(playerInfo);
         } else if (msg.getType() == OBJECTSINFOMSG) {
-            Traducir el GameObjectInfo
+            objects = Decoder::decodeGameObjects(msg);
             for (GameObjectInfo& npc : objects) {
-	   		if (npc.getId() == this->player->getId()) {
-          	 	continue;
-	    	}
-	    	this->npcs.emplace_back(this->textureManager, npc);
-		} 
-        }*/
+	   		    if (npc.getId() == this->player->getId()) {
+          	 	    continue;
+	    	    }
+	    	    this->npcs.emplace_back(this->textureManager, npc);
+		    }
+        } else if (msg.getType() == INTERACTMSG) {
+            //items = Decoder::decodeInteractNPC(msg);
+            //this->ui->setNPCInfo(items);
+        }
         this->player->update(GAMELOOPTIME);
         for (auto& npc: this->npcs)
             npc.update(GAMELOOPTIME);
+        //this->ui->update();
+        Point* center = this->player->getCenter();
+        camera->setPlayer(center);
+		camera->update(*center);
     }
 }
 
-void Game::render(UI* ui, Camera* camera) {
-        Point* center = this->player->getCenter();
+void Game::render() {
 		window.clearScreen();
 
 		ui->render();
-		camera->setPlayer(center);
-		camera->update(*center);
         this->map->drawGround(*camera);
 		this->player->render(*camera);
 
@@ -177,8 +183,8 @@ GameClassID Game::translateGameClass(const std::string& gameClass){
 }
 
 Game::~Game() {
-    //this->dispatcher.stop();
-    //this->receiver.stop();
-   // this->dispatcher.join();
-   //this->receiver.join();
+    this->dispatcher.stop();
+    this->receiver.stop();
+    this->dispatcher.join();
+    this->receiver.join();
 }
