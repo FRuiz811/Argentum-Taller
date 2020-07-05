@@ -13,7 +13,6 @@ void ThLobbyPlayer::run() {
         aCharacter = world.createCharacter(race, gameClass);
     }
     std::vector<uint8_t> map = Decoder::encodeMap(this->world.getStaticMap());
-    std::cout << map.size() << std::endl;
     this->protocol->send(map);
     this->protocol->send(Decoder::encodePlayerInfo(aCharacter->getPlayerInfo()));
     world.addPlayer(new ThPlayer(protocol, aCharacter));

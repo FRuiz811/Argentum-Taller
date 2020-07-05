@@ -1,8 +1,14 @@
 #include "ThPlayerReceiver.h"
-
+#include <iostream>
 #include <utility>
 #include "../common/Message.h"
 #include "../common/Decoder.h"
+#include "../common/SocketException.h"
+
+#define UNKNOW_ERROR "Unknow Error"
+#define ERRORSOCKET "Error en la comunicación en ThPlayerReceiver::run() "
+#define ERRORRECEIVER "Error en ThPlayerReceiver::run() "
+
 
 ThPlayerReceiver::ThPlayerReceiver(std::shared_ptr<CommunicationProtocol> protocol, InputQueue& queue) :
     keepTalking(true), protocol(protocol), queue(queue) {}
@@ -11,14 +17,24 @@ void ThPlayerReceiver::setId(uint id) {
     this->id = id;
 }
 
-
 void ThPlayerReceiver::run() {
     Message msg;
     InputInfo input;
     while(this->keepTalking) {
-        msg = this->protocol->receive();
-        input = Decoder::decodeCommand(msg);
-        this->queue.push(std::move(input));
+        try{
+            msg = this->protocol->receive();
+            input = Decoder::decodeCommand(msg);
+            this->queue.push(std::move(input));
+        } catch (const SocketException& e) {
+            std::cerr << ERRORSOCKET << e.what() << std::endl;
+            this->keepTalking = false;
+        } catch(const std::exception& e){
+            std::cerr << ERRORRECEIVER << e.what() << std::endl;
+            this->keepTalking = false;
+        }catch (...) {
+            this->keepTalking = false;
+            std::cerr << UNKNOW_ERROR << std::endl;
+        }
     }
 }
 

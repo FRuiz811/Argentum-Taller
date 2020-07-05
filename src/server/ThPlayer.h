@@ -2,11 +2,14 @@
 #define SERVERPLAYER_H
 
 #include <atomic>
+#include <mutex>
+#include <condition_variable>
 #include "../common/Thread.h"
 #include "../common/CommunicationProtocol.h"
 #include "../common/Socket.h"
 #include "ThPlayerReceiver.h"
 #include "../common/PlayerInfo.h"
+
 
 class ThPlayer : public Thread {
 private:
@@ -15,6 +18,8 @@ private:
     std::shared_ptr<GameCharacter> character;
     ThPlayerReceiver receiver;
     bool canUpdate = false;
+    std::condition_variable cv;
+    std::mutex m;
     std::vector<GameObjectInfo> gameObjectsInfo;
 public:
     ThPlayer(std::shared_ptr<CommunicationProtocol> protocol, std::shared_ptr<GameCharacter> aCharacter);

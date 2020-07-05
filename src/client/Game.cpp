@@ -48,9 +48,6 @@ bool Game::init(char* argv[]) {
         this->camera = std::shared_ptr<Camera>(new Camera(this->window, this->map->getMapWidth(), this->map->getMapHeight()));
         this->ui = std::shared_ptr<UI>(new UI(this->window, &(*this->player), this->textureManager));
 
-
-        this->dispatcher.start();
-        this->receiver.start();
     } catch (const SocketException& e) {
         std::cout << INITERROR << e.what() << std::endl;
         return false;
@@ -66,50 +63,52 @@ int Game::run() {
 	if (presentation.run())
 		return 0;
 
+    this->dispatcher.start();
+    this->receiver.start();
     bool quit = false;
     SDL_Event event;
 
     Chrono chrono;
 	double initLoop, endLoop, sleep;
 	InputInfo input;
-
-	while (!quit) {
-		initLoop = chrono.lap();
-		while (SDL_PollEvent(&event) != 0) {
-			if (event.type == SDL_QUIT) {
-				quit = true;
-			}
-			if(event.type == SDL_KEYDOWN) {
-				if (event.key.keysym.sym == SDLK_m) {
-					musica.pauseMusic();
-				}
-				input = player->handleEvent(event,*camera);
-                this->commandQueue.push(input);
-			}
-			if (event.type == SDL_KEYUP) {
+    while (!quit) {
+        try{
+		    initLoop = chrono.lap();
+		    while (SDL_PollEvent(&event) != 0) {
+			    if (event.type == SDL_QUIT) {
+			    	quit = true;
+                    break;
+			    }
+			    if(event.type == SDL_KEYDOWN) {
+				    if (event.key.keysym.sym == SDLK_m) {
+					    musica.pauseMusic();
+				    }
+			    }
                 input = player->handleEvent(event,*camera);
                 this->commandQueue.push(input);
-			}
-			input = ui->handleClick(event);
-			this->commandQueue.push(input);
-			window.handleEvent(event);
-		}
+			    input = ui->handleClick(event);
+			    this->commandQueue.push(input);
+			    window.handleEvent(event);
+		    }
         
-        this->update();
-        this->render();
+            this->update();
+            this->render();
 
-		endLoop = chrono.lap();
-		sleep = GAMELOOPTIME - (endLoop - initLoop);
-		if (sleep > 0)
-			usleep(sleep);
-	}
-
-    if (quit) {
-        this->receiver.stop();
-        this->receiver.join();
-        this->dispatcher.stop();
-        this->dispatcher.join();
+		    endLoop = chrono.lap();
+		    sleep = GAMELOOPTIME - (endLoop - initLoop);
+		    if (sleep > 0)
+			    usleep(sleep);
+	    } catch (const std::exception& e) {
+            quit = true;
+        } catch (...) {
+            quit = true;
+            std::cerr << "Unkown Error in Game::run()" << std::endl;
+     }
     }
+
+    close();
+
+
     return 0;
 
 }
@@ -126,6 +125,7 @@ void Game::update() {
             this->player->updatePlayerInfo(playerInfo);
         } else if (msg.getType() == OBJECTSINFOMSG) {
             objects = Decoder::decodeGameObjects(msg);
+            this->npcs.clear();
             for (GameObjectInfo& npc : objects) {
 	    	    this->npcs.emplace_back(this->textureManager, npc);
 		    }
@@ -157,6 +157,16 @@ void Game::render() {
 		this->map->drawHighLayers(*camera);
 
 		this->window.render();
+}
+
+void Game::close() {
+    std::cout << "Cierro todo" << std::endl;
+    this->dataQueue.close();
+    this->commandQueue.close();
+    this->receiver.stop();
+    this->receiver.join();
+    this->dispatcher.stop();
+    this->dispatcher.join();
 }
 
 RaceID Game::translateRace(const std::string& race){
@@ -191,9 +201,4 @@ GameClassID Game::translateGameClass(const std::string& gameClass){
     return selectedClass;
 }
 
-Game::~Game() {
-    this->dispatcher.stop();
-    this->receiver.stop();
-    this->dispatcher.join();
-    this->receiver.join();
-}
+Game::~Game() {}

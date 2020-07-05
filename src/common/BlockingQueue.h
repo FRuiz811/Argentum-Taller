@@ -4,9 +4,10 @@
 #include <condition_variable>
 #include <queue>
 #include <atomic>
-#include <stdexcept>
+#include "Exception.h"
 
 #define ERRORMSG "No hay elementos en la cola y no se bloquea al realizar el pop"
+#define CLOSEDQUEUE "La queue se encuentra cerrada"
 
 //La clase Blocking Queue permite un acceso controlado a los recursos
 //encolados para que cada uno de los jugadores saquen un numero a la vez.
@@ -17,12 +18,13 @@ private:
     mutable std::mutex m;
     std::condition_variable cv;
 	bool blockAtPop;
+	bool isClosed;
     
 public:
 	//Constructores para la clase Blocking Queue, se permite el constructor
 	//por movimiento, no asi por copia dado que no nos interesa que una queue
 	//sea copiada.
-	BlockingQueue(bool blockPop) : blockAtPop(blockPop){}
+	BlockingQueue(bool blockPop) : blockAtPop(blockPop), isClosed(false){}
 
 	BlockingQueue(BlockingQueue &&other) {
 		std::unique_lock<std::mutex> lock(m);
@@ -41,10 +43,13 @@ public:
 	ITEM pop() {
 		std::unique_lock<std::mutex> lock(m);
 		while(blocking_queue.empty() && blockAtPop){
+			if(isClosed) {
+				throw Exception(CLOSEDQUEUE); 
+			}
 			cv.wait(lock);
 		}
 		if (blocking_queue.empty() && !blockAtPop)
-			throw std::out_of_range(ERRORMSG);
+			throw Exception(ERRORMSG);
 		ITEM value(std::move(blocking_queue.front()));
 		blocking_queue.pop();
 		return value;
@@ -61,6 +66,12 @@ public:
 	bool empty() const {
 		std::unique_lock<std::mutex> lock(m);
 		return this->blocking_queue.empty();
+	}
+
+	void close() {
+		std::unique_lock<std::mutex> lock(m);
+		isClosed = true;
+		cv.notify_all();
 	}
 
 	~BlockingQueue(){}

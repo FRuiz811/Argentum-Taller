@@ -14,10 +14,11 @@ protected:
     uint id{};
     std::string textureHashId;
     Direction direction;
-
+    CharacterStateID state;
 public:
 	GameObject();
-	explicit GameObject(uint id, Direction direction = Direction::down);
+	explicit GameObject(uint id, Direction direction = Direction::down,
+        CharacterStateID state = CharacterStateID::Still);
 
 	GameObject(GameObject&&) noexcept;
 	GameObject& operator=(GameObject&& other)  noexcept;

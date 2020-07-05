@@ -4,6 +4,10 @@
 #include "../common/SocketException.h"
 #include "../common/Decoder.h"
 
+#define UNKNOW_ERROR "Unknow Error"
+#define ERRORSOCKET "Error en la comunicaciónn en Dispatcher::run() "
+#define ERRORDISPATCHER "Error en Dispatcher::run() "
+
 Dispatcher::Dispatcher(CommunicationProtocol& protocol, InputQueue& queue) :
     queue(queue), keepTalking(true), protocol(protocol) {}
 
@@ -13,12 +17,20 @@ void Dispatcher::run() {
     while (this->keepTalking) {
         try{
             info = this->queue.pop();
-            msg = Decoder::encodeCommand(info);
-            this->protocol.send(msg);
+            if (info.input != InputID::nothing) {
+                msg = Decoder::encodeCommand(info);
+                this->protocol.send(msg);
+            }
         } catch (const SocketException& e) {
-            std::cerr << "Error en Dispatcher::run()" << e.what() << std::endl;
+            std::cerr << ERRORSOCKET << e.what() << std::endl;
             this->keepTalking = false;
-        } 
+        } catch(const std::exception& e){
+            std::cerr << ERRORDISPATCHER << e.what() << std::endl;
+            this->keepTalking = false;
+        }catch (...) {
+            this->keepTalking = false;
+            std::cerr << UNKNOW_ERROR << std::endl;
+        }
 
     }
 }

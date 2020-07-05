@@ -13,8 +13,10 @@ void PlayerAcceptor::clear_finished_games() {
 	std::vector<ThLobbyPlayer*>::iterator iter;
     iter = this->players.begin();
     while (iter != this->players.end()){
-        if ((*iter)->is_alive()){
+        if (!(*iter)->is_alive()){
+            std::cout << "Se cerro el lobby de un jugador" << std::endl; 
             (*iter)->join();
+            delete (*iter);
             iter = this->players.erase(iter);
         } else {
             iter++;

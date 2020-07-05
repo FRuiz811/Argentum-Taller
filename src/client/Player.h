@@ -40,14 +40,13 @@ private:
 	void setHead(HeadID head);
 	void setWeapon(WeaponID newWeapon);
 	void setFrameHead();
+	void setState(CharacterStateID newState);
 
 public:
 	Player(const TextureManager& manager, const PlayerInfo& playerInfo);
 
 	virtual void render(Camera& camera);
 	virtual void update(double dt);
-
-	void setState(CharacterStateID newState);
 
 	void updatePlayerInfo(PlayerInfo info);
 

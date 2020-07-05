@@ -39,9 +39,8 @@ private:
     void recieveMapAndPlayer();
 
     void update();
-
     void render();
-
+    void close();
 public:
     Game();
 

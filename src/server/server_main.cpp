@@ -27,7 +27,9 @@ int main(int argc, char* argv[]) {
 		std::cin >> input;
 	}
 
+    world.stop();
 	world.join();
+    std::cout << "Server Cerrado" << std::endl;
     acceptor.stop();
     acceptor.join();
     return 0;
