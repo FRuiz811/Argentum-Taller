@@ -14,9 +14,8 @@ void ThPlayerReceiver::run() {
     Message msg;
     InputInfo input;
     while(this->keepTalking) {
-        msg = this->protocol.recieve();
+        msg = this->protocol.receive();
         input = Decoder::decodeCommand(msg);
-
         this->queue.push(std::move(input));
     }
 }

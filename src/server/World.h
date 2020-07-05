@@ -12,6 +12,8 @@
 #include "../common/ObjectLayer.h"
 #include "../common/Thread.h"
 #include "../common/InputQueue.h"
+#include "../common/GameCharacter.h"
+#include "ThPlayer.h"
 
 class World: public Thread {
 private:
@@ -20,18 +22,17 @@ private:
     GameStatsConfig gameStatsConfig;
     std::unordered_map<uint, std::shared_ptr<GameObject>, std::hash<uint>> gameObjects;
     uint current_id;
-    InputQueue inputQueue;
     std::atomic<bool> keepTalking;
     mutable std::mutex m;
+    std::vector<ThPlayer*> players;
     
     void addNPCs(std::vector<ObjectLayer> objectLayers);
+    std::vector<GameObjectInfo> getUpdatedGameObjects();
 
 public:
     explicit World(GameStatsConfig& configuration);
 
     uint getNextId();
-
-    InputQueue& getInputQueue();
 
     TiledMap& getStaticMap();
 
@@ -39,11 +40,17 @@ public:
 
     void generateCreature();
 
-    PlayerInfo createCharacter(RaceID race, GameClassID gameClass);
+    void update();
+
+    std::shared_ptr<GameCharacter> createCharacter(RaceID race, GameClassID gameClass);
 
     virtual void run();
 
     void stop();
+
+    void addPlayer(ThPlayer* aPlayer);
+
+    void clearFinishedPlayers();
 
     virtual ~World();
 };

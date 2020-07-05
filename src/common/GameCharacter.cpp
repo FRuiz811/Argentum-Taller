@@ -15,6 +15,7 @@ GameObject(id), race(aRace), gameClass(aClass), queueInputs(true) {
     this->goldAmount = 100;
     this->mana = 50;
     this->exp = 0;
+    this->level = 0;
     this->direction = Direction::down;
     this->textureHashId = "ht01|h03|b01|s02|w05";
     InputInfo anInputInfo;
@@ -70,6 +71,9 @@ uint GameCharacter::getLevel() const {
     return level;
 }
 
+InputQueue &GameCharacter::getQueueInputs() {
+    return queueInputs;
+}
 
 //void GameCharacter::corroborarAtaque(GameObject &atacado){
 //	if(!arma.esArmaDistancia() &&

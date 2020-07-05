@@ -10,7 +10,7 @@ void Receiver::run() {
     Message msg;
     while (this->keepTalking){
         try {
-            msg = this->protocol.recieve();
+            msg = this->protocol.receive();
             this->queue.push(msg);
         }   catch (...) {
 

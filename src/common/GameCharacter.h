@@ -19,10 +19,9 @@ private:
     uint life;
     uint mana;
     float exp;
-    uint level;
+    uint level{};
     std::unique_ptr<State> state;
     InputQueue queueInputs;
-
 public:
 	GameCharacter(uint id, RaceID aRace, GameClassID aClass, Point& point);
 
@@ -47,6 +46,8 @@ public:
     float getExp() const;
 
     uint getLevel() const;
+
+    InputQueue &getQueueInputs();
 };
 
 #endif

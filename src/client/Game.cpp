@@ -2,7 +2,7 @@
 #include <memory>
 #include <stdexcept>
 #include "Presentation.h"
-#include "Chrono.h"
+#include "../common/Chrono.h"
 #include "../common/TiledMap.h"
 #include <arpa/inet.h>
 #include <iostream>
@@ -21,11 +21,11 @@ Game::Game() : window(ARGENTUM), protocol(), textureManager(window.getRenderer()
 
 void Game::recieveMapAndPlayer() {
 
-    Message msgMap = this->protocol.recieve();
+    Message msgMap = this->protocol.receive();
 
     TiledMap tiledMap = Decoder::decodeMap(msgMap);
  
-    Message msgPlayerInfo = this->protocol.recieve();
+    Message msgPlayerInfo = this->protocol.receive();
     PlayerInfo info = Decoder::decodePlayerInfo(msgPlayerInfo);
     std::cout << "Recibi toda la informacion para comenzar a jugar" << std::endl;
     this->map = std::make_shared<GameMap>(tiledMap,this->window.getRenderer());

@@ -10,7 +10,7 @@ PlayerAcceptor::PlayerAcceptor(const std::string& port, World& world) : socket()
 }
 
 void PlayerAcceptor::clear_finished_games() {
-	std::vector<ThPlayer*>::iterator iter;
+	std::vector<ThLobbyPlayer*>::iterator iter;
     iter = this->players.begin();
     while (iter != this->players.end()){
         if ((*iter)->is_alive()){
@@ -26,7 +26,7 @@ void PlayerAcceptor::run() {
     while (this->keepTalking) {
         try{
             Socket socketPlayer = this->socket.accept();
-            auto player = new ThPlayer(std::move(socketPlayer),world);
+            auto player = new ThLobbyPlayer(std::move(socketPlayer), world);
             player->start();
             this->players.push_back(player);
             clear_finished_games();
@@ -51,4 +51,4 @@ void PlayerAcceptor::stop() {
 	stop_players();
 }
 
-PlayerAcceptor::~PlayerAcceptor() {}
+PlayerAcceptor::~PlayerAcceptor() = default;

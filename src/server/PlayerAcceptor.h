@@ -5,12 +5,13 @@
 #include "../common/Socket.h"
 #include "ThPlayer.h"
 #include "World.h"
+#include "ThLobbyPlayer.h"
 
 class PlayerAcceptor: public Thread {
 private:
     Socket socket;
     World& world;
-    std::vector<ThPlayer*> players;
+    std::vector<ThLobbyPlayer*> players;
     std::atomic<bool> keepTalking;
 
     void clear_finished_games();

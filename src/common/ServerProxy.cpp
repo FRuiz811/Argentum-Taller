@@ -24,12 +24,12 @@ TiledMap& ServerProxy::getStaticMap() {
     return tiledMap;
 }
 
-PlayerInfo ServerProxy::createCharacter(RaceID race, GameClassID gameClass) {
-    uint id = getNextId();
-    std::shared_ptr<GameCharacter> aCharacter(new GameCharacter(id, race, gameClass, board.getInitialPoint()));
-    this->gameObjects.insert(std::pair<uint, std::shared_ptr<GameObject>>(id, aCharacter));
-    return aCharacter->getPlayerInfo();
-}
+//PlayerInfo ServerProxy::createCharacter(RaceID race, GameClassID gameClass) {
+//    uint id = getNextId();
+//    std::shared_ptr<GameCharacter> aCharacter(new GameCharacter(id, race, gameClass, board.getInitialPoint()));
+//    this->gameObjects.insert(std::pair<uint, std::shared_ptr<GameObject>>(id, aCharacter));
+//    return aCharacter->getPlayerInfo();
+//}
 
 void ServerProxy::sendInput(InputInfo input, uint  id){
     if (input.input != InputID::nothing) {

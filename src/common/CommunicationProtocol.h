@@ -18,13 +18,16 @@ private:
     Socket socket;
 public:
     CommunicationProtocol();
-    CommunicationProtocol(Socket socket);
+    explicit CommunicationProtocol(Socket socket);
+
+    CommunicationProtocol(CommunicationProtocol&& other) noexcept ;
+
 
     void connect(const char* host, const char* port);
 
     void send(std::vector<uint8_t> msg) const;
 
-    Message recieve() const;
+    Message receive() const;
 
     void stop();
 

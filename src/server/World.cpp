@@ -1,12 +1,14 @@
 #include "World.h"
 #include "../common/JsonReader.h"
 #include "../common/NPCServer.h"
-#include "../common/GameCharacter.h"
 #include "../common/Creature.h"
+#include "../common/Chrono.h"
 #include <iostream>
 
+#define GAMELOOPTIME 1000000/30.0
+
 World::World(GameStatsConfig& configuration) : gameStatsConfig(configuration), 
-    current_id(0), inputQueue(false), keepTalking(true) {
+    current_id(0), keepTalking(true) {
     rapidjson::Document jsonMap = JsonReader::read("json/finishedMap.json");
     this->map = TiledMap(jsonMap);
     this->board = Board(map.getObjectLayers(),
@@ -25,16 +27,28 @@ uint World::getNextId() {
     return id;
 }
 
-PlayerInfo World::createCharacter(RaceID race, GameClassID gameClass) {
+std::shared_ptr<GameCharacter> World::createCharacter(RaceID race, GameClassID gameClass) {
     std::unique_lock<std::mutex> lock(m);
     uint id = getNextId();
     std::shared_ptr<GameCharacter> aCharacter(new GameCharacter(id, race, gameClass, board.getInitialPoint()));
     this->gameObjects.insert(std::pair<uint, std::shared_ptr<GameObject>>(id, aCharacter));
-    return aCharacter->getPlayerInfo();
+    return aCharacter;
 }
 
-void World::run(){
-
+void World::run() {
+    Chrono chrono;
+    double initLoop, endLoop, sleep;
+    while (keepTalking) {
+        initLoop = chrono.lap();
+        update();
+        for (auto &aPlayer : players) {
+            aPlayer->update(getUpdatedGameObjects());
+        }
+        endLoop = chrono.lap();
+        sleep = GAMELOOPTIME - (endLoop - initLoop);
+        if (sleep > 0)
+            usleep(sleep);
+    }
 }
 
 void World::addCreatures() {
@@ -55,10 +69,6 @@ TiledMap& World::getStaticMap() {
     return this->map;
 }
 
-InputQueue& World::getInputQueue() {
-    return this->inputQueue;
-}
-
 void World::addNPCs(std::vector<ObjectLayer> objectLayers) {
     for (auto &anObjectLayer : objectLayers) {
         if (anObjectLayer.getName() == "NPC") {
@@ -75,4 +85,37 @@ void World::stop() {
     this->keepTalking = false;
 }
 
-World::~World() {}
+void World::update() {
+    for (auto& gameObjectPair : gameObjects) {
+        gameObjectPair.second->update(gameObjects, board, gameStatsConfig);
+    }
+}
+
+std::vector<GameObjectInfo> World::getUpdatedGameObjects() {
+    std::vector<GameObjectInfo> gameObjectsInfo;
+    for (auto& gameObjectPair : gameObjects) {
+        gameObjectsInfo.push_back(gameObjectPair.second->getGameObjectInfo());
+    }
+    return gameObjectsInfo;
+}
+
+void World::addPlayer(ThPlayer *aPlayer) {
+    aPlayer->start();
+    players.push_back(aPlayer);
+    clearFinishedPlayers();
+}
+
+void World::clearFinishedPlayers() {
+    std::vector<ThPlayer*>::iterator iter;
+    iter = this->players.begin();
+    while (iter != this->players.end()){
+        if ((*iter)->is_alive()){
+            (*iter)->join();
+            iter = this->players.erase(iter);
+        } else {
+            iter++;
+        }
+    }
+}
+
+World::~World() = default;

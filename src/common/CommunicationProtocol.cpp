@@ -10,14 +10,14 @@ CommunicationProtocol::CommunicationProtocol(Socket socket) :
 
 
 void CommunicationProtocol::connect(const char* host, const char* port) {
-    this->socket.connect(host,port);
+    this->socket.connect(host, port);
 }
 
 void CommunicationProtocol::send(std::vector<uint8_t> msg) const {
     this->socket.send(msg.data(), msg.size());
 }
 
-Message CommunicationProtocol::recieve() const {
+Message CommunicationProtocol::receive() const {
     uint8_t length[5];
     this->socket.recieve(&length, 5);
     uint32_t* temp32 = (uint32_t*) length;
@@ -33,6 +33,10 @@ Message CommunicationProtocol::recieve() const {
 void CommunicationProtocol::stop() {
     this->socket.shutdown(SHUT_RDWR);
     this->socket.close();
+}
+
+CommunicationProtocol::CommunicationProtocol(CommunicationProtocol &&other) noexcept {
+    std::swap(socket, other.socket);
 }
 
 CommunicationProtocol::~CommunicationProtocol() = default;

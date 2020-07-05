@@ -1,28 +1,22 @@
 #include "ThPlayer.h"
 #include <iostream>
+#include <utility>
 
-#define INITMSG 0x04
 
-ThPlayer::ThPlayer(Socket socket, World& world) : protocol(std::move(socket)),
-    world(world), keepTalking(true), receiver(protocol, world.getInputQueue()), player() {}
+
+ThPlayer::ThPlayer(CommunicationProtocol protocol, std::shared_ptr<GameCharacter> aCharacter) :
+protocol(std::move(protocol)), keepTalking(true), character(std::move(aCharacter)), receiver(protocol, character->getQueueInputs()) {}
 
 void ThPlayer::run() {
-    Message welcomeMsg = this->protocol.recieve();
-    if (welcomeMsg.getType() == INITMSG) {
-        RaceID race =  (RaceID) welcomeMsg.read8();
-        GameClassID gameClass =  (GameClassID) welcomeMsg.read8();
-        this->player = world.createCharacter(race, gameClass);
-    }
-    std::vector<uint8_t> map = Decoder::encodeMap(this->world.getStaticMap());
-    std::cout << map.size() << std::endl;
-    this->protocol.send(map);
-    this->protocol.send(Decoder::encodePlayerInfo(this->player));
-    this->receiver.setId(this->player.getId());
+    this->receiver.setId(character->getId());
     this->receiver.start();
-    //while (this->keepTalking) {
-
-    //}
-
+    while (this->keepTalking) {
+        if (canUpdate) {
+            this->protocol.send(Decoder::encodePlayerInfo(character->getPlayerInfo()));
+            this->protocol.send(Decoder::encodeGameObjects(gameObjectsInfo));
+            canUpdate = false;
+        }
+    }
 }
 
 void ThPlayer::stop() {
@@ -33,6 +27,19 @@ void ThPlayer::stop() {
 
 bool ThPlayer::is_alive() const {
     return this->keepTalking;
+}
+
+void ThPlayer::update(std::vector<GameObjectInfo> gameObjectInfo) {
+    canUpdate = true;
+    std::vector<GameObjectInfo>::iterator iter;
+    iter = gameObjectInfo.begin();
+    while (iter != gameObjectInfo.end()){
+        if ((*iter).getId() == character->getId()){
+            iter = gameObjectInfo.erase(iter);
+        } else {
+            iter++;
+        }
+    }
 }
 
 ThPlayer::~ThPlayer()= default;

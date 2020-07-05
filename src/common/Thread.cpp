@@ -1,9 +1,9 @@
 #include "Thread.h"
 #include <utility>
 
-Thread::Thread() {}
+Thread::Thread() = default;
 
-Thread::~Thread() {}
+Thread::~Thread() = default;
 
 void Thread::start() {
     this->thread = std::thread(&Thread::run, this);
