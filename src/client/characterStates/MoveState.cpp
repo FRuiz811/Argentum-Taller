@@ -3,7 +3,7 @@
 MoveState::MoveState() : 
     CharacterState(CharacterStateID::Move){}
 
-MoveState::~MoveState() {}
+MoveState::~MoveState() = default;
 
 InputInfo MoveState::moveUp(Character& character){
     InputInfo info;

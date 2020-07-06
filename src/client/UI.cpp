@@ -252,7 +252,7 @@ InputInfo UI::handleClick(SDL_Event& event) {
     bool newItemSelected = false;
     if (event.type == SDL_MOUSEMOTION || event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP)
         SDL_GetMouseState(&x, &y);
-    switch(event.type){
+    switch(event.type) {
         case SDL_MOUSEBUTTONDOWN:
             for(auto& button: buttonsItems){      
                 newItemSelected = button->inside(x,y);

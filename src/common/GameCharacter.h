@@ -2,7 +2,7 @@
 #define PERSONAJE_H
 
 
-#include "../client/PlayerInfo.h"
+#include "PlayerInfo.h"
 #include "StaticObject.h"
 #include "State.h"
 #include "InputQueue.h"
@@ -13,16 +13,22 @@
 
 class GameCharacter : public GameObject{
 private:
-    RaceID race{};
-    GameClassID gameClass{};
+    RaceID race{RaceID::Nothing};
+    GameClassID gameClass{GameClassID::Nothing};
     uint goldAmount;
     uint life;
     uint mana;
     float exp;
-    uint level;
+    uint level{};
     std::unique_ptr<State> state;
+    std::string inventory;
     InputQueue queueInputs;
+    WeaponID weapon{WeaponID::Nothing};
+    ShieldID shield{ShieldID::Nothing};
+    HelmetID helmet{HelmetID::Nothing};
+    BodyID body{BodyID::Nothing};
 
+    std::string updateTextureHashId();
 public:
 	GameCharacter(uint id, RaceID aRace, GameClassID aClass, Point& point);
 
@@ -40,6 +46,8 @@ public:
 
     uint getGoldAmount() const;
 
+    CharacterStateID getStateId() override;
+
     uint getLife() const;
 
     uint getMana() const;
@@ -47,6 +55,8 @@ public:
     float getExp() const;
 
     uint getLevel() const;
+
+    InputQueue &getQueueInputs();
 };
 
 #endif

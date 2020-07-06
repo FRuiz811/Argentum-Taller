@@ -4,7 +4,7 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
-#include "Exception.h"
+#include "../common/Exception.h"
 
 #define CHANNELS 2
 #define MIX_CHUNKSIZE 1024

@@ -1,7 +1,7 @@
 #include "Texture.h"
 #include "Window.h"
 #include <SDL2/SDL_image.h>
-#include "Exception.h"
+#include "../common/Exception.h"
 #include <iostream>
 
 Texture::Texture(const std::string &fileName, SDL_Renderer& renderer, SDL_Color colorKey) {

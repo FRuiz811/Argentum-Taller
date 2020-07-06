@@ -30,9 +30,9 @@ public:
 
     void setPlayer(Point* player);
 
-    void update(Point destiny);
+    void render(Point destiny);
     
-    Point calculateGlobalPosition(Point coordinates);
+    Point calculateGlobalPosition(Point coordinates) const;
 
     ~Camera();
 };

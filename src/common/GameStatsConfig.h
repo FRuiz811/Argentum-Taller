@@ -4,73 +4,56 @@
 #include <unordered_map>
 #include "GameStats.h"
 #include "Identificators.h"
+#include <rapidjson/document.h>
 
 class GameStatsConfig {
 private:
     std::unordered_map<RaceID, RaceInfo, std::hash<RaceID>> races;
     std::unordered_map<GameClassID, GameClassInfo, std::hash<GameClassID>> gameClasses;
-    float goldRandMin;
-    float goldRandMax;
-    float goldMaxMult;
-    float goldMaxPot;
-    float expMaxMult;
-    float expMaxPot;
-    float evadeRandMin;
-    float evadeRandMax;
-    float evadeProbability;
-    float expRandMin;
-    float expRandMax;
-    float levelDifference;
-    float maxAgility;
+    std::unordered_map<ItemsInventoryID,ItemInfo, std::hash<ItemsInventoryID>> items;
+    std::string port;
+    float goldRandMin{};
+    float goldRandMax{};
+    float goldMaxMult{};
+    float goldMaxPot{};
+    float expMaxMult{};
+    float expMaxPot{};
+    float evadeRandMin{};
+    float evadeRandMax{};
+    float evadeProbability{};
+    float expRandMin{};
+    float expRandMax{};
+    float levelDifference{};
+    float maxAgility{};
+    uint8_t creaturesLimit{};
+    uint8_t nestCreaturesLimit{};
 public:
     GameStatsConfig();
 
+    explicit GameStatsConfig(rapidjson::Document &json);
+
     virtual ~GameStatsConfig();
-
-    void setGoldRandMin(float goldRandMin);
-
-    void setGoldRandMax(float goldRandMax);
-
-    void setGoldMaxMult(float golMaxMult);
-
-    void setGoldMaxPot(float goldMaxPot);
-
-    void setExpMaxMult(float expMaxMult);
-
-    void setExpMaxPot(float expMaxPot);
-
-    void setEvadeRandMin(float evadeRandMin);
-
-    void setEvadeRandMax(float evadeRandMax);
-
-    void setEvadeProbability(float evadeProbability);
-
-    void setExpRandMin(float expRandMin);
-
-    void setExpRandMax(float expRandMax);
-
-    void setLevelDifference(float levelDifference);
-
-    void setMaxAgility(float maxAgility);
-
-    float getMaxHealth(RaceID, GameClassID, uint level);
-    float getRecoveryHealth(RaceID, GameClassID);
-    float getMaxMana(RaceID, GameClassID, uint exp);
-    float getRecoveryMana(RaceID, GameClassID);
-    float getRecoveryManaMeditation(RaceID, GameClassID);
-    float getGoldDrop(uint maxHealthNPC);
-    float getMaxGold(uint level);
-    float getNextLevelLimit(uint level);
-    float getExp(RaceID, GameClassID, uint level, uint enemyLevel);
-    float getAdditionalExp(RaceID, GameClassID, uint level, uint enemyLevel);
-    float getDamage(RaceID, GameClassID);
-    bool canEvade(RaceID);
-    float getDefense();
-    float getTimeInSeconds(RaceID raceId, uint distance);
-
-    void insertRace(RaceID id, RaceInfo info);
-
-    void insertGameClass(GameClassID id, GameClassInfo info);
+    std::string getPort() const;
+    float getMaxHealth(RaceID, GameClassID, uint level) const;
+    float getRecoveryHealth(RaceID, GameClassID) const;
+    float getMaxMana(RaceID, GameClassID, uint level) const;
+    float getRecoveryMana(RaceID, GameClassID) const;
+    float getRecoveryManaMeditation(RaceID, GameClassID) const;
+    float getGoldDrop(uint maxHealthNPC) const;
+    float getMaxGold(uint level) const;
+    float getNextLevelLimit(uint level) const;
+    float getExp(RaceID, GameClassID, uint level, uint enemyLevel) const;
+    float getAdditionalExp(RaceID, GameClassID, uint level, uint enemyLevel) const;
+    float getDamage(RaceID, GameClassID) const;
+    bool canEvade(RaceID) const;
+    float getDefense() const;
+    std::unordered_map<ItemsInventoryID,ItemInfo> getItems() const;
+    uint8_t getAmountMovements(RaceID raceId) const;
+    uint8_t getCreaturesLimit() const;
+    RaceInfo createRaceInfo(rapidjson::Value &value);
+    GameClassInfo createGameClass(rapidjson::Value &value);
+    ItemInfo createItem(rapidjson::Value& value);
+    uint8_t getNestCreatureLimit() const ;
 };
 
 

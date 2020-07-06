@@ -1,5 +1,5 @@
 #include "Font.h"
-#include "Exception.h"
+#include "../common/Exception.h"
 
 Font::Font(const std::string& path, const int size, SDL_Color color) : size(size),
 	color(color) {

@@ -25,6 +25,7 @@
 #include "Items/Hammer.h"
 #include "Items/GnarledStick.h"
 #include <SDL2/SDL.h>
+#include <iostream>
 #include "characterStates/StillState.h"
 #include "characterStates/MoveState.h"
 #include "characterStates/DeadState.h"
@@ -34,16 +35,17 @@
 
 
 Player::Player(const TextureManager& manager, const PlayerInfo& playerInfo) :
-  Character(playerInfo.getX(),playerInfo.getY(),playerInfo.getId()), center(playerInfo.getX(),playerInfo.getY()),
-    manager(manager), playerInfo(playerInfo) {
-  this->direction = playerInfo.getDirection();
+  Character(playerInfo.getX(),playerInfo.getY(),playerInfo.getId()),
+  center(playerInfo.getX(),playerInfo.getY()), manager(manager), playerInfo(playerInfo) {
+
+    this->direction = playerInfo.getDirection();
 	this->frameHead = 0;
-  this->state = std::shared_ptr<CharacterState>(new StillState());
+    this->state = std::shared_ptr<CharacterState>(new StillState());
 	setArmor(playerInfo.getBodyID());
 	setHead(playerInfo.getHeadID());
 	setHelmet(playerInfo.getHelmetID());
 	setShield(playerInfo.getShieldID());
-  setWeapon(playerInfo.getWeaponID());
+    setWeapon(playerInfo.getWeaponID());
 }
 
 void Player::render(Camera& camera) {
@@ -59,13 +61,15 @@ void Player::render(Camera& camera) {
 }
 
 void Player::update(double dt) {
+  if(this->state != nullptr && this->state->getState() == CharacterStateID::Move) {
     Point aux(posX, posY);
     this->center = aux;
     this->body->update(dt);
     if (this->weapon != nullptr)
-        this->weapon->update(dt);
+      this->weapon->update(dt);
     if (this->shield != nullptr)
-        this->shield->update(dt);
+      this->shield->update(dt);
+  }
 }
 
 void Player::setFrameHead() {
@@ -85,19 +89,11 @@ void Player::setFrameHead() {
     }
 }
 
-
 void Player::updatePlayerInfo(PlayerInfo info) {
   this->posX = info.getX();
   this->posY = info.getY();
   this->direction = info.getDirection();
-  switch(info.getState()) {
-      case CharacterStateID::Still:
-          state = std::shared_ptr<CharacterState>(new StillState());
-          break;
-      case CharacterStateID::Move:
-          state = std::shared_ptr<CharacterState>(new MoveState());
-          break;
-  }
+  setState(info.getState());
   setFrameHead();
 }
 
@@ -112,23 +108,23 @@ InputInfo Player::selectItem(int itemNumber) {
 }
 
 InputInfo Player::handleEvent(SDL_Event& event, Camera& camera) {
-	bool needUpdate = false;
   InputInfo input;
 	if(event.type == SDL_KEYDOWN) {
-        switch(event.key.keysym.sym) {
+      switch (event.key.keysym.sym) {
             case SDLK_w:
                 input = this->state->moveUp(*this);
-                needUpdate = true;break;
+                break;
             case SDLK_s:
-                input = this->state->moveDown(*this);needUpdate = true;
+                input = this->state->moveDown(*this);
                 break;
             case SDLK_a:
-                input = this->state->moveLeft(*this);needUpdate = true;
+                input = this->state->moveLeft(*this);
                 break;
             case SDLK_d:
-                input = this->state->moveRight(*this);needUpdate = true;
+                input = this->state->moveRight(*this);
                 break;
-            case SDLK_r:input = this->state->resurrect(*this);
+            case SDLK_r:
+                input = this->state->resurrect(*this);
                 break;
             case SDLK_g:
                 break;
@@ -137,67 +133,64 @@ InputInfo Player::handleEvent(SDL_Event& event, Camera& camera) {
             case SDLK_v:
                 break;
             case SDLK_t:
-        input = this->state->takeItem(*this);
-        break;
-      case SDLK_h:
-        input = this->state->cure(*this);
-        break;
-			case SDLK_y:
-        input = this->state->meditate(*this);
+                input = this->state->takeItem(*this);
+                break;
+            case SDLK_h:
+                input = this->state->cure(*this);
+                break;
+            case SDLK_y:
+                input = this->state->meditate(*this);
                 break;
             case SDLK_1:
-                input = this->state->selectItem(*this,1);
+                input = this->state->selectItem(*this, 1);
                 break;
             case SDLK_2:
-                input = this->state->selectItem(*this,2);
+                input = this->state->selectItem(*this, 2);
                 break;
             case SDLK_3:
-                input = this->state->selectItem(*this,3);
+                input = this->state->selectItem(*this, 3);
                 break;
             case SDLK_4:
-                input = this->state->selectItem(*this,4);
+                input = this->state->selectItem(*this, 4);
                 break;
             case SDLK_5:
-                input = this->state->selectItem(*this,5);break;
+                input = this->state->selectItem(*this, 5);
+                break;
             case SDLK_6:
-                input = this->state->selectItem(*this,6);
+                input = this->state->selectItem(*this, 6);
                 break;
             case SDLK_7:
-                input = this->state->selectItem(*this,7);
+                input = this->state->selectItem(*this, 7);
                 break;
             case SDLK_8:
-                input = this->state->selectItem(*this,8);
+                input = this->state->selectItem(*this, 8);
                 break;
             case SDLK_9:
-                input = this->state->selectItem(*this,9);
+                input = this->state->selectItem(*this, 9);
                 break;
-            default:
-                needUpdate = false;
-    }
-    if (needUpdate)
-			update(0);
-	} else if (event.type == SDL_KEYUP) {
+        }
+    } else if (event.type == SDL_KEYUP) {
 		switch(event.key.keysym.sym) {
-		    case SDLK_w:
+		  case SDLK_w:
 				input = this->state->stopMove(*this);
 				break;
-            case SDLK_s:
-                input = this->state->stopMove(*this);
-                break;
-            case SDLK_a:
-                input = this->state->stopMove(*this);
-                break;
-            case SDLK_d:
-                input = this->state->stopMove(*this);
-                break;
-		}
+      case SDLK_s:
+        input = this->state->stopMove(*this);
+        break;
+      case SDLK_a:
+        input = this->state->stopMove(*this);
+        break;
+        case SDLK_d:
+          input = this->state->stopMove(*this);
+          break;
+    }
 	} else if (event.type == SDL_MOUSEBUTTONDOWN) {
-    int x,y;
-    SDL_GetMouseState(&x, &y);
-    Point coord = camera.calculateGlobalPosition(Point(x,y));
-    input = this->state->selectTarget(*this, coord);
+      int x,y;
+      SDL_GetMouseState(&x, &y);
+      Point coord = camera.calculateGlobalPosition(Point(x,y));
+      input = this->state->selectTarget(*this, coord);
   }
-  return input;
+    return input;
 }
 
 void Player::setState(CharacterStateID newState) {
@@ -220,6 +213,7 @@ void Player::setState(CharacterStateID newState) {
         break;
       case CharacterStateID::Attack:
         this->state = std::shared_ptr<CharacterState>(new AttackState());
+        break;
 		}
 	}
 }
@@ -398,4 +392,4 @@ PlayerInfo Player::getInfo() {
   return this->playerInfo;
 }
 
-Player::~Player(){}
+Player::~Player()= default;

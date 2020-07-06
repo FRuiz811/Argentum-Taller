@@ -26,4 +26,4 @@ void BankerBody::setDirection(int direction) {
         this->totalFrames = 5;   
 }
 
-BankerBody::~BankerBody(){}
+BankerBody::~BankerBody()= default;

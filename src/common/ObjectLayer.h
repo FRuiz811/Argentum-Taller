@@ -10,7 +10,6 @@ class ObjectLayer {
 private:
     std::string name;
     std::vector<StaticObject> objects;
-    std::string type;
 
 public:
     explicit ObjectLayer(rapidjson::Value&);

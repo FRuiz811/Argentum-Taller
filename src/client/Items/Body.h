@@ -8,17 +8,19 @@
 class Body: public Item {
 protected:
     int frame{0};
-    float animationSpeed{20.0f};
+    float elapsed{0.0};
+    float animationSpeed{1.0/30.0f};
     int totalFrames{5};
     BodyID id{BodyID::Nothing};
 public:
     Body(const Texture& texture, const int width, const int height, BodyID id = BodyID::Nothing) : 
-        Item(texture, width, height) {}
+        Item(texture, width, height), id(id) {}
     
     virtual void render(int posX, int posY, int direction) = 0;
 
     void update(double dt) {
-        this->frame = int(SDL_GetTicks()/this->animationSpeed) % this->totalFrames;
+        this->elapsed += dt;
+        this->frame = int(this->elapsed/this->animationSpeed) % this->totalFrames;
     }
 
     void setAnimationSpeed(float speed) {

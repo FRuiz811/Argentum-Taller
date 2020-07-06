@@ -1,5 +1,4 @@
 #include "SkeletonBody.h"
-#include "../TextureID.h"
 
 #define WIDTH_BODY 25
 #define HEIGHT_BODY 52

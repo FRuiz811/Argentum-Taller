@@ -5,6 +5,8 @@
 #include "../common/TiledMap.h"
 #include "Texture.h"
 #include "Camera.h"
+#include "../common/Chrono.h"
+#include "UI.h"
 #include <vector>
 #include <map>
 
@@ -14,8 +16,8 @@ private:
     std::vector<Tile> groundTiles;
     std::map<int, Texture> tileSetMap;
     SDL_Renderer& renderer;
-    int rows, colums;
-    int width, height;
+    uint16_t rows, colums;
+    uint16_t width, height;
     void _loadTileSets(const std::vector<TileSet>&, SDL_Renderer&);
 public:
     explicit GameMap(const TiledMap&, SDL_Renderer&);
@@ -25,8 +27,8 @@ public:
     void drawHighLayers(Camera& camera);
     void drawGround(Camera& camera);
 
-    int getMapWidth();
-    int getMapHeight();
+    int getMapWidth() const;
+    int getMapHeight() const;
 
 };
 
