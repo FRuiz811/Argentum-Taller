@@ -96,6 +96,7 @@
       "id":1,
       "name": "Simple Arc",
       "damage": true,
+      "hasRange": true,
       "minDamage":1,
       "maxDamage":4,
       "manaUsed": 0,
@@ -103,12 +104,14 @@
       "healthRestored": 0,
       "minDefense": 0,
       "maxDefense": 0,
-      "goldCost": 20
+      "goldCost": 20,
+      "type": "Weapon"
     },
     {
       "id":2,
       "name": "Compound Arc",
       "damage": true,
+      "hasRange": true,
       "minDamage":4,
       "maxDamage":16,
       "manaUsed": 0,
@@ -116,12 +119,14 @@
       "healthRestored": 0,
       "minDefense": 0,
       "maxDefense": 0,
-      "goldCost": 80
+      "goldCost": 80,
+      "type": "Weapon"
     },
     {
       "id":3,
       "name": "Long Sword",
       "damage": true,
+      "hasRange": false,
       "minDamage":2,
       "maxDamage":5,
       "manaUsed": 0,
@@ -129,12 +134,14 @@
       "healthRestored": 0,
       "minDefense": 0,
       "maxDefense": 0,
-      "goldCost": 35
+      "goldCost": 35,
+      "type": "Weapon"
     },
     {
       "id":4,
       "name": "Hammer",
       "damage": true,
+      "hasRange": false,
       "minDamage":1,
       "maxDamage":9,
       "manaUsed": 0,
@@ -142,12 +149,14 @@
       "healthRestored": 0,
       "minDefense": 0,
       "maxDefense": 0,
-      "goldCost": 55
+      "goldCost": 55,
+      "type": "Weapon"
     },
     {
       "id":5,
       "name": "Ax",
       "damage": true,
+      "hasRange": false,
       "minDamage":4,
       "maxDamage":5,
       "manaUsed": 0,
@@ -155,12 +164,14 @@
       "healthRestored": 0,
       "minDefense": 0,
       "maxDefense": 0,
-      "goldCost": 55
+      "goldCost": 55,
+      "type": "Weapon"
     },
     {
       "id":6,
       "name": "Elfic Flaute",
       "damage": false,
+      "hasRange": false,
       "minDamage":0,
       "maxDamage":0,
       "manaUsed": 100,
@@ -168,12 +179,14 @@
       "healthRestored": 100,
       "minDefense": 0,
       "maxDefense": 0,
-      "goldCost": 150
+      "goldCost": 150,
+      "type": "Weapon"
     },    
     {
       "id":7,
       "name": "Ash Stick",
       "damage": true,
+      "hasRange": true,
       "minDamage":2,
       "maxDamage":4,
       "manaUsed": 5,
@@ -181,12 +194,14 @@
       "healthRestored": 0,
       "minDefense": 0,
       "maxDefense": 0,
-      "goldCost": 20
+      "goldCost": 20,
+      "type": "Weapon"
     },
     {
       "id":8,
       "name": "Gnarled Stick",
       "damage": true,
+      "hasRange": true,
       "minDamage":4,
       "maxDamage":8,
       "manaUsed": 15,
@@ -194,12 +209,14 @@
       "healthRestored": 0,
       "minDefense": 0,
       "maxDefense": 0,
-      "goldCost": 50
+      "goldCost": 50,
+      "type": "Weapon"
     },
     {
       "id":9,
       "name": "Crosier",
       "damage": true,
+      "hasRange": true,
       "minDamage":8,
       "maxDamage":20,
       "manaUsed": 30,
@@ -207,12 +224,14 @@
       "healthRestored": 0,
       "minDefense": 0,
       "maxDefense": 0,
-      "goldCost": 100
+      "goldCost": 100,
+      "type": "Weapon"
     },
     {
       "id":10,
       "name": "Turtle Shield",
       "damage": false,
+      "hasRange": false,
       "minDamage":0,
       "maxDamage":0,
       "manaUsed": 0,
@@ -220,12 +239,14 @@
       "healthRestored": 0,
       "minDefense": 1,
       "maxDefense": 2,
-      "goldCost": 25
+      "goldCost": 25,
+      "type": "Shield"
     },
     {
       "id":11,
       "name": "Iron Shield",
       "damage": false,
+      "hasRange": false,
       "minDamage":0,
       "maxDamage":0,
       "manaUsed": 0,
@@ -233,12 +254,14 @@
       "healthRestored": 0,
       "minDefense": 1,
       "maxDefense": 4,
-      "goldCost": 50
+      "goldCost": 50,
+      "type": "Shield"
     },
     {
       "id":12,
       "name": "Hood",
       "damage": false,
+      "hasRange": false,
       "minDamage":0,
       "maxDamage":0,
       "manaUsed": 0,
@@ -246,12 +269,14 @@
       "healthRestored": 0,
       "minDefense": 1,
       "maxDefense": 4,
-      "goldCost": 25
+      "goldCost": 25,
+      "type": "Helmet"
     },
     {
       "id":13,
       "name": "Iron Helmet",
       "damage": false,
+      "hasRange": false,
       "minDamage":0,
       "maxDamage":0,
       "manaUsed": 0,
@@ -259,12 +284,14 @@
       "healthRestored": 0,
       "minDefense": 4,
       "maxDefense": 8,
-      "goldCost": 50
+      "goldCost": 50,
+      "type": "Helmet"
     },
     {
       "id":14,
       "name": "Magic Hat",
       "damage": false,
+      "hasRange": false,
       "minDamage":0,
       "maxDamage":0,
       "manaUsed": 0,
@@ -272,12 +299,14 @@
       "healthRestored": 0,
       "minDefense": 4,
       "maxDefense": 12,
-      "goldCost": 80
+      "goldCost": 80,
+      "type": "Helmet"
     },
     {
       "id":15,
       "name": "Red Common",
       "damage": false,
+      "hasRange": false,
       "minDamage":0,
       "maxDamage":0,
       "manaUsed": 0,
@@ -285,12 +314,14 @@
       "healthRestored": 0,
       "minDefense": 0,
       "maxDefense": 0,
-      "goldCost": 0
+      "goldCost": 10,
+      "type": "Body"
     },
     {
       "id":16,
       "name": "Blue Common",
       "damage": false,
+      "hasRange": false,
       "minDamage":0,
       "maxDamage":0,
       "manaUsed": 0,
@@ -298,12 +329,14 @@
       "healthRestored": 0,
       "minDefense": 0,
       "maxDefense": 0,
-      "goldCost": 0
+      "goldCost": 10,
+      "type": "Body"
     },
     {
       "id":17,
       "name": "Green Common",
       "damage": false,
+      "hasRange": false,
       "minDamage":0,
       "maxDamage":0,
       "manaUsed": 0,
@@ -311,12 +344,14 @@
       "healthRestored": 0,
       "minDefense": 0,
       "maxDefense": 0,
-      "goldCost": 0
+      "goldCost": 10,
+      "type": "Body"
     },
     {
       "id":18,
       "name": "Blue Tunic",
       "damage": false,
+      "hasRange": false,
       "minDamage":0,
       "maxDamage":0,
       "manaUsed": 0,
@@ -324,12 +359,14 @@
       "healthRestored": 0,
       "minDefense": 6,
       "maxDefense": 10,
-      "goldCost": 65
+      "goldCost": 65,
+      "type": "Body"
     },
     {
       "id":19,
       "name": "Leather Armor",
       "damage": false,
+      "hasRange": false,
       "minDamage":0,
       "maxDamage":0,
       "manaUsed": 0,
@@ -337,12 +374,14 @@
       "healthRestored": 0,
       "minDefense": 2,
       "maxDefense": 6,
-      "goldCost": 30
+      "goldCost": 30,
+      "type": "Body"
     },
     {
       "id":20,
       "name": "Plate Armor",
       "damage": false,
+      "hasRange": false,
       "minDamage":0,
       "maxDamage":0,
       "manaUsed": 0,
@@ -350,12 +389,14 @@
       "healthRestored": 0,
       "minDefense": 15,
       "maxDefense": 30,
-      "goldCost": 110
+      "goldCost": 110,
+      "type": "Body"
     },
     {
       "id":21,
       "name": "Health Potion",
       "damage": false,
+      "hasRange": false,
       "minDamage":0,
       "maxDamage":0,
       "manaUsed": 0,
@@ -363,12 +404,14 @@
       "healthRestored": 25,
       "minDefense": 0,
       "maxDefense": 0,
-      "goldCost": 20
+      "goldCost": 20,
+      "type": "Potion"
     },
     {
       "id":22,
       "name": "Mana Potion",
       "damage": false,
+      "hasRange": false,
       "minDamage":0,
       "maxDamage":0,
       "manaUsed": 0,
@@ -376,7 +419,8 @@
       "healthRestored": 0,
       "minDefense": 0,
       "maxDefense": 0,
-      "goldCost": 20
+      "goldCost": 20,
+      "type": "Potion"
     }
   ]
 }

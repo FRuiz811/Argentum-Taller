@@ -74,10 +74,10 @@ enum class BodyID {
 
 enum class HeadID {
     Nothing,
-    Elf,
     Human,
-    Gnome,
+    Elf,
     Dwarf,
+    Gnome,
     Priest,
     Zombie,
 };
