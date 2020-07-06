@@ -19,7 +19,7 @@ class World: public Thread {
 private:
     TiledMap map;
     Board board;
-    GameStatsConfig gameStatsConfig;
+    GameStatsConfig& gameStatsConfig;
     GameObjectsContainer gameObjectsContainer;
     uint current_id;
     std::atomic<bool> keepTalking;

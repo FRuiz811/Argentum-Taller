@@ -54,5 +54,9 @@ float Position::getHeight() const {
     return height;
 }
 
+float Position::getMiddle() const {
+    return getTop() + height/2;
+}
+
 
 

@@ -32,43 +32,44 @@ void ServerMoveState::performTask(uint id,
     std::shared_ptr<GameCharacter> aCharacter = std::dynamic_pointer_cast<GameCharacter>(gameObjects.at(id));
     if (amountMovements == 0) {
         amountMovements = gameStatsConfig.getAmountMovements(aCharacter->getRace());
-//        std::cout << std::to_string(amountMovements) << std::endl;
         aCharacter->setDirection(direction);
-    }
-    BoardPosition& boardPosition = aCharacter->getBoardPosition();
-    Point newPoint = aCharacter->getBoardPosition().getPosition().getPoint();
-    switch(direction) {
-        case Direction::up:
-            newPoint.y -= distance/float(amountMovements);
-            break;
-        case Direction::down:
-            newPoint.y += distance/float(amountMovements);
-            break;
-        case Direction::left:
-            newPoint.x -= distance/float(amountMovements);
-            break;
-        case Direction::right:
-            newPoint.x += distance/float(amountMovements);
-            break;
-    }
-    Position newPosition(newPoint, boardPosition.getPosition().getWidth(), aCharacter->getBoardPosition().getPosition().getHeight());
-    if (!board.checkCollisions(boardPosition, newPosition, aCharacter->getId())) {
-        boardPosition.setPosition(newPosition);
-        if (boardPosition.getNestId() != 0) {
-            std::shared_ptr<Creature> aCreature;
-            for(auto &creatureId : board.getCreaturesInNestPoint(boardPosition.getNestId())) {
-                aCreature = std::dynamic_pointer_cast<Creature>(gameObjects.at(creatureId));
-                aCreature->notify(id);
-            }
-        }
     } else {
-        isColliding = true;
-        finalized = true;
+        BoardPosition& boardPosition = aCharacter->getBoardPosition();
+        Point newPoint = aCharacter->getBoardPosition().getPosition().getPoint();
+        switch(direction) {
+            case Direction::up:
+                newPoint.y -= distance/amountMovements;
+                break;
+            case Direction::down:
+                newPoint.y += distance/amountMovements;
+                break;
+            case Direction::left:
+                newPoint.x -= distance/amountMovements;
+                break;
+            case Direction::right:
+                newPoint.x += distance/amountMovements;
+                break;
+        }
+        Position newPosition(newPoint, boardPosition.getPosition().getWidth(), aCharacter->getBoardPosition().getPosition().getHeight());
+        if (!board.checkCollisions(boardPosition, newPosition, aCharacter->getId())) {
+            boardPosition.setPosition(newPosition);
+            if (boardPosition.getNestId() != 0) {
+                std::shared_ptr<Creature> aCreature;
+                for(auto &creatureId : board.getCreaturesInNestPoint(boardPosition.getNestId())) {
+                    aCreature = std::dynamic_pointer_cast<Creature>(gameObjects.at(creatureId));
+                    aCreature->notify(id);
+                }
+            }
+        } else {
+            isColliding = true;
+            finalized = true;
+        }
+        actualMovement++;
+        if (actualMovement >= amountMovements) {
+            finalized = true;
+        }
     }
-    actualMovement++;
-    if (actualMovement >= amountMovements) {
-        finalized = true;
-    }
+
 }
 
 void ServerMoveState::setNextState(InputInfo info) {

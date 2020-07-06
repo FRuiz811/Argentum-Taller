@@ -2,45 +2,44 @@
 #include "StillStateCreature.h"
 #include "Creature.h"
 
-MoveStateCreature::~MoveStateCreature() {
-
-}
+MoveStateCreature::~MoveStateCreature() = default;
 
 void MoveStateCreature::performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects,
                                     Board &board, GameStatsConfig &gameStatsConfig) {
     std::shared_ptr<Creature> aCreature = std::dynamic_pointer_cast<Creature>(gameObjects.at(id));
     if (amountMovements == 0) {
         amountMovements = 10;
-//        std::cout << std::to_string(amountMovements) << std::endl;
         aCreature->setDirection(direction);
-    }
-    BoardPosition& boardPosition = aCreature->getBoardPosition();
-    Point newPoint = aCreature->getBoardPosition().getPosition().getPoint();
-    switch(direction) {
-        case Direction::up:
-            newPoint.y -= distance/float(amountMovements);
-            break;
-        case Direction::down:
-            newPoint.y += distance/float(amountMovements);
-            break;
-        case Direction::left:
-            newPoint.x -= distance/float(amountMovements);
-            break;
-        case Direction::right:
-            newPoint.x += distance/float(amountMovements);
-            break;
-    }
-    Position newPosition(newPoint, boardPosition.getPosition().getWidth(), aCreature->getBoardPosition().getPosition().getHeight());
-    if (!board.checkCreaturesCollisions(boardPosition, newPosition, aCreature->getId())) {
-        boardPosition.setPosition(newPosition);
     } else {
-        isColliding = true;
-        finalized = true;
+        BoardPosition& boardPosition = aCreature->getBoardPosition();
+        Point newPoint = aCreature->getBoardPosition().getPosition().getPoint();
+        switch(direction) {
+            case Direction::up:
+                newPoint.y -= distance/float(amountMovements);
+                break;
+            case Direction::down:
+                newPoint.y += distance/float(amountMovements);
+                break;
+            case Direction::left:
+                newPoint.x -= distance/float(amountMovements);
+                break;
+            case Direction::right:
+                newPoint.x += distance/float(amountMovements);
+                break;
+        }
+        Position newPosition(newPoint, boardPosition.getPosition().getWidth(), aCreature->getBoardPosition().getPosition().getHeight());
+        if (!board.checkCreaturesCollisions(boardPosition, newPosition, aCreature->getId())) {
+            boardPosition.setPosition(newPosition);
+        } else {
+            isColliding = true;
+            finalized = true;
+        }
+        actualMovement++;
+        if (actualMovement >= amountMovements) {
+            finalized = true;
+        }
     }
-    actualMovement++;
-    if (actualMovement >= amountMovements) {
-        finalized = true;
-    }
+
 }
 
 void MoveStateCreature::setNextState(InputInfo info) {

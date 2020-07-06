@@ -18,7 +18,6 @@ World::World(GameStatsConfig& configuration) : gameStatsConfig(configuration),
     addCreatures();
 }
 
-
 uint World::getNextId() {
     uint id = this->current_id;
     this->current_id++;
@@ -100,7 +99,7 @@ void World::stop() {
 		player.second->stop();
         player.second->join();
         delete player.second;
-  }
+    }
 }
 
 void World::update() {
@@ -118,8 +117,8 @@ void World::addPlayer(ThPlayer *aPlayer,uint id) {
 
 void World::clearFinishedPlayers() {
     auto iter = this->players.begin();
-    while (iter != this->players.end()){
-        if (!(*iter).second->is_alive()){
+    while (iter != this->players.end()) {
+        if (!(*iter).second->is_alive()) {
             (*iter).second->join();
             gameObjectsContainer.deleteGameObject((*iter).first);
             delete (*iter).second;

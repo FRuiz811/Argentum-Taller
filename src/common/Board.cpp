@@ -45,20 +45,20 @@ bool Board::checkCollisions(BoardPosition& aBoardPosition, Position &newPosition
         }
     }
     for (auto& collisionObject : collisionObjects) {
-        if (Collider::checkCollision(newPosition, collisionObject.getPosition())) {
+        if (Collider::checkStaticCollision(newPosition, collisionObject.getPosition())) {
             isColliding = true;
             break;
         }
     }
     if (!isColliding) {
         for (auto& city : cities) {
-            if (Collider::checkCollision(newPosition, city.getPosition())) {
+            if (Collider::checkStaticCollision(newPosition, city.getPosition())) {
                 aBoardPosition.setInsideCity(true);
                 break;
             }
         }
         for (auto& aNestPoint : nestPointContainer.getNestPoints()) {
-            if (Collider::checkCollision(newPosition, aNestPoint.getPosition())) {
+            if (Collider::checkStaticCollision(newPosition, aNestPoint.getPosition())) {
                 aBoardPosition.setNestId(aNestPoint.getNestId());
                 break;
             }
@@ -78,13 +78,13 @@ NestPoint& Board::getAvailableNestPoint() {
 bool Board::checkCollisionsAndCities(Position &aPosition) {
     bool isColliding = false;
     for (auto& collisionObject : collisionObjects) {
-        if (Collider::checkCollision(aPosition, collisionObject.getPosition())) {
+        if (Collider::checkStaticCollision(aPosition, collisionObject.getPosition())) {
             isColliding = true;
             break;
         }
     }
     for (auto& collisionObject : cities) {
-        if (Collider::checkCollision(aPosition, collisionObject.getPosition())) {
+        if (Collider::checkStaticCollision(aPosition, collisionObject.getPosition())) {
             isColliding = true;
             break;
         }
@@ -138,13 +138,13 @@ bool Board::checkCreaturesCollisions(BoardPosition& aBoardPosition, Position& ne
         }
     }
     for (auto& collisionObject : collisionObjects) {
-        if (Collider::checkCollision(newPosition, collisionObject.getPosition())) {
+        if (Collider::checkStaticCollision(newPosition, collisionObject.getPosition())) {
             isColliding = true;
             break;
         }
     }
     for (auto& city : cities) {
-        if (Collider::checkCollision(newPosition, city.getPosition())) {
+        if (Collider::checkStaticCollision(newPosition, city.getPosition())) {
             isColliding = true;
             break;
         }

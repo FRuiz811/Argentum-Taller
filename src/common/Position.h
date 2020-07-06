@@ -31,6 +31,8 @@ public:
 
     float getLeft() const;
 
+    float getMiddle() const;
+
     void setX(float x);
 
     void setY(float y);

@@ -16,6 +16,8 @@ public:
 
     static bool checkCollision(const Position&, const Position&);
 
+    static bool checkStaticCollision(const Position&, const Position&);
+
 };
 
 
