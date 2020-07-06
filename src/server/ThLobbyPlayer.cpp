@@ -15,7 +15,7 @@ void ThLobbyPlayer::run() {
     std::vector<uint8_t> map = Decoder::encodeMap(this->world.getStaticMap());
     this->protocol->send(map);
     this->protocol->send(Decoder::encodePlayerInfo(aCharacter->getPlayerInfo()));
-    world.addPlayer(new ThPlayer(protocol, aCharacter));
+    world.addPlayer(new ThPlayer(protocol, aCharacter),aCharacter->getId());
     keepTalking = false;
 }
 

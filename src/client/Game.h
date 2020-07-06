@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include <memory>
+#include <unordered_map>
 #include "Window.h"
 #include "TextureManager.h"
 #include "MusicManager.h"
@@ -24,7 +25,7 @@ private:
     CommunicationProtocol protocol;
     TextureManager textureManager;
     MusicManager musicManager;
-    std::vector<NPC> npcs;
+    std::unordered_map<uint,NPC> npcs;
     std::shared_ptr<Player> player = nullptr;
     std::shared_ptr<GameMap> map = nullptr;
     InputQueue commandQueue;

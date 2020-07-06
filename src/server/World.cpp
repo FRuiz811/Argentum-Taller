@@ -42,7 +42,7 @@ void World::run() {
         initLoop = chrono.lap();
         update();
         for (auto &aPlayer : players) {
-            aPlayer->update(getUpdatedGameObjects());
+            aPlayer.second->update(getUpdatedGameObjects());
         }
         clearFinishedPlayers();
         endLoop = chrono.lap();
@@ -85,9 +85,9 @@ void World::addNPCs(std::vector<ObjectLayer> objectLayers) {
 void World::stop() {
     this->keepTalking = false;
     for (auto & player : this->players) {
-		player->stop();
-        player->join();
-        delete player;
+		player.second->stop();
+        player.second->join();
+        delete player.second;
   }
 }
 
@@ -105,18 +105,18 @@ std::vector<GameObjectInfo> World::getUpdatedGameObjects() {
     return gameObjectsInfo;
 }
 
-void World::addPlayer(ThPlayer *aPlayer) {
+void World::addPlayer(ThPlayer *aPlayer,uint id) {
     aPlayer->start();
-    players.push_back(aPlayer);
+    players.insert({id,aPlayer});
 }
 
 void World::clearFinishedPlayers() {
-    std::vector<ThPlayer*>::iterator iter;
-    iter = this->players.begin();
+    auto iter = this->players.begin();
     while (iter != this->players.end()){
-        if (!(*iter)->is_alive()){
-            (*iter)->join();
-            delete (*iter);
+        if (!(*iter).second->is_alive()){
+            (*iter).second->join();
+            this->gameObjects.erase((*iter).first);
+            delete (*iter).second;
             iter = this->players.erase(iter);
         } else {
             iter++;

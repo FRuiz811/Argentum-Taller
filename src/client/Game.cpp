@@ -117,6 +117,7 @@ void Game::update() {
     Message msg;
     PlayerInfo playerInfo;
     std::vector<GameObjectInfo> objects;
+    std::unordered_map<uint,NPC> newNpcs;
     //NPCMessage items;
     while (!this->dataQueue.empty()){
         msg = this->dataQueue.pop();
@@ -125,10 +126,18 @@ void Game::update() {
             this->player->updatePlayerInfo(playerInfo);
         } else if (msg.getType() == OBJECTSINFOMSG) {
             objects = Decoder::decodeGameObjects(msg);
-            this->npcs.clear();
+            newNpcs.clear();
             for (GameObjectInfo& npc : objects) {
-	    	    this->npcs.emplace_back(this->textureManager, npc);
+                auto iter = this->npcs.find(npc.getId());
+                if (iter == this->npcs.end()){
+                    NPC aNpc(this->textureManager,npc);
+                    newNpcs.insert({npc.getId(),aNpc});
+                } else {
+                    (*iter).second.updatePlayerInfo(npc);
+                    newNpcs.insert({(*iter).first,(*iter).second});
+                }
 		    }
+            this->npcs.swap(newNpcs);
         } else if (msg.getType() == INTERACTMSG) {
             //items = Decoder::decodeInteractNPC(msg);
             //this->ui->setNPCInfo(items);
@@ -136,7 +145,7 @@ void Game::update() {
     }
     this->player->update(GAMELOOPTIME);
     for (auto& npc: this->npcs)
-        npc.update(GAMELOOPTIME);
+        npc.second.update(GAMELOOPTIME);
     //this->ui->update();
 }
 
@@ -151,7 +160,7 @@ void Game::render() {
 		this->player->render(*camera);
 
 		for (auto& aNPC : this->npcs) {
-		    aNPC.render(*camera);
+		    aNPC.second.render(*camera);
 		}
 
 		this->map->drawHighLayers(*camera);

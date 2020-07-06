@@ -24,7 +24,7 @@ private:
     uint current_id;
     std::atomic<bool> keepTalking;
     mutable std::mutex m;
-    std::vector<ThPlayer*> players;
+    std::unordered_map<uint, ThPlayer*> players;
     
     void addNPCs(std::vector<ObjectLayer> objectLayers);
     std::vector<GameObjectInfo> getUpdatedGameObjects();
@@ -48,7 +48,7 @@ public:
 
     void stop();
 
-    void addPlayer(ThPlayer* aPlayer);
+    void addPlayer(ThPlayer* aPlayer,uint id);
 
     void clearFinishedPlayers();
 

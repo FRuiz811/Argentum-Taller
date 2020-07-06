@@ -43,7 +43,8 @@
 NPC::NPC(const TextureManager& manager, const GameObjectInfo& gameObjectInfo):
   Character(gameObjectInfo.getX(), gameObjectInfo.getY(), gameObjectInfo.getId()), manager(manager){
     this->direction = gameObjectInfo.getDirection();
-    this->frameHead = 0;
+    setState(gameObjectInfo.getState());
+    setFrameHead();
     setArmor(gameObjectInfo.getBodyID());
     setHead(gameObjectInfo.getHeadID());
     setHelmet(gameObjectInfo.getHelmetID());
