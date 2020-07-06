@@ -1,9 +1,10 @@
 #include "NPCServer.h"
+#include "ServerStillState.h"
 
 NPCServer::~NPCServer() = default;
 
 NPCServer::NPCServer(uint id, Point point, const std::string& type) : GameObject(id) {
-    position = Position(point, 25, 45);
+    boardPosition = BoardPosition(Position(point, 25, 45), 0, true);
     if (type == "banker") {
         textureHashId = "ht00|h00|b08|s00|w00";
     } else if (type == "merchant") {
@@ -11,11 +12,18 @@ NPCServer::NPCServer(uint id, Point point, const std::string& type) : GameObject
     } else {
         textureHashId = "ht00|h05|b10|s00|w00";
     }
+    InputInfo anInputInfo;
+    anInputInfo.input = InputID::nothing;
+    state = std::unique_ptr<State>(new ServerStillState(anInputInfo));
 }
 
 void NPCServer::update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board,
                        GameStatsConfig &gameStatsConfig) {
 
+}
+
+CharacterStateID NPCServer::getStateId() {
+    return state->getStateId();
 }
 
 

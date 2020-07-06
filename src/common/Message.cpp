@@ -13,11 +13,6 @@ uint8_t Message::getType() const {
     return type;
 }
 
-uint32_t Message::read(uint8_t bytesToRead) {
-
-    return *(data.data() + pos + bytesToRead);
-}
-
 Message::Message(std::vector<uint8_t>& data, uint32_t length, uint8_t type) :
 data(std::move(data)), length(length), type(type) {}
 
@@ -70,8 +65,4 @@ uint32_t Message::read32() {
     uint32_t value = conversorTo32(data.data() + pos);
     pos += 4;
     return value;
-}
-
-const std::vector<uint8_t> &Message::getData() const {
-    return data;
 }

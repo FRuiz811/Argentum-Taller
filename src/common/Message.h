@@ -11,9 +11,6 @@ private:
     uint32_t length{};
     uint8_t type{};
     uint32_t pos = 0;
-
-    uint32_t read(uint8_t bytesToRead);
-
 public:
     Message();
 
@@ -22,8 +19,6 @@ public:
     ~Message();
 
     uint8_t getType() const;
-
-    const std::vector<uint8_t> &getData() const;
 
     void clear();
 

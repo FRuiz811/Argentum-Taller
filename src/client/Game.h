@@ -25,7 +25,7 @@ private:
     CommunicationProtocol protocol;
     TextureManager textureManager;
     MusicManager musicManager;
-    std::unordered_map<uint,NPC> npcs;
+    std::unordered_map<uint, NPC> npcs;
     std::shared_ptr<Player> player = nullptr;
     std::shared_ptr<GameMap> map = nullptr;
     InputQueue commandQueue;

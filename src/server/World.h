@@ -19,8 +19,8 @@ class World: public Thread {
 private:
     TiledMap map;
     Board board;
-    GameStatsConfig gameStatsConfig;
-    std::unordered_map<uint, std::shared_ptr<GameObject>, std::hash<uint>> gameObjects;
+    GameStatsConfig& gameStatsConfig;
+    GameObjectsContainer gameObjectsContainer;
     uint current_id;
     std::atomic<bool> keepTalking;
     mutable std::mutex m;
