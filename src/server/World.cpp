@@ -2,6 +2,7 @@
 #include "../common/JsonReader.h"
 #include "../common/NPCServer.h"
 #include <iostream>
+#include <random>
 
 #define GAMELOOPTIME 1000000/30.0
 
@@ -14,7 +15,6 @@ World::World(GameStatsConfig& configuration) : gameStatsConfig(configuration),
                   map.getHeight() * map.getTileHeight(),
                   gameStatsConfig.getNestCreatureLimit());
     addNPCs(map.getObjectLayers());
-    std::srand((int)std::time(nullptr));
     addCreatures();
 }
 
@@ -59,7 +59,11 @@ void World::addCreatures() {
 
 void World::generateCreature() {
     uint id = getNextId();
-    uint8_t randomId = 1 + std::rand() % 4;
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<int> dist(1, 4);
+    uint8_t randomId = dist(mt);
+    std::cout << std::to_string(randomId) << std::endl;
     NestPoint& aNestPoint = board.getAvailableNestPoint();
     Point initialPoint = board.getInitialPointInNest(aNestPoint);
     if (initialPoint.x == 0.0 && initialPoint.y == 0.0) {

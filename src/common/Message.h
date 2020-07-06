@@ -20,8 +20,6 @@ public:
 
     uint8_t getType() const;
 
-    const std::vector<uint8_t> &getData() const;
-
     void clear();
 
     uint8_t read8();

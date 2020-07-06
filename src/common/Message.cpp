@@ -66,7 +66,3 @@ uint32_t Message::read32() {
     pos += 4;
     return value;
 }
-
-const std::vector<uint8_t> &Message::getData() const {
-    return data;
-}
