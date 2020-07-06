@@ -1,13 +1,12 @@
 #ifndef ARGENTUM_TALLER_STATE_H
 #define ARGENTUM_TALLER_STATE_H
 
-
 #include <unordered_map>
 #include <memory>
 #include <vector>
 #include "PlayerStats.h"
-#include "GameObject.h"
 #include "StaticObject.h"
+#include "GameObject.h"
 
 class State {
 protected:
@@ -17,6 +16,7 @@ protected:
     CharacterStateID stateId;
 public:
     State();
+
     explicit State(InputInfo);
 
     virtual ~State();

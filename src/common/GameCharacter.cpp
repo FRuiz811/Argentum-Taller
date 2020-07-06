@@ -4,13 +4,13 @@
 #include "GameStatsConfig.h"
 
 PlayerInfo GameCharacter::getPlayerInfo() {
-    return PlayerInfo(id, position.getPoint(), goldAmount, life, mana, textureHashId, direction,150,
+    return PlayerInfo(id, boardPosition.getPosition().getPoint(), goldAmount, life, mana, textureHashId, direction,150,
         100,100,125,1500,2,"02|20|12|10|03|00|00|00|00",state->getStateId());
 }
 
 GameCharacter::GameCharacter(uint id, RaceID aRace, GameClassID aClass, Point &point):
 GameObject(id), race(aRace), gameClass(aClass), queueInputs() {
-    this->position = Position(point, 25, 60);
+    boardPosition = BoardPosition(Position(point, 25, 60), 0, true);
     this->life = 100;
     this->goldAmount = 100;
     this->mana = 50;
@@ -18,8 +18,7 @@ GameObject(id), race(aRace), gameClass(aClass), queueInputs() {
     this->textureHashId = "ht03|h02|b05|s00|w06";
     InputInfo anInputInfo;
     anInputInfo.input = InputID::nothing;
-    anInputInfo.position = Point(0.0, 0.0);
-    this->state = std::unique_ptr<State>(new ServerStillState(anInputInfo));
+    state = std::unique_ptr<State>(new ServerStillState(anInputInfo));
 }
 
 void GameCharacter::receiveInput(InputInfo anInputInfo) {
@@ -67,6 +66,10 @@ float GameCharacter::getExp() const {
 
 uint GameCharacter::getLevel() const {
     return level;
+}
+
+CharacterStateID GameCharacter::getStateId() {
+    return state->getStateId();
 }
 
 

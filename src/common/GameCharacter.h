@@ -40,6 +40,8 @@ public:
 
     uint getGoldAmount() const;
 
+    CharacterStateID getStateId() override;
+
     uint getLife() const;
 
     uint getMana() const;

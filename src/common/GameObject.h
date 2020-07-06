@@ -10,13 +10,11 @@
 
 class GameObject{
 protected:
-    Position position;
+    BoardPosition boardPosition;
     uint id{};
     std::string textureHashId;
     Direction direction;
-
 public:
-	GameObject();
 	explicit GameObject(uint id, Direction direction = Direction::down);
 
 	GameObject(GameObject&&) noexcept;
@@ -24,11 +22,11 @@ public:
 
     GameObjectInfo getGameObjectInfo();
 
+    virtual CharacterStateID getStateId() = 0;
+
     uint getId() const;
 
-    void setPosition(const Position &position);
-
-    Position &getPosition();
+    BoardPosition& getBoardPosition();
 
     void setDirection(Direction direction);
 

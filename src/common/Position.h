@@ -39,9 +39,9 @@ public:
 
     void setHeight(float height);
 
-    int getWidth() const;
+    float getWidth() const;
 
-    int getHeight() const;
+    float getHeight() const;
 };
 
 #endif

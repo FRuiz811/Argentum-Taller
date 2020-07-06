@@ -85,7 +85,7 @@ int main(int argc, char* argv[]) {
 		playerInfo = serverProxy.getUpdatedPlayerInfo(playerInfo.getId());
 		player.updatePlayerInfo(playerInfo);
 		npcs.clear();
-		for (GameObjectInfo& aGameObjectInfo : serverProxy.getUpdatedGameObjects()) {
+		for (GameObjectInfo& aGameObjectInfo : serverProxy.getUpdatedGameObjectsInfo()) {
 	   		if (aGameObjectInfo.getId() == playerInfo.getId()) {
           	 	continue;
 	    	}

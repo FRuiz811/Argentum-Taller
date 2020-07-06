@@ -7,9 +7,9 @@ NestPointContainer::NestPointContainer(std::vector<NestPoint> nestPoints) : nest
     length = nestPoints.size();
 }
 
-Point NestPointContainer::getNextNestPointAvailable() {
+NestPoint& NestPointContainer::getNextNestPointAvailable() {
     uint8_t initPos = pos;
-    NestPoint nestPoint = nestPoints.at(pos++);
+    NestPoint& nestPoint = nestPoints.at(pos++);
     while (nestPoint.isFull() && pos != initPos) {
         if (pos == length) {
             pos = 0;
@@ -19,8 +19,22 @@ Point NestPointContainer::getNextNestPointAvailable() {
     if (nestPoint.isFull()) {
         throw Exception("There is not available points to add creatures");
     }
-    nestPoint.addCreature();
-    return nestPoint.getPoint();
+    return nestPoint;
+}
+
+std::vector<NestPoint> &NestPointContainer::getNestPoints() {
+    return nestPoints;
+}
+
+NestPoint &NestPointContainer::getNestPoint(uint nestId) {
+    size_t index = 0;
+    for (auto &aNestPoint : nestPoints) {
+        if (nestId == aNestPoint.getNestId()) {
+            break;
+        }
+        index++;
+    }
+    return nestPoints.at(index);
 }
 
 NestPointContainer::NestPointContainer() = default;

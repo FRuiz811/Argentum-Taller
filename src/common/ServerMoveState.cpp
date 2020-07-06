@@ -3,6 +3,7 @@
 #include "Collider.h"
 #include "GameCharacter.h"
 #include "ServerStillState.h"
+#include "Creature.h"
 
 ServerMoveState::~ServerMoveState() = default;
 
@@ -34,33 +35,32 @@ void ServerMoveState::performTask(uint id,
 //        std::cout << std::to_string(amountMovements) << std::endl;
         aCharacter->setDirection(direction);
     }
-    Point newPoint = aCharacter->getPosition().getPoint();
+    BoardPosition& boardPosition = aCharacter->getBoardPosition();
+    Point newPoint = aCharacter->getBoardPosition().getPosition().getPoint();
     switch(direction) {
         case Direction::up:
-            newPoint.y -= distance/amountMovements;
+            newPoint.y -= distance/float(amountMovements);
             break;
         case Direction::down:
-            newPoint.y += distance/amountMovements;
+            newPoint.y += distance/float(amountMovements);
             break;
         case Direction::left:
-            newPoint.x -= distance/amountMovements;
+            newPoint.x -= distance/float(amountMovements);
             break;
         case Direction::right:
-            newPoint.x += distance/amountMovements;
+            newPoint.x += distance/float(amountMovements);
             break;
     }
-    Position newPosition(newPoint, aCharacter->getPosition().getWidth(), aCharacter->getPosition().getHeight());
-    for (auto& gameObject : gameObjects) {
-        if (gameObject.first == id) {
-            continue;
+    Position newPosition(newPoint, boardPosition.getPosition().getWidth(), aCharacter->getBoardPosition().getPosition().getHeight());
+    if (!board.checkCollisions(boardPosition, newPosition, aCharacter->getId())) {
+        boardPosition.setPosition(newPosition);
+        if (boardPosition.getNestId() != 0) {
+            std::shared_ptr<Creature> aCreature;
+            for(auto &creatureId : board.getCreaturesInNestPoint(boardPosition.getNestId())) {
+                aCreature = std::dynamic_pointer_cast<Creature>(gameObjects.at(creatureId));
+                aCreature->notify(id);
+            }
         }
-        if (Collider::checkCollision(newPosition, gameObject.second->getPosition())) {
-            isColliding = true;
-            break;
-        }
-    }
-    if (!isColliding && !board.checkCollisions(newPosition, aCharacter->getId())) {
-        aCharacter->setPosition(newPosition);
     } else {
         isColliding = true;
         finalized = true;

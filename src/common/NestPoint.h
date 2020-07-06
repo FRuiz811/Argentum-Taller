@@ -2,23 +2,32 @@
 #define ARGENTUM_TALLER_NESTPOINT_H
 
 
-#include "StaticObject.h"
+#include <vector>
+#include <memory>
+#include "Position.h"
 
 class NestPoint {
 private:
-    Point point;
-    uint8_t amountCreatures = 0;
+    uint nestId;
+    Position position;
+    std::vector<uint> creatures;
     uint8_t nestLimit;
 public:
-    explicit NestPoint(Point point, uint8_t nestLimit);
+    explicit NestPoint(Point point, uint width, uint height, uint8_t nestLimit, uint nestId);
 
-    virtual ~NestPoint();
+    ~NestPoint();
 
-    const Point &getPoint() const;
+    std::vector<Position> getPosiblePositions();
+
+    Position &getPosition();
+
+    void addCreature(uint id);
+
+    uint getNestId() const;
+
+    const std::vector<uint> &getCreatures() const;
 
     bool isFull() const;
-
-    void addCreature();
 };
 
 

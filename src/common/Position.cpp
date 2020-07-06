@@ -46,14 +46,13 @@ Point Position::getPoint() const {
     return Point(x,y);
 }
 
-int Position::getWidth() const {
+float Position::getWidth() const {
     return width;
 }
 
-int Position::getHeight() const {
+float Position::getHeight() const {
     return height;
 }
-
 
 
 
