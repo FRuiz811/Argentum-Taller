@@ -10,6 +10,7 @@ class GameStatsConfig {
 private:
     std::unordered_map<RaceID, RaceInfo, std::hash<RaceID>> races;
     std::unordered_map<GameClassID, GameClassInfo, std::hash<GameClassID>> gameClasses;
+    std::unordered_map<ItemsInventoryID,ItemInfo, std::hash<ItemsInventoryID>> items;
     std::string port;
     float goldRandMin{};
     float goldRandMax{};
@@ -35,7 +36,7 @@ public:
     std::string getPort() const;
     float getMaxHealth(RaceID, GameClassID, uint level) const;
     float getRecoveryHealth(RaceID, GameClassID) const;
-    float getMaxMana(RaceID, GameClassID, uint exp) const;
+    float getMaxMana(RaceID, GameClassID, uint level) const;
     float getRecoveryMana(RaceID, GameClassID) const;
     float getRecoveryManaMeditation(RaceID, GameClassID) const;
     float getGoldDrop(uint maxHealthNPC) const;
@@ -46,10 +47,12 @@ public:
     float getDamage(RaceID, GameClassID) const;
     bool canEvade(RaceID) const;
     float getDefense() const;
+    std::unordered_map<ItemsInventoryID,ItemInfo> getItems() const;
     uint8_t getAmountMovements(RaceID raceId) const;
     uint8_t getCreaturesLimit() const;
     RaceInfo createRaceInfo(rapidjson::Value &value);
     GameClassInfo createGameClass(rapidjson::Value &value);
+    ItemInfo createItem(rapidjson::Value& value);
     uint8_t getNestCreatureLimit() const ;
 };
 

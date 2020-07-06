@@ -19,4 +19,20 @@ struct GameClassInfo {
     uint8_t meditation;
 };
 
+struct ItemInfo {
+    uint8_t id;
+    std::string name;
+    bool damage;
+    bool hasRange;
+    uint8_t minDamage;
+    uint8_t maxDamage;
+    uint8_t manaUsed;
+    uint8_t manaRestored;
+    uint8_t healthRestored;
+    uint8_t minDefense;
+    uint8_t maxDefense;
+    uint8_t goldCost;
+    std::string type; 
+};
+
 #endif //ARGENTUM_TALLER_GAMESTATS_H
