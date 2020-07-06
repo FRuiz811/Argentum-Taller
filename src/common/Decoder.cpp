@@ -7,39 +7,19 @@
 #define OBJECTSINFOMSG 0x02
 #define COMMANDMSG 0x03
 #define INITMSG 0x04
-#define INITLENGTH 3
-#define OBJECTLENGTH 18
-#define PLAYERINFOLENGTH 45
-#define COMMANDLENGTH 8
-#define MAPLENGTH 240047
+#define INTERACTMSG 0x05
+#define INITLENGTH 2
+#define OBJECTLENGTH 17
+#define PLAYERINFOLENGTH 46
+#define COMMANDLENGTH 7
+#define MAPLENGTH 240046
 #define ITEM 0x01
 #define CHARACTER 0x00
 
 
 Decoder::Decoder() = default;
 
-uint32_t Decoder::conversorTo32(uint8_t* value) {
-    uint8_t temp[4];
-    uint32_t* temp32;
-    for (int j = 0; j < 4; j++) {
-        temp[j] = value[j];
-    }
-    temp32 = (uint32_t*) temp;
-    return *temp32;
-}
-
-uint16_t Decoder::conversorTo16(uint8_t* value) {
-    uint8_t temp[4];
-    uint16_t* temp16;
-    for (int j = 0; j < 2; j++) {
-        temp[j] = value[j];
-    }
-    temp16 = (uint16_t*) temp;
-    return *temp16;
-}
-
-
-void Decoder::conversorTo8(uint32_t value, uint8_t from, std::vector<uint8_t> encodeMsg) {
+void Decoder::conversorTo8(uint32_t value, uint8_t from, std::vector<uint8_t>& encodeMsg) {
     int max;
     if (from == 16) {
         max = 2;
@@ -51,7 +31,7 @@ void Decoder::conversorTo8(uint32_t value, uint8_t from, std::vector<uint8_t> en
         encodeMsg.push_back(*(ptr+i));
 }
 
-void Decoder::encodeStatsPlayer(const PlayerInfo &info, std::vector<uint8_t> encodeMsg) {
+void Decoder::encodeStatsPlayer(const PlayerInfo &info, std::vector<uint8_t>& encodeMsg) {
     uint16_t life,maxLife, mana, maxMana, level, gold, safeGold;
     uint32_t maxExp, exp;
     life = htons(info.getLife());
@@ -74,7 +54,7 @@ void Decoder::encodeStatsPlayer(const PlayerInfo &info, std::vector<uint8_t> enc
     conversorTo8(safeGold, 16, encodeMsg);
 }
 
-void Decoder::encodeInventory(const PlayerInfo &info, std::vector<uint8_t> encodeMsg) {
+void Decoder::encodeInventory(const PlayerInfo &info, std::vector<uint8_t>& encodeMsg) {
     std::string inventory = info.getInventory();
     std::string item;
     uint8_t idItem;
@@ -85,7 +65,7 @@ void Decoder::encodeInventory(const PlayerInfo &info, std::vector<uint8_t> encod
     }
 }
 
-void Decoder::encodeEquipmentPlayer(const PlayerInfo &info, std::vector<uint8_t> encodeMsg) {
+void Decoder::encodeEquipmentPlayer(const PlayerInfo &info, std::vector<uint8_t>& encodeMsg) {
     uint8_t idHelmet = (uint8_t) info.getHelmetID();
     uint8_t idHead = (uint8_t) info.getHeadID();
     uint8_t idBody = (uint8_t) info.getBodyID();
@@ -99,7 +79,7 @@ void Decoder::encodeEquipmentPlayer(const PlayerInfo &info, std::vector<uint8_t>
     encodeMsg.push_back(idWeapon);
 }
 
-void Decoder::encodeStatePlayer(const GameObjectInfo &info, const std::vector<uint8_t>& encodeMsg) {
+void Decoder::encodeStatePlayer(const GameObjectInfo &info, std::vector<uint8_t>& encodeMsg) {
     uint16_t state = htons((uint16_t) info.getState());
     uint16_t dir = htons((uint16_t) info.getDirection());
     uint16_t posX = htons(info.getPoint().x);
@@ -127,7 +107,7 @@ std::vector<uint8_t> Decoder::encodePlayerInfo(const PlayerInfo &info) {
     return std::move(encodeMsg);
 }
 
-std::string Decoder::decodeEquipment(Message msg, bool isGameObject) {
+std::string Decoder::decodeEquipment(Message& msg, bool isGameObject) {
     std::string equipment;
     uint8_t id;
     std::string temp;
@@ -172,7 +152,7 @@ std::string Decoder::decodeEquipment(Message msg, bool isGameObject) {
     return std::move(equipment);
 }
 
-std::string Decoder::decodeInventory(Message msg) {
+std::string Decoder::decodeInventory(Message& msg) {
     std::string inventory;
     uint8_t id;
     std::string temp;
@@ -211,7 +191,7 @@ PlayerInfo Decoder::decodePlayerInfo(Message msg) {
     return info;
 }
 
-void Decoder::encodeItem(GameObjectInfo object, std::vector<uint8_t> encodeMsg) {
+void Decoder::encodeItem(GameObjectInfo object, std::vector<uint8_t>& encodeMsg) {
     encodeMsg.push_back(ITEM);
     auto idHelmet = (uint8_t) object.getHelmetID();
     auto idHead = (uint8_t) object.getHeadID();
@@ -237,10 +217,10 @@ void Decoder::encodeItem(GameObjectInfo object, std::vector<uint8_t> encodeMsg) 
     conversorTo8(posY,16, encodeMsg);
 }
 
-void Decoder::encodeCharacter(GameObjectInfo object, std::vector<uint8_t> encodeMsg) {
+void Decoder::encodeCharacter(GameObjectInfo object, std::vector<uint8_t>& encodeMsg) {
     encodeMsg.push_back(CHARACTER);
     auto idHelmet = (uint8_t) object.getHelmetID();
-    uint8_t idHead = (uint8_t) object.getHeadID();
+    auto idHead = (uint8_t) object.getHeadID();
     auto idBody = (uint8_t) object.getBodyID();
     auto idShield = (uint8_t) object.getShieldID();
     auto idWeapon = (uint8_t) object.getWeaponID();
@@ -356,7 +336,7 @@ std::vector<uint8_t> Decoder::encodeMap(const TiledMap &tiledMap) {
     encodeMsg.push_back(amountLayers);
     conversorTo8(htons(dataSize), 16, encodeMsg);
     for (auto &aTileLayer : tilesLayers) {
-        encodeMsg.push_back(aTileLayer.isGroundLayer() ? ZERO : 0X01);
+        encodeMsg.push_back(aTileLayer.isGroundLayer() ? 0X01 : ZERO);
         for (auto &aDataTile : aTileLayer.getData()) {
             conversorTo8(htons(aDataTile), 16, encodeMsg);
         }
@@ -383,7 +363,7 @@ TiledMap Decoder::decodeMap(Message msg) {
         std::vector<uint16_t> data;
         bool isGround = msg.read8();
         for (size_t j = 0; j < dataSize; ++j) {
-            data[j] = ntohs(msg.read16());
+            data.push_back(ntohs(msg.read16()));
         }
         tileLayers.emplace_back(data, isGround);
     }

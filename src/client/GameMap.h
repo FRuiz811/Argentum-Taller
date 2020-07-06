@@ -5,6 +5,8 @@
 #include "../common/TiledMap.h"
 #include "Texture.h"
 #include "Camera.h"
+#include "../common/Chrono.h"
+#include "UI.h"
 #include <vector>
 #include <map>
 
@@ -25,8 +27,8 @@ public:
     void drawHighLayers(Camera& camera);
     void drawGround(Camera& camera);
 
-    int getMapWidth();
-    int getMapHeight();
+    int getMapWidth() const;
+    int getMapHeight() const;
 
 };
 

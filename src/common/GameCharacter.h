@@ -2,7 +2,7 @@
 #define PERSONAJE_H
 
 
-#include "../client/PlayerInfo.h"
+#include "PlayerInfo.h"
 #include "StaticObject.h"
 #include "State.h"
 #include "InputQueue.h"
@@ -19,10 +19,9 @@ private:
     uint life;
     uint mana;
     float exp;
-    uint level;
+    uint level{};
     std::unique_ptr<State> state;
     InputQueue queueInputs;
-
 public:
 	GameCharacter(uint id, RaceID aRace, GameClassID aClass, Point& point);
 
@@ -49,6 +48,8 @@ public:
     float getExp() const;
 
     uint getLevel() const;
+
+    InputQueue &getQueueInputs();
 };
 
 #endif

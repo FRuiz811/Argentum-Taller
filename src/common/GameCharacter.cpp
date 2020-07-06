@@ -9,13 +9,15 @@ PlayerInfo GameCharacter::getPlayerInfo() {
 }
 
 GameCharacter::GameCharacter(uint id, RaceID aRace, GameClassID aClass, Point &point):
-GameObject(id), race(aRace), gameClass(aClass), queueInputs() {
+GameObject(id), race(aRace), gameClass(aClass), queueInputs(true) {
     boardPosition = BoardPosition(Position(point, 25, 60), 0, true);
     this->life = 100;
     this->goldAmount = 100;
     this->mana = 50;
     this->exp = 0;
-    this->textureHashId = "ht03|h02|b05|s00|w06";
+    this->level = 0;
+    this->direction = Direction::down;
+    this->textureHashId = "ht01|h03|b01|s02|w05";
     InputInfo anInputInfo;
     anInputInfo.input = InputID::nothing;
     state = std::unique_ptr<State>(new ServerStillState(anInputInfo));
@@ -68,6 +70,9 @@ uint GameCharacter::getLevel() const {
     return level;
 }
 
+InputQueue &GameCharacter::getQueueInputs() {
+    return queueInputs;
+}
 CharacterStateID GameCharacter::getStateId() {
     return state->getStateId();
 }

@@ -25,3 +25,7 @@ void GameObjectsContainer::update(Board& board, GameStatsConfig& gameStatsConfig
 std::shared_ptr<GameObject> GameObjectsContainer::getGameObject(uint id) {
     return gameObjects.at(id);
 }
+
+void GameObjectsContainer::deleteGameObject(uint id) {
+    this->gameObjects.erase(id);
+}

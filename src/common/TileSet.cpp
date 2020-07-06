@@ -1,9 +1,8 @@
 #include "TileSet.h"
 
-TileSet::TileSet(rapidjson::Value & tilesetDoc, uint8_t id) {
+TileSet::TileSet(rapidjson::Value & tilesetDoc, uint8_t id): id(id) {
     firstgid = tilesetDoc["firstgid"].GetInt();
     image = tilesetDoc["image"].GetString();
-    id = id;
 }
 
 int TileSet::getFirstgid() const {

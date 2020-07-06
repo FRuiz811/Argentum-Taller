@@ -118,7 +118,7 @@ int Socket::recieve(void* buffer, std::uint32_t length) const {
 		result_recv = ::recv(this->fd, &char_buffer[received_bytes],
 						   remaining_bytes, 0);
 		if(result_recv == -1 || result_recv == 0)
-			throw SocketException(FAIL_RECV,this->fd);
+			throw SocketException(FAIL_RECV, this->fd);
 		received_bytes += result_recv;
 		remaining_bytes -= result_recv;
 	}

@@ -10,6 +10,7 @@ class GameStatsConfig {
 private:
     std::unordered_map<RaceID, RaceInfo, std::hash<RaceID>> races;
     std::unordered_map<GameClassID, GameClassInfo, std::hash<GameClassID>> gameClasses;
+    std::string port;
     float goldRandMin{};
     float goldRandMax{};
     float goldMaxMult{};
@@ -31,7 +32,7 @@ public:
     explicit GameStatsConfig(rapidjson::Document &json);
 
     virtual ~GameStatsConfig();
-
+    std::string getPort() const;
     float getMaxHealth(RaceID, GameClassID, uint level) const;
     float getRecoveryHealth(RaceID, GameClassID) const;
     float getMaxMana(RaceID, GameClassID, uint exp) const;

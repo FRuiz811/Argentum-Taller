@@ -6,7 +6,7 @@
 #include "StaticObject.h"
 #include "ObjectLayer.h"
 #include "GameCharacter.h"
-#include "../client/PlayerInfo.h"
+#include "PlayerInfo.h"
 #include "Identificators.h"
 #include "TiledMap.h"
 #include "InputQueue.h"

@@ -18,6 +18,8 @@ public:
 
 	const Music& getMusic(MusicID id) const;
 
+	void loadSounds();
+
 	~MusicManager();
 
 	MusicManager(const MusicManager&) = delete;

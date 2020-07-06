@@ -22,5 +22,6 @@ public:
 
     virtual ~GameObjectsContainer();
 
+    void deleteGameObject(const uint i);
 };
 #endif //ARGENTUM_TALLER_GAMEOBJECTSCONTAINER_H

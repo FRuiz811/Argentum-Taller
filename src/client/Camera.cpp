@@ -53,7 +53,7 @@ Point Camera::calculateGlobalPosition(Point coordinates) const {
     return Point(x,y);
 }
 
-void Camera::update(Point destiny) {
+void Camera::render(Point destiny) {
     limits(&destiny);
     this->cam.x = destiny.x;
     this->cam.y = destiny.y;

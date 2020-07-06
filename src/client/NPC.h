@@ -9,8 +9,8 @@
 #include "Items/Weapon.h"
 #include "TextureManager.h"
 #include "../common/Identificators.h"
+#include "../common/GameObjectInfo.h"
 #include "characterStates/CharacterState.h"
-#include "PlayerInfo.h"
 #include <memory>
 
 class NPC : public Character {
@@ -25,6 +25,7 @@ private:
     int frameHead{0};
     bool isAlive{true};
     bool isItem{false};
+    std::shared_ptr<CharacterState> state = nullptr;
 
     void setArmor(BodyID newArmor);
 	void setShield(ShieldID newShield);
@@ -32,6 +33,7 @@ private:
 	void setHead(HeadID head);
 	void setWeapon(WeaponID newWeapon);
 	void setFrameHead();
+    void setState(CharacterStateID newState);
 
 public:
     NPC(const TextureManager& manager, const GameObjectInfo& gameObjectInfo);
@@ -40,7 +42,7 @@ public:
 	virtual void update(double dt);
 
     void updatePlayerInfo(const GameObjectInfo& info);
-
+    CharacterStateID& getState();
     ~NPC();
 
 };

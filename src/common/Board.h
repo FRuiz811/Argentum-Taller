@@ -7,7 +7,7 @@
 #include "Point.h"
 #include "StaticObject.h"
 #include "ObjectLayer.h"
-#include "../client/PlayerInfo.h"
+#include "PlayerInfo.h"
 #include "GameStats.h"
 #include "GameStatsConfig.h"
 #include "NestPoint.h"

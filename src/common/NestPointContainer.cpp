@@ -1,5 +1,5 @@
 #include "NestPointContainer.h"
-#include "../client/Exception.h"
+#include "Exception.h"
 
 #include <utility>
 

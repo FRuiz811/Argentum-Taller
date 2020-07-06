@@ -33,11 +33,18 @@
 #include "Items/LongSword.h"
 #include "Items/Hammer.h"
 #include "Items/GnarledStick.h"
+#include "characterStates/StillState.h"
+#include "characterStates/MoveState.h"
+#include "characterStates/DeadState.h"
+#include "characterStates/MeditateState.h"
+#include "characterStates/InteractState.h"
+#include "characterStates/AttackState.h"
 
 NPC::NPC(const TextureManager& manager, const GameObjectInfo& gameObjectInfo):
   Character(gameObjectInfo.getX(), gameObjectInfo.getY(), gameObjectInfo.getId()), manager(manager){
     this->direction = gameObjectInfo.getDirection();
-    this->frameHead = 0;
+    setState(gameObjectInfo.getState());
+    setFrameHead();
     setArmor(gameObjectInfo.getBodyID());
     setHead(gameObjectInfo.getHeadID());
     setHelmet(gameObjectInfo.getHelmetID());
@@ -59,18 +66,21 @@ void NPC::render(Camera& camera) {
 }
 
 void NPC::update(double dt) {
+  if(this->state != nullptr && this->state->getState() == CharacterStateID::Move) {
     if(this->body !=nullptr)
     	this->body->update(dt);
     if (this->weapon != nullptr)
         this->weapon->update(dt);
     if (this->shield != nullptr)
         this->shield->update(dt);
+  }
 }
 
 void NPC::updatePlayerInfo(const GameObjectInfo &info) {
     this->posX = info.getX();
     this->posY = info.getY();
     this->direction = info.getDirection();
+    setState(info.getState());
     setFrameHead();
 }
 
@@ -241,6 +251,35 @@ void NPC::setWeapon(WeaponID newWeapon){
         break;
 		}
 	}
+}
+
+void NPC::setState(CharacterStateID newState) {
+	if(this->state == nullptr || this->state->getState() != newState) {
+		switch (newState) {
+			case CharacterStateID::Still:
+				this->state = std::shared_ptr<CharacterState>(new StillState());
+				break;
+			case CharacterStateID::Interact:
+				this->state = std::shared_ptr<CharacterState>(new InteractState());
+				break;
+			case CharacterStateID::Move:
+				this->state = std::shared_ptr<CharacterState>(new MoveState());
+				break;
+			case CharacterStateID::Dead:
+				this->state = std::shared_ptr<CharacterState>(new DeadState());
+				break;
+      case CharacterStateID::Meditate:
+        this->state = std::shared_ptr<CharacterState>(new MeditateState());
+        break;
+      case CharacterStateID::Attack:
+        this->state = std::shared_ptr<CharacterState>(new AttackState());
+        break;
+		}
+	}
+}
+
+CharacterStateID& NPC::getState() {
+  return this->state->getState();
 }
 
 NPC::~NPC()= default;

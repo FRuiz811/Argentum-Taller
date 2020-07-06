@@ -4,6 +4,10 @@
 #include <condition_variable>
 #include <queue>
 #include <atomic>
+#include "Exception.h"
+
+#define ERRORMSG "No hay elementos en la cola y no se bloquea al realizar el pop"
+#define CLOSEDQUEUE "La queue se encuentra cerrada"
 
 //La clase Blocking Queue permite un acceso controlado a los recursos
 //encolados para que cada uno de los jugadores saquen un numero a la vez.
@@ -13,13 +17,14 @@ private:
 	std::queue<ITEM> blocking_queue;
     mutable std::mutex m;
     std::condition_variable cv;
-    std::atomic<bool> isClosed;
+	bool blockAtPop;
+	bool isClosed;
     
 public:
 	//Constructores para la clase Blocking Queue, se permite el constructor
 	//por movimiento, no asi por copia dado que no nos interesa que una queue
 	//sea copiada.
-	BlockingQueue() : isClosed(false) {}
+	BlockingQueue(bool blockPop) : blockAtPop(blockPop), isClosed(false){}
 
 	BlockingQueue(BlockingQueue &&other) {
 		std::unique_lock<std::mutex> lock(m);
@@ -37,13 +42,15 @@ public:
 	//del recurso. En caso de que la queue esté cerrada lanza una excepción.
 	ITEM pop() {
 		std::unique_lock<std::mutex> lock(m);
-		while(blocking_queue.empty()){
-			if(isClosed){
-				throw std::exception();
+		while(blocking_queue.empty() && blockAtPop){
+			if(isClosed) {
+				throw Exception(CLOSEDQUEUE); 
 			}
-		cv.wait(lock);
+			cv.wait(lock);
 		}
-		ITEM value = blocking_queue.front();
+		if (blocking_queue.empty() && !blockAtPop)
+			throw Exception(ERRORMSG);
+		ITEM value(std::move(blocking_queue.front()));
 		blocking_queue.pop();
 		return value;
 	}
@@ -52,24 +59,19 @@ public:
 	//que estén esperando.
 	void push(ITEM value) {
 		std::unique_lock<std::mutex> lock(m);
-		blocking_queue.push(value);
+		blocking_queue.push(std::move(value));
 		cv.notify_all();
-	}
-	
-	void close() {
-		std::unique_lock<std::mutex> lock(m);
-		isClosed = true;
-		cv.notify_all();
-	}
-	
-	bool is_open() const {
-		std::unique_lock<std::mutex> lock(m);
-		return !this->isClosed;
 	}
 	
 	bool empty() const {
 		std::unique_lock<std::mutex> lock(m);
 		return this->blocking_queue.empty();
+	}
+
+	void close() {
+		std::unique_lock<std::mutex> lock(m);
+		isClosed = true;
+		cv.notify_all();
 	}
 
 	~BlockingQueue(){}

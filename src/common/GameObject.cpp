@@ -12,7 +12,8 @@ GameObject &GameObject::operator=(GameObject &&other) noexcept{
     return *this;
 }
 
-GameObject::GameObject(uint id, Direction direction): id(id), direction(direction) {}
+GameObject::GameObject(uint id, Direction direction):
+    id(id), direction(direction) {}
 
 GameObjectInfo GameObject::getGameObjectInfo() {
     return GameObjectInfo(id, boardPosition.getPosition().getPoint(), textureHashId, direction,getStateId(),false);
