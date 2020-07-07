@@ -10,6 +10,11 @@
 World::World(GameStatsConfig& configuration) : gameStatsConfig(configuration), 
     current_id(0), keepTalking(true) {
     rapidjson::Document jsonMap = JsonReader::read("json/finishedMap.json");
+    this->banker = Banker::getInstance();
+    this->merchant = Merchant::getInstance();
+    this->merchant->init(configuration.getItems());
+    this->priest = Priest::getInstance();
+    this->priest->init(configuration.getItems());
     this->map = TiledMap(jsonMap);
     this->board = Board(map.getObjectLayers(),
                   map.getWidth() * map.getTileWidth(),

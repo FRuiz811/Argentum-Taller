@@ -6,7 +6,7 @@
 
 PlayerInfo GameCharacter::getPlayerInfo() {
     return PlayerInfo(id, boardPosition.getPosition().getPoint(), goldAmount, life, mana, textureHashId, direction,150,
-        100,100,exp,1500,2,inventory,state->getStateId());
+        100,100,exp,1500,level,inventory,state->getStateId());
 }
 
 GameCharacter::GameCharacter(uint id, RaceID aRace, GameClassID aClass, Point &point):
@@ -49,10 +49,14 @@ std::string GameCharacter::updateTextureHashId() {
         equipment += "0";
     equipment += idHelmet + "|";
     equipment += "h";
-    std::string idHead = std::to_string((int)this->race);
-     if (idHead.size() == 1)
-        equipment += "0";
-    equipment += idHead + "|";
+    if (this->state != nullptr && this->state->getStateId() != CharacterStateID::Dead) {
+        std::string idHead = std::to_string((int)this->race);
+        if (idHead.size() == 1)
+            equipment += "0";
+        equipment += idHead + "|";
+    } else {
+        equipment += "00|";
+    }
     equipment += "b";
     if (this->body == BodyID::Nothing) {
         this->body = (BodyID)((rand() % 3) + 1);
@@ -124,6 +128,7 @@ uint GameCharacter::receiveDamage(float damage, GameStatsConfig& gameStatsConfig
     }
     if (isDead()) {
         state = std::unique_ptr<State>(new DeadStateCharacter());
+        this->mana = 0;
         body = BodyID::Ghost;
         shield = ShieldID::Nothing;
         weapon = WeaponID::Nothing;

@@ -43,6 +43,8 @@ const Texture& TextureManager::getTexture(BodyID id) const {
 		case BodyID::PlateArmor:
 			idItem = TextureID::ItemPlateArmor;
 			break;
+		case BodyID::Ghost:
+			idItem = TextureID::ItemNothing;
 	}
 	const Texture& texture = getTexture(idItem);
 	return texture;
@@ -63,6 +65,8 @@ const Texture& TextureManager::getTexture(HeadID id) const {
 		case HeadID::Dwarf:
 			idItem = TextureID::DwarfHead;
 			break;
+		case HeadID::Nothing:
+			idItem = TextureID::ItemNothing;
 	}
 	const Texture& texture = getTexture(idItem);
 	return texture;

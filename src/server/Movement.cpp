@@ -14,6 +14,7 @@ bool Movement::hasStart() {
 
 void Movement::start(Position aFirstPosition, Direction aDirection, GameStatsConfig &gameStatsConfig, RaceID raceId) {
     amountSteps = gameStatsConfig.getAmountSteps(raceId);
+    actualStep = 0;
     distance = gameStatsConfig.getDistance();
     direction = aDirection;
     firstPosition = aFirstPosition;
@@ -21,7 +22,8 @@ void Movement::start(Position aFirstPosition, Direction aDirection, GameStatsCon
 }
 
 void Movement::start(Position aFirstPosition, Direction aDirection, GameStatsConfig &gameStatsConfig, CreatureID creatureId) {
-    amountSteps = gameStatsConfig.getAmountSteps(creatureId);;
+    amountSteps = gameStatsConfig.getAmountSteps(creatureId);
+    actualStep = 0;
     distance = gameStatsConfig.getDistance();
     direction = aDirection;
     firstPosition = aFirstPosition;

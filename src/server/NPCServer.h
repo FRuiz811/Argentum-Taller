@@ -2,11 +2,12 @@
 #define NPC_H
 
 #include "GameObject.h"
+#include "Profession.h"
 #include "states/State.h"
 
 class NPCServer : public GameObject{
 private:
-    //TODO agregar items que puedan tener ( unorded_map<Id, Precio>)
+    Profession* profession;
     std::unique_ptr<State> state;
 public:
 	NPCServer(uint id, Point point, const std::string& type);

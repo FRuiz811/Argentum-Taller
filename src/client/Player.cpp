@@ -61,7 +61,7 @@ void Player::render(Camera& camera) {
 }
 
 void Player::update(double dt) {
-  if(this->state != nullptr && this->state->getState() == CharacterStateID::Move) {
+  if(this->state != nullptr && (this->state->getState() == CharacterStateID::Move || this->state->getState() == CharacterStateID::Dead)) {
     Point aux(posX, posY);
     this->center = aux;
     this->body->update(dt);
@@ -95,6 +95,8 @@ void Player::updatePlayerInfo(PlayerInfo info) {
   this->direction = info.getDirection();
   this->playerInfo = info;
   setState(info.getState());
+  setArmor(info.getBodyID());
+  setHead(info.getHeadID());
   setFrameHead();
 }
 
@@ -224,17 +226,17 @@ void Player::setHead(HeadID head) {
 	  switch (head) {
 	      case HeadID::Nothing:
 	          this->head = nullptr;
-                break;
-          case HeadID::Elf:
+            break;
+            case HeadID::Elf:
                 this->head = std::shared_ptr<Head>(new ElfHead(this->manager));
                 break;
-          case HeadID::Human:
+            case HeadID::Human:
                 this->head = std::shared_ptr<Head>(new HumanHead(this->manager));
                 break;
-          case HeadID::Dwarf:
+            case HeadID::Dwarf:
                 this->head = std::shared_ptr<Head>(new DwarfHead(this->manager));
                 break;
-          case HeadID::Gnome:
+            case HeadID::Gnome:
                 this->head = std::shared_ptr<Head>(new GnomeHead(this->manager));
                 break;
     }
