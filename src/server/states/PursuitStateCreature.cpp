@@ -1,7 +1,7 @@
 #include "PursuitStateCreature.h"
 #include "StillStateCreature.h"
-#include "Creature.h"
-#include "GameCharacter.h"
+#include "../Creature.h"
+#include "../GameCharacter.h"
 #include "AttackStateCreature.h"
 #include <bits/stdc++.h>
 

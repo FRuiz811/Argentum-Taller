@@ -152,7 +152,7 @@ uint8_t GameStatsConfig::getAmountSteps(CreatureID creatureId) const {
 }
 
 float GameStatsConfig::getDamage(CreatureID) const{
-    return 10;
+    return 5;
 }
 
 float GameStatsConfig::getDefense(BodyID bodyId, ShieldID shieldId, HelmetID helmetId) const {

@@ -1,12 +1,12 @@
 #include <iostream>
 #include "GameCharacter.h"
-#include "Collider.h"
-#include "ServerStillState.h"
+#include "states/StillStateCharacter.h"
 #include "GameStatsConfig.h"
+#include "states/DeadStateCharacter.h"
 
 PlayerInfo GameCharacter::getPlayerInfo() {
     return PlayerInfo(id, boardPosition.getPosition().getPoint(), goldAmount, life, mana, textureHashId, direction,150,
-        100,100,125,1500,2,inventory,state->getStateId());
+        100,100,exp,1500,2,inventory,state->getStateId());
 }
 
 GameCharacter::GameCharacter(uint id, RaceID aRace, GameClassID aClass, Point &point):
@@ -22,18 +22,14 @@ GameObject(id), race(aRace), gameClass(aClass), queueInputs(true) {
     this->inventory = "00|00|00|00|00|00|00|00|00"; //Esto debería ser todo 0 al principio del juego
     InputInfo anInputInfo;
     anInputInfo.input = InputID::nothing;
-    state = std::unique_ptr<State>(new ServerStillState(anInputInfo));
-}
-
-void GameCharacter::receiveInput(InputInfo anInputInfo) {
-    queueInputs.push(anInputInfo);
+    state = std::unique_ptr<State>(new StillStateCharacter(anInputInfo));
 }
 
 void GameCharacter::update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board,
                            GameStatsConfig &gameStatsConfig) {
     if (state->isOver()) {
-        if (!queueInputs.empty()) {
-            state->setNextState(queueInputs.pop());
+        if (hasAnInputInfo()) {
+            state->setNextState(getNextInputInfo());
         } else {
             state->resetState();
         }
@@ -126,11 +122,26 @@ uint GameCharacter::receiveDamage(float damage, GameStatsConfig& gameStatsConfig
         std::cout << "Character defense: " << defense << std::endl;
         std::cout << "Enemy real damage: " << realDamage << std::endl;
     }
+    if (isDead()) {
+        state = std::unique_ptr<State>(new DeadStateCharacter());
+        body = BodyID::Ghost;
+        shield = ShieldID::Nothing;
+        weapon = WeaponID::Nothing;
+        helmet = HelmetID::Nothing;
+    }
     return life;
 }
 
 bool GameCharacter::isDead() {
     return life == 0;
+}
+
+bool GameCharacter::hasAnInputInfo() {
+    return !queueInputs.empty();
+}
+
+InputInfo GameCharacter::getNextInputInfo() {
+    return queueInputs.pop();
 }
 
 GameCharacter::~GameCharacter()= default;

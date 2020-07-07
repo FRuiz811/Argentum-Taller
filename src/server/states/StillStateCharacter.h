@@ -1,19 +1,19 @@
-#ifndef ARGENTUM_TALLER_SERVERSTILLSTATE_H
-#define ARGENTUM_TALLER_SERVERSTILLSTATE_H
+#ifndef ARGENTUM_TALLER_STILLSTATECHARACTER_H
+#define ARGENTUM_TALLER_STILLSTATECHARACTER_H
 
 #include <memory>
 #include <vector>
 #include <unordered_map>
 #include "State.h"
-#include "../common/PlayerStats.h"
-#include "GameObject.h"
-#include "../common/StaticObject.h"
+#include "../../common/PlayerStats.h"
+#include "../GameObject.h"
+#include "../../common/StaticObject.h"
 
-class ServerStillState: public State {
+class StillStateCharacter: public State {
 public:
-    explicit ServerStillState(InputInfo);
+    explicit StillStateCharacter(InputInfo);
 
-    ~ServerStillState() override;
+    ~StillStateCharacter() override;
 
     bool isOnPursuit(uint pursuitId) override;
 
@@ -28,4 +28,4 @@ public:
 };
 
 
-#endif //ARGENTUM_TALLER_SERVERSTILLSTATE_H
+#endif //ARGENTUM_TALLER_STILLSTATECHARACTER_H

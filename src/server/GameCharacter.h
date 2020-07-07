@@ -4,7 +4,7 @@
 
 #include "../common/PlayerInfo.h"
 #include "../common/StaticObject.h"
-#include "State.h"
+#include "states/State.h"
 #include "../common/InputQueue.h"
 #include <vector>
 #include <unordered_map>
@@ -34,11 +34,13 @@ public:
 
 	PlayerInfo getPlayerInfo();
 
+	bool hasAnInputInfo();
+
+	InputInfo getNextInputInfo();
+
 	void update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board, GameStatsConfig& gameStatsConfig) override;
 
-    void receiveInput(InputInfo inputInfo);
-
-    uint receiveDamage(float damage, GameStatsConfig& gameStatsConfig);
+    uint receiveDamage(float damage, GameStatsConfig& gameStatsConfig) override;
 
     bool isDead();
 

@@ -3,8 +3,8 @@
 
 
 #include "State.h"
-#include "Movement.h"
-#include "Creature.h"
+#include "../Movement.h"
+#include "../Creature.h"
 
 class PursuitStateCreature : public State {
 private:

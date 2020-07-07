@@ -1,6 +1,6 @@
 #include "AttackStateCreature.h"
-#include "Creature.h"
-#include "GameCharacter.h"
+#include "../Creature.h"
+#include "../GameCharacter.h"
 #include "StillStateCreature.h"
 #include "PursuitStateCreature.h"
 
@@ -15,17 +15,32 @@ AttackStateCreature::AttackStateCreature(uint enemyId) :
 void AttackStateCreature::performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects,
                                       Board &board, GameStatsConfig &gameStatsConfig) {
 
-    std::shared_ptr<Creature> aCreature = std::dynamic_pointer_cast<Creature>(gameObjects.at(id));
-    std::shared_ptr<GameCharacter> aCharacter = std::dynamic_pointer_cast<GameCharacter>(gameObjects.at(enemyId));
-    if (!aCharacter->isDead()) {
-        if (aCharacter->receiveDamage(gameStatsConfig.getDamage(aCreature->getCreatureId()), gameStatsConfig) == 0) {
+    if (timeBetweenAttacks == 0) {
+        timeBetweenAttacks = 10;
+        std::shared_ptr<Creature> aCreature = std::dynamic_pointer_cast<Creature>(gameObjects.at(id));
+        try {
+            std::shared_ptr<GameCharacter> aCharacter = std::dynamic_pointer_cast<GameCharacter>(gameObjects.at(enemyId));
+            if (aCharacter->isDead()) {
+                enemyIsDead = true;
+                finalized = true;
+            } else {
+                if (aCharacter->getBoardPosition().getPosition().distance(aCreature->getBoardPosition().getPosition()) < 80) {
+                    if (aCharacter->receiveDamage(gameStatsConfig.getDamage(aCreature->getCreatureId()), gameStatsConfig) == 0) {
+                        enemyIsDead = true;
+                        finalized = true;
+                    }
+                } else {
+                    finalized = true;
+                }
+            }
+        } catch (const std::out_of_range& e) {
             enemyIsDead = true;
             finalized = true;
         }
     } else {
-        enemyIsDead = true;
-        finalized = true;
+        timeBetweenAttacks--;
     }
+
 }
 
 void AttackStateCreature::setNextState(InputInfo info) {

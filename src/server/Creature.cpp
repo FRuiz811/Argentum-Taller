@@ -1,6 +1,6 @@
 #include "Creature.h"
-#include "StillStateCreature.h"
-#include "PursuitStateCreature.h"
+#include "states/StillStateCreature.h"
+#include "states/PursuitStateCreature.h"
 #include "../common/Random.h"
 
 void Creature::update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board,
@@ -58,6 +58,10 @@ CharacterStateID Creature::getStateId() {
 
 CreatureID Creature::getCreatureId() const {
     return creatureId;
+}
+
+uint Creature::receiveDamage(float damage, GameStatsConfig &gameStatsConfig) {
+    return 0;
 }
 
 Creature::~Creature() = default;

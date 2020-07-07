@@ -119,7 +119,7 @@ void World::clearFinishedPlayers() {
         if (!(*iter).second->is_alive()) {
             (*iter).second->join();
             gameObjectsContainer.deleteGameObject((*iter).first);
-//            board.deleteGameObjectPosition((*iter).first);
+            board.deleteGameObjectPosition((*iter).first);
             delete (*iter).second;
             iter = this->players.erase(iter);
         } else {

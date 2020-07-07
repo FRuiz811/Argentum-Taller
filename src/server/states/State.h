@@ -4,9 +4,9 @@
 #include <unordered_map>
 #include <memory>
 #include <vector>
-#include "../common/PlayerStats.h"
-#include "../common/StaticObject.h"
-#include "GameObject.h"
+#include "../../common/PlayerStats.h"
+#include "../../common/StaticObject.h"
+#include "../GameObject.h"
 
 class State {
 protected:

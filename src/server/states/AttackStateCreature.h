@@ -8,6 +8,7 @@ class AttackStateCreature : public State {
 private:
     uint enemyId;
     bool enemyIsDead;
+    uint8_t timeBetweenAttacks = 0;
 public:
     AttackStateCreature(uint enemyId);
 

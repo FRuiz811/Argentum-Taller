@@ -2,7 +2,7 @@
 #define ARGENTUM_TALLER_CREATURE_H
 
 #include "GameObject.h"
-#include "State.h"
+#include "states/State.h"
 
 class Creature : public GameObject {
 private:
@@ -22,6 +22,8 @@ public:
     CreatureID getCreatureId() const;
 
     CharacterStateID getStateId() override;
+
+    uint receiveDamage(float damage, GameStatsConfig &gameStatsConfig) override;
 
     virtual ~Creature();
 

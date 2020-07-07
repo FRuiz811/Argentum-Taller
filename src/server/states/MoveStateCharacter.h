@@ -1,20 +1,20 @@
-#ifndef ARGENTUM_TALLER_SERVERMOVESTATE_H
-#define ARGENTUM_TALLER_SERVERMOVESTATE_H
+#ifndef ARGENTUM_TALLER_MOVESTATECHARACTER_H
+#define ARGENTUM_TALLER_MOVESTATECHARACTER_H
 
 
 #include "State.h"
-#include "Movement.h"
+#include "../Movement.h"
 
-class ServerMoveState : public State {
+class MoveStateCharacter : public State {
 private:
     Direction direction;
     bool isColliding = false;
     Movement movement;
 
 public:
-    explicit ServerMoveState(const InputInfo &info);
+    explicit MoveStateCharacter(const InputInfo &info);
 
-    ~ServerMoveState() override;
+    ~MoveStateCharacter() override;
 
     bool isOnPursuit(uint pursuitId) override;
 
@@ -28,4 +28,4 @@ public:
 };
 
 
-#endif //ARGENTUM_TALLER_SERVERMOVESTATE_H
+#endif //ARGENTUM_TALLER_MOVESTATECHARACTER_H

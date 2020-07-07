@@ -1,6 +1,6 @@
 #include "MoveStateCreature.h"
 #include "StillStateCreature.h"
-#include "Creature.h"
+#include "../Creature.h"
 
 MoveStateCreature::~MoveStateCreature() = default;
 

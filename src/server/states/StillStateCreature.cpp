@@ -1,5 +1,6 @@
  #include "StillStateCreature.h"
 #include "MoveStateCreature.h"
+#include "DeadStateCharacter.h"
 
  StillStateCreature::StillStateCreature() {
     finalized = true;

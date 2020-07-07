@@ -2,7 +2,7 @@
 #define NPC_H
 
 #include "GameObject.h"
-#include "State.h"
+#include "states/State.h"
 
 class NPCServer : public GameObject{
 private:
@@ -16,6 +16,8 @@ public:
     void update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board, GameStatsConfig &gameStatsConfig) override;
 
     CharacterStateID getStateId() override;
+
+    uint receiveDamage(float damage, GameStatsConfig &gameStatsConfig) override;
 };
 
 #endif

@@ -1,5 +1,5 @@
 #include "NPCServer.h"
-#include "ServerStillState.h"
+#include "states/StillStateCharacter.h"
 
 NPCServer::~NPCServer() = default;
 
@@ -14,7 +14,7 @@ NPCServer::NPCServer(uint id, Point point, const std::string& type) : GameObject
     }
     InputInfo anInputInfo;
     anInputInfo.input = InputID::nothing;
-    state = std::unique_ptr<State>(new ServerStillState(anInputInfo));
+    state = std::unique_ptr<State>(new StillStateCharacter(anInputInfo));
 }
 
 void NPCServer::update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board,
@@ -24,6 +24,10 @@ void NPCServer::update(std::unordered_map<uint, std::shared_ptr<GameObject>> &ga
 
 CharacterStateID NPCServer::getStateId() {
     return state->getStateId();
+}
+
+uint NPCServer::receiveDamage(float damage, GameStatsConfig &gameStatsConfig) {
+    return 0;
 }
 
 

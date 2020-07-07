@@ -1,13 +1,13 @@
 #include <iostream>
-#include "ServerMoveState.h"
-#include "Collider.h"
-#include "GameCharacter.h"
-#include "ServerStillState.h"
-#include "Creature.h"
+#include "MoveStateCharacter.h"
+#include "../Collider.h"
+#include "../GameCharacter.h"
+#include "StillStateCharacter.h"
+#include "../Creature.h"
 
-ServerMoveState::~ServerMoveState() = default;
+MoveStateCharacter::~MoveStateCharacter() = default;
 
-ServerMoveState::ServerMoveState(const InputInfo &info) : State(info) {
+MoveStateCharacter::MoveStateCharacter(const InputInfo &info) : State(info) {
     switch(info.input) {
         case InputID::up:
             direction = Direction::up;
@@ -25,9 +25,9 @@ ServerMoveState::ServerMoveState(const InputInfo &info) : State(info) {
     stateId = CharacterStateID::Move;
 }
 
-void ServerMoveState::performTask(uint id,
-        std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects,
-        Board &board, GameStatsConfig &gameStatsConfig) {
+void MoveStateCharacter::performTask(uint id,
+                                     std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects,
+                                     Board &board, GameStatsConfig &gameStatsConfig) {
 
     std::shared_ptr<GameCharacter> aCharacter = std::dynamic_pointer_cast<GameCharacter>(gameObjects.at(id));
     BoardPosition& boardPosition = aCharacter->getBoardPosition();
@@ -59,29 +59,28 @@ void ServerMoveState::performTask(uint id,
 
 }
 
-void ServerMoveState::setNextState(InputInfo info) {
+void MoveStateCharacter::setNextState(InputInfo info) {
     if (info.input == InputID::up || info.input == InputID::down ||
         info.input == InputID::left || info.input == InputID::right) {
-        this->nextState = std::unique_ptr<State>(new ServerMoveState(info));
+        this->nextState = std::unique_ptr<State>(new MoveStateCharacter(info));
     } else if(info.input == InputID::stopMove) {
-        nextState = std::unique_ptr<State>(new ServerStillState(info));
+        nextState = std::unique_ptr<State>(new StillStateCharacter(info));
     }
 }
 
-void ServerMoveState::resetState() {
+void MoveStateCharacter::resetState() {
     if (isColliding) {
-        nextState = std::unique_ptr<State>(new ServerStillState(inputInfo));
+        nextState = std::unique_ptr<State>(new StillStateCharacter(inputInfo));
     } else {
         movement.reset();
         finalized = false;
     }
 }
 
-bool ServerMoveState::isOnPursuit(uint pursuitId) {
+bool MoveStateCharacter::isOnPursuit(uint pursuitId) {
     return false;
 }
 
-bool ServerMoveState::isAttacking() {
+bool MoveStateCharacter::isAttacking() {
     return false;
 }
-

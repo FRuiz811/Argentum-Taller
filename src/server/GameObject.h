@@ -22,8 +22,6 @@ public:
 
     GameObjectInfo getGameObjectInfo();
 
-    virtual CharacterStateID getStateId() = 0;
-
     uint getId() const;
 
     BoardPosition& getBoardPosition();
@@ -33,6 +31,10 @@ public:
     void setTextureHashId(const std::string &textureHashId);
 
     virtual void update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board& board, GameStatsConfig& gameStatsConfig) = 0;
+
+    virtual CharacterStateID getStateId() = 0;
+
+    virtual uint receiveDamage(float damage, GameStatsConfig& gameStatsConfig) = 0;
 
     ~GameObject();
 };
