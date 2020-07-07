@@ -100,6 +100,7 @@ int Game::run() {
 			    usleep(sleep);
 	    } catch (const std::exception& e) {
             quit = true;
+            std::cerr << e.what() << std::endl;
         } catch (...) {
             quit = true;
             std::cerr << "Unkown Error in Game::run()" << std::endl;

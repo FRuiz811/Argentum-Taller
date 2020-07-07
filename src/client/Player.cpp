@@ -45,7 +45,7 @@ Player::Player(const TextureManager& manager, const PlayerInfo& playerInfo) :
 	setHead(playerInfo.getHeadID());
 	setHelmet(playerInfo.getHelmetID());
 	setShield(playerInfo.getShieldID());
-    setWeapon(playerInfo.getWeaponID());
+  setWeapon(playerInfo.getWeaponID());
 }
 
 void Player::render(Camera& camera) {
@@ -93,7 +93,10 @@ void Player::updatePlayerInfo(PlayerInfo info) {
   this->posX = info.getX();
   this->posY = info.getY();
   this->direction = info.getDirection();
+  this->playerInfo = info;
   setState(info.getState());
+  setArmor(info.getBodyID());
+  setHead(info.getHeadID());
   setFrameHead();
 }
 
@@ -171,24 +174,24 @@ InputInfo Player::handleEvent(SDL_Event& event, Camera& camera) {
         }
     } else if (event.type == SDL_KEYUP) {
 		switch(event.key.keysym.sym) {
-		  case SDLK_w:
+		    case SDLK_w:
 				input = this->state->stopMove(*this);
 				break;
-      case SDLK_s:
-        input = this->state->stopMove(*this);
-        break;
-      case SDLK_a:
-        input = this->state->stopMove(*this);
-        break;
-        case SDLK_d:
-          input = this->state->stopMove(*this);
-          break;
+            case SDLK_s:
+                input = this->state->stopMove(*this);
+                break;
+            case SDLK_a:
+                input = this->state->stopMove(*this);
+                break;
+            case SDLK_d:
+                  input = this->state->stopMove(*this);
+                  break;
     }
 	} else if (event.type == SDL_MOUSEBUTTONDOWN) {
-      int x,y;
-      SDL_GetMouseState(&x, &y);
-      Point coord = camera.calculateGlobalPosition(Point(x,y));
-      input = this->state->selectTarget(*this, coord);
+          int x,y;
+          SDL_GetMouseState(&x, &y);
+          Point coord = camera.calculateGlobalPosition(Point(x,y));
+          input = this->state->selectTarget(*this, coord);
   }
     return input;
 }
@@ -223,19 +226,19 @@ void Player::setHead(HeadID head) {
 	  switch (head) {
 	      case HeadID::Nothing:
 	          this->head = nullptr;
-                break;
-          case HeadID::Elf:
-                this->head = std::shared_ptr<Head>(new ElfHead(this->manager));
-                break;
-          case HeadID::Human:
-                this->head = std::shared_ptr<Head>(new HumanHead(this->manager));
-                break;
-          case HeadID::Dwarf:
-                this->head = std::shared_ptr<Head>(new DwarfHead(this->manager));
-                break;
-          case HeadID::Gnome:
-                this->head = std::shared_ptr<Head>(new GnomeHead(this->manager));
-                break;
+            break;
+        case HeadID::Elf:
+           this->head = std::shared_ptr<Head>(new ElfHead(this->manager));
+            break;
+        case HeadID::Human:
+            this->head = std::shared_ptr<Head>(new HumanHead(this->manager));
+            break;
+        case HeadID::Dwarf:
+            this->head = std::shared_ptr<Head>(new DwarfHead(this->manager));
+            break;
+        case HeadID::Gnome:
+            this->head = std::shared_ptr<Head>(new GnomeHead(this->manager));
+            break;
     }
   }
 }

@@ -26,22 +26,6 @@ float Position::getLeft() const {
     return x;
 }
 
-void Position::setX(float x) {
-    Position::x = x;
-}
-
-void Position::setY(float y) {
-    Position::y = y;
-}
-
-void Position::setWidth(float width) {
-    Position::width = width;
-}
-
-void Position::setHeight(float height) {
-    Position::height = height;
-}
-
 Point Position::getPoint() const {
     return Point(x,y);
 }
@@ -52,6 +36,10 @@ float Position::getWidth() const {
 
 float Position::getHeight() const {
     return height;
+}
+
+float Position::distance(Position &other) {
+    return getPoint().distance(other.getPoint());
 }
 
 float Position::getMiddle() const {

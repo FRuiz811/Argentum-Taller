@@ -3,7 +3,7 @@
 
 #include <unordered_map>
 #include "../common/Identificators.h"
-#include "../common/GameStats.h"
+#include "GameStats.h"
 #include "Profession.h"
 
 //Se optó por realizar esta clase como un Singleton debido a que 

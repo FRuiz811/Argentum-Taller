@@ -16,9 +16,6 @@ public:
     Position(Point&, float, float);
 	Position(float x, float y, float width, float height);
 
-//	Position(Position&& other)  noexcept ;
-//    Position& operator=(Position&& other) noexcept;
-
 	~Position();
 
 	Point getPoint() const;
@@ -33,13 +30,7 @@ public:
 
     float getMiddle() const;
 
-    void setX(float x);
-
-    void setY(float y);
-
-    void setWidth(float width);
-
-    void setHeight(float height);
+    float distance(Position& other);
 
     float getWidth() const;
 

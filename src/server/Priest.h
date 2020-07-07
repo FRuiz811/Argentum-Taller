@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <vector>
 #include "../common/Identificators.h"
-#include "../common/State.h"
+#include "states/State.h"
 
 class Priest : public Profession {
 private:
