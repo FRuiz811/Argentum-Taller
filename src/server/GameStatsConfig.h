@@ -49,6 +49,7 @@ public:
     float getDamage(CreatureID creatureId) const;
     bool canEvade(RaceID) const;
     float getDefense(BodyID bodyId, ShieldID shieldId, HelmetID helmetId) const;
+    float getDefense(CreatureID creatureId) const;
     std::unordered_map<ItemsInventoryID,ItemInfo> getItems() const;
     uint8_t getAmountSteps(RaceID raceId) const;
     uint8_t getAmountSteps(CreatureID creatureId) const;

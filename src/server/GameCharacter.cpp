@@ -49,7 +49,7 @@ std::string GameCharacter::updateTextureHashId() {
         equipment += "0";
     equipment += idHelmet + "|";
     equipment += "h";
-    if (this->state != nullptr && this->state->getStateId() != CharacterStateID::Dead){
+    if (this->state != nullptr && this->state->getStateId() != CharacterStateID::Dead) {
         std::string idHead = std::to_string((int)this->race);
         if (idHead.size() == 1)
             equipment += "0";
@@ -147,6 +147,10 @@ bool GameCharacter::hasAnInputInfo() {
 
 InputInfo GameCharacter::getNextInputInfo() {
     return queueInputs.pop();
+}
+
+WeaponID GameCharacter::getWeapon() {
+    return weapon;
 }
 
 GameCharacter::~GameCharacter()= default;

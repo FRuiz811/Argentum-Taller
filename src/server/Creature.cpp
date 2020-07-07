@@ -1,7 +1,9 @@
+#include <iostream>
 #include "Creature.h"
 #include "states/StillStateCreature.h"
 #include "states/PursuitStateCreature.h"
 #include "../common/Random.h"
+#include "states/DeadStateCreature.h"
 
 void Creature::update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board,
                       GameStatsConfig &gameStatsConfig) {
@@ -61,7 +63,22 @@ CreatureID Creature::getCreatureId() const {
 }
 
 uint Creature::receiveDamage(float damage, GameStatsConfig &gameStatsConfig) {
-    return 0;
+    float defense = gameStatsConfig.getDefense(creatureId);
+    float realDamage = damage - defense;
+    if (realDamage > 0) {
+        life = (life - realDamage > 0) ? life - realDamage : 0;
+    }
+    std::cout << "Character attack damage: " << damage << std::endl;
+    std::cout << "Enemy defense: " << defense << std::endl;
+    std::cout << "Character real damage: " << realDamage << std::endl;
+    if (isDead()) {
+        state = std::unique_ptr<State>(new DeadStateCreature());
+    }
+    return life;
+}
+
+bool Creature::isDead() {
+    return life = 0;
 }
 
 Creature::~Creature() = default;
