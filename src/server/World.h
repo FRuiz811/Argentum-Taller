@@ -14,6 +14,9 @@
 #include "../common/InputQueue.h"
 #include "../common/GameCharacter.h"
 #include "ThPlayer.h"
+#include "Banker.h"
+#include "Merchant.h"
+#include "Priest.h"
 
 class World: public Thread {
 private:
@@ -25,6 +28,9 @@ private:
     std::atomic<bool> keepTalking;
     mutable std::mutex m;
     std::unordered_map<uint, ThPlayer*> players;
+    Banker* banker;
+    Merchant* merchant;
+    Priest* priest;
     
     void addNPCs(std::vector<ObjectLayer> objectLayers);
     std::vector<GameObjectInfo> getUpdatedGameObjects();

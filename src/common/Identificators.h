@@ -158,4 +158,16 @@ enum class CreatureID {
     Zombie
 };
 
+enum class ActionsProfessionID {
+    Nothing,
+    DepositItem,
+    DepositGold,
+    RetireItem,
+    RetireGold,
+    Buy,
+    Sell,
+    Resurrect,
+    Cure,
+};
+
 #endif

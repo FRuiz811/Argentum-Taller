@@ -18,6 +18,11 @@ World::World(GameStatsConfig& configuration) : gameStatsConfig(configuration),
     addNPCs(map.getObjectLayers());
     std::srand((int)std::time(nullptr));
     addCreatures();
+    this->banker = Banker::getInstance();
+    this->merchant = Merchant::getInstance();
+    this->merchant->init(configuration.getItems());
+    this->priest = Priest::getInstance();
+    this->priest->init(configuration.getItems());
 }
 
 
