@@ -15,10 +15,9 @@ private:
     Banker();
     std::unordered_map<uint, std::vector<ItemsInventoryID>> accountsItems;
     std::unordered_map<uint, uint> accountsGold;
-    void createNewAccount(uint accountHolder);
     static Banker* banker;
-public:
-    static Banker* getInstance();
+    
+    void createNewAccount(uint accountHolder);
 
     std::vector<ItemsInventoryID> getMyItems(uint accountHolder);
 
@@ -31,6 +30,11 @@ public:
     void depositGold(uint accountHolder, uint amountGold);
 
     uint retireGold(uint accountHolder, uint amountGold);
+    
+public:
+    static Banker* getInstance();
+
+    virtual NPCInfo getInfo(uint id);
 
     ~Banker();
 };

@@ -45,8 +45,8 @@ bool Game::init(char* argv[]) {
         this->musicManager.loadSounds();
         recieveMapAndPlayer();
 
-        this->camera = std::shared_ptr<Camera>(new Camera(this->window, this->map->getMapWidth(), this->map->getMapHeight()));
-        this->ui = std::shared_ptr<UI>(new UI(this->window, &(*this->player), this->textureManager));
+        this->camera = std::make_shared<Camera>(this->window, this->map->getMapWidth(), this->map->getMapHeight());
+        this->ui = std::make_shared<UI>(this->window, &(*this->player), this->textureManager);
 
     } catch (const SocketException& e) {
         std::cout << INITERROR << e.what() << std::endl;
@@ -103,12 +103,9 @@ int Game::run() {
         } catch (...) {
             quit = true;
             std::cerr << "Unkown Error in Game::run()" << std::endl;
-     }
+        }
     }
-
     close();
-
-
     return 0;
 
 }
@@ -157,11 +154,11 @@ void Game::render() {
         camera->setPlayer(center);
 	    camera->render(*center);
         this->map->drawGround(*camera);
-		this->player->render(*camera);
 
 		for (auto& aNPC : this->npcs) {
 		    aNPC.second.render(*camera);
 		}
+        this->player->render(*camera);
 
 		this->map->drawHighLayers(*camera);
 

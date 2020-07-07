@@ -1,5 +1,7 @@
 #include "TiledMap.h"
 
+#include <utility>
+
 TiledMap::TiledMap(rapidjson::Document & json) {
     width = json["width"].GetInt();
     height = json["height"].GetInt();
@@ -80,8 +82,8 @@ uint8_t TiledMap::getTileWidth() const {
 }
 
 TiledMap::TiledMap(uint16_t width, uint16_t height, uint8_t tileWidth, uint8_t tileHeight,
-                   const std::vector<TileLayer> &tileLayers, const std::vector<TileSet> &tilesets) :
+                   std::vector<TileLayer> tileLayers, std::vector<TileSet> tilesets) :
                    width(width), height(height), tileWidth(tileWidth), tileHeight(tileHeight),
-                   tileLayers(tileLayers), tilesets(tilesets) {}
+                   tileLayers(std::move(tileLayers)), tilesets(std::move(tilesets)) {}
 
 TiledMap::~TiledMap() = default;

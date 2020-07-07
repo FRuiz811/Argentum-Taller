@@ -18,9 +18,9 @@ int main(int argc, char* argv[]) {
 		if (!game.init(argv)) {
 			return 1;
 		}
-		
+
 		game.run();
-		
+
 		return 0;
 	}
 

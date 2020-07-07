@@ -7,13 +7,15 @@
 class Profession {
 protected:
     std::vector<ActionsProfessionID> actions;
-    Profession();
+    Profession() {}
 
     std::vector<ActionsProfessionID> getActions() const {
         return std::move(actions);
     }
 
-    ~Profession();
+    virtual NPCInfo getInfo(uint id) = 0;
+
+    ~Profession(){}
 };
 
 #endif

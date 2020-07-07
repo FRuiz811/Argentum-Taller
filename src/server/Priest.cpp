@@ -35,6 +35,15 @@ const std::unordered_map<ItemsInventoryID,uint> Priest::getItems() const {
     return std::move(items);
 }
 
+NPCInfo Priest::getInfo(uint id) {
+    NPCInfo info;
+    info.type = 2;
+    info.actions = actions;
+    info.gold = 0;
+    info.items = getItems();
+    return info;
+}
+
 void Priest::cure(uint* health, uint maxHelth, uint* mana, uint maxMana) const {
     *health = maxHelth;
     *mana = maxMana;

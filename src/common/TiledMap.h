@@ -22,7 +22,7 @@ public:
     explicit TiledMap(rapidjson::Document & json);
 
     TiledMap(uint16_t width, uint16_t height, uint8_t tileWidth, uint8_t tileHeight,
-             const std::vector<TileLayer> &tileLayers, const std::vector<TileSet> &tilesets);
+             std::vector<TileLayer> tileLayers, std::vector<TileSet> tilesets);
 
     ~TiledMap();
 

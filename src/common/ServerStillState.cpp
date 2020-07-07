@@ -4,7 +4,7 @@
 
 ServerStillState::~ServerStillState() = default;
 
-ServerStillState::ServerStillState(InputInfo anInputInfo) : State(anInputInfo){
+ServerStillState::ServerStillState(InputInfo anInputInfo) : State(anInputInfo) {
     finalized = true;
     stateId = CharacterStateID::Still;
 }

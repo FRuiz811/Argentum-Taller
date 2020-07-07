@@ -17,7 +17,11 @@ public:
 
     virtual ~NestPointContainer();
 
-    Point getNextNestPointAvailable();
+    NestPoint& getNextNestPointAvailable();
+
+    std::vector<NestPoint> &getNestPoints();
+
+    NestPoint &getNestPoint(uint i);
 };
 
 

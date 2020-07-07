@@ -36,4 +36,14 @@ const std::unordered_map<ItemsInventoryID,uint> Merchant::getItems() const {
     return std::move(items);
 }
 
+NPCInfo Merchant::getInfo(uint id) {
+    NPCInfo info;
+    info.type = 1;
+    info.actions = actions;
+    info.gold = 0;
+    info.items = getItems();
+    return info;
+}
+
+
 Merchant::~Merchant() {}

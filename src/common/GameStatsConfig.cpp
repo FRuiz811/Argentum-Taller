@@ -92,7 +92,7 @@ float GameStatsConfig::getRecoveryManaMeditation(RaceID race, GameClassID gameCl
 }
 
 float GameStatsConfig::getGoldDrop(uint maxHealthNPC) const{
-    return 0;
+    return 100;
 }
 
 float GameStatsConfig::getMaxGold(uint level) const{

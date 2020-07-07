@@ -4,13 +4,13 @@
 #include "GameStatsConfig.h"
 
 PlayerInfo GameCharacter::getPlayerInfo() {
-    return PlayerInfo(id, position.getPoint(), goldAmount, life, mana, textureHashId, direction,150,
+    return PlayerInfo(id, boardPosition.getPosition().getPoint(), goldAmount, life, mana, textureHashId, direction,150,
         100,100,125,1500,2,inventory,state->getStateId());
 }
 
 GameCharacter::GameCharacter(uint id, RaceID aRace, GameClassID aClass, Point &point):
 GameObject(id), race(aRace), gameClass(aClass), queueInputs(true) {
-    this->position = Position(point, 25, 60);
+    boardPosition = BoardPosition(Position(point, 25, 60), 0, true);
     this->life = 100;
     this->goldAmount = 100;
     this->mana = 100;
@@ -21,8 +21,7 @@ GameObject(id), race(aRace), gameClass(aClass), queueInputs(true) {
     this->inventory = "00|00|00|00|00|00|00|00|00"; //Esto debería ser todo 0 al principio del juego
     InputInfo anInputInfo;
     anInputInfo.input = InputID::nothing;
-    anInputInfo.position = Point(0.0, 0.0);
-    this->state = std::unique_ptr<State>(new ServerStillState(anInputInfo));
+    state = std::unique_ptr<State>(new ServerStillState(anInputInfo));
 }
 
 void GameCharacter::receiveInput(InputInfo anInputInfo) {
@@ -50,8 +49,8 @@ std::string GameCharacter::updateTextureHashId() {
     std::string idHelmet = std::to_string((int)this->helmet);
     equipment += "ht";
     if (idHelmet.size() == 1)
-        equipment += "0"; 
-    equipment += idHelmet + "|"; 
+        equipment += "0";
+    equipment += idHelmet + "|";
     equipment += "h";
     std::string idHead = std::to_string((int)this->race);
      if (idHead.size() == 1)
@@ -71,7 +70,7 @@ std::string GameCharacter::updateTextureHashId() {
         equipment += "0";
     equipment += idShield + "|";
     equipment += "w";
-    std::string idWeapon = std::to_string((int)this->weapon); 
+    std::string idWeapon = std::to_string((int)this->weapon);
     if (idWeapon.size() == 1)
         equipment += "0";
     equipment += idWeapon;
@@ -109,6 +108,10 @@ uint GameCharacter::getLevel() const {
 InputQueue &GameCharacter::getQueueInputs() {
     return queueInputs;
 }
+CharacterStateID GameCharacter::getStateId() {
+    return state->getStateId();
+}
+
 
 //void GameCharacter::corroborarAtaque(GameObject &atacado){
 //	if(!arma.esArmaDistancia() &&

@@ -59,6 +59,16 @@ ItemsInventoryID Banker::retireItem(uint accountHolder, uint item) {
     return itemToRetire;
 }
 
+NPCInfo Banker::getInfo(uint id) {
+    NPCInfo info;
+    info.type = 0;
+    info.actions = actions;
+    info.gold = checkBalance(id);
+    info.itemsInBank = getMyItems(id);
+    return info;
+}
+
+
 void Banker::depositItem(uint accountHolder, ItemsInventoryID idItem) {
     auto iter = accountsItems.find(accountHolder);
     if (iter == accountsItems.end()) {

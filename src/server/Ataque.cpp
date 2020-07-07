@@ -12,7 +12,7 @@
 //
 //	atacado.estado.restarVida(danioFinal);
 //	float experiencia = Ecuacion::experiencia(danio, atacado.estado.getNivel(), nivel);
-//	if(!atacado.estado.sigueVivo()){
+//	if (!atacado.estado.sigueVivo()) {
 //		atacado.estado.setearAMuerto();
 //		experiencia += Ecuacion::experienciaAdicional(atacado.estado.getConstitucion(),
 //					   atacado.estado.getFClaseVida(), atacado.estado.getFRazaVida(),

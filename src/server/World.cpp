@@ -1,30 +1,27 @@
 #include "World.h"
 #include "../common/JsonReader.h"
 #include "../common/NPCServer.h"
-#include "../common/Creature.h"
-#include "../common/Chrono.h"
 #include <iostream>
+#include <random>
 
 #define GAMELOOPTIME 1000000/30.0
 
 World::World(GameStatsConfig& configuration) : gameStatsConfig(configuration), 
     current_id(0), keepTalking(true) {
     rapidjson::Document jsonMap = JsonReader::read("json/finishedMap.json");
+    this->banker = Banker::getInstance();
+    this->merchant = Merchant::getInstance();
+    this->merchant->init(configuration.getItems());
+    this->priest = Priest::getInstance();
+    this->priest->init(configuration.getItems());
     this->map = TiledMap(jsonMap);
     this->board = Board(map.getObjectLayers(),
                   map.getWidth() * map.getTileWidth(),
                   map.getHeight() * map.getTileHeight(),
                   gameStatsConfig.getNestCreatureLimit());
     addNPCs(map.getObjectLayers());
-    std::srand((int)std::time(nullptr));
     addCreatures();
-    this->banker = Banker::getInstance();
-    this->merchant = Merchant::getInstance();
-    this->merchant->init(configuration.getItems());
-    this->priest = Priest::getInstance();
-    this->priest->init(configuration.getItems());
 }
-
 
 uint World::getNextId() {
     uint id = this->current_id;
@@ -36,7 +33,8 @@ std::shared_ptr<GameCharacter> World::createCharacter(RaceID race, GameClassID g
     std::unique_lock<std::mutex> lock(m);
     uint id = getNextId();
     std::shared_ptr<GameCharacter> aCharacter(new GameCharacter(id, race, gameClass, board.getInitialPoint()));
-    this->gameObjects.insert(std::pair<uint, std::shared_ptr<GameObject>>(id, aCharacter));
+    board.addGameObjectPosition(id, aCharacter->getBoardPosition());
+    gameObjectsContainer.addGameObject(aCharacter, id);
     return aCharacter;
 }
 
@@ -65,9 +63,21 @@ void World::addCreatures() {
 
 void World::generateCreature() {
     uint id = getNextId();
-    uint8_t randomId = 1 + std::rand() % 4;
-    std::shared_ptr<Creature> aCreature(new Creature(id, CreatureID(randomId), board.getNextAvailableNestPoint()));
-    gameObjects.insert(std::pair<uint, std::shared_ptr<GameObject>>(id, aCreature));
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<int> dist(1, 4);
+    uint8_t randomId = dist(mt);
+    std::cout << std::to_string(randomId) << std::endl;
+    NestPoint& aNestPoint = board.getAvailableNestPoint();
+    Point initialPoint = board.getInitialPointInNest(aNestPoint);
+    if (initialPoint.x == 0.0 && initialPoint.y == 0.0) {
+        std::cout << "cannot create creature" << std::endl;
+    } else {
+        aNestPoint.addCreature(id);
+        std::shared_ptr<Creature> aCreature(new Creature(id, CreatureID(randomId), aNestPoint.getNestId(), initialPoint));
+        board.addGameObjectPosition(id, aCreature->getBoardPosition());
+        gameObjectsContainer.addGameObject(aCreature, id);
+    }
 }
 
 
@@ -81,7 +91,8 @@ void World::addNPCs(std::vector<ObjectLayer> objectLayers) {
             for (StaticObject &aNPCObject : anObjectLayer.getObjects()) {
                 uint id = getNextId();
                 std::shared_ptr<NPCServer> aNPC(new NPCServer(id, aNPCObject.getPosition().getPoint(), aNPCObject.getName()));
-                gameObjects.insert(std::pair<uint, std::shared_ptr<GameObject>>(id, aNPC));
+                board.addGameObjectPosition(id, aNPC->getBoardPosition());
+                gameObjectsContainer.addGameObject(aNPC, id);
             }
         }
     }
@@ -93,21 +104,15 @@ void World::stop() {
 		player.second->stop();
         player.second->join();
         delete player.second;
-  }
+    }
 }
 
 void World::update() {
-    for (auto& gameObjectPair : gameObjects) {
-        gameObjectPair.second->update(gameObjects, board, gameStatsConfig);
-    }
+    gameObjectsContainer.update(board, gameStatsConfig);
 }
 
 std::vector<GameObjectInfo> World::getUpdatedGameObjects() {
-    std::vector<GameObjectInfo> gameObjectsInfo;
-    for (auto& gameObjectPair : gameObjects) {
-        gameObjectsInfo.push_back(gameObjectPair.second->getGameObjectInfo());
-    }
-    return gameObjectsInfo;
+    return gameObjectsContainer.getUpdatedGameObjectsInfo();
 }
 
 void World::addPlayer(ThPlayer *aPlayer,uint id) {
@@ -117,10 +122,10 @@ void World::addPlayer(ThPlayer *aPlayer,uint id) {
 
 void World::clearFinishedPlayers() {
     auto iter = this->players.begin();
-    while (iter != this->players.end()){
-        if (!(*iter).second->is_alive()){
+    while (iter != this->players.end()) {
+        if (!(*iter).second->is_alive()) {
             (*iter).second->join();
-            this->gameObjects.erase((*iter).first);
+            gameObjectsContainer.deleteGameObject((*iter).first);
             delete (*iter).second;
             iter = this->players.erase(iter);
         } else {

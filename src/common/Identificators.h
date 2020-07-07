@@ -2,6 +2,8 @@
 #define CHARACTERSTATESID_H
 
 #include "Point.h"
+#include <vector>
+#include <unordered_map>
 
 enum class CharacterStateID {
     Still, //Aplica a NPCServer
@@ -168,6 +170,14 @@ enum class ActionsProfessionID {
     Sell,
     Resurrect,
     Cure,
+};
+
+struct NPCInfo {
+    uint8_t type;
+    std::vector<ActionsProfessionID> actions;
+    std::unordered_map<ItemsInventoryID,uint> items;
+    uint32_t gold;
+    std::vector<ItemsInventoryID> itemsInBank;
 };
 
 #endif
