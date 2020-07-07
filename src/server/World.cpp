@@ -1,8 +1,9 @@
 #include "World.h"
 #include "../common/JsonReader.h"
-#include "../common/NPCServer.h"
+#include "NPCServer.h"
+#include "../common/Random.h"
+#include "Creature.h"
 #include <iostream>
-#include <random>
 
 #define GAMELOOPTIME 1000000/30.0
 
@@ -58,10 +59,7 @@ void World::addCreatures() {
 
 void World::generateCreature() {
     uint id = getNextId();
-    std::random_device rd;
-    std::mt19937 mt(rd());
-    std::uniform_int_distribution<int> dist(1, 4);
-    uint8_t randomId = dist(mt);
+    uint8_t randomId = Random::get(1, 4);
     std::cout << std::to_string(randomId) << std::endl;
     NestPoint& aNestPoint = board.getAvailableNestPoint();
     Point initialPoint = board.getInitialPointInNest(aNestPoint);
@@ -121,6 +119,7 @@ void World::clearFinishedPlayers() {
         if (!(*iter).second->is_alive()) {
             (*iter).second->join();
             gameObjectsContainer.deleteGameObject((*iter).first);
+//            board.deleteGameObjectPosition((*iter).first);
             delete (*iter).second;
             iter = this->players.erase(iter);
         } else {

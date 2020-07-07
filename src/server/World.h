@@ -6,14 +6,15 @@
 #include <mutex>
 #include <atomic>
 #include "../common/TiledMap.h"
-#include "../common/Board.h"
-#include "../common/GameObject.h"
-#include "../common/GameStatsConfig.h"
+#include "Board.h"
+#include "GameObject.h"
+#include "GameStatsConfig.h"
 #include "../common/ObjectLayer.h"
 #include "../common/Thread.h"
 #include "../common/InputQueue.h"
-#include "../common/GameCharacter.h"
+#include "GameCharacter.h"
 #include "ThPlayer.h"
+#include "GameObjectsContainer.h"
 
 class World: public Thread {
 private:

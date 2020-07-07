@@ -91,6 +91,7 @@
   "maxAgility": 5,
   "creaturesLimit": 20,
   "nestCreaturesLimit": 3,
+  "distance": 15.0,
   "items": [
     {
       "id":1,
