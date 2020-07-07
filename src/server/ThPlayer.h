@@ -9,6 +9,7 @@
 #include "../common/Socket.h"
 #include "ThPlayerReceiver.h"
 #include "../common/PlayerInfo.h"
+#include "GameCharacter.h"
 
 
 class ThPlayer : public Thread {

@@ -1,5 +1,5 @@
 {
-  "port": "7776",
+  "port": "7778",
   "races": [
     {
       "id": 1,
@@ -91,6 +91,7 @@
   "maxAgility": 5,
   "creaturesLimit": 20,
   "nestCreaturesLimit": 3,
+  "distance": 15.0,
   "items": [
     {
       "id":1,

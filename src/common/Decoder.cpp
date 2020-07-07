@@ -377,7 +377,77 @@ TiledMap Decoder::decodeMap(Message msg) {
     return TiledMap(width, height, tileWidth, tileHeight, tileLayers, tileSets);
 }
 
+std::vector<uint8_t> Decoder::encodeNPCInfo(NPCInfo info) {
+    std::vector<uint8_t> encodeMsg;
+    uint32_t length = 0;
+    conversorTo8(htonl(length), 32, encodeMsg);
+    encodeMsg.push_back(INTERACTMSG);
+    length += 1;
+    encodeMsg.push_back(info.type);
+    uint8_t cantAccions = info.actions.size();
+    length += 1;
+    encodeMsg.push_back(cantAccions);
+    for (auto iter: info.actions) {
+        length += 1;
+        encodeMsg.push_back(uint8_t(iter));
+    }
+    if (info.type != 0) {
+        uint8_t cantItems = info.items.size();
+        length += 1;
+        encodeMsg.push_back(cantItems);
+        for (auto iter: info.items) {
+            length += 3;
+            encodeMsg.push_back(uint8_t(iter.first));
+            conversorTo8(htons(iter.second), 16, encodeMsg);
+        }
+    } else {
+        uint8_t cantItems = ZERO;
+        length += 1;
+        encodeMsg.push_back(cantItems);
+    }
+    uint32_t gold = info.gold;
+    length += 4;
+    conversorTo8(htonl(gold),32,encodeMsg);
+    if (info.type == 0) {
+        uint8_t cantItems = info.itemsInBank.size();
+        length += 1;
+        encodeMsg.push_back(cantItems);
+        for (auto iter: info.itemsInBank) {
+            length += 1;
+            encodeMsg.push_back(uint8_t(iter));
+        }
+    } else {
+        uint8_t cantItems = ZERO;
+        length += 1;
+        encodeMsg.push_back(cantItems);
+    }
+    length = htonl(length);
+    auto* ptr = (uint8_t*) &length;
+    for(int i = 0; i < 4; i++)
+        encodeMsg.at(i);
+
+    return std::move(encodeMsg);
+}
+
+NPCInfo Decoder::decodeNPCInfo(Message msg){
+    NPCInfo info;
+    info.type = msg.read8();
+    uint8_t cantAccions = msg.read8();
+    for (uint8_t i=0; i < cantAccions; i++) {
+        info.actions.push_back(ActionsProfessionID(msg.read8()));
+    }
+    uint8_t cantItems = msg.read8();
+    for (uint8_t i=0; i < cantItems; i++) {
+        ItemsInventoryID id = ItemsInventoryID(msg.read8());
+        uint16_t cost = ntohs(msg.read16());
+        info.items.insert({id,cost});
+    }
+    info.gold = ntohl(msg.read32());
+    uint8_t cantItemsInBank = msg.read8();
+    for (uint8_t i=0; i < cantItemsInBank; i++) {
+        info.itemsInBank.push_back(ItemsInventoryID(msg.read8()));
+    }
+    return info;
+}
 
 Decoder::~Decoder() = default;
-
-

@@ -30,6 +30,8 @@ public:
 
     static std::vector<uint8_t> encodeMap(const TiledMap&);
 
+    static std::vector<uint8_t> encodeNPCInfo(NPCInfo info);
+
     static std::vector<uint8_t> encodeGameObjects(const std::vector<GameObjectInfo> &objects);
     //Se recibe como parámetro el mensaje recibido desde el servidor. Los primeros 5 bytes ya fueron
     //leidos y por lo tanto no serán pasados a esta función. Devuelve un PlayerInfo con toda la información
@@ -41,6 +43,8 @@ public:
     static std::vector<GameObjectInfo> decodeGameObjects(Message msg);
 
     static TiledMap decodeMap(Message msg);
+
+    static NPCInfo decodeNPCInfo(Message msg);
 
     virtual ~Decoder();
 };
