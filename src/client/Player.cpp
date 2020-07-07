@@ -95,7 +95,6 @@ void Player::updatePlayerInfo(PlayerInfo info) {
   this->direction = info.getDirection();
   this->playerInfo = info;
   setState(info.getState());
-  setArmor(info.getBodyID());
   setFrameHead();
 }
 

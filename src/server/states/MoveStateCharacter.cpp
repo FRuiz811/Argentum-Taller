@@ -4,6 +4,7 @@
 #include "../GameCharacter.h"
 #include "StillStateCharacter.h"
 #include "../Creature.h"
+#include "AttackStateCharacter.h"
 
 MoveStateCharacter::~MoveStateCharacter() = default;
 
@@ -65,6 +66,8 @@ void MoveStateCharacter::setNextState(InputInfo info) {
         this->nextState = std::unique_ptr<State>(new MoveStateCharacter(info));
     } else if(info.input == InputID::stopMove) {
         nextState = std::unique_ptr<State>(new StillStateCharacter(info));
+    } else if (info.input == InputID::selectTarget) {
+        this->nextState = std::unique_ptr<State>(new AttackStateCharacter(info));
     }
 }
 

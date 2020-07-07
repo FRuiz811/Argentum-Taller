@@ -144,5 +144,9 @@ InputInfo GameCharacter::getNextInputInfo() {
     return queueInputs.pop();
 }
 
+WeaponID GameCharacter::getWeapon() {
+    return weapon;
+}
+
 GameCharacter::~GameCharacter()= default;
 

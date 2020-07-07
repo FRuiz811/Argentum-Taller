@@ -38,6 +38,8 @@ public:
 
 	InputInfo getNextInputInfo();
 
+	WeaponID getWeapon();
+
 	void update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board, GameStatsConfig& gameStatsConfig) override;
 
     uint receiveDamage(float damage, GameStatsConfig& gameStatsConfig) override;

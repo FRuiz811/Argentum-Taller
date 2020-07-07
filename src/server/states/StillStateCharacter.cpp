@@ -1,5 +1,6 @@
 #include "StillStateCharacter.h"
 #include "MoveStateCharacter.h"
+#include "AttackStateCharacter.h"
 
 
 StillStateCharacter::~StillStateCharacter() = default;
@@ -19,6 +20,8 @@ void StillStateCharacter::setNextState(InputInfo info) {
     if (info.input == InputID::up || info.input == InputID::down ||
         info.input == InputID::left || info.input == InputID::right) {
         this->nextState = std::unique_ptr<State>(new MoveStateCharacter(info));
+    } else if (info.input == InputID::selectTarget) {
+        this->nextState = std::unique_ptr<State>(new AttackStateCharacter(info));
     }
 }
 

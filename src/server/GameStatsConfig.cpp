@@ -114,7 +114,7 @@ float GameStatsConfig::getAdditionalExp(RaceID race, GameClassID gameClass, uint
 }
 
 float GameStatsConfig::getDamage(RaceID race, WeaponID weaponId) const{
-    return 0;
+    return 10;
 }
 
 bool GameStatsConfig::canEvade(RaceID race) const{
@@ -156,6 +156,10 @@ float GameStatsConfig::getDamage(CreatureID) const{
 }
 
 float GameStatsConfig::getDefense(BodyID bodyId, ShieldID shieldId, HelmetID helmetId) const {
+    return 0;
+}
+
+float GameStatsConfig::getDefense(CreatureID creatureId) const {
     return 0;
 }
 
