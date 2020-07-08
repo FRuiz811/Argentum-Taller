@@ -1,7 +1,7 @@
 #include "GoblinBody.h"
 
 #define WIDTH_BODY 24
-#define HEIGHT_BODY 30
+#define HEIGHT_BODY 31
 
 GoblinBody::GoblinBody(const TextureManager& manager) :
  Body(manager.getTexture(TextureID::Goblin),WIDTH_BODY,HEIGHT_BODY, BodyID::Goblin) {

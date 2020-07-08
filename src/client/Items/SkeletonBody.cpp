@@ -9,7 +9,7 @@ SkeletonBody::SkeletonBody(const TextureManager& manager) :
 void SkeletonBody::render(int posX, int posY, int direction) {
     setDirection(direction);
     SDL_Rect srcBody = {this->width*frame, this->height*direction, this->width, this->height};
-	SDL_Rect dstBody = {posX, posY, this->width, this->height};
+	SDL_Rect dstBody = {posX, posY, int(this->width*1.5), int(this->height*1.5)};
     this->texture.render(srcBody, dstBody);
 }
 

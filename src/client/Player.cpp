@@ -61,7 +61,9 @@ void Player::render(Camera& camera) {
 }
 
 void Player::update(double dt) {
-  if(this->state != nullptr && this->state->getState() == CharacterStateID::Move) {
+  if(this->state != nullptr && 
+  (this->state->getState() == CharacterStateID::Move ||
+   this->state->getState() == CharacterStateID::Dead)) {
     Point aux(posX, posY);
     this->center = aux;
     this->body->update(dt);
@@ -97,6 +99,9 @@ void Player::updatePlayerInfo(PlayerInfo info) {
   setState(info.getState());
   setArmor(info.getBodyID());
   setHead(info.getHeadID());
+  setHelmet(info.getHelmetID());
+	setShield(info.getShieldID());
+  setWeapon(info.getWeaponID());
   setFrameHead();
 }
 

@@ -34,8 +34,8 @@ window(window), playerTarget(player), manager(manager),
         RaisedButton(&(window.getRenderer()),font,"Equipar",{9,205,70,25}, manager));
     std::shared_ptr<RaisedButton> dropButton = std::shared_ptr<RaisedButton>(new 
         RaisedButton(&(window.getRenderer()),font,"Tirar",{109,205,70,25}, manager));
-    this->buttonsInventory.push_back(dropButton);
-    this->buttonsInventory.push_back(equipButton); 
+    this->buttonsInventory.push_back(equipButton);
+    this->buttonsInventory.push_back(dropButton); 
 }
 
 void UI::updateHealth(){
@@ -215,8 +215,12 @@ void UI::updateBuild() {
     const Texture& itemShield = manager.getTexture(info.getShieldID());
     SDL_Rect src = {0,0,52,52};
     itemHelmet.render(src,{widthSegment-16,50,32,32});
-    itemHead.render({0,0,17,17},{widthSegment-16,85,32,32});
-    itemBody.render(src,{widthSegment-34,117,64,64});
+    if (this->playerTarget->getState() == CharacterStateID::Dead){
+        itemHead.render({0,0,52,52},{widthSegment-16,85,32,32});
+    } else {
+        itemHead.render({0,0,17,17},{widthSegment-16,85,32,32});
+    }
+    itemBody.render(src,{widthSegment-32,117,64,64});
     itemWeapon.render(src,{widthSegment-64,130,32,32});
     itemShield.render(src,{widthSegment+32,130,32,32});
 }
@@ -267,9 +271,9 @@ InputInfo UI::handleClick(SDL_Event& event) {
                     }
                 }        
             }
-            if (this->buttonsInventory[0]->inside(x,y))
-                info = this->playerTarget->dropItem(itemSelected+1);
             if (this->buttonsInventory[1]->inside(x,y))
+                info = this->playerTarget->dropItem(itemSelected+1);
+            if (this->buttonsInventory[0]->inside(x,y))
                 info = this->playerTarget->selectItem(itemSelected+1);
             break;
     }

@@ -3,6 +3,7 @@
 #include "states/StillStateCharacter.h"
 #include "GameStatsConfig.h"
 #include "states/DeadStateCharacter.h"
+#include "../common/Random.h"
 
 PlayerInfo GameCharacter::getPlayerInfo() {
     return PlayerInfo(id, boardPosition.getPosition().getPoint(), goldAmount, life, mana, textureHashId, direction,150,
@@ -49,7 +50,7 @@ std::string GameCharacter::updateTextureHashId() {
         equipment += "0";
     equipment += idHelmet + "|";
     equipment += "h";
-    if (this->state != nullptr && this->state->getStateId() != CharacterStateID::Dead){
+    if (!isDead()){
         std::string idHead = std::to_string((int)this->race);
         if (idHead.size() == 1)
             equipment += "0";
@@ -59,7 +60,7 @@ std::string GameCharacter::updateTextureHashId() {
     }
     equipment += "b";
     if (this->body == BodyID::Nothing) {
-        this->body = (BodyID)((rand() % 3) + 1);
+        this->body = (BodyID)(Random::get(1,3));
     }
     std::string idBody = std::to_string((int)this->body);
     if (idBody.size() == 1)
