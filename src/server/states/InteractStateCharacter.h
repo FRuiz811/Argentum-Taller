@@ -1,15 +1,13 @@
-#ifndef ARGENTUM_TALLER_MEDITATESTATECHARACTER_H
-#define ARGENTUM_TALLER_MEDITATESTATECHARACTER_H
-
+#ifndef ARGENTUM_TALLER_INTERACTSTATECHARACTER_H
+#define ARGENTUM_TALLER_INTERACTSTATECHARACTER_H
 
 #include "State.h"
 
-class MeditateStateCharacter : public State {
-    int itemToChange{0};
+class InteractStateCharacter: public State {
 public:
-    MeditateStateCharacter();
+    InteractStateCharacter(const InputInfo &info);
 
-    ~MeditateStateCharacter() override;
+    ~InteractStateCharacter() override;
 
     void performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board,
                      GameStatsConfig &gameStatsConfig) override;
@@ -24,5 +22,4 @@ public:
 
 };
 
-
-#endif //ARGENTUM_TALLER_MEDITATESTATECHARACTER_H
+#endif

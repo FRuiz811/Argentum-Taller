@@ -35,7 +35,7 @@ private:
     Priest* priest;
     
     void addNPCs(std::vector<ObjectLayer> objectLayers);
-    std::vector<GameObjectInfo> getUpdatedGameObjects();
+    std::vector<std::shared_ptr<GameObject>> getUpdatedGameObjects();
 
 public:
     explicit World(GameStatsConfig& configuration);

@@ -71,6 +71,8 @@ public:
 
     InputQueue &getQueueInputs();
 
+    virtual NPCInfo interact(GameObject& character, InputInfo input);
+
     void equipItem(int itemToEquip);
 };
 

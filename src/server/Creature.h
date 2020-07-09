@@ -27,6 +27,8 @@ public:
 
     uint receiveDamage(float damage, GameStatsConfig &gameStatsConfig) override;
 
+    virtual NPCInfo interact(GameObject& character, InputInfo input);
+    
     virtual ~Creature();
 
 

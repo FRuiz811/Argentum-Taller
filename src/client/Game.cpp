@@ -138,7 +138,7 @@ void Game::update() {
             this->npcs.swap(newNpcs);
         } else if (msg.getType() == INTERACTMSG) {
             items = Decoder::decodeNPCInfo(msg);
-            //this->ui->setNPCInfo(items);
+            this->ui->setNPCInfo(items);
         }
     }
     this->player->update(GAMELOOPTIME);

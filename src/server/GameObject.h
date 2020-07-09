@@ -14,6 +14,7 @@ protected:
     uint id{};
     std::string textureHashId;
     Direction direction;
+    NPCInfo infoInteracting;
 public:
 	explicit GameObject(uint id, Direction direction = Direction::down);
 
@@ -36,6 +37,12 @@ public:
 
     virtual uint receiveDamage(float damage, GameStatsConfig& gameStatsConfig) = 0;
 
+    virtual NPCInfo interact(GameObject& character, InputInfo input) = 0;
+
+    NPCInfo getInteractInfo() const;
+
+    void setInteractInfo(NPCInfo info);
+    
     ~GameObject();
 };
 

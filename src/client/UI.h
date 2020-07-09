@@ -22,6 +22,7 @@ private:
     std::vector<SDL_Texture*> info;
     std::vector<std::shared_ptr<RaisedButton>> buttonsInventory;
     std::vector<std::shared_ptr<SelectButton>> buttonsItems;
+    NPCInfo informationNPC;
     int widthSegment;
     int itemSelected = -1;
     void updateStates();
@@ -35,10 +36,13 @@ private:
     void updateEquipment();
     void updateInteract();
     void updateBuild();
+    void createTexts();
 public:
     UI(Window& window, Player* player, const TextureManager& manager);
 
     void render();
+
+    void setNPCInfo(NPCInfo info);
 
     InputInfo handleClick(SDL_Event& event);
 

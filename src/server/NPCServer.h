@@ -19,7 +19,7 @@ public:
 
     CharacterStateID getStateId() override;
 
-    NPCInfo interact(GameCharacter& character, InputInfo input);
+    virtual NPCInfo interact(GameObject& character, InputInfo input);
 
     uint receiveDamage(float damage, GameStatsConfig &gameStatsConfig) override;
 };

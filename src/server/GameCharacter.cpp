@@ -196,6 +196,11 @@ uint GameCharacter::receiveDamage(float damage, GameStatsConfig& gameStatsConfig
         shield = ShieldID::Nothing;
         weapon = WeaponID::Nothing;
         helmet = HelmetID::Nothing;
+        //Acá se vacía el inventario y se debería hacer el drop
+        this->inventory.clear();
+        for(int i=0; i<9;i++){
+            this->inventory.push_back(ItemsInventoryID::Nothing);
+        }
     }
     return life;
 }
@@ -214,6 +219,11 @@ InputInfo GameCharacter::getNextInputInfo() {
 
 WeaponID GameCharacter::getWeapon() {
     return weapon;
+}
+
+NPCInfo GameCharacter::interact(GameObject& character, InputInfo input) {
+    NPCInfo info;
+    return info;
 }
 
 GameCharacter::~GameCharacter()= default;

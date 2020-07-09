@@ -4,25 +4,7 @@
 UI::UI(Window& window, Player* player, const TextureManager& manager) : 
 window(window), playerTarget(player), manager(manager),
  font("assets/font/Prince Valiant.ttf",18,{0xA4, 0xA4, 0xA4}), texts() {
-    int width_text, height_text;
-	SDL_Texture* health = font.createText("Vida",
-        &(window.getRenderer()), &width_text, &height_text);
-    this->texts.push_back(health);
-    SDL_Texture* mana = font.createText("Mana",
-        &(window.getRenderer()), &width_text, &height_text);
-    this->texts.push_back(mana);
-    SDL_Texture* level = font.createText("Nivel ",
-        &(window.getRenderer()), &width_text, &height_text);
-    this->texts.push_back(level);
-    SDL_Texture* expirience = font.createText("Experiencia",
-        &(window.getRenderer()), &width_text, &height_text);
-    this->texts.push_back(expirience);
-    SDL_Texture* inventory = font.createText("Inventario",
-        &(window.getRenderer()), &width_text, &height_text);
-    this->texts.push_back(inventory);
-    SDL_Texture* equipment = font.createText("Equipacion",
-        &(window.getRenderer()), &width_text, &height_text);
-    this->texts.push_back(equipment);
+	createTexts();
     SDL_Rect buttonRect;
     for (int i = 0; i<9; i++) {
         buttonRect = {9+(i%3)*50,50+(i/3)*50,32,32};
@@ -35,7 +17,8 @@ window(window), playerTarget(player), manager(manager),
     std::shared_ptr<RaisedButton> dropButton = std::shared_ptr<RaisedButton>(new 
         RaisedButton(&(window.getRenderer()),font,"Tirar",{109,205,70,25}, manager));
     this->buttonsInventory.push_back(equipButton);
-    this->buttonsInventory.push_back(dropButton); 
+    this->buttonsInventory.push_back(dropButton);
+    this->informationNPC.type = 0;
 }
 
 void UI::updateHealth(){
@@ -204,7 +187,9 @@ void UI::updateInventory() {
     }
 }
 
-void UI::updateInteract() {}
+void UI::updateInteract() {
+    
+}
 
 void UI::updateBuild() {
     PlayerInfo info = this->playerTarget->getInfo();
@@ -278,6 +263,46 @@ InputInfo UI::handleClick(SDL_Event& event) {
             break;
     }
     return info;
+}
+
+void UI::createTexts() {
+    int width_text, height_text;
+    SDL_Texture* health = font.createText("Vida",
+        &(window.getRenderer()), &width_text, &height_text);
+    this->texts.push_back(health);
+    SDL_Texture* mana = font.createText("Mana",
+        &(window.getRenderer()), &width_text, &height_text);
+    this->texts.push_back(mana);
+    SDL_Texture* level = font.createText("Nivel ",
+        &(window.getRenderer()), &width_text, &height_text);
+    this->texts.push_back(level);
+    SDL_Texture* expirience = font.createText("Experiencia",
+        &(window.getRenderer()), &width_text, &height_text);
+    this->texts.push_back(expirience);
+    SDL_Texture* inventory = font.createText("Inventario",
+        &(window.getRenderer()), &width_text, &height_text);
+    this->texts.push_back(inventory);
+    SDL_Texture* equipment = font.createText("Equipacion",
+        &(window.getRenderer()), &width_text, &height_text);
+    this->texts.push_back(equipment);
+    SDL_Texture* buy = font.createText("Comprar",
+        &(window.getRenderer()), &width_text, &height_text);
+    this->texts.push_back(buy);
+    SDL_Texture* sell = font.createText("Vender",
+        &(window.getRenderer()), &width_text, &height_text);
+    this->texts.push_back(sell);
+    SDL_Texture* resurrect = font.createText("Resucitar",
+        &(window.getRenderer()), &width_text, &height_text);
+    this->texts.push_back(resurrect);
+    SDL_Texture* cure = font.createText("Curar",
+        &(window.getRenderer()), &width_text, &height_text);
+    this->texts.push_back(cure);
+    SDL_Texture* deposit = font.createText("Depositar",
+        &(window.getRenderer()), &width_text, &height_text);
+    this->texts.push_back(deposit);
+    SDL_Texture* retire = font.createText("Retirar",
+        &(window.getRenderer()), &width_text, &height_text);
+    this->texts.push_back(retire);
 }
 
 UI::~UI() {

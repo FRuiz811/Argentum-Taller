@@ -159,7 +159,7 @@ enum class ActionsProfessionID {
 };
 
 struct NPCInfo {
-    uint8_t type;
+    uint8_t type = 0;
     std::vector<ActionsProfessionID> actions;
     std::unordered_map<ItemsInventoryID,uint> items;
     uint32_t gold;

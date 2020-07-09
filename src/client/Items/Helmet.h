@@ -10,7 +10,7 @@ protected:
     HelmetID id{HelmetID::Nothing};
 public:
     Helmet(const Texture& texture, const int width, const int height,HelmetID id=HelmetID::Nothing) : 
-        Item(texture, width, height){}
+        Item(texture, width, height),id(id){}
     
     virtual void render(int posX, int posY, int direction) = 0;
 

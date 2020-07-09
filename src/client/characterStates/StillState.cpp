@@ -101,3 +101,19 @@ InputInfo StillState::dropItem(Character& character, int item) {
     info.aditional = item;
     return info;
 }
+
+InputInfo StillState::buyItem(Character& character, int item) {
+    InputInfo info;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    info.input =InputID::nothing;
+    return info;
+}
+
+InputInfo StillState::sellItem(Character& character, int item) {
+    InputInfo info;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    info.input =InputID::nothing;
+    return info;
+}

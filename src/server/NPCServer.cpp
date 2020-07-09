@@ -26,8 +26,9 @@ NPCServer::NPCServer(uint id, Point point, const std::string& type) : GameObject
 void NPCServer::update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board,
                        GameStatsConfig &gameStatsConfig) {}
 
-NPCInfo NPCServer::interact(GameCharacter& character, InputInfo input) {
-
+NPCInfo NPCServer::interact(GameObject& character, InputInfo input) {
+    NPCInfo info = this->profession->getInfo(character.getId());
+    return info;
 }
 
 CharacterStateID NPCServer::getStateId() {

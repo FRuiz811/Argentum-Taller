@@ -1,6 +1,7 @@
 #include "StillStateCharacter.h"
 #include "MoveStateCharacter.h"
 #include "AttackStateCharacter.h"
+#include "InteractStateCharacter.h"
 #include "../GameCharacter.h"
 #include <iostream>
 
@@ -26,8 +27,9 @@ void StillStateCharacter::setNextState(InputInfo info) {
         info.input == InputID::left || info.input == InputID::right) {
         this->nextState = std::unique_ptr<State>(new MoveStateCharacter(info));
     } else if (info.input == InputID::selectTarget) {
-        this->nextState = std::unique_ptr<State>(new AttackStateCharacter(info));
-    } else if (info.input == InputID::equipItem)  {
+        //this->nextState = std::unique_ptr<State>(new AttackStateCharacter(info));
+        this->nextState = std::unique_ptr<State>(new InteractStateCharacter(info));
+    } else if (info.input == InputID::equipItem) {
         this->itemToChange = info.aditional;
     }
 }

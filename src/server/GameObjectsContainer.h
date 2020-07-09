@@ -15,6 +15,8 @@ public:
     void addGameObject(const std::shared_ptr<GameObject>& aGameObject, uint id);
 
     std::vector<GameObjectInfo> getUpdatedGameObjectsInfo();
+    
+    std::vector<std::shared_ptr<GameObject>> getUpdatedGameObjects();
 
     void update(Board& board, GameStatsConfig& gameStatsConfig);
 

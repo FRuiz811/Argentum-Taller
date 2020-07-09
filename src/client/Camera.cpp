@@ -48,19 +48,15 @@ void Camera::limits(Point* destiny) {
 }
 
 Point Camera::calculateGlobalPosition(Point coordinates) const {
-    float x = this->cam.x + coordinates.x;
-    float y = this->cam.y + coordinates.y;
+    float x = coordinates.x +(positionScreen.x-cam.x);
+    float y = coordinates.y + (positionScreen.y-cam.y);
     return Point(x,y);
 }
 
 void Camera::render(Point destiny) {
     limits(&destiny);
-    this->cam.x = destiny.x;
-    this->cam.y = destiny.y;
-    this->cam.h = this->window.getHeight();
-    this->cam.w = this->window.getWidth();
-    this->positionScreen.x = this->cam.x - (((this->window.getWidth()/WIDTHSEGMENT)*6) / 2.0f);
-    this->positionScreen.y = this->cam.y - ((this->window.getHeight() - 60) / 2.0f);
+    this->positionScreen.x = destiny.x - (((this->window.getWidth()/WIDTHSEGMENT)*6) / 2.0f);
+    this->positionScreen.y = destiny.y - ((this->window.getHeight() - 60) / 2.0f);
     SDL_Rect display = {(this->window.getWidth()/WIDTHSEGMENT) * 2,60,
             (this->window.getWidth()/WIDTHSEGMENT) * 6,this->window.getHeight() - 60};
     SDL_RenderSetViewport(&(this->window.getRenderer()), &display);

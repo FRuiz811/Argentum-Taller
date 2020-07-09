@@ -50,12 +50,12 @@ Player::Player(const TextureManager& manager, const PlayerInfo& playerInfo) :
 
 void Player::render(Camera& camera) {
  	this->body->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y),int(this->direction));
+  if (this->head != nullptr)
+    this->head->render(int(posX+4-camera.getCameraPosition().x), int((posY-this->body->getHeight()/2)-camera.getCameraPosition().y), this->frameHead);
   if (this->weapon != nullptr)
     this->weapon->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y),int(this->direction));
   if (this->shield != nullptr)
 	  this->shield->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y),int(this->direction));
-  if (this->head != nullptr)
-    this->head->render(int(posX+4-camera.getCameraPosition().x), int((posY-this->body->getHeight()/2)-camera.getCameraPosition().y), this->frameHead);
   if (this->helmet != nullptr)
     this->helmet->render(int(posX+4-camera.getCameraPosition().x), int((posY-this->body->getHeight()/2)-camera.getCameraPosition().y), this->frameHead);
 }

@@ -81,4 +81,9 @@ bool Creature::isDead() {
     return life = 0;
 }
 
+NPCInfo Creature::interact(GameObject& character, InputInfo input) {
+    NPCInfo info;
+    return info;
+}
+
 Creature::~Creature() = default;

@@ -424,7 +424,7 @@ std::vector<uint8_t> Decoder::encodeNPCInfo(NPCInfo info) {
     length = htonl(length);
     auto* ptr = (uint8_t*) &length;
     for(int i = 0; i < 4; i++)
-        encodeMsg.at(i);
+        encodeMsg.at(i) = *(ptr+i);
 
     return std::move(encodeMsg);
 }

@@ -14,7 +14,7 @@ protected:
     WeaponID id{WeaponID::Nothing};
 public:
     Weapon(const Texture& texture, const int width, const int height, WeaponID id = WeaponID::Nothing) : 
-        Item(texture, width, height) {}
+        Item(texture, width, height), id(id) {}
     
     virtual void render(int posX, int posY, int direction) = 0;
 

@@ -8,7 +8,7 @@
 #define GAMELOOPTIME 1000000/30.0
 
 World::World(GameStatsConfig& configuration) : gameStatsConfig(configuration), 
-    current_id(0), keepTalking(true) {
+    current_id(1), keepTalking(true) {
     rapidjson::Document jsonMap = JsonReader::read("json/finishedMap.json");
     this->banker = Banker::getInstance();
     this->merchant = Merchant::getInstance();
@@ -107,10 +107,11 @@ void World::stop() {
 
 void World::update() {
     gameObjectsContainer.update(board, gameStatsConfig);
+    
 }
 
-std::vector<GameObjectInfo> World::getUpdatedGameObjects() {
-    return gameObjectsContainer.getUpdatedGameObjectsInfo();
+std::vector<std::shared_ptr<GameObject>> World::getUpdatedGameObjects() {
+    return gameObjectsContainer.getUpdatedGameObjects();
 }
 
 void World::addPlayer(ThPlayer *aPlayer,uint id) {
