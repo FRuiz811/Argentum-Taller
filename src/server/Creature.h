@@ -21,6 +21,8 @@ public:
 
     CreatureID getCreatureId() const;
 
+    bool isDead();
+
     CharacterStateID getStateId() override;
 
     uint receiveDamage(float damage, GameStatsConfig &gameStatsConfig) override;

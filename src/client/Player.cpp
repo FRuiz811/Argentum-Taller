@@ -216,12 +216,12 @@ void Player::setState(CharacterStateID newState) {
 			case CharacterStateID::Dead:
 				this->state = std::shared_ptr<CharacterState>(new DeadState());
 				break;
-      case CharacterStateID::Meditate:
-        this->state = std::shared_ptr<CharacterState>(new MeditateState());
-        break;
-      case CharacterStateID::Attack:
-        this->state = std::shared_ptr<CharacterState>(new AttackState());
-        break;
+            case CharacterStateID::Meditate:
+                this->state = std::shared_ptr<CharacterState>(new MeditateState());
+                break;
+            case CharacterStateID::Attack:
+                this->state = std::shared_ptr<CharacterState>(new AttackState());
+                break;
 		}
 	}
 }
@@ -232,18 +232,18 @@ void Player::setHead(HeadID head) {
 	      case HeadID::Nothing:
 	          this->head = nullptr;
             break;
-        case HeadID::Elf:
-           this->head = std::shared_ptr<Head>(new ElfHead(this->manager));
-            break;
-        case HeadID::Human:
-            this->head = std::shared_ptr<Head>(new HumanHead(this->manager));
-            break;
-        case HeadID::Dwarf:
-            this->head = std::shared_ptr<Head>(new DwarfHead(this->manager));
-            break;
-        case HeadID::Gnome:
-            this->head = std::shared_ptr<Head>(new GnomeHead(this->manager));
-            break;
+            case HeadID::Elf:
+                this->head = std::shared_ptr<Head>(new ElfHead(this->manager));
+                break;
+            case HeadID::Human:
+                this->head = std::shared_ptr<Head>(new HumanHead(this->manager));
+                break;
+            case HeadID::Dwarf:
+                this->head = std::shared_ptr<Head>(new DwarfHead(this->manager));
+                break;
+            case HeadID::Gnome:
+                this->head = std::shared_ptr<Head>(new GnomeHead(this->manager));
+                break;
     }
   }
 }

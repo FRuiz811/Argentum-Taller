@@ -6,6 +6,7 @@
 #include "../common/StaticObject.h"
 #include "states/State.h"
 #include "../common/InputQueue.h"
+#include "../common/Identificators.h"
 #include <vector>
 #include <unordered_map>
 #include <memory>
@@ -21,7 +22,7 @@ private:
     float exp;
     uint level{};
     std::unique_ptr<State> state;
-    std::string inventory;
+    std::vector<ItemsInventoryID> inventory;
     InputQueue queueInputs;
     WeaponID weapon{WeaponID::Nothing};
     ShieldID shield{ShieldID::Nothing};
@@ -29,6 +30,8 @@ private:
     BodyID body{BodyID::Nothing};
 
     std::string updateTextureHashId();
+    void consumePotion(ItemInfo potion);
+
 public:
 	GameCharacter(uint id, RaceID aRace, GameClassID aClass, Point& point);
 
@@ -37,6 +40,8 @@ public:
 	bool hasAnInputInfo();
 
 	InputInfo getNextInputInfo();
+
+	WeaponID getWeapon();
 
 	void update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board, GameStatsConfig& gameStatsConfig) override;
 
@@ -62,7 +67,11 @@ public:
 
     uint getLevel() const;
 
+    std::string getStringInventory() const;
+
     InputQueue &getQueueInputs();
+
+    void equipItem(int itemToEquip);
 };
 
 #endif

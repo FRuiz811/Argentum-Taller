@@ -27,11 +27,11 @@ file(GLOB_RECURSE COMMON_SOURCES
         src/common/*.h
         src/common/*.cpp)
 
-
 add_executable(client ${CLIENT_SOURCES} ${COMMON_SOURCES})
 
 add_executable(server ${SERVER_SOURCES} ${COMMON_SOURCES})
 
 target_link_libraries(client -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer pthread)
+
 
 target_link_libraries(server pthread)

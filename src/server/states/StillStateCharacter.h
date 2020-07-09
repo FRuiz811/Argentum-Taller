@@ -10,6 +10,8 @@
 #include "../../common/StaticObject.h"
 
 class StillStateCharacter: public State {
+private:
+    int itemToChange{0};
 public:
     explicit StillStateCharacter(InputInfo);
 

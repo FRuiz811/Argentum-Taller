@@ -24,7 +24,9 @@ NPCServer::NPCServer(uint id, Point point, const std::string& type) : GameObject
 }
 
 void NPCServer::update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board,
-                       GameStatsConfig &gameStatsConfig) {
+                       GameStatsConfig &gameStatsConfig) {}
+
+NPCInfo NPCServer::interact(GameCharacter& character, InputInfo input) {
 
 }
 

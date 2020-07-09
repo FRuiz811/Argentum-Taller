@@ -4,6 +4,7 @@
 #include "Point.h"
 #include <vector>
 #include <unordered_map>
+#include <iostream>
 
 enum class CharacterStateID {
     Still, //Aplica a NPCServer
@@ -29,25 +30,10 @@ enum class InputID {
     deposit,   //x
     retire, //z
     selectTarget, //click
-    item1, 
-    item2,
-    item3,
-    item4,
-    item5,
-    item6,
-    item7,
-    item8,
-    item9,
+    equipItem,
     dropItem, //g
     takeItem, //t
 };
-
-struct InputInfo {
-    InputID input = InputID::nothing;
-    Point position;
-    int aditional = 0;
-};
-
 
 enum class HelmetID {
     Nothing,
@@ -178,6 +164,12 @@ struct NPCInfo {
     std::unordered_map<ItemsInventoryID,uint> items;
     uint32_t gold;
     std::vector<ItemsInventoryID> itemsInBank;
+};
+
+struct InputInfo {
+    InputID input = InputID::nothing;
+    Point position;
+    int aditional = 0;
 };
 
 #endif

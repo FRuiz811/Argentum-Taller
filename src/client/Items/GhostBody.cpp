@@ -1,5 +1,4 @@
 #include "GhostBody.h"
-#include "../TextureID.h"
 
 #define WIDTH_BODY 29
 #define HEIGHT_BODY 32

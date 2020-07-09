@@ -3,9 +3,9 @@
 
 #include <zconf.h>
 #include <string>
-#include "../common/Position.h"
-#include "../common/GameObjectInfo.h"
-#include "../common/Identificators.h"
+#include "Position.h"
+#include "GameObjectInfo.h"
+#include "Identificators.h"
 
 class PlayerInfo : public GameObjectInfo{
 private:

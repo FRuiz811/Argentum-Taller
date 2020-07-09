@@ -4,23 +4,26 @@
 #include "GameStatsConfig.h"
 #include "states/DeadStateCharacter.h"
 #include "../common/Random.h"
+#include "ItemTranslator.h"
 
 PlayerInfo GameCharacter::getPlayerInfo() {
     return PlayerInfo(id, boardPosition.getPosition().getPoint(), goldAmount, life, mana, textureHashId, direction,150,
-        100,100,exp,1500,level,inventory,state->getStateId());
+        100,100,exp,1500,level,getStringInventory(),state->getStateId());
 }
 
 GameCharacter::GameCharacter(uint id, RaceID aRace, GameClassID aClass, Point &point):
-GameObject(id), race(aRace), gameClass(aClass), queueInputs(true) {
+GameObject(id), race(aRace), gameClass(aClass), queueInputs(true), inventory({
+    ItemsInventoryID::HealthPotion, ItemsInventoryID::ManaPotion,ItemsInventoryID::LongSword,ItemsInventoryID::IronShield,
+    ItemsInventoryID::LeatherArmor,ItemsInventoryID::Hood,ItemsInventoryID::Nothing,ItemsInventoryID::Nothing,ItemsInventoryID::Nothing
+}) {
     boardPosition = BoardPosition(Position(point, 25, 60), 0, true);
-    this->life = 100;
+    this->life = 80;
     this->goldAmount = 100;
-    this->mana = 100;
+    this->mana = 80;
     this->exp = 0;
     this->level = 1;
     this->direction = Direction::down;
     this->textureHashId = updateTextureHashId(); //Solo debería tener la cabeza correspondiente y su cuerpo. "ht00|h03|b01|s00|w00"
-    this->inventory = "00|00|00|00|00|00|00|00|00"; //Esto debería ser todo 0 al principio del juego
     InputInfo anInputInfo;
     anInputInfo.input = InputID::nothing;
     state = std::unique_ptr<State>(new StillStateCharacter(anInputInfo));
@@ -77,6 +80,65 @@ std::string GameCharacter::updateTextureHashId() {
         equipment += "0";
     equipment += idWeapon;
     return std::move(equipment);
+}
+
+std::string GameCharacter::getStringInventory() const {
+    std::string inv;
+    std::string temp;
+    for (int i=0; i<9;i++){
+        temp = std::to_string(int(this->inventory.at(i)));
+        if (temp.size() == 1)
+            inv += "0";
+        inv += temp;
+        if (i != 8)
+            inv += "|";
+    }
+    return std::move(inv);
+}
+
+
+void GameCharacter::equipItem(int itemToEquip) {
+    ItemsInventoryID idItem = this->inventory.at(itemToEquip-1);
+    if (idItem == ItemsInventoryID::Nothing)
+        return;
+    ItemInfo info = GameStatsConfig::getItem(idItem);
+    ItemsInventoryID item = ItemsInventoryID::Nothing;
+    if (info.type == "Weapon") {
+        WeaponID newWeapon = ItemTranslator::itemToWeapon(idItem);
+        item = ItemTranslator::weaponToItem(this->weapon);
+        this->weapon = newWeapon;
+    } else if (info.type == "Body") {
+        BodyID newBody = ItemTranslator::itemToBody(idItem);
+        item = ItemTranslator::bodyToItem(this->body);
+        this->body = newBody;
+    } else if(info.type == "Shield") {
+        ShieldID newShield = ItemTranslator::itemToShield(idItem);
+        item = ItemTranslator::shieldToItem(this->shield);
+        this->shield = newShield;
+    } else if(info.type == "Helmet") {
+        HelmetID newHelmet = ItemTranslator::itemToHelmet(idItem);
+        item = ItemTranslator::helmetToItem(this->helmet);
+        this->helmet = newHelmet;
+    } else if(info.type == "Potion") {
+        this->consumePotion(info);
+    }
+    if (item == ItemsInventoryID::Nothing) {
+        this->inventory.erase(this->inventory.begin()+itemToEquip-1);
+        this->inventory.push_back(ItemsInventoryID::Nothing);
+    } else {
+        this->inventory.at(itemToEquip-1) = item;
+    }
+}
+
+void GameCharacter::consumePotion(ItemInfo potion) {
+    this->mana += potion.manaRestored;
+    uint maxMana = GameStatsConfig::getMaxMana(this->race, this->gameClass,this->level);
+    if (this->mana > maxMana)
+        this->mana = maxMana;
+    this->life += potion.healthRestored;
+    uint maxHealth = GameStatsConfig::getMaxHealth(this->race, this->gameClass,this->level);
+    if (this->life > maxHealth)
+        this->life = maxHealth;
 }
 
 RaceID GameCharacter::getRace() const {
@@ -150,5 +212,8 @@ InputInfo GameCharacter::getNextInputInfo() {
     return queueInputs.pop();
 }
 
-GameCharacter::~GameCharacter()= default;
+WeaponID GameCharacter::getWeapon() {
+    return weapon;
+}
 
+GameCharacter::~GameCharacter()= default;
