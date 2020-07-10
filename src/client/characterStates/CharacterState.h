@@ -29,8 +29,8 @@ public:
     virtual InputInfo cure(Character& character) = 0;
     virtual InputInfo buyItem(Character& character, int item) = 0;
     virtual InputInfo sellItem(Character& character, int item) = 0;
-    //virtual InputInfo deposit(Character& character) = 0;
-    //virtual InputInfo retire(Character& character) = 0;
+    virtual InputInfo deposit(Character& character,int item, bool isItem) = 0;
+    virtual InputInfo retire(Character& character,int item, bool isItem) = 0;
     virtual InputInfo selectTarget(Character& character, Point position) = 0;
 
 };

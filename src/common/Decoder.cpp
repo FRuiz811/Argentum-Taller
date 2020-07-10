@@ -408,7 +408,7 @@ std::vector<uint8_t> Decoder::encodeNPCInfo(NPCInfo info) {
     uint32_t gold = info.gold;
     length += 4;
     conversorTo8(htonl(gold),32,encodeMsg);
-    if (info.type == 0) {
+    if (info.type == 3) {
         uint8_t cantItems = info.itemsInBank.size();
         length += 1;
         encodeMsg.push_back(cantItems);

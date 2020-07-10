@@ -123,3 +123,20 @@ InputInfo AttackState::sellItem(Character& character,int item) {
     info.input =InputID::nothing;
     return info;
 }
+
+InputInfo AttackState::retire(Character& character,int item, bool isItem) {
+    InputInfo info;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    info.input = InputID::nothing;
+    return info;
+}
+
+InputInfo AttackState::deposit(Character& character,int item, bool isItem) {
+    InputInfo info;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    info.input = InputID::nothing;
+    return info;
+}
+

@@ -17,6 +17,9 @@ public:
     virtual InputInfo selectItem(Character& character, int item);
     virtual InputInfo dropItem(Character& character, int item);
     
+    virtual InputInfo deposit(Character& character,int item, bool isItem);
+    virtual InputInfo retire(Character& character,int item, bool isItem);
+
     virtual InputInfo buyItem(Character& character, int item);
     virtual InputInfo sellItem(Character& character, int item);
 

@@ -129,12 +129,20 @@ InputInfo Player::buy(int itemNumber) {
   return info;
 }
 
+InputInfo Player::deposit(int information, bool isItem) {
+  InputInfo info = this->state->deposit(*this,information,isItem);
+  return info;
+}
+
+InputInfo Player::retire(int information, bool isItem) {
+  InputInfo info = this->state->retire(*this,information,isItem);
+  return info;
+}
 
 InputInfo Player::sell(int itemNumber) {
   InputInfo info = this->state->sellItem(*this,itemNumber);
   return info;
 }
-
 
 InputInfo Player::handleEvent(SDL_Event& event, Camera& camera) {
   InputInfo input;
