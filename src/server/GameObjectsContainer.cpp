@@ -17,6 +17,15 @@ std::vector<GameObjectInfo> GameObjectsContainer::getUpdatedGameObjectsInfo() {
     return gameObjectsInfo;
 }
 
+std::vector<std::shared_ptr<GameObject>> GameObjectsContainer::getUpdatedGameObjects() {
+    std::vector<std::shared_ptr<GameObject>> objects;
+    for (auto& gameObjectPair : gameObjects) {
+        objects.push_back(gameObjectPair.second);
+    }
+    return objects;
+}
+
+
 void GameObjectsContainer::update(Board& board, GameStatsConfig& gameStatsConfig) {
     for (auto& gameObjectPair : gameObjects) {
         gameObjectPair.second->update(gameObjects, board, gameStatsConfig);

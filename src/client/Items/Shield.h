@@ -9,12 +9,12 @@ class Shield: public Item {
 protected:
     int frame{0};
     float elapsed{0.0};
-    float animationSpeed{30.0f};
+    float animationSpeed{40.0f};
     int totalFrames{5};
     ShieldID id{ShieldID::Nothing};
 public:
     Shield(const Texture& texture, const int width, const int height, ShieldID id = ShieldID::Nothing) : 
-        Item(texture, width, height){}
+        Item(texture, width, height), id(id){}
     
     virtual void render(int posX, int posY, int direction) = 0;
 

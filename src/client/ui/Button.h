@@ -1,8 +1,8 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
-#include "Font.h"
-#include "TextureManager.h"
+#include "../Font.h"
+#include "../TextureManager.h"
 
 class Button {
 protected:

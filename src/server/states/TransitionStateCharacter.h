@@ -1,0 +1,16 @@
+//
+// Created by victor on 10/7/20.
+//
+
+#ifndef ARGENTUM_TALLER_TRANSITIONSTATECHARACTER_H
+#define ARGENTUM_TALLER_TRANSITIONSTATECHARACTER_H
+
+
+
+class TransitionStateCharacter {
+
+};
+
+
+
+#endif //ARGENTUM_TALLER_TRANSITIONSTATECHARACTER_H

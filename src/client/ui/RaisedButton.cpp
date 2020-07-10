@@ -15,18 +15,14 @@ void RaisedButton::render(){
         SDL_Rect click = {button.x-1,button.y-1,button.w+2,button.h+2};
         SDL_SetRenderDrawColor(this->renderer, 0xA4, 0xA4, 0xA4, 0xAA);		
     	SDL_RenderDrawRect(this->renderer, &click);
-        onClick();
+        this->clicked = !this->clicked;
     }
     if(this->texture != nullptr){
         SDL_QueryTexture(this->texture, NULL, NULL, &w, &h);
         src = {0,0,w,h};
-        SDL_Rect dest = {button.x+w/4, button.y,w,h};
+        SDL_Rect dest = {button.x+(w/6), button.y,w,h};
         SDL_RenderCopy(this->renderer,this->texture,&src,&dest);
     }
-}
-
-void RaisedButton::onClick() {
-    this->clicked = !this->clicked;
 }
 
 bool RaisedButton::inside(int x, int y) {
@@ -39,8 +35,6 @@ bool RaisedButton::inside(int x, int y) {
         inside = false;
     if (y > this->button.y + this->button.h+viewport.y)
         inside = false;
-    if (inside)
-        onClick();
     return inside;
 }
 

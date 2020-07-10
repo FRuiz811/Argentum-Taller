@@ -1,14 +1,13 @@
-#ifndef ARGENTUM_TALLER_DEADSTATECREATURE_H
-#define ARGENTUM_TALLER_DEADSTATECREATURE_H
-
+#ifndef ARGENTUM_TALLER_INTERACTSTATECHARACTER_H
+#define ARGENTUM_TALLER_INTERACTSTATECHARACTER_H
 
 #include "State.h"
 
-class DeadStateCreature : public State {
+class InteractStateCharacter: public State {
 public:
-    DeadStateCreature();
+    InteractStateCharacter(const InputInfo &info);
 
-    ~DeadStateCreature() override;
+    ~InteractStateCharacter() override;
 
     void performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board,
                      GameStatsConfig &gameStatsConfig) override;
@@ -20,7 +19,7 @@ public:
     bool isOnPursuit(uint pursuitId) override;
 
     bool isAttacking() override;
+
 };
 
-
-#endif //ARGENTUM_TALLER_DEADSTATECREATURE_H
+#endif

@@ -15,6 +15,7 @@ protected:
     uint id{};
     std::string textureHashId;
     Direction direction;
+    NPCInfo infoInteracting;
 public:
 	explicit GameObject(uint id, Point initialPoint, std::shared_ptr<Cell> initialCell, Direction aDirection = Direction::down);
 
@@ -39,6 +40,12 @@ public:
     virtual bool isDead() = 0;
 
     virtual uint receiveDamage(float damage, GameStatsConfig& gameStatsConfig) = 0;
+
+    virtual NPCInfo interact(GameObject& character, InputInfo input) = 0;
+
+    NPCInfo getInteractInfo() const;
+
+    void setInteractInfo(NPCInfo info);
 
     virtual bool isReadyToRemove() = 0;
 

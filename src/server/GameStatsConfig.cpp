@@ -1,5 +1,6 @@
 #include "GameStatsConfig.h"
 #include "../common/Random.h"
+#include <iostream>
 
 GameStatsConfig::GameStatsConfig(rapidjson::Document &json) {
     GameStatsConfig gameStatsConfig;
@@ -20,6 +21,7 @@ GameStatsConfig::GameStatsConfig(rapidjson::Document &json) {
     creaturesLimit = json["creaturesLimit"].GetInt();
     nestCreaturesLimit = json["nestCreaturesLimit"].GetInt();
     distance = json["distance"].GetFloat();
+    inventoryLimit = json["inventoryLimit"].GetInt();
 
     rapidjson::Value::Array racesArray = json["races"].GetArray();
     for (auto &aRace : racesArray) {
@@ -73,96 +75,130 @@ ItemInfo GameStatsConfig::createItem(rapidjson::Value& value) {
     return aItemInfo;
 }
 
-float GameStatsConfig::getMaxHealth(RaceID race, GameClassID gameClass, uint level) const {
-    return races.at(race).constitution * gameClasses.at(gameClass).health * races.at(race).health * level;
+const ItemInfo GameStatsConfig::getItem(ItemsInventoryID id) {
+    return items.at(id);
 }
 
-float GameStatsConfig::getRecoveryHealth(RaceID race, GameClassID gameClass) const {
+float GameStatsConfig::getMaxHealth(RaceID race, GameClassID gameClass, uint level) {
+    float max = races.at(race).constitution * gameClasses.at(gameClass).health * races.at(race).health * level;
+    std::cout << max << std::endl;
+    return max;
+}
+
+float GameStatsConfig::getRecoveryHealth(RaceID race, GameClassID gameClass) {
     return 0;
 }
 
-float GameStatsConfig::getMaxMana(RaceID race, GameClassID gameClass, uint level) const {
-    return races.at(race).intelligent*races.at(race).mana*gameClasses.at(gameClass).mana*level;
+float GameStatsConfig::getMaxMana(RaceID race, GameClassID gameClass, uint level) {
+    float max = races.at(race).intelligent*races.at(race).mana*gameClasses.at(gameClass).mana*level;
+    std::cout <<"mana: " << max << std::endl;
+    return max;
 }
 
-float GameStatsConfig::getRecoveryMana(RaceID race, GameClassID gameClass) const {
+float GameStatsConfig::getRecoveryMana(RaceID race, GameClassID gameClass) {
     return 0;
 }
 
-float GameStatsConfig::getRecoveryManaMeditation(RaceID race, GameClassID gameClass) const {
+float GameStatsConfig::getRecoveryManaMeditation(RaceID race, GameClassID gameClass) {
     return races.at(race).intelligent * gameClasses.at(gameClass).meditation;
 }
 
-float GameStatsConfig::getGoldDrop(uint maxHealthNPC) const{
+float GameStatsConfig::getGoldDrop(uint maxHealthNPC){
     return 100;
 }
 
-float GameStatsConfig::getMaxGold(uint level) const{
-    return goldMaxMult * pow(level, goldMaxPot);
+float GameStatsConfig::getMaxGold(uint level){
+    return GameStatsConfig::goldMaxMult * pow(level, GameStatsConfig::goldMaxPot);
 }
 
-float GameStatsConfig::getNextLevelLimit(uint level) const{
+float GameStatsConfig::getNextLevelLimit(uint level){
     return expMaxMult * pow(level,expMaxPot);
 }
 
-float GameStatsConfig::getExp(RaceID race, GameClassID gameClass, uint level, uint enemyLevel) const {
+float GameStatsConfig::getExp(RaceID race, GameClassID gameClass, uint level, uint enemyLevel) {
     return 0;
 }
 
-float GameStatsConfig::getAdditionalExp(RaceID race, GameClassID gameClass, uint level, uint enemyLevel) const{
-    return 0;
-}
-
-float GameStatsConfig::getDamage(RaceID race, WeaponID weaponId) const{
+float GameStatsConfig::getAdditionalExp(RaceID race, GameClassID gameClass, uint level, uint enemyLevel){
     return 10;
 }
 
-bool GameStatsConfig::canEvade(RaceID race) const{
+float GameStatsConfig::getDamage(RaceID race, WeaponID weaponId){
+    return 10;
+}
+
+bool GameStatsConfig::canEvade(RaceID race){
     double base = Random::getFloat(evadeRandMin,evadeRandMax);
     return pow(base, races.at(race).agility) < evadeProbability;
 }
 
-uint8_t GameStatsConfig::getAmountSteps(RaceID raceId) const {
+uint8_t GameStatsConfig::getAmountSteps(RaceID raceId) {
     RaceInfo raceInfo = races.at(raceId);
     return  5 + (maxAgility - raceInfo.agility);
 }
 
-uint8_t GameStatsConfig::getCreaturesLimit() const {
+uint8_t GameStatsConfig::getCreaturesLimit() {
     return creaturesLimit;
 }
 
-uint8_t GameStatsConfig::getNestCreatureLimit() const {
+uint8_t GameStatsConfig::getNestCreatureLimit() {
     return nestCreaturesLimit;
 }
 
-std::string GameStatsConfig::getPort() const {
+std::string GameStatsConfig::getPort() {
     return port;
 }
 
-std::unordered_map<ItemsInventoryID,ItemInfo> GameStatsConfig::getItems() const {
+std::unordered_map<ItemsInventoryID,ItemInfo> GameStatsConfig::getItems() {
     return items;
 }
 
-float GameStatsConfig::getDistance() const{
+float GameStatsConfig::getDistance(){
     return distance;
 }
 
-uint8_t GameStatsConfig::getAmountSteps(CreatureID creatureId) const {
+uint8_t GameStatsConfig::getAmountSteps(CreatureID creatureId) {
     return 20;
 }
 
-float GameStatsConfig::getDamage(CreatureID) const{
+float GameStatsConfig::getDamage(CreatureID){
     return 5;
 }
 
-float GameStatsConfig::getDefense(BodyID bodyId, ShieldID shieldId, HelmetID helmetId) const {
+float GameStatsConfig::getDefense(BodyID bodyId, ShieldID shieldId, HelmetID helmetId) {
     return 0;
 }
 
-float GameStatsConfig::getDefense(CreatureID creatureId) const {
+float GameStatsConfig::getDefense(CreatureID creatureId) {
     return 0;
+}
+
+int GameStatsConfig::getInventoryLimit() {
+    return GameStatsConfig::inventoryLimit;
 }
 
 GameStatsConfig::GameStatsConfig() = default;
 
 GameStatsConfig::~GameStatsConfig() = default;
+
+std::unordered_map<RaceID, RaceInfo, std::hash<RaceID>> GameStatsConfig::races;
+std::unordered_map<GameClassID, GameClassInfo, std::hash<GameClassID>> GameStatsConfig::gameClasses;
+std::unordered_map<ItemsInventoryID, ItemInfo, std::hash<ItemsInventoryID>> GameStatsConfig::items;
+std::string GameStatsConfig::port{};
+float GameStatsConfig::goldRandMin = 0.0;
+float GameStatsConfig::goldRandMax = 0.0;
+float GameStatsConfig::goldMaxMult = 0.0;
+float GameStatsConfig::goldMaxPot = 0.0;
+float GameStatsConfig::expMaxMult = 0.0;
+float GameStatsConfig::expMaxPot = 0.0;
+float GameStatsConfig::evadeRandMin = 0.0;
+float GameStatsConfig::evadeRandMax = 0.0;
+float GameStatsConfig::evadeProbability = 0.0;
+float GameStatsConfig::expRandMin = 0.0;
+float GameStatsConfig::expRandMax = 0.0;
+float GameStatsConfig::levelDifference = 0.0;
+float GameStatsConfig::maxAgility = 0.0;
+uint8_t GameStatsConfig::creaturesLimit = 0.0;
+uint8_t GameStatsConfig::nestCreaturesLimit = 0.0;
+float GameStatsConfig::distance = 0.0;
+int GameStatsConfig::inventoryLimit = 0;

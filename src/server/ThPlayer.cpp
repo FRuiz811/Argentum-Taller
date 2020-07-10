@@ -20,6 +20,9 @@ void ThPlayer::run() {
             if (canUpdate) {
                 this->protocol->send(Decoder::encodePlayerInfo(character->getPlayerInfo()));
                 this->protocol->send(Decoder::encodeGameObjects(gameObjectsInfo));
+                if (this->character->getStateId() == CharacterStateID::Interact && this->interacting.type !=0){
+                    this->protocol->send(Decoder::encodeNPCInfo(interacting));
+                }
                 canUpdate = false;
             } else {
                 cv.wait(lock);  
@@ -49,16 +52,17 @@ bool ThPlayer::is_alive() const {
     return this->keepTalking;
 }
 
-void ThPlayer::update(std::vector<GameObjectInfo> gameObjectInfo) {
+void ThPlayer::update(std::vector<std::shared_ptr<GameObject>> gameObject) {
     canUpdate = true;
     this->gameObjectsInfo.clear();
-    std::vector<GameObjectInfo>::iterator iter;
-    iter = gameObjectInfo.begin();
-    while (iter != gameObjectInfo.end()){
-        if ((*iter).getId() == character->getId()){
-            iter = gameObjectInfo.erase(iter);
+    std::vector<std::shared_ptr<GameObject>>::iterator iter;
+    iter = gameObject.begin();
+    while (iter != gameObject.end()){
+        if ((*iter)->getId() == character->getId()){
+            this->interacting = (*iter)->getInteractInfo();
+            iter = gameObject.erase(iter);
         } else {
-            this->gameObjectsInfo.push_back(*iter);
+            this->gameObjectsInfo.push_back((*iter)->getGameObjectInfo());
             iter++;
         }
     }

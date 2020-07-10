@@ -10,7 +10,7 @@
 #include "Player.h"
 #include "NPC.h"
 #include "Camera.h"
-#include "UI.h"
+#include "ui/UI.h"
 #include "../common/InputQueue.h"
 #include "../common/DataQueue.h"
 #include "../common/Socket.h"

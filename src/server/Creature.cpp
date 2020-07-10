@@ -59,7 +59,7 @@ CreatureID Creature::getCreatureId() const {
 }
 
 uint Creature::receiveDamage(float damage, GameStatsConfig &gameStatsConfig) {
-    float defense = gameStatsConfig.getDefense(creatureId);
+    float defense = GameStatsConfig::getDefense(creatureId);
     float realDamage = damage - defense;
     if (realDamage > 0) {
         life = (life - realDamage > 0) ? life - realDamage : 0;
@@ -75,6 +75,11 @@ uint Creature::receiveDamage(float damage, GameStatsConfig &gameStatsConfig) {
 
 bool Creature::isDead() {
     return life = 0;
+}
+
+NPCInfo Creature::interact(GameObject& character, InputInfo input) {
+    NPCInfo info;
+    return info;
 }
 
 bool Creature::isReadyToRemove() {

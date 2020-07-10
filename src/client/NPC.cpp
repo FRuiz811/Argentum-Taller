@@ -81,6 +81,11 @@ void NPC::updatePlayerInfo(const GameObjectInfo &info) {
     this->posY = info.getY();
     this->direction = info.getDirection();
     setState(info.getState());
+    setArmor(info.getBodyID());
+    setHead(info.getHeadID());
+    setHelmet(info.getHelmetID());
+    setShield(info.getShieldID());
+    setWeapon(info.getWeaponID());
     setFrameHead();
 }
 

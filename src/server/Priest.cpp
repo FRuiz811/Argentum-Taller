@@ -3,9 +3,9 @@
 Priest* Priest::priest = 0;
 
 Priest::Priest() :items() {
-    this->actions.push_back(ActionsProfessionID::Buy);
     this->actions.push_back(ActionsProfessionID::Cure);
     this->actions.push_back(ActionsProfessionID::Resurrect);
+    this->actions.push_back(ActionsProfessionID::Buy);
 }
 
 

@@ -49,38 +49,8 @@ InputInfo MeditateState::selectItem(Character& character, int item) {
     InputInfo info;
     Point aux(0.0,0.0);
     info.position = aux;
-    switch (item) {
-    case 1:
-        info.input = InputID::item1;
-        break;
-    case 2:
-        info.input = InputID::item2;
-        break;
-    case 3:
-        info.input = InputID::item3;
-        break;
-    case 4:
-        info.input = InputID::item4;
-        break;
-    case 5:
-        info.input = InputID::item5;
-        break;
-    case 6:
-        info.input = InputID::item6;
-        break;
-    case 7:
-        info.input = InputID::item7;
-        break;
-    case 8:
-        info.input = InputID::item8;
-        break;
-    case 9:
-        info.input = InputID::item9;
-        break;
-    default:
-        info.input = InputID::nothing;
-        break;
-    }
+    info.input = InputID::equipItem;
+    info.aditional = item;
     return info;
 }
 
@@ -132,3 +102,18 @@ InputInfo MeditateState::dropItem(Character& character, int item) {
     return info;
 }
 
+InputInfo MeditateState::buyItem(Character& character,int item) {
+    InputInfo info;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    info.input =InputID::nothing;
+    return info;
+}
+
+InputInfo MeditateState::sellItem(Character& character,int item) {
+    InputInfo info;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    info.input =InputID::nothing;
+    return info;
+}

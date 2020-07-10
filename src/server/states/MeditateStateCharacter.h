@@ -5,6 +5,7 @@
 #include "State.h"
 
 class MeditateStateCharacter : public State {
+    int itemToChange{0};
 public:
     MeditateStateCharacter();
 

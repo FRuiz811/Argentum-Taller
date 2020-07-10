@@ -33,4 +33,12 @@ void GameObject::setPoint(Point aPoint) {
     point = aPoint;
 }
 
+NPCInfo GameObject::getInteractInfo() const {
+    return this->infoInteracting;
+}
+
+void GameObject::setInteractInfo(NPCInfo info) {
+    this->infoInteracting = info;
+}
+
 GameObject::~GameObject()= default;

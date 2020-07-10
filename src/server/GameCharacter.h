@@ -5,6 +5,7 @@
 #include "../common/StaticObject.h"
 #include "states/State.h"
 #include "../common/InputQueue.h"
+#include "../common/Identificators.h"
 #include <vector>
 #include <memory>
 
@@ -18,7 +19,7 @@ private:
     float exp;
     uint level{};
     std::unique_ptr<State> state;
-    std::string inventory;
+    std::vector<ItemsInventoryID> inventory;
     InputQueue queueInputs;
     WeaponID weapon{WeaponID::Nothing};
     ShieldID shield{ShieldID::Nothing};
@@ -26,6 +27,8 @@ private:
     BodyID body{BodyID::Nothing};
 
     std::string updateTextureHashId();
+    void consumePotion(ItemInfo potion);
+
 public:
 	GameCharacter(uint id, RaceID aRace, GameClassID aClass, std::shared_ptr<Cell> initialCell, Point initialPoint);
 
@@ -65,7 +68,13 @@ public:
 
     uint getLevel() const;
 
+    std::string getStringInventory() const;
+
     InputQueue &getQueueInputs();
+
+    virtual NPCInfo interact(GameObject& character, InputInfo input);
+
+    void equipItem(int itemToEquip);
 };
 
 #endif

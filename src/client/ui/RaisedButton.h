@@ -11,11 +11,11 @@ public:
 
     virtual void render();
 
-    void onClick();
+    virtual InputInfo onClick(int item) = 0;
 
     void setViewport(SDL_Rect viewport);
 
-    ~RaisedButton();
+    virtual ~RaisedButton();
 
 };
 

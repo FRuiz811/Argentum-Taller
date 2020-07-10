@@ -31,6 +31,8 @@ public:
     void setPlayer(Point* player);
 
     void render(Point destiny);
+
+    bool clickInMap(Point coordinates) const;
     
     Point calculateGlobalPosition(Point coordinates) const;
 

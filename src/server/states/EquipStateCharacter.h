@@ -1,0 +1,14 @@
+//
+// Created by victor on 10/7/20.
+//
+
+#ifndef ARGENTUM_TALLER_EQUIPSTATECHARACTER_H
+#define ARGENTUM_TALLER_EQUIPSTATECHARACTER_H
+
+
+class EquipStateCharacter {
+
+};
+
+
+#endif //ARGENTUM_TALLER_EQUIPSTATECHARACTER_H
