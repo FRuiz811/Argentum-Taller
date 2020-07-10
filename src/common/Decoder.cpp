@@ -408,7 +408,7 @@ std::vector<uint8_t> Decoder::encodeNPCInfo(NPCInfo info) {
     uint32_t gold = info.gold;
     length += 4;
     conversorTo8(htonl(gold),32,encodeMsg);
-    if (info.type == 0) {
+    if (info.type == 3) {
         uint8_t cantItems = info.itemsInBank.size();
         length += 1;
         encodeMsg.push_back(cantItems);
@@ -424,7 +424,7 @@ std::vector<uint8_t> Decoder::encodeNPCInfo(NPCInfo info) {
     length = htonl(length);
     auto* ptr = (uint8_t*) &length;
     for(int i = 0; i < 4; i++)
-        encodeMsg.at(i);
+        encodeMsg.at(i) = *(ptr+i);
 
     return std::move(encodeMsg);
 }

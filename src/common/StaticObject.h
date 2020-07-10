@@ -2,11 +2,14 @@
 #define ARGENTUM_TALLER_STATICOBJECT_H
 
 #include <rapidjson/document.h>
-#include "Position.h"
+#include "Point.h"
 
 class StaticObject {
 private:
-    Position position;
+    Point topLeft;
+    Point topRight;
+    Point bottomLeft;
+    Point bottomRight;
     std::string name;
 
 public:
@@ -14,7 +17,13 @@ public:
 
     ~StaticObject();
 
-    const Position &getPosition() const;
+    const Point &getTopLeft() const;
+
+    const Point &getTopRight() const;
+
+    const Point &getBottomLeft() const;
+
+    const Point &getBottomRight() const;
 
     const std::string &getName() const;
 };

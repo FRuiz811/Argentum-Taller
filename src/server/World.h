@@ -35,20 +35,24 @@ private:
     Priest* priest;
     
     void addNPCs(std::vector<ObjectLayer> objectLayers);
-    std::vector<GameObjectInfo> getUpdatedGameObjects();
-
-public:
-    explicit World(GameStatsConfig& configuration);
 
     uint getNextId();
 
-    TiledMap& getStaticMap();
+    std::vector<std::shared_ptr<GameObject>> getUpdatedGameObjects();
 
     void addCreatures();
 
     void generateCreature();
 
+    void clearFinishedPlayers();
+
+    void clearDeadCreatures();
+
     void update();
+public:
+    explicit World(GameStatsConfig& configuration);
+
+    TiledMap& getStaticMap();
 
     std::shared_ptr<GameCharacter> createCharacter(RaceID race, GameClassID gameClass);
 
@@ -57,8 +61,6 @@ public:
     void stop();
 
     void addPlayer(ThPlayer* aPlayer,uint id);
-
-    void clearFinishedPlayers();
 
     virtual ~World();
 };

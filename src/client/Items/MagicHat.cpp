@@ -9,7 +9,7 @@ MagicHat::MagicHat(const TextureManager& manager) :
 
 void MagicHat::render(int posX, int posY, int direction) {
     SDL_Rect srcHead = {this->width*direction, this->height*0, this->width, this->height};
-	SDL_Rect dstHead = {posX, posY-this->height/4+5, this->width, this->height};
+	SDL_Rect dstHead = {posX, posY-this->height/4+4, this->width, this->height};
     this->texture.render(srcHead, dstHead);
 }
 

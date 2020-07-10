@@ -8,7 +8,7 @@
 #define GAMELOOPTIME 1000000/30.0
 
 World::World(GameStatsConfig& configuration) : gameStatsConfig(configuration), 
-    current_id(0), keepTalking(true) {
+    current_id(1), keepTalking(true) {
     rapidjson::Document jsonMap = JsonReader::read("json/finishedMap.json");
     this->banker = Banker::getInstance();
     this->merchant = Merchant::getInstance();
@@ -16,10 +16,7 @@ World::World(GameStatsConfig& configuration) : gameStatsConfig(configuration),
     this->priest = Priest::getInstance();
     this->priest->init(configuration.getItems());
     this->map = TiledMap(jsonMap);
-    this->board = Board(map.getObjectLayers(),
-                  map.getWidth() * map.getTileWidth(),
-                  map.getHeight() * map.getTileHeight(),
-                  gameStatsConfig.getNestCreatureLimit());
+    this->board = Board(map, GameStatsConfig::getNestCreatureLimit());
     addNPCs(map.getObjectLayers());
     addCreatures();
 }
@@ -33,31 +30,30 @@ uint World::getNextId() {
 std::shared_ptr<GameCharacter> World::createCharacter(RaceID race, GameClassID gameClass) {
     std::unique_lock<std::mutex> lock(m);
     uint id = getNextId();
-    std::shared_ptr<GameCharacter> aCharacter(new GameCharacter(id, race, gameClass, board.getInitialPoint()));
-    board.addGameObjectPosition(id, aCharacter->getBoardPosition());
+    std::shared_ptr<Cell> initialCell = board.getInitialCell();
+    initialCell->occupied(id);
+    std::shared_ptr<GameCharacter> aCharacter(new GameCharacter(id, race, gameClass, initialCell, board.getPointFromCell(initialCell)));
     gameObjectsContainer.addGameObject(aCharacter, id);
     return aCharacter;
 }
 
-void World::run() {
-    Chrono chrono;
-    double initLoop, endLoop, sleep;
-    while (keepTalking) {
-        initLoop = chrono.lap();
-        update();
-        for (auto &aPlayer : players) {
-            aPlayer.second->update(getUpdatedGameObjects());
+void World::addNPCs(std::vector<ObjectLayer> objectLayers) {
+    for (auto &anObjectLayer : objectLayers) {
+        if (anObjectLayer.getName() == "NPC") {
+            std::shared_ptr<Cell> aCell;
+            for (StaticObject &aNPCObject : anObjectLayer.getObjects()) {
+                uint id = getNextId();
+                aCell = board.getCellFromPoint(aNPCObject.getTopLeft());
+                aCell->occupied(id);
+                std::shared_ptr<NPCServer> aNPC(new NPCServer(id, aNPCObject.getName(), board.getPointFromCell(aCell), aCell));
+                gameObjectsContainer.addGameObject(aNPC, id);
+            }
         }
-        clearFinishedPlayers();
-        endLoop = chrono.lap();
-        sleep = GAMELOOPTIME - (endLoop - initLoop);
-        if (sleep > 0)
-            usleep(sleep);
     }
 }
 
 void World::addCreatures() {
-    for (int i = 0; i < gameStatsConfig.getCreaturesLimit(); ++i) {
+    for (int i = 0; i < GameStatsConfig::getCreaturesLimit(); ++i) {
         generateCreature();
     }
 }
@@ -65,35 +61,44 @@ void World::addCreatures() {
 void World::generateCreature() {
     uint id = getNextId();
     uint8_t randomId = Random::get(1, 4);
-    std::cout << std::to_string(randomId) << std::endl;
-    NestPoint& aNestPoint = board.getAvailableNestPoint();
-    Point initialPoint = board.getInitialPointInNest(aNestPoint);
-    if (initialPoint.x == 0.0 && initialPoint.y == 0.0) {
-        std::cout << "cannot create creature" << std::endl;
-    } else {
-        aNestPoint.addCreature(id);
-        std::shared_ptr<Creature> aCreature(new Creature(id, CreatureID(randomId), aNestPoint.getNestId(), initialPoint));
-        board.addGameObjectPosition(id, aCreature->getBoardPosition());
+    Nest& aNest = board.getAvailableNest();
+    std::shared_ptr<Cell> initialCell = board.getInitialCellInNest(aNest);
+    if (initialCell != nullptr) {
+        initialCell->occupied(id);
+        aNest.addCreature(id);
+        std::shared_ptr<Creature> aCreature(new Creature(id, CreatureID(randomId), initialCell, board.getPointFromCell(initialCell)));
         gameObjectsContainer.addGameObject(aCreature, id);
+    } else {
+        std::cout << "Cannot create creature" << std::endl;
     }
 }
 
+
+void World::run() {
+    Chrono chrono;
+    double initLoop, endLoop, sleep;
+    int amountCreaturesDiff = 0;
+    while (keepTalking) {
+        initLoop = chrono.lap();
+        amountCreaturesDiff = GameStatsConfig::getCreaturesLimit() - board.getAmountCreatures();
+        for (size_t i = 0; i < amountCreaturesDiff; ++i) {
+            generateCreature();
+        }
+        update();
+        for (auto &aPlayer : players) {
+            aPlayer.second->update(getUpdatedGameObjects());
+        }
+        clearFinishedPlayers();
+        clearDeadCreatures();
+        endLoop = chrono.lap();
+        sleep = GAMELOOPTIME - (endLoop - initLoop);
+        if (sleep > 0)
+            usleep(sleep);
+    }
+}
 
 TiledMap& World::getStaticMap() {
     return this->map;
-}
-
-void World::addNPCs(std::vector<ObjectLayer> objectLayers) {
-    for (auto &anObjectLayer : objectLayers) {
-        if (anObjectLayer.getName() == "NPC") {
-            for (StaticObject &aNPCObject : anObjectLayer.getObjects()) {
-                uint id = getNextId();
-                std::shared_ptr<NPCServer> aNPC(new NPCServer(id, aNPCObject.getPosition().getPoint(), aNPCObject.getName()));
-                board.addGameObjectPosition(id, aNPC->getBoardPosition());
-                gameObjectsContainer.addGameObject(aNPC, id);
-            }
-        }
-    }
 }
 
 void World::stop() {
@@ -106,11 +111,11 @@ void World::stop() {
 }
 
 void World::update() {
-    gameObjectsContainer.update(board, gameStatsConfig);
+    gameObjectsContainer.update(board);
 }
 
-std::vector<GameObjectInfo> World::getUpdatedGameObjects() {
-    return gameObjectsContainer.getUpdatedGameObjectsInfo();
+std::vector<std::shared_ptr<GameObject>> World::getUpdatedGameObjects() {
+    return gameObjectsContainer.getUpdatedGameObjects();
 }
 
 void World::addPlayer(ThPlayer *aPlayer,uint id) {
@@ -123,14 +128,17 @@ void World::clearFinishedPlayers() {
     while (iter != this->players.end()) {
         if (!(*iter).second->is_alive()) {
             (*iter).second->join();
-            gameObjectsContainer.deleteGameObject((*iter).first);
-            board.deleteGameObjectPosition((*iter).first);
+            gameObjectsContainer.deleteGameObject((*iter).first, board);
             delete (*iter).second;
             iter = this->players.erase(iter);
         } else {
             iter++;
         }
     }
+}
+
+void World::clearDeadCreatures() {
+    gameObjectsContainer.removeDeadCreatures(board);
 }
 
 World::~World() = default;

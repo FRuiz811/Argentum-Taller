@@ -2,7 +2,7 @@
 
 Banker* Banker::banker = 0;
 
-Banker::Banker() :accountsItems(), accountsGold() {
+Banker::Banker() :accountsItems(), accountsGold(2500) {
     this->actions.push_back(ActionsProfessionID::DepositGold);
     this->actions.push_back(ActionsProfessionID::DepositItem);
     this->actions.push_back(ActionsProfessionID::RetireItem);
@@ -37,6 +37,7 @@ void Banker::createNewAccount(uint accountHolder) {
     uint gold = 0;
     accountsGold.insert({accountHolder,gold});
     std::vector<ItemsInventoryID> emptyAccount;
+    emptyAccount.push_back(ItemsInventoryID::HealthPotion);
     accountsItems.insert({accountHolder,emptyAccount});
 }
 
@@ -61,7 +62,7 @@ ItemsInventoryID Banker::retireItem(uint accountHolder, uint item) {
 
 NPCInfo Banker::getInfo(uint id) {
     NPCInfo info;
-    info.type = 0;
+    info.type = 3;
     info.actions = actions;
     info.gold = checkBalance(id);
     info.itemsInBank = getMyItems(id);

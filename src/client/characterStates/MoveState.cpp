@@ -108,3 +108,35 @@ InputInfo MoveState::dropItem(Character& character, int item) {
     info.aditional = item;
     return info;
 }
+
+InputInfo MoveState::buyItem(Character& character, int item) {
+    InputInfo info;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    info.input =InputID::nothing;
+    return info;
+}
+
+InputInfo MoveState::sellItem(Character& character, int item) {
+    InputInfo info;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    info.input =InputID::nothing;
+    return info;
+}
+
+InputInfo MoveState::retire(Character& character,int item, bool isItem) {
+    InputInfo info;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    info.input = InputID::nothing;
+    return info;
+}
+
+InputInfo MoveState::deposit(Character& character,int item, bool isItem) {
+    InputInfo info;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    info.input = InputID::nothing;
+    return info;
+}

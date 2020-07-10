@@ -50,18 +50,19 @@ Player::Player(const TextureManager& manager, const PlayerInfo& playerInfo) :
 
 void Player::render(Camera& camera) {
  	this->body->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y),int(this->direction));
+  if (this->head != nullptr)
+    this->head->render(int(posX+4-camera.getCameraPosition().x), int((posY-this->body->getHeight()/2)-camera.getCameraPosition().y), this->frameHead);
   if (this->weapon != nullptr)
     this->weapon->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y),int(this->direction));
   if (this->shield != nullptr)
 	  this->shield->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y),int(this->direction));
-  if (this->head != nullptr)
-    this->head->render(int(posX+4-camera.getCameraPosition().x), int((posY-this->body->getHeight()/2)-camera.getCameraPosition().y), this->frameHead);
   if (this->helmet != nullptr)
     this->helmet->render(int(posX+4-camera.getCameraPosition().x), int((posY-this->body->getHeight()/2)-camera.getCameraPosition().y), this->frameHead);
 }
 
 void Player::update(double dt) {
-  if(this->state != nullptr && (this->state->getState() == CharacterStateID::Move || this->state->getState() == CharacterStateID::Dead)) {
+  if(this->state != nullptr &&
+  this->state->getState() == CharacterStateID::Move) {
     Point aux(posX, posY);
     this->center = aux;
     this->body->update(dt);
@@ -97,6 +98,9 @@ void Player::updatePlayerInfo(PlayerInfo info) {
   setState(info.getState());
   setArmor(info.getBodyID());
   setHead(info.getHeadID());
+  setHelmet(info.getHelmetID());
+  setShield(info.getShieldID());
+  setWeapon(info.getWeaponID());
   setFrameHead();
 }
 
@@ -107,6 +111,36 @@ InputInfo Player::dropItem(int itemNumber) {
 
 InputInfo Player::selectItem(int itemNumber) {
   InputInfo info = this->state->selectItem(*this, itemNumber);
+  return info;
+}
+
+InputInfo Player::resurrect() {
+  InputInfo info = this->state->resurrect(*this);
+  return info;
+}
+
+InputInfo Player::cure() {
+  InputInfo info = this->state->cure(*this);
+  return info;
+}
+
+InputInfo Player::buy(int itemNumber) {
+  InputInfo info = this->state->buyItem(*this,itemNumber);
+  return info;
+}
+
+InputInfo Player::deposit(int information, bool isItem) {
+  InputInfo info = this->state->deposit(*this,information,isItem);
+  return info;
+}
+
+InputInfo Player::retire(int information, bool isItem) {
+  InputInfo info = this->state->retire(*this,information,isItem);
+  return info;
+}
+
+InputInfo Player::sell(int itemNumber) {
+  InputInfo info = this->state->sellItem(*this,itemNumber);
   return info;
 }
 
@@ -128,12 +162,6 @@ InputInfo Player::handleEvent(SDL_Event& event, Camera& camera) {
                 break;
             case SDLK_r:
                 input = this->state->resurrect(*this);
-                break;
-            case SDLK_g:
-                break;
-            case SDLK_b:
-                break;
-            case SDLK_v:
                 break;
             case SDLK_t:
                 input = this->state->takeItem(*this);
@@ -190,8 +218,10 @@ InputInfo Player::handleEvent(SDL_Event& event, Camera& camera) {
 	} else if (event.type == SDL_MOUSEBUTTONDOWN) {
           int x,y;
           SDL_GetMouseState(&x, &y);
-          Point coord = camera.calculateGlobalPosition(Point(x,y));
-          input = this->state->selectTarget(*this, coord);
+          if (camera.clickInMap(Point(x,y))){
+            Point coord = camera.calculateGlobalPosition(Point(x,y));
+            input = this->state->selectTarget(*this, coord);
+          }
   }
     return input;
 }

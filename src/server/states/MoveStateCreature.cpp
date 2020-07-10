@@ -1,3 +1,4 @@
+#include <iostream>
 #include "MoveStateCreature.h"
 #include "StillStateCreature.h"
 #include "../Creature.h"
@@ -22,25 +23,26 @@ MoveStateCreature::MoveStateCreature(InputInfo info) : State(info){
     stateId = CharacterStateID::Move;
 }
 
-void MoveStateCreature::performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects,
-                                    Board &board, GameStatsConfig &gameStatsConfig) {
+void MoveStateCreature::performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) {
     std::shared_ptr<Creature> aCreature = std::dynamic_pointer_cast<Creature>(gameObjects.at(id));
-    BoardPosition& boardPosition = aCreature->getBoardPosition();
     if (!movement.hasStart()) {
-        movement.start(boardPosition.getPosition(), direction, gameStatsConfig, aCreature->getCreatureId());
+        std::shared_ptr<Cell> newCell;
         aCreature->setDirection(direction);
-    } else {
-        Position newPosition = movement.doStep();
-        if (!board.checkCreaturesCollisions(boardPosition, newPosition, aCreature->getId())) {
-            boardPosition.setPosition(newPosition);
+        if (board.creatureCanMove(aCreature->getActualCell(), direction)) {
+            newCell = board.getNextCell(aCreature->getActualCell(), direction);
+            movement.start(board.getPointFromCell(aCreature->getActualCell()), direction, aCreature->getCreatureId());
+            aCreature->getActualCell()->free();
+            newCell->occupied(id);
+            aCreature->setCell(newCell);
         } else {
             finalized = true;
         }
+    } else {
+        aCreature->setPoint(movement.doStep());
         if (movement.isOver()) {
             finalized = true;
         }
     }
-
 }
 
 void MoveStateCreature::setNextState(InputInfo info) {

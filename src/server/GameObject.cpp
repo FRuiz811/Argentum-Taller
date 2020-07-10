@@ -1,22 +1,9 @@
 #include "GameObject.h"
 
-GameObject::GameObject(GameObject&& other)  noexcept {
-    std::swap(boardPosition, other.boardPosition);
-}
-
-GameObject &GameObject::operator=(GameObject &&other) noexcept{
-    if (&other == this) {
-        return *this;
-    }
-    std::swap(boardPosition, other.boardPosition);
-    return *this;
-}
-
-GameObject::GameObject(uint id, Direction direction):
-    id(id), direction(direction) {}
+#include <utility>
 
 GameObjectInfo GameObject::getGameObjectInfo() {
-    return GameObjectInfo(id, boardPosition.getPosition().getPoint(), textureHashId, direction,getStateId(),false);
+    return GameObjectInfo(id, point, textureHashId, direction,getStateId(),false);
 }
 
 uint GameObject::getId() const {
@@ -31,8 +18,27 @@ void GameObject::setTextureHashId(const std::string &textureHashId) {
     GameObject::textureHashId = textureHashId;
 }
 
-BoardPosition& GameObject::getBoardPosition() {
-    return boardPosition;
+GameObject::GameObject(uint id, Point initialPoint, std::shared_ptr<Cell> initialCell, Direction aDirection) :
+    id(id), point(initialPoint), cell(initialCell), direction(aDirection) {}
+
+std::shared_ptr<Cell> &GameObject::getActualCell() {
+    return cell;
+}
+
+void GameObject::setCell(std::shared_ptr<Cell> aCell) {
+    cell = std::move(aCell);
+}
+
+void GameObject::setPoint(Point aPoint) {
+    point = aPoint;
+}
+
+NPCInfo GameObject::getInteractInfo() const {
+    return this->infoInteracting;
+}
+
+void GameObject::setInteractInfo(NPCInfo info) {
+    this->infoInteracting = info;
 }
 
 GameObject::~GameObject()= default;

@@ -1,44 +1,39 @@
 #include <iostream>
+#include <utility>
 #include "Creature.h"
 #include "states/StillStateCreature.h"
 #include "states/PursuitStateCreature.h"
 #include "../common/Random.h"
-#include "states/DeadStateCreature.h"
 
-void Creature::update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board,
-                      GameStatsConfig &gameStatsConfig) {
+void Creature::update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) {
     if (state->isOver()) {
         state->setNextState(generateRandomInputInfo());
         if (state->hasNextState()) {
             state = state->getNextState();
         }
     }
-    state->performTask(id, gameObjects, board, gameStatsConfig);
+    state->performTask(id, gameObjects, board);
 }
 
-Creature::Creature(uint id, CreatureID creatureId, uint nestId, Point aPoint) :
-GameObject(id), creatureId(creatureId) {
-    Position aPosition;
+Creature::Creature(uint id, CreatureID creatureId, std::shared_ptr<Cell> initialCell, Point initialPoint) :
+        GameObject(id, initialPoint, std::move(initialCell)), creatureId(creatureId) {
+
     switch (creatureId) {
         case CreatureID::Goblin:
-            aPosition = Position(aPoint, 24, 30);
             this->textureHashId = "ht00|h00|b11|s00|w00";
             break;
         case CreatureID::Skeleton:
-            aPosition = Position(aPoint, 25, 52);
             this->textureHashId = "ht00|h00|b12|s00|w00";
             break;
         case CreatureID::Spider:
-            aPosition = Position(aPoint, 53, 35);
             this->textureHashId = "ht00|h00|b13|s00|w00";
             break;
         case CreatureID::Zombie:
-            aPosition = Position(aPoint, 25, 61);
             this->textureHashId = "ht00|h06|b14|s00|w00";
             break;
     }
-    boardPosition = BoardPosition(aPosition, nestId, false);
     this->state = std::unique_ptr<State>(new StillStateCreature());
+    life = 50;
 }
 
 void Creature::notify(uint pursuitId) {
@@ -62,8 +57,8 @@ CreatureID Creature::getCreatureId() const {
     return creatureId;
 }
 
-uint Creature::receiveDamage(float damage, GameStatsConfig &gameStatsConfig) {
-    float defense = gameStatsConfig.getDefense(creatureId);
+uint Creature::receiveDamage(float damage) {
+    float defense = GameStatsConfig::getDefense(creatureId);
     float realDamage = damage - defense;
     if (realDamage > 0) {
         life = (life - realDamage > 0) ? life - realDamage : 0;
@@ -72,13 +67,27 @@ uint Creature::receiveDamage(float damage, GameStatsConfig &gameStatsConfig) {
     std::cout << "Enemy defense: " << defense << std::endl;
     std::cout << "Character real damage: " << realDamage << std::endl;
     if (isDead()) {
-        state = std::unique_ptr<State>(new DeadStateCreature());
+        //Hacer drop aca.
     }
     return life;
 }
 
 bool Creature::isDead() {
     return life = 0;
+}
+
+NPCInfo Creature::interact(GameObject& character, InputInfo input) {
+    NPCInfo info;
+    return info;
+}
+
+bool Creature::isReadyToRemove() {
+    return isDead();
+}
+
+void Creature::remove(Board &board) {
+    board.removeCreatureFromNest(cell);
+    cell->free();
 }
 
 Creature::~Creature() = default;

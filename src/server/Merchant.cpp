@@ -3,8 +3,8 @@
 Merchant* Merchant::merchant = 0;
 
 Merchant::Merchant() :items() {
-    this->actions.push_back(ActionsProfessionID::Sell);
     this->actions.push_back(ActionsProfessionID::Buy);
+    this->actions.push_back(ActionsProfessionID::Sell);
 }
 
 Merchant* Merchant::getInstance() {

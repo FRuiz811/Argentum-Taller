@@ -15,13 +15,17 @@ public:
     void addGameObject(const std::shared_ptr<GameObject>& aGameObject, uint id);
 
     std::vector<GameObjectInfo> getUpdatedGameObjectsInfo();
+    
+    std::vector<std::shared_ptr<GameObject>> getUpdatedGameObjects();
 
-    void update(Board& board, GameStatsConfig& gameStatsConfig);
+    void update(Board& board);
 
     std::shared_ptr<GameObject> getGameObject(uint id);
 
     virtual ~GameObjectsContainer();
 
-    void deleteGameObject(const uint i);
+    void deleteGameObject(const uint id, Board &board);
+
+    void removeDeadCreatures(Board& board);
 };
 #endif //ARGENTUM_TALLER_GAMEOBJECTSCONTAINER_H

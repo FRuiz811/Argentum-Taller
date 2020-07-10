@@ -67,6 +67,7 @@ void Window::handleEvent(SDL_Event& event) {
 				break;
 			//Repaint on exposure
 			case SDL_WINDOWEVENT_EXPOSED:
+				this->isMinimized = false;
 				render();
 				break;
 			//Window minimized
@@ -76,10 +77,12 @@ void Window::handleEvent(SDL_Event& event) {
 			//Window maxized
 			case SDL_WINDOWEVENT_MAXIMIZED:
 			 	this->isMinimized = false;
-      			 break;
+				render();
+      			break;
 			//Window restored
 			case SDL_WINDOWEVENT_RESTORED:
 			 	this->isMinimized = false;
+				render();
 		        break;
 		}
 	}

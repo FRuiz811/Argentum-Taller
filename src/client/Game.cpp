@@ -116,7 +116,7 @@ void Game::update() {
     PlayerInfo playerInfo;
     std::vector<GameObjectInfo> objects;
     std::unordered_map<uint,NPC> newNpcs;
-    //NPCMessage items;
+    NPCInfo items;
     while (!this->dataQueue.empty()){
         msg = this->dataQueue.pop();
         if (msg.getType() == PLAYERINFOMSG) {
@@ -137,14 +137,13 @@ void Game::update() {
 		    }
             this->npcs.swap(newNpcs);
         } else if (msg.getType() == INTERACTMSG) {
-            //items = Decoder::decodeInteractNPC(msg);
-            //this->ui->setNPCInfo(items);
+            items = Decoder::decodeNPCInfo(msg);
+            this->ui->setNPCInfo(items);
         }
     }
     this->player->update(GAMELOOPTIME);
     for (auto& npc: this->npcs)
         npc.second.update(GAMELOOPTIME);
-    //this->ui->update();
 }
 
 void Game::render() {

@@ -1,15 +1,13 @@
 #ifndef PERSONAJE_H
 #define PERSONAJE_H
 
-
 #include "../common/PlayerInfo.h"
 #include "../common/StaticObject.h"
 #include "states/State.h"
 #include "../common/InputQueue.h"
+#include "../common/Identificators.h"
 #include <vector>
-#include <unordered_map>
 #include <memory>
-#include "GameStats.h"
 
 class GameCharacter : public GameObject{
 private:
@@ -21,7 +19,7 @@ private:
     float exp;
     uint level{};
     std::unique_ptr<State> state;
-    std::string inventory;
+    std::vector<ItemsInventoryID> inventory;
     InputQueue queueInputs;
     WeaponID weapon{WeaponID::Nothing};
     ShieldID shield{ShieldID::Nothing};
@@ -29,8 +27,10 @@ private:
     BodyID body{BodyID::Nothing};
 
     std::string updateTextureHashId();
+    void consumePotion(ItemInfo potion);
+
 public:
-	GameCharacter(uint id, RaceID aRace, GameClassID aClass, Point& point);
+	GameCharacter(uint id, RaceID aRace, GameClassID aClass, std::shared_ptr<Cell> initialCell, Point initialPoint);
 
 	PlayerInfo getPlayerInfo();
 
@@ -38,17 +38,21 @@ public:
 
 	InputInfo getNextInputInfo();
 
-	WeaponID getWeapon();
+    bool isReadyToRemove() override;
 
-	void update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board, GameStatsConfig& gameStatsConfig) override;
+    WeaponID getWeapon();
 
-    uint receiveDamage(float damage, GameStatsConfig& gameStatsConfig) override;
+	void update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) override;
+
+    uint receiveDamage(float damage) override;
 
     bool isDead();
 
     ~GameCharacter();
 
     RaceID getRace() const;
+
+    void remove(Board &board) override;
 
     GameClassID getGameClass() const;
 
@@ -64,7 +68,13 @@ public:
 
     uint getLevel() const;
 
+    std::string getStringInventory() const;
+
     InputQueue &getQueueInputs();
+
+    virtual NPCInfo interact(GameObject& character, InputInfo input);
+
+    void equipItem(int itemToEquip);
 };
 
 #endif

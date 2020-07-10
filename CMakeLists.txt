@@ -34,5 +34,4 @@ add_executable(server ${SERVER_SOURCES} ${COMMON_SOURCES})
 
 target_link_libraries(client -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer pthread)
 target_link_libraries(client1 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer pthread)
-
 target_link_libraries(server pthread)

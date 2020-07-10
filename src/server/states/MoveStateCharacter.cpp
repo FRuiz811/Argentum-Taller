@@ -1,10 +1,11 @@
 #include <iostream>
 #include "MoveStateCharacter.h"
-#include "../Collider.h"
 #include "../GameCharacter.h"
 #include "StillStateCharacter.h"
 #include "../Creature.h"
 #include "AttackStateCharacter.h"
+#include "EquipStateCharacter.h"
+#include "InteractStateCharacter.h"
 
 MoveStateCharacter::~MoveStateCharacter() = default;
 
@@ -28,33 +29,33 @@ MoveStateCharacter::MoveStateCharacter(const InputInfo &info) : State(info) {
 
 void MoveStateCharacter::performTask(uint id,
                                      std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects,
-                                     Board &board, GameStatsConfig &gameStatsConfig) {
+                                     Board &board) {
 
     std::shared_ptr<GameCharacter> aCharacter = std::dynamic_pointer_cast<GameCharacter>(gameObjects.at(id));
-    BoardPosition& boardPosition = aCharacter->getBoardPosition();
     if (!movement.hasStart()) {
-        movement.start(boardPosition.getPosition(), direction, gameStatsConfig, aCharacter->getRace());
         aCharacter->setDirection(direction);
-    } else {
-        Position newPosition = movement.doStep();
-        if (!board.checkCollisions(boardPosition, newPosition, aCharacter->getId())) {
-            boardPosition.setPosition(newPosition);
-            boardPosition.setInsideCity(board.isInsideACity(newPosition));
-            uint nestId = board.isInsideANest(newPosition);
-            if (nestId != 0 && nestId != boardPosition.getNestId()) {
+        std::shared_ptr<Cell> newCell;
+        if (board.characterCanMove(aCharacter->getActualCell(), direction)) {
+            newCell = board.getNextCell(aCharacter->getActualCell(), direction);
+            movement.start(board.getPointFromCell(aCharacter->getActualCell()), direction, aCharacter->getRace());
+            aCharacter->getActualCell()->free();
+            newCell->occupied(id);
+            aCharacter->setCell(newCell);
+            uint nestId = newCell->getNestId();
+            if (nestId != 0 && !aCharacter->isDead()) {
                 std::shared_ptr<Creature> aCreature;
-                for(auto &creatureId : board.getCreaturesInNestPoint(nestId)) {
+                for(auto &creatureId : board.getCreaturesInNest(nestId)) {
                     aCreature = std::dynamic_pointer_cast<Creature>(gameObjects.at(creatureId));
                     aCreature->notify(id);
                 }
             }
-            boardPosition.setNestId(nestId);
         } else {
-            isColliding = true;
             finalized = true;
         }
+    } else {
+        aCharacter->setPoint(movement.doStep());
         if (movement.isOver()) {
-            finalized =true;
+            finalized = true;
         }
     }
 
@@ -67,17 +68,15 @@ void MoveStateCharacter::setNextState(InputInfo info) {
     } else if(info.input == InputID::stopMove) {
         nextState = std::unique_ptr<State>(new StillStateCharacter(info));
     } else if (info.input == InputID::selectTarget) {
-        this->nextState = std::unique_ptr<State>(new AttackStateCharacter(info));
+        this->nextState = std::unique_ptr<State>(new InteractStateCharacter(info));
+    } else if (info.input == InputID::equipItem) {
+        nextState = std::unique_ptr<State>(new EquipStateCharacter(info));
     }
 }
 
 void MoveStateCharacter::resetState() {
-    if (isColliding) {
-        nextState = std::unique_ptr<State>(new StillStateCharacter(inputInfo));
-    } else {
         movement.reset();
         finalized = false;
-    }
 }
 
 bool MoveStateCharacter::isOnPursuit(uint pursuitId) {

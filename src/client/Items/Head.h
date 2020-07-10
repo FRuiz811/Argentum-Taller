@@ -9,7 +9,7 @@ class Head: public Item {
     HeadID id{HeadID::Nothing};
 public:
     Head(const Texture& texture, const int width, const int height,HeadID id = HeadID::Nothing) : 
-        Item(texture, width, height){}
+        Item(texture, width, height), id(id){}
     
     virtual void render(int posX, int posY, int direction) = 0;
 

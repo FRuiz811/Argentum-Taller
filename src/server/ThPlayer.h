@@ -22,6 +22,7 @@ private:
     std::condition_variable cv;
     std::mutex m;
     std::vector<GameObjectInfo> gameObjectsInfo;
+    NPCInfo interacting;
 public:
     ThPlayer(std::shared_ptr<CommunicationProtocol> protocol, std::shared_ptr<GameCharacter> aCharacter);
 
@@ -31,7 +32,7 @@ public:
 
     bool is_alive() const;
 
-    void update(std::vector<GameObjectInfo> gameObjectInfo);
+    void update(std::vector<std::shared_ptr<GameObject>> gameObject);
 
     virtual ~ThPlayer();
 };

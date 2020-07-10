@@ -1,181 +1,241 @@
 #include "Board.h"
-#include "Collider.h"
+
+#include <memory>
+#include <cstdlib>
 
 Board::~Board() = default;
 
 Board::Board() = default;
 
-Board::Board(std::vector<ObjectLayer> objectLayers, uint width,
-        uint height, uint8_t nestCreaturesLimit) :
-        width(width), height(height), initialPoint(1125, 550) {
-
-    uint nestPointIdCounter = 1;
-    for (auto&& anObjectLayer : objectLayers) {
+Board::Board(TiledMap &map, uint8_t nestCreaturesLimit) : initialPoint(1125, 550) {
+    cols = map.getWidth();
+    rows = map.getHeight();
+    height = map.getHeight() * map.getTileHeight();
+    width = map.getWidth() * map.getTileWidth();
+    uint nestIdCounter = 1;
+    for (size_t i = 0; i < rows; ++i) {
+        std::vector<std::shared_ptr<Cell>> cellsRows;
+        for (size_t j = 0; j < cols; ++j) {
+            cellsRows.push_back(std::make_shared<Cell>(i, j));
+        }
+        cells.push_back(cellsRows);
+    }
+    for (auto&& anObjectLayer : map.getObjectLayers()) {
         if (anObjectLayer.getName() == "cities") {
             for (StaticObject& aCity : anObjectLayer.getObjects()) {
-                cities.push_back(aCity);
+                addCity(aCity);
             }
         } else if (anObjectLayer.getName() == "collisionObjects") {
-            for (StaticObject& aCollisionObject : anObjectLayer.getObjects()) {
-                collisionObjects.push_back(aCollisionObject);
+            for (StaticObject &aCollisionObject : anObjectLayer.getObjects()) {
+                addCollisonObject(aCollisionObject);
             }
         } else if (anObjectLayer.getName() == "nestPoints") {
-            std::vector<NestPoint> nestPoints;
-            for (StaticObject& aCollisionObject : anObjectLayer.getObjects()) {
-                nestPoints.emplace_back(aCollisionObject.getPosition().getPoint(), width, height, nestCreaturesLimit, nestPointIdCounter++);
+            std::vector<Nest> nests;
+            std::shared_ptr<Cell> aCell;
+            uint nestId;
+            for (StaticObject& aNest : anObjectLayer.getObjects()) {
+                nestId = nestIdCounter++;
+                aCell = getCellFromPoint(aNest.getTopLeft());
+                nests.emplace_back(nestCreaturesLimit, nestId, setCellsInNest(aCell, nestId));
             }
-            nestPointContainer = NestPointContainer(nestPoints);
+            nestContainer = NestContainer(nests);
         }
     }
 }
 
-bool Board::checkCollisions(BoardPosition& aBoardPosition, Position &newPosition, uint id) {
-    bool isColliding = false;
-    if (newPosition.getBottom() > height || newPosition.getTop() < 0 || newPosition.getLeft() < 0 || newPosition.getRight() > width) {
-        isColliding = true;
-    }
-    for (auto& gameObject : gameObjectPositions) {
-        if (gameObject.first == id) {
-            continue;
+Nest& Board::getAvailableNest() {
+    return nestContainer.getNextNestAvailable();
+}
+
+std::vector<uint> Board::getCreaturesInNest(uint nestId) {
+    Nest& nest = nestContainer.getNest(nestId);
+    return nest.getCreatures();
+}
+
+void Board::addCity(StaticObject &city) {
+    std::tuple<int, int> topLeft = convertPoint(city.getTopLeft());
+    std::tuple<int, int> bottomRight = convertPoint(city.getBottomRight());
+    for (int i = std::get<0>(topLeft); i < std::get<0>(bottomRight); ++i) {
+        for (int j = std::get<1>(topLeft); j < std::get<1>(bottomRight); ++j) {
+            cells[i][j]->setCity(true);
         }
-        if (Collider::checkCollision(newPosition, gameObject.second.getPosition())) {
-            isColliding = true;
+    }
+}
+
+std::tuple<int, int> Board::convertPoint(const Point &point) {
+    int x = point.x / (width / cols);
+    int y  = point.y / (height / rows);
+    return std::make_tuple(x, y);
+}
+
+void Board::addCollisonObject(StaticObject &collisionObject) {
+    std::tuple<int, int> topLeft = convertPoint(collisionObject.getTopLeft());
+    std::tuple<int, int> bottomRight = convertPoint(collisionObject.getBottomRight());
+    for (int i = std::get<0>(topLeft); i < std::get<0>(bottomRight); ++i) {
+        for (int j = std::get<1>(topLeft); j < std::get<1>(bottomRight); ++j) {
+            cells[i][j]->setEmpty(false);
+        }
+    }
+}
+
+std::shared_ptr<Cell> Board::getCellFromPoint(const Point &aPoint) {
+    std::tuple<uint, uint> position = convertPoint(aPoint);
+    return cells[std::get<0>(position)][std::get<1>(position)];
+}
+
+std::shared_ptr<Cell> Board::getCell(uint x, uint y) {
+    return cells[x][y];
+}
+
+std::shared_ptr<Cell> Board::getInitialCell() {
+    std::shared_ptr<Cell> cell = getCellFromPoint(initialPoint);
+    if (!cell->isEmpty()) {
+        for (auto &adjacent : getAdjacents(convertPoint(initialPoint), 4)) {
+            if (adjacent.second->isEmpty()) {
+                cell = adjacent.second;
+            }
+        }
+    }
+    return cell;
+}
+
+std::vector<std::pair<uint8_t, std::shared_ptr<Cell>>> Board::getAdjacents(std::tuple<uint, uint> position, uint8_t distance) {
+    std::vector<std::pair<uint8_t, std::shared_ptr<Cell>>> adjacents;
+    int x = std::get<0>(position);
+    int y = std::get<1>(position);
+    std::shared_ptr<Cell> originCell = getCell(x, y);
+    uint leftLimitX = x - distance >= 0 ? x - distance : 0;
+    uint rightLimitX = x + distance < cols ? x + distance : cols - 1;
+    uint leftLimitY = y - distance >= 0 ? y - distance : 0;
+    uint rightLimitY = y + distance < rows ? y + distance : rows - 1;
+    std::shared_ptr<Cell> aCell;
+    for (size_t i = leftLimitX; i <= rightLimitX; ++i) {
+        for (size_t j = leftLimitY; j <= rightLimitY; ++j) {
+            if (i == x && j == y) {
+                continue;
+            }
+            aCell = getCell(i, j);
+            uint8_t aDistance = getDistance(originCell, aCell);
+            if (aDistance <= distance) {
+                adjacents.emplace_back(aDistance, aCell);
+            }
+        }
+    }
+    std::sort_heap(adjacents.begin(), adjacents.end());
+    return adjacents;
+}
+
+uint8_t Board::getDistance(const std::shared_ptr<Cell>& firstCell, const std::shared_ptr<Cell>& secondCell) {
+    return std::abs(int(firstCell->getX() - secondCell->getX())) + std::abs(int(firstCell->getY() - secondCell->getY()));
+}
+
+Point Board::getPointFromCell(std::shared_ptr<Cell> aCell) {
+    return Point(aCell->getX() * (width/cols), aCell->getY() * (height/rows));
+}
+
+std::shared_ptr<Cell> Board::getInitialCellInNest(Nest &nest) {
+    return nest.getFreeCell();
+}
+
+std::vector<std::shared_ptr<Cell>> Board::setCellsInNest(const std::shared_ptr<Cell>& aNestCell, uint nestId) {
+    std::vector<std::shared_ptr<Cell>> cellInsideNest;
+    uint distance = 15;
+    uint leftLimitX = int(aNestCell->getX() - distance) >= 0 ? aNestCell->getX() - distance : 0;
+    uint rightLimitX = int(aNestCell->getX() + distance) < cols ? aNestCell->getX() + distance : cols - 1;
+    uint leftLimitY = int(aNestCell->getY() - distance) >= 0 ? aNestCell->getY() - distance : 0;
+    uint rightLimitY = int(aNestCell->getY() + distance) < rows ? aNestCell->getY() + distance : rows - 1;
+    std::shared_ptr<Cell> aCell;
+    for (size_t i = leftLimitY; i <= rightLimitY; ++i) {
+        for (size_t j = leftLimitX; j <= rightLimitX; ++j) {
+            aCell = getCell(i, j);
+            if (!aCell->isCity()) {
+                aCell->setNestId(nestId);
+                cellInsideNest.push_back(aCell);
+            }
+        }
+    }
+    return cellInsideNest;
+}
+
+bool Board::characterCanMove(const std::shared_ptr<Cell> &aCell, Direction aDirection) {
+    bool canMove = false;
+    std::pair<int, int> aPosition = getCorrectPosition(aCell, aDirection);
+    if (aPosition.first >= 0 && aPosition.first < cols && aPosition.second >= 0 && aPosition.second < rows) {
+        canMove = getCell(aPosition.first, aPosition.second)->isEmpty();
+    }
+    return canMove;
+}
+
+std::shared_ptr<Cell> Board::getNextCell(const std::shared_ptr<Cell> &aCell, Direction aDirection) {
+    std::pair<int, int> aPosition = getCorrectPosition(aCell, aDirection);
+    return getCell(aPosition.first, aPosition.second);
+}
+
+bool Board::creatureCanMove(const std::shared_ptr<Cell> &aCell, Direction aDirection) {
+    bool canMove = false;
+    std::pair<int, int> aPosition = getCorrectPosition(aCell, aDirection);
+    if (aPosition.first >= 0 && aPosition.first < cols && aPosition.second >= 0 && aPosition.second < rows) {
+        std::shared_ptr<Cell> nestCell = getCell(aPosition.first, aPosition.second);
+        canMove = nestCell->isEmpty() && nestCell->getNestId() == aCell->getNestId();
+    }
+    return canMove;
+}
+
+std::pair<int, int> Board::getCorrectPosition(std::shared_ptr<Cell> aCell, Direction aDirection) {
+    int x = aCell->getX();
+    int y = aCell->getY();
+    switch(aDirection) {
+        case Direction::up:
+            y --;
             break;
-        }
-    }
-    for (auto& collisionObject : collisionObjects) {
-        if (Collider::checkStaticCollision(newPosition, collisionObject.getPosition())) {
-            isColliding = true;
+        case Direction::down:
+            y ++;
             break;
-        }
-    }
-    return isColliding;
-}
-
-Point &Board::getInitialPoint() {
-    return initialPoint;
-}
-
-NestPoint& Board::getAvailableNestPoint() {
-    return nestPointContainer.getNextNestPointAvailable();
-}
-
-bool Board::checkCollisionsAndCities(Position &aPosition) {
-    bool isColliding = false;
-    for (auto& collisionObject : collisionObjects) {
-        if (Collider::checkStaticCollision(aPosition, collisionObject.getPosition())) {
-            isColliding = true;
+        case Direction::left:
+            x --;
             break;
-        }
-    }
-    for (auto& collisionObject : cities) {
-        if (Collider::checkStaticCollision(aPosition, collisionObject.getPosition())) {
-            isColliding = true;
+        case Direction::right:
+            x ++;
             break;
-        }
     }
-    for (auto& aGameObjectPosition : gameObjectPositions) {
-        if (Collider::checkCollision(aPosition, aGameObjectPosition.second.getPosition())) {
-            isColliding = true;
-            break;
-        }
-    }
-    return isColliding;
+    return {x, y};
 }
 
-void Board::addGameObjectPosition(uint id, BoardPosition &boardPosition) {
-    gameObjectPositions.insert(std::pair<uint, BoardPosition&>(id, boardPosition));
-}
-
-std::vector<uint> Board::getCreaturesInNestPoint(uint nestId) {
-    NestPoint& nestPoint = nestPointContainer.getNestPoint(nestId);
-    return nestPoint.getCreatures();
-}
-
-Point Board::getInitialPointInNest(NestPoint &nestPoint) {
-    std::vector<Position> posiblePositions = nestPoint.getPosiblePositions();
-    Point aPoint(0.0, 0.0);
-    for (auto &aPosition : posiblePositions) {
-        if(!checkCollisionsAndCities(aPosition)) {
-            aPoint = aPosition.getPoint();
-            break;
+std::shared_ptr<Cell> Board::getBestCell(std::shared_ptr<Cell> actualCell, std::shared_ptr<Cell> destinationCell) {
+    uint distance = getDistance(actualCell, destinationCell);
+    std::shared_ptr<Cell> bestCell = actualCell;
+    for (auto &adjacent : getAdjacents(actualCell->getCoord(), 1)) {
+        uint adjacentDistance = getDistance(adjacent.second, destinationCell);
+        if (distance > adjacentDistance && adjacent.second->getNestId() == actualCell->getNestId() && adjacent.second->isEmpty()) {
+            bestCell = adjacent.second;
+            distance = adjacentDistance;
         }
     }
-    return aPoint;
+    return bestCell;
 }
 
-bool Board::checkCreaturesCollisions(BoardPosition& aBoardPosition, const Position& newPosition, uint id) {
-    bool isColliding = false;
-    Position& nestPointPosition = nestPointContainer.getNestPoint(aBoardPosition.getNestId()).getPosition();
-    if (newPosition.getBottom() > nestPointPosition.getBottom() ||
-    newPosition.getTop() < nestPointPosition.getTop() ||
-    newPosition.getLeft() < nestPointPosition.getLeft() ||
-    newPosition.getRight() > nestPointPosition.getRight()) {
-        isColliding = true;
+Direction Board::getDirection(const std::shared_ptr<Cell>& actualCell, const std::shared_ptr<Cell>& destinationCell) {
+    Direction aDirection;
+    if (actualCell->getX() > destinationCell->getX()) {
+        aDirection = Direction::left;
     }
-    for (auto& gameObject : gameObjectPositions) {
-        if (gameObject.first == id) {
-            continue;
-        }
-        if (Collider::checkCollision(newPosition, gameObject.second.getPosition())) {
-            isColliding = true;
-            break;
-        }
+    if (actualCell->getX() < destinationCell->getX()) {
+        aDirection = Direction::right;
     }
-    for (auto& collisionObject : collisionObjects) {
-        if (Collider::checkStaticCollision(newPosition, collisionObject.getPosition())) {
-            isColliding = true;
-            break;
-        }
+    if (actualCell->getY() > destinationCell->getY()) {
+        aDirection = Direction::up;
     }
-    for (auto& city : cities) {
-        if (Collider::checkStaticCollision(newPosition, city.getPosition())) {
-            isColliding = true;
-            break;
-        }
+    if (actualCell->getY() < destinationCell->getY()) {
+        aDirection = Direction::down;
     }
-    return isColliding;
+    return aDirection;
 }
 
-bool Board::isInsideNest(Position &aPosition, uint nestId) {
-    Position& nestPointPosition = nestPointContainer.getNestPoint(nestId).getPosition();
-    return Collider::checkStaticCollision(aPosition, nestPointPosition);
+void Board::removeCreatureFromNest(const std::shared_ptr<Cell>& aCell) {
+    Nest &nest = nestContainer.getNest(aCell->getNestId());
+    nest.removeCreature(aCell->getGameObjectId());
 }
 
-void Board::deleteGameObjectPosition(uint id) {
-    this->gameObjectPositions.erase(id);
-}
-
-bool Board::isInsideACity(Position& aPosition) {
-    bool insideCity = false;
-    for (auto& city : cities) {
-        if (Collider::checkStaticCollision(aPosition, city.getPosition())) {
-            insideCity = true;
-            break;
-        }
-    }
-    return insideCity;
-}
-
-uint Board::isInsideANest(Position &aPosition) {
-    uint nestId = 0;
-    for (auto& aNestPoint : nestPointContainer.getNestPoints()) {
-        if (Collider::checkStaticCollision(aPosition, aNestPoint.getPosition())) {
-            nestId = aNestPoint.getNestId();
-            break;
-        }
-    }
-    return nestId;
-}
-
-uint Board::getIdFromPoint(Point& aPoint) {
-    Position newPosition = Position(aPoint, 1, 1);
-    uint gameObjectId = 0;
-    for (auto& gameObject : gameObjectPositions) {
-        if (Collider::checkCollision(newPosition, gameObject.second.getPosition())) {
-            gameObjectId = gameObject.first;
-            break;
-        }
-    }
-    return gameObjectId;
+int Board::getAmountCreatures() {
+    return nestContainer.getAmountCreatures();
 }

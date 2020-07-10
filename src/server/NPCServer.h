@@ -2,6 +2,7 @@
 #define NPC_H
 
 #include "GameObject.h"
+#include "GameCharacter.h"
 #include "Profession.h"
 #include "states/State.h"
 
@@ -10,15 +11,23 @@ private:
     Profession* profession;
     std::unique_ptr<State> state;
 public:
-	NPCServer(uint id, Point point, const std::string& type);
+	NPCServer(uint id, const std::string& type, Point initialPoint, std::shared_ptr<Cell> initialCell);
 
     virtual ~NPCServer();
 
-    void update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board, GameStatsConfig &gameStatsConfig) override;
+    void update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) override ;
 
     CharacterStateID getStateId() override;
 
-    uint receiveDamage(float damage, GameStatsConfig &gameStatsConfig) override;
+    virtual NPCInfo interact(GameObject& character, InputInfo input);
+
+    uint receiveDamage(float damage) override;
+
+    bool isDead() override;
+
+    void remove(Board &board) override;
+
+    bool isReadyToRemove() override;
 };
 
 #endif

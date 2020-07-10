@@ -11,6 +11,8 @@
 
 class StillStateCharacter: public State {
 public:
+    StillStateCharacter();
+
     explicit StillStateCharacter(InputInfo);
 
     ~StillStateCharacter() override;
@@ -23,7 +25,7 @@ public:
 
     bool isAttacking() override;
 
-    void performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board, GameStatsConfig &gameStatsConfig) override;
+    void performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) override;
 
 };
 

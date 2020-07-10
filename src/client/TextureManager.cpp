@@ -114,7 +114,7 @@ const Texture& TextureManager::getTexture(WeaponID id) const {
 			idItem = TextureID::ItemElficFlaute;
 			break;
 		case WeaponID::AshStick:
-			idItem = TextureID::AshStick;
+			idItem = TextureID::ItemAshStick;
 			break;
 		case WeaponID::Crosier:
 			idItem = TextureID::ItemCrosier;
@@ -147,7 +147,6 @@ const Texture& TextureManager::getTexture(ShieldID id) const {
 	return texture;
 }
 
-//Puede recibir cualquier ID salvo el de Nothing
 const Texture& TextureManager::getTexture(ItemsInventoryID id) const {
 	TextureID idText;
 	switch(id) {
@@ -170,7 +169,7 @@ const Texture& TextureManager::getTexture(ItemsInventoryID id) const {
 			idText = TextureID::ItemElficFlaute;
 			break;
 		case ItemsInventoryID::AshStick:
-			idText = TextureID::AshStick;
+			idText = TextureID::ItemAshStick;
 			break;
 		case ItemsInventoryID::Crosier:
 			idText = TextureID::ItemCrosier;

@@ -1,28 +1,19 @@
 #include <iostream>
 #include "UI.h"
+#include "EquipButton.h"
+#include "DropButton.h"
+#include "PriestInterface.h"
+#include "MerchantInterface.h"
+#include "BankerInterface.h"
+
+#define WIDTHBUTTON 70
+#define HEIGTHBUTTON 25
+#define ITEMSMERCHANT 12
 
 UI::UI(Window& window, Player* player, const TextureManager& manager) : 
 window(window), playerTarget(player), manager(manager),
  font("assets/font/Prince Valiant.ttf",18,{0xA4, 0xA4, 0xA4}), texts() {
-    int width_text, height_text;
-	SDL_Texture* health = font.createText("Vida",
-        &(window.getRenderer()), &width_text, &height_text);
-    this->texts.push_back(health);
-    SDL_Texture* mana = font.createText("Mana",
-        &(window.getRenderer()), &width_text, &height_text);
-    this->texts.push_back(mana);
-    SDL_Texture* level = font.createText("Nivel ",
-        &(window.getRenderer()), &width_text, &height_text);
-    this->texts.push_back(level);
-    SDL_Texture* expirience = font.createText("Experiencia",
-        &(window.getRenderer()), &width_text, &height_text);
-    this->texts.push_back(expirience);
-    SDL_Texture* inventory = font.createText("Inventario",
-        &(window.getRenderer()), &width_text, &height_text);
-    this->texts.push_back(inventory);
-    SDL_Texture* equipment = font.createText("Equipacion",
-        &(window.getRenderer()), &width_text, &height_text);
-    this->texts.push_back(equipment);
+	createTexts();
     SDL_Rect buttonRect;
     for (int i = 0; i<9; i++) {
         buttonRect = {9+(i%3)*50,50+(i/3)*50,32,32};
@@ -31,11 +22,12 @@ window(window), playerTarget(player), manager(manager),
         this->buttonsItems.push_back(button);
     }
     std::shared_ptr<RaisedButton> equipButton = std::shared_ptr<RaisedButton>(new 
-        RaisedButton(&(window.getRenderer()),font,"Equipar",{9,205,70,25}, manager));
+        EquipButton(&(window.getRenderer()),font,"Equipar",{9,205,70,HEIGTHBUTTON}, manager,playerTarget));
     std::shared_ptr<RaisedButton> dropButton = std::shared_ptr<RaisedButton>(new 
-        RaisedButton(&(window.getRenderer()),font,"Tirar",{109,205,70,25}, manager));
+        DropButton(&(window.getRenderer()),font,"Tirar",{109,205,WIDTHBUTTON,HEIGTHBUTTON}, manager,playerTarget));
+    this->buttonsInventory.push_back(equipButton);
     this->buttonsInventory.push_back(dropButton);
-    this->buttonsInventory.push_back(equipButton); 
+    this->informationNPC.type = 0;
 }
 
 void UI::updateHealth(){
@@ -177,13 +169,13 @@ void UI::updateItems() {
     int idItem;
 
     SDL_Rect src = {0,0,52,52};
-    SDL_Rect dst,buttonRect;
+    SDL_Rect dst;
     for (int i = 0; i<9; i++) {
         item = items.substr(2*i+i,2);
         idItem = std::stoi(item);
         const Texture& item = manager.getTexture((ItemsInventoryID)idItem);
+        buttonsItems[i]->setViewport({0,60,widthSegment*2,(this->window.getHeight()-60)/2});
         if (idItem > 0) {
-            buttonsItems[i]->setViewport({0,60,widthSegment*2,(this->window.getHeight()-60)/2});
             buttonsItems[i]->render();
         }
         dst = {9+(i%3)*50,50+(i/3)*50,32,32};
@@ -204,9 +196,11 @@ void UI::updateInventory() {
     }
 }
 
-void UI::updateInteract() {}
-
 void UI::updateBuild() {
+    int w,h;
+    SDL_QueryTexture(this->texts[5], NULL, NULL, &w, &h);
+    SDL_Rect equipment = {15,15,w,h};
+    SDL_RenderCopy(&(window.getRenderer()), this->texts[5], NULL, &equipment);
     PlayerInfo info = this->playerTarget->getInfo();
     const Texture& itemBody = manager.getTexture(info.getBodyID());
     const Texture& itemHead = manager.getTexture(info.getHeadID());
@@ -215,10 +209,28 @@ void UI::updateBuild() {
     const Texture& itemShield = manager.getTexture(info.getShieldID());
     SDL_Rect src = {0,0,52,52};
     itemHelmet.render(src,{widthSegment-16,50,32,32});
-    itemHead.render({0,0,17,17},{widthSegment-16,85,32,32});
-    itemBody.render(src,{widthSegment-34,117,64,64});
+    if (this->playerTarget->getState() == CharacterStateID::Dead){
+        itemHead.render({0,0,52,52},{widthSegment-16,85,32,32});
+    } else {
+        itemHead.render({0,0,17,17},{widthSegment-16,85,32,32});
+    }
+    itemBody.render(src,{widthSegment-32,117,64,64});
     itemWeapon.render(src,{widthSegment-64,130,32,32});
     itemShield.render(src,{widthSegment+32,130,32,32});
+}
+
+void UI::updateInteract() {
+    if (this->npc == nullptr) {
+        if (this->informationNPC.type == 1) {
+            this->npc = std::shared_ptr<NPCInterface>(new MerchantInterface(informationNPC,&window,manager,playerTarget));
+        } else if (this->informationNPC.type == 2) {
+            this->npc = std::shared_ptr<NPCInterface>(new PriestInterface(informationNPC,&window,manager,playerTarget));
+        } else if (this->informationNPC.type == 3) {
+            this->npc = std::shared_ptr<NPCInterface>(new BankerInterface(informationNPC,&window,manager,playerTarget));
+        }
+    }
+    if (this->npc != nullptr)
+        this->npc->render(); 
 }
 
 void UI::updateEquipment() {
@@ -230,10 +242,7 @@ void UI::updateEquipment() {
     if (this->playerTarget->getState() == CharacterStateID::Interact) {
         updateInteract();
     } else {
-        int w,h;
-        SDL_QueryTexture(this->texts[5], NULL, NULL, &w, &h);
-        SDL_Rect equipment = {15,15,w,h};
-        SDL_RenderCopy(&(window.getRenderer()), this->texts[5], NULL, &equipment);
+        this->npc = nullptr;
         updateBuild();
     }
 }
@@ -243,6 +252,10 @@ void UI::render() {
     updateInventory();
     updateEquipment();
     updateStates();
+}
+
+void UI::setNPCInfo(NPCInfo info) {
+    this->informationNPC = info;
 }
 
 InputInfo UI::handleClick(SDL_Event& event) {
@@ -267,13 +280,38 @@ InputInfo UI::handleClick(SDL_Event& event) {
                     }
                 }        
             }
-            if (this->buttonsInventory[0]->inside(x,y))
-                info = this->playerTarget->dropItem(itemSelected+1);
-            if (this->buttonsInventory[1]->inside(x,y))
-                info = this->playerTarget->selectItem(itemSelected+1);
+            for (auto& button: buttonsInventory) {
+                if (button->inside(x,y))
+                    info = button->onClick(itemSelected+1);
+            }
+            if (this->npc != nullptr)
+                info = this->npc->handleClick(x,y,itemSelected);
             break;
+                
     }
     return info;
+}
+
+void UI::createTexts() {
+    int width_text, height_text;
+    SDL_Texture* health = font.createText("Vida",
+        &(window.getRenderer()), &width_text, &height_text);
+    this->texts.push_back(health);
+    SDL_Texture* mana = font.createText("Mana",
+        &(window.getRenderer()), &width_text, &height_text);
+    this->texts.push_back(mana);
+    SDL_Texture* level = font.createText("Nivel ",
+        &(window.getRenderer()), &width_text, &height_text);
+    this->texts.push_back(level);
+    SDL_Texture* expirience = font.createText("Experiencia",
+        &(window.getRenderer()), &width_text, &height_text);
+    this->texts.push_back(expirience);
+    SDL_Texture* inventory = font.createText("Inventario",
+        &(window.getRenderer()), &width_text, &height_text);
+    this->texts.push_back(inventory);
+    SDL_Texture* equipment = font.createText("Equipacion",
+        &(window.getRenderer()), &width_text, &height_text);
+    this->texts.push_back(equipment);
 }
 
 UI::~UI() {

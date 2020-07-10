@@ -99,3 +99,47 @@ InputInfo InteractState::dropItem(Character& character, int item) {
     info.input =InputID::nothing;
     return info;
 }
+
+InputInfo InteractState::buyItem(Character& character,int item) {
+    InputInfo info;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    info.input =InputID::buy;
+    info.aditional = item;
+    return info;
+}
+
+InputInfo InteractState::sellItem(Character& character,int item) {
+    InputInfo info;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    info.input =InputID::sell;
+    info.aditional = item;
+    return info;
+}
+
+InputInfo InteractState::deposit(Character& character,int item, bool isItem) {
+    InputInfo info;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    if (isItem) {
+        info.input =InputID::depositItem;
+    } else {
+        info.input =InputID::depositGold;
+    }
+    info.aditional = item;
+    return info;
+}
+
+InputInfo InteractState::retire(Character& character,int item, bool isItem) {
+    InputInfo info;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    if (isItem) {
+        info.input =InputID::retireItem;
+    } else {
+        info.input =InputID::retireGold;
+    }
+    info.aditional = item;
+    return info;
+}
