@@ -115,6 +115,28 @@ InputInfo Player::selectItem(int itemNumber) {
   return info;
 }
 
+InputInfo Player::resurrect() {
+  InputInfo info = this->state->resurrect(*this);
+  return info;
+}
+
+InputInfo Player::cure() {
+  InputInfo info = this->state->cure(*this);
+  return info;
+}
+
+InputInfo Player::buy(int itemNumber) {
+  InputInfo info = this->state->buyItem(*this,itemNumber);
+  return info;
+}
+
+
+InputInfo Player::sell(int itemNumber) {
+  InputInfo info = this->state->sellItem(*this,itemNumber);
+  return info;
+}
+
+
 InputInfo Player::handleEvent(SDL_Event& event, Camera& camera) {
   InputInfo input;
 	if(event.type == SDL_KEYDOWN) {
@@ -133,12 +155,6 @@ InputInfo Player::handleEvent(SDL_Event& event, Camera& camera) {
                 break;
             case SDLK_r:
                 input = this->state->resurrect(*this);
-                break;
-            case SDLK_g:
-                break;
-            case SDLK_b:
-                break;
-            case SDLK_v:
                 break;
             case SDLK_t:
                 input = this->state->takeItem(*this);
@@ -195,8 +211,10 @@ InputInfo Player::handleEvent(SDL_Event& event, Camera& camera) {
 	} else if (event.type == SDL_MOUSEBUTTONDOWN) {
           int x,y;
           SDL_GetMouseState(&x, &y);
-          Point coord = camera.calculateGlobalPosition(Point(x,y));
-          input = this->state->selectTarget(*this, coord);
+          if (camera.clickInMap(Point(x,y))){
+            Point coord = camera.calculateGlobalPosition(Point(x,y));
+            input = this->state->selectTarget(*this, coord);
+          }
   }
     return input;
 }

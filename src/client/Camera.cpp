@@ -53,6 +53,14 @@ Point Camera::calculateGlobalPosition(Point coordinates) const {
     return Point(x,y);
 }
 
+bool Camera::clickInMap(Point coordinates) const {
+    bool inMap = false;
+    if (coordinates.x > cam.x && coordinates.x < cam.x+cam.w &&
+        coordinates.y > cam.y && coordinates.y < cam.y+cam.h)
+        inMap = true;
+    return inMap;
+}
+
 void Camera::render(Point destiny) {
     limits(&destiny);
     this->positionScreen.x = destiny.x - (((this->window.getWidth()/WIDTHSEGMENT)*6) / 2.0f);

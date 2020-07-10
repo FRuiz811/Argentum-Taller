@@ -28,6 +28,7 @@ private:
     static uint8_t creaturesLimit;
     static uint8_t nestCreaturesLimit;
     static float distance;
+    static int inventoryLimit;
     RaceInfo createRaceInfo(rapidjson::Value &value);
     GameClassInfo createGameClass(rapidjson::Value &value);
     ItemInfo createItem(rapidjson::Value& value);
@@ -60,6 +61,7 @@ public:
     static const ItemInfo getItem(ItemsInventoryID id);
     static uint8_t getNestCreatureLimit();
     static float getDistance();
+    static int getInventoryLimit();
 };
 
 

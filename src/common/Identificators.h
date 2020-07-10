@@ -25,13 +25,15 @@ enum class InputID {
     meditate, //y
     resurrect, //r
     cure, //h
-    buy,       //b
-    sell,      //v
-    deposit,   //x
-    retire, //z
+    buy,      
+    sell,      
+    depositItem,  
+    retireItem,
+    depositGold,
+    retireGold, 
     selectTarget, //click
     equipItem,
-    dropItem, //g
+    dropItem, 
     takeItem, //t
 };
 

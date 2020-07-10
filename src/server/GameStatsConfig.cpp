@@ -21,6 +21,7 @@ GameStatsConfig::GameStatsConfig(rapidjson::Document &json) {
     creaturesLimit = json["creaturesLimit"].GetInt();
     nestCreaturesLimit = json["nestCreaturesLimit"].GetInt();
     distance = json["distance"].GetFloat();
+    inventoryLimit = json["inventoryLimit"].GetInt();
 
     rapidjson::Value::Array racesArray = json["races"].GetArray();
     for (auto &aRace : racesArray) {
@@ -172,6 +173,10 @@ float GameStatsConfig::getDefense(CreatureID creatureId) {
     return 0;
 }
 
+int GameStatsConfig::getInventoryLimit() {
+    return GameStatsConfig::inventoryLimit;
+}
+
 GameStatsConfig::GameStatsConfig() = default;
 
 GameStatsConfig::~GameStatsConfig() = default;
@@ -196,3 +201,4 @@ float GameStatsConfig::maxAgility = 0.0;
 uint8_t GameStatsConfig::creaturesLimit = 0.0;
 uint8_t GameStatsConfig::nestCreaturesLimit = 0.0;
 float GameStatsConfig::distance = 0.0;
+int GameStatsConfig::inventoryLimit = 0;

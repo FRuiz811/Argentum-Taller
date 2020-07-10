@@ -35,7 +35,8 @@ void InteractStateCharacter::setNextState(InputInfo info) {
         this->nextState = std::unique_ptr<State>(new MoveStateCharacter(info));
     } else if (info.input == InputID::buy || info.input == InputID::cure ||
         info.input == InputID::sell || info.input == InputID::resurrect ||
-        info.input == InputID::retire || info.input == InputID::deposit) {
+        info.input == InputID::retireItem || info.input == InputID::retireGold ||
+        info.input == InputID::depositItem || info.input == InputID::depositGold) {
         this->nextState = std::unique_ptr<State>(new InteractStateCharacter(info));
     }
     nextState = std::unique_ptr<State>(new StillStateCharacter(info));

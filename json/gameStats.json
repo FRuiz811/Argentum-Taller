@@ -92,6 +92,7 @@
   "creaturesLimit": 20,
   "nestCreaturesLimit": 3,
   "distance": 15.0,
+  "inventoryLimit":9,
   "items": [
     {
       "id":1,

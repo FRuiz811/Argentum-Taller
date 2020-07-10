@@ -144,7 +144,6 @@ void Game::update() {
     this->player->update(GAMELOOPTIME);
     for (auto& npc: this->npcs)
         npc.second.update(GAMELOOPTIME);
-    //this->ui->update();
 }
 
 void Game::render() {

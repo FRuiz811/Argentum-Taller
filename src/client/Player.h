@@ -52,7 +52,10 @@ public:
 	InputInfo handleEvent(SDL_Event& event, Camera& camera);
 	InputInfo dropItem(int itemNumber);
 	InputInfo selectItem(int itemNumber);
-	
+	InputInfo resurrect();
+	InputInfo cure();
+	InputInfo buy(int itemNumber);
+	InputInfo sell(int itemNumber);
 	Point* getCenter();
 
 	uint getLevel();
