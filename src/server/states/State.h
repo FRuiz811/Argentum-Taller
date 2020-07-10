@@ -23,7 +23,7 @@ public:
 
     CharacterStateID getStateId() const;
 
-    virtual void performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board, GameStatsConfig &gameStatsConfig) = 0;
+    virtual void performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) = 0;
 
     bool isOver() const;
 

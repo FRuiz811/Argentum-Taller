@@ -15,13 +15,13 @@ public:
 
     virtual ~NPCServer();
 
-    void update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board, GameStatsConfig &gameStatsConfig) override;
+    void update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) override ;
 
     CharacterStateID getStateId() override;
 
     virtual NPCInfo interact(GameObject& character, InputInfo input);
 
-    uint receiveDamage(float damage, GameStatsConfig &gameStatsConfig) override;
+    uint receiveDamage(float damage) override;
 
     bool isDead() override;
 

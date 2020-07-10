@@ -19,8 +19,7 @@ public:
 
     bool isOnPursuit(uint pursuitId) override;
 
-    void performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board,
-                     GameStatsConfig &gameStatsConfig) override;
+    void performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) override;
 
     void setNextState(InputInfo info) override;
 

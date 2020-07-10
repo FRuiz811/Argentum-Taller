@@ -20,8 +20,8 @@ public:
     bool isOver() const;
     bool hasStart() const;
 
-    void start(Point aFirstPoint, Direction aDirection, GameStatsConfig& gameStatsConfig, RaceID raceId);
-    void start(Point aFirstPoint, Direction aDirection, GameStatsConfig& gameStatsConfig, CreatureID creatureId);
+    void start(Point aFirstPoint, Direction aDirection, RaceID raceId);
+    void start(Point aFirstPoint, Direction aDirection, CreatureID creatureId);
 
     void reset();
 

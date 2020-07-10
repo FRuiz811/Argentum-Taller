@@ -12,19 +12,19 @@ bool Movement::hasStart() const {
     return initialized;
 }
 
-void Movement::start(Point aFirstPoint, Direction aDirection, GameStatsConfig &gameStatsConfig, RaceID raceId) {
-    amountSteps = gameStatsConfig.getAmountSteps(raceId);
+void Movement::start(Point aFirstPoint, Direction aDirection, RaceID raceId) {
+    amountSteps = GameStatsConfig::getAmountSteps(raceId);
     actualStep = 0;
-    distance = gameStatsConfig.getDistance();
+    distance = GameStatsConfig::getDistance();
     direction = aDirection;
     firstPoint = aFirstPoint;
     initialized = true;
 }
 
-void Movement::start(Point aFirstPoint, Direction aDirection, GameStatsConfig &gameStatsConfig, CreatureID creatureId) {
-    amountSteps = gameStatsConfig.getAmountSteps(creatureId);
+void Movement::start(Point aFirstPoint, Direction aDirection, CreatureID creatureId) {
+    amountSteps = GameStatsConfig::getAmountSteps(creatureId);
     actualStep = 0;
-    distance = gameStatsConfig.getDistance();
+    distance = GameStatsConfig::getDistance();
     direction = aDirection;
     firstPoint = aFirstPoint;
     initialized = true;

@@ -14,8 +14,7 @@ private:
 public:
     Creature(uint id, CreatureID creatureId, std::shared_ptr<Cell> initialCell, Point initialPoint);
 
-    void update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board,
-                GameStatsConfig &gameStatsConfig) override;
+    void update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) override;
 
     void notify(uint pursuitId);
 
@@ -25,7 +24,7 @@ public:
 
     CharacterStateID getStateId() override;
 
-    uint receiveDamage(float damage, GameStatsConfig &gameStatsConfig) override;
+    uint receiveDamage(float damage) override;
 
     virtual NPCInfo interact(GameObject& character, InputInfo input);
     

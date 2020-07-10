@@ -9,8 +9,7 @@ PursuitStateCreature::PursuitStateCreature(uint id) : pursuitId(id) {
     stateId = CharacterStateID::Move;
 }
 
-void PursuitStateCreature::performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects,
-                                       Board &board, GameStatsConfig &gameStatsConfig) {
+void PursuitStateCreature::performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) {
 
     std::shared_ptr<Creature> aCreature = std::dynamic_pointer_cast<Creature>(gameObjects.at(id));
     try {
@@ -28,7 +27,7 @@ void PursuitStateCreature::performTask(uint id, std::unordered_map<uint, std::sh
                     newCell = board.getBestCell(creatureCell, enemyCell);
                     Direction aDirection = board.getDirection(creatureCell, newCell);
                     aCreature->setDirection(aDirection);
-                    movement.start(board.getPointFromCell(aCreature->getActualCell()), aDirection, gameStatsConfig, aCreature->getCreatureId());
+                    movement.start(board.getPointFromCell(aCreature->getActualCell()), aDirection, aCreature->getCreatureId());
                     aCreature->getActualCell()->free();
                     newCell->occupied(id);
                     aCreature->setCell(newCell);

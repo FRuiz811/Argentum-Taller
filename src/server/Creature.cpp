@@ -1,23 +1,22 @@
 #include <iostream>
+#include <utility>
 #include "Creature.h"
 #include "states/StillStateCreature.h"
 #include "states/PursuitStateCreature.h"
 #include "../common/Random.h"
-#include "states/DeadStateCreature.h"
 
-void Creature::update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board,
-                      GameStatsConfig &gameStatsConfig) {
+void Creature::update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) {
     if (state->isOver()) {
         state->setNextState(generateRandomInputInfo());
         if (state->hasNextState()) {
             state = state->getNextState();
         }
     }
-    state->performTask(id, gameObjects, board, gameStatsConfig);
+    state->performTask(id, gameObjects, board);
 }
 
 Creature::Creature(uint id, CreatureID creatureId, std::shared_ptr<Cell> initialCell, Point initialPoint) :
-        GameObject(id, initialPoint, initialCell), creatureId(creatureId) {
+        GameObject(id, initialPoint, std::move(initialCell)), creatureId(creatureId) {
 
     switch (creatureId) {
         case CreatureID::Goblin:
@@ -58,7 +57,7 @@ CreatureID Creature::getCreatureId() const {
     return creatureId;
 }
 
-uint Creature::receiveDamage(float damage, GameStatsConfig &gameStatsConfig) {
+uint Creature::receiveDamage(float damage) {
     float defense = GameStatsConfig::getDefense(creatureId);
     float realDamage = damage - defense;
     if (realDamage > 0) {
@@ -68,7 +67,7 @@ uint Creature::receiveDamage(float damage, GameStatsConfig &gameStatsConfig) {
     std::cout << "Enemy defense: " << defense << std::endl;
     std::cout << "Character real damage: " << realDamage << std::endl;
     if (isDead()) {
-        state = std::unique_ptr<State>(new DeadStateCreature());
+        //Hacer drop aca.
     }
     return life;
 }

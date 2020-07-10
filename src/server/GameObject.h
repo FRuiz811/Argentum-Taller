@@ -33,15 +33,15 @@ public:
 
     void setTextureHashId(const std::string &textureHashId);
 
-    virtual void update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board& board, GameStatsConfig& gameStatsConfig) = 0;
+    virtual void update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board& board) = 0;
 
     virtual CharacterStateID getStateId() = 0;
 
     virtual bool isDead() = 0;
 
-    virtual uint receiveDamage(float damage, GameStatsConfig& gameStatsConfig) = 0;
+    virtual uint receiveDamage(float damage) = 0;
 
-    virtual NPCInfo interact(GameObject& character, InputInfo input) = 0;
+	virtual NPCInfo interact(GameObject& character, InputInfo input) = 0;
 
     NPCInfo getInteractInfo() const;
 

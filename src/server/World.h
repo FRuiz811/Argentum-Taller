@@ -36,13 +36,19 @@ private:
     
     void addNPCs(std::vector<ObjectLayer> objectLayers);
 
+    uint getNextId();
+
+    std::vector<std::shared_ptr<GameObject>> getUpdatedGameObjects();
+
     void addCreatures();
 
     void generateCreature();
 
-    void update();
+    void clearFinishedPlayers();
 
-    uint getNextId();
+    void clearDeadCreatures();
+
+    void update();
 public:
     explicit World(GameStatsConfig& configuration);
 
@@ -56,11 +62,7 @@ public:
 
     void addPlayer(ThPlayer* aPlayer,uint id);
 
-    void clearFinishedPlayers();
-
     virtual ~World();
-
-    void clearDeadCreatures();
 };
 
 #endif 

@@ -3,7 +3,6 @@
 #include "GameCharacter.h"
 #include "states/StillStateCharacter.h"
 #include "GameStatsConfig.h"
-#include "states/DeadStateCharacter.h"
 #include "../common/Random.h"
 #include "ItemTranslator.h"
 
@@ -24,13 +23,10 @@ GameCharacter::GameCharacter(uint id, RaceID aRace, GameClassID aClass, std::sha
     this->level = 1;
     this->direction = Direction::down;
     this->textureHashId = updateTextureHashId(); //Solo debería tener la cabeza correspondiente y su cuerpo. "ht00|h03|b01|s00|w00"
-    InputInfo anInputInfo;
-    anInputInfo.input = InputID::nothing;
-    state = std::unique_ptr<State>(new StillStateCharacter(anInputInfo));
+    state = std::unique_ptr<State>(new StillStateCharacter());
 }
 
-void GameCharacter::update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board,
-                           GameStatsConfig &gameStatsConfig) {
+void GameCharacter::update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) {
     if (state->isOver()) {
         if (hasAnInputInfo()) {
             state->setNextState(getNextInputInfo());
@@ -41,7 +37,7 @@ void GameCharacter::update(std::unordered_map<uint, std::shared_ptr<GameObject>>
             state = state->getNextState();
         }
     }
-    state->performTask(id, gameObjects, board, gameStatsConfig);
+    state->performTask(id, gameObjects, board);
     this->textureHashId = updateTextureHashId();
 }
 
@@ -176,11 +172,11 @@ CharacterStateID GameCharacter::getStateId() {
     return state->getStateId();
 }
 
-uint GameCharacter::receiveDamage(float damage, GameStatsConfig& gameStatsConfig) {
-    if (gameStatsConfig.canEvade(race)) {
+uint GameCharacter::receiveDamage(float damage) {
+    if (GameStatsConfig::canEvade(race)) {
         std::cout << "Enemy fail attack" << std::endl;
     } else {
-        float defense = gameStatsConfig.getDefense(body, shield, helmet);
+        float defense = GameStatsConfig::getDefense(body, shield, helmet);
         float realDamage = damage - defense;
         if (realDamage > 0) {
             life = (life - realDamage > 0) ? life - realDamage : 0;

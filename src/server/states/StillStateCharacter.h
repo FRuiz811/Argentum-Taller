@@ -10,8 +10,6 @@
 #include "../../common/StaticObject.h"
 
 class StillStateCharacter: public State {
-private:
-    int itemToChange{0};
 public:
     StillStateCharacter();
 
@@ -27,7 +25,7 @@ public:
 
     bool isAttacking() override;
 
-    void performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board, GameStatsConfig &gameStatsConfig) override;
+    void performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) override;
 
 };
 

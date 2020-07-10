@@ -16,7 +16,7 @@ World::World(GameStatsConfig& configuration) : gameStatsConfig(configuration),
     this->priest = Priest::getInstance();
     this->priest->init(configuration.getItems());
     this->map = TiledMap(jsonMap);
-    this->board = Board(map, gameStatsConfig.getNestCreatureLimit());
+    this->board = Board(map, GameStatsConfig::getNestCreatureLimit());
     addNPCs(map.getObjectLayers());
     addCreatures();
 }
@@ -53,7 +53,7 @@ void World::addNPCs(std::vector<ObjectLayer> objectLayers) {
 }
 
 void World::addCreatures() {
-    for (int i = 0; i < gameStatsConfig.getCreaturesLimit(); ++i) {
+    for (int i = 0; i < GameStatsConfig::getCreaturesLimit(); ++i) {
         generateCreature();
     }
 }
@@ -80,13 +80,13 @@ void World::run() {
     int amountCreaturesDiff = 0;
     while (keepTalking) {
         initLoop = chrono.lap();
-        amountCreaturesDiff = gameStatsConfig.getCreaturesLimit() - board.getAmountCreatures();
+        amountCreaturesDiff = GameStatsConfig::getCreaturesLimit() - board.getAmountCreatures();
         for (size_t i = 0; i < amountCreaturesDiff; ++i) {
             generateCreature();
         }
         update();
         for (auto &aPlayer : players) {
-            aPlayer.second->update(gameObjectsContainer.getUpdatedGameObjectsInfo());
+            aPlayer.second->update(getUpdatedGameObjects());
         }
         clearFinishedPlayers();
         clearDeadCreatures();
@@ -111,7 +111,11 @@ void World::stop() {
 }
 
 void World::update() {
-    gameObjectsContainer.update(board, gameStatsConfig);
+    gameObjectsContainer.update(board);
+}
+
+std::vector<std::shared_ptr<GameObject>> World::getUpdatedGameObjects() {
+    return gameObjectsContainer.getUpdatedGameObjects();
 }
 
 void World::addPlayer(ThPlayer *aPlayer,uint id) {

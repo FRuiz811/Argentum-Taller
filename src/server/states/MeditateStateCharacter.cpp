@@ -2,6 +2,8 @@
 #include "MoveStateCharacter.h"
 #include "StillStateCharacter.h"
 #include "../GameCharacter.h"
+#include "EquipStateCharacter.h"
+
 MeditateStateCharacter::~MeditateStateCharacter() = default;
 
 MeditateStateCharacter::MeditateStateCharacter() {
@@ -10,12 +12,7 @@ MeditateStateCharacter::MeditateStateCharacter() {
 }
 
 void MeditateStateCharacter::performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects,
-                                         Board &board, GameStatsConfig &gameStatsConfig) {
-    std::shared_ptr<GameCharacter> aCharacter = std::dynamic_pointer_cast<GameCharacter>(gameObjects.at(id));
-    if (this->itemToChange != 0) {
-        aCharacter->equipItem(itemToChange);
-        this->itemToChange = 0;
-    }
+                                         Board &board) {
 }
 
 void MeditateStateCharacter::setNextState(InputInfo info) {
@@ -23,10 +20,8 @@ void MeditateStateCharacter::setNextState(InputInfo info) {
         info.input == InputID::left || info.input == InputID::right) {
         this->nextState = std::unique_ptr<State>(new MoveStateCharacter(info));
     } else if (info.input == InputID::equipItem)  {
-        this->itemToChange = info.aditional;
-        this->nextState = std::unique_ptr<State>(new StillStateCharacter(info));
+        this->nextState = std::unique_ptr<State>(new EquipStateCharacter(info));
     }
-    this->finalized = true;
 }
 
 void MeditateStateCharacter::resetState() {

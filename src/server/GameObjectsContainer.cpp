@@ -26,9 +26,9 @@ std::vector<std::shared_ptr<GameObject>> GameObjectsContainer::getUpdatedGameObj
 }
 
 
-void GameObjectsContainer::update(Board& board, GameStatsConfig& gameStatsConfig) {
+void GameObjectsContainer::update(Board& board) {
     for (auto& gameObjectPair : gameObjects) {
-        gameObjectPair.second->update(gameObjects, board, gameStatsConfig);
+        gameObjectPair.second->update(gameObjects, board);
     }
 }
 
