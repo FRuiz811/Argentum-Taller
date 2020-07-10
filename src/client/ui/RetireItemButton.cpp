@@ -6,7 +6,7 @@ RetireItemButton::RetireItemButton(SDL_Renderer* renderer, Font& font,std::strin
 
 InputInfo RetireItemButton::onClick(int item) {
     this->clicked = !this->clicked;
-    return this->player->buy(item);
+    return this->player->retire(item,true);
 }
 
 bool RetireItemButton::inside(int x, int y) {

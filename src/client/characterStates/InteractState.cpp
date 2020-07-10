@@ -117,3 +117,29 @@ InputInfo InteractState::sellItem(Character& character,int item) {
     info.aditional = item;
     return info;
 }
+
+InputInfo InteractState::deposit(Character& character,int item, bool isItem) {
+    InputInfo info;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    if (isItem) {
+        info.input =InputID::depositItem;
+    } else {
+        info.input =InputID::depositGold;
+    }
+    info.aditional = item;
+    return info;
+}
+
+InputInfo InteractState::retire(Character& character,int item, bool isItem) {
+    InputInfo info;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    if (isItem) {
+        info.input =InputID::retireItem;
+    } else {
+        info.input =InputID::retireGold;
+    }
+    info.aditional = item;
+    return info;
+}

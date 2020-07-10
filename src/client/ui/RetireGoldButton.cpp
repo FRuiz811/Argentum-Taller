@@ -6,7 +6,7 @@ RetireGoldButton::RetireGoldButton(SDL_Renderer* renderer, Font& font,std::strin
 
 InputInfo RetireGoldButton::onClick(int item) {
     this->clicked = !this->clicked;
-    return this->player->buy(item);
+    return this->player->retire(item,false);
 }
 
 bool RetireGoldButton::inside(int x, int y) {

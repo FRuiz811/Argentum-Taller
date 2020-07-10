@@ -6,7 +6,7 @@ DepositItemButton::DepositItemButton(SDL_Renderer* renderer, Font& font,std::str
 
 InputInfo DepositItemButton::onClick(int item) {
     this->clicked = !this->clicked;
-    return this->player->buy(item);
+    return this->player->deposit(item, true);
 }
 
 bool DepositItemButton::inside(int x, int y) {

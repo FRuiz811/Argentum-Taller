@@ -6,7 +6,7 @@ DepositGoldButton::DepositGoldButton(SDL_Renderer* renderer, Font& font,std::str
 
 InputInfo DepositGoldButton::onClick(int item) {
     this->clicked = !this->clicked;
-    return this->player->buy(item);
+    return this->player->deposit(item,false);
 }
 
 bool DepositGoldButton::inside(int x, int y) {
