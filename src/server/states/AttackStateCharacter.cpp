@@ -1,6 +1,7 @@
 #include "AttackStateCharacter.h"
 #include "../GameCharacter.h"
 #include "StillStateCharacter.h"
+#include "MoveStateCharacter.h"
 
 AttackStateCharacter::~AttackStateCharacter() = default;
 
@@ -11,10 +12,10 @@ void AttackStateCharacter::performTask(uint id, std::unordered_map<uint, std::sh
 
     std::shared_ptr<GameCharacter> aCharacter = std::dynamic_pointer_cast<GameCharacter>(gameObjects.at(id));
     try {
-        uint enemyId = board.getIdFromPoint(inputInfo.position);
-        if (enemyId != 0) {
-            std::shared_ptr<GameObject> aEnemy = gameObjects.at(enemyId);
-            if (aEnemy->getBoardPosition().getPosition().distance(aCharacter->getBoardPosition().getPosition()) < 15) {
+        std::shared_ptr<Cell> enemyCell = board.getCellFromPoint(inputInfo.position);
+        if (enemyCell->getGameObjectId() != 0) {
+            std::shared_ptr<GameObject> aEnemy = gameObjects.at(enemyCell->getGameObjectId());
+            if (!aEnemy->isDead() && board.getDistance(aCharacter->getActualCell(), enemyCell) == 1) {
                 aEnemy->receiveDamage(gameStatsConfig.getDamage(aCharacter->getRace(), aCharacter->getWeapon()), gameStatsConfig);
             }
         } else {
@@ -26,11 +27,16 @@ void AttackStateCharacter::performTask(uint id, std::unordered_map<uint, std::sh
 }
 
 void AttackStateCharacter::setNextState(InputInfo info) {
-    nextState = std::unique_ptr<State>(new StillStateCharacter(info));
+    if (info.input == InputID::up || info.input == InputID::down ||
+        info.input == InputID::left || info.input == InputID::right) {
+        this->nextState = std::unique_ptr<State>(new MoveStateCharacter(info));
+    } else {
+        nextState = std::unique_ptr<State>(new StillStateCharacter(info));
+    }
 }
 
 void AttackStateCharacter::resetState() {
-
+    nextState = std::unique_ptr<State>(new StillStateCharacter());
 }
 
 bool AttackStateCharacter::isOnPursuit(uint pursuitId) {

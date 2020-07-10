@@ -1,6 +1,5 @@
 #include <iostream>
 #include "MoveStateCharacter.h"
-#include "../Collider.h"
 #include "../GameCharacter.h"
 #include "StillStateCharacter.h"
 #include "../Creature.h"
@@ -31,30 +30,30 @@ void MoveStateCharacter::performTask(uint id,
                                      Board &board, GameStatsConfig &gameStatsConfig) {
 
     std::shared_ptr<GameCharacter> aCharacter = std::dynamic_pointer_cast<GameCharacter>(gameObjects.at(id));
-    BoardPosition& boardPosition = aCharacter->getBoardPosition();
     if (!movement.hasStart()) {
-        movement.start(boardPosition.getPosition(), direction, gameStatsConfig, aCharacter->getRace());
         aCharacter->setDirection(direction);
-    } else {
-        Position newPosition = movement.doStep();
-        if (!board.checkCollisions(boardPosition, newPosition, aCharacter->getId())) {
-            boardPosition.setPosition(newPosition);
-            boardPosition.setInsideCity(board.isInsideACity(newPosition));
-            uint nestId = board.isInsideANest(newPosition);
-            if (nestId != 0 && nestId != boardPosition.getNestId()) {
+        std::shared_ptr<Cell> newCell;
+        if (board.characterCanMove(aCharacter->getActualCell(), direction)) {
+            newCell = board.getNextCell(aCharacter->getActualCell(), direction);
+            movement.start(board.getPointFromCell(aCharacter->getActualCell()), direction, gameStatsConfig, aCharacter->getRace());
+            aCharacter->getActualCell()->free();
+            newCell->occupied(id);
+            aCharacter->setCell(newCell);
+            uint nestId = newCell->getNestId();
+            if (nestId != 0) {
                 std::shared_ptr<Creature> aCreature;
-                for(auto &creatureId : board.getCreaturesInNestPoint(nestId)) {
+                for(auto &creatureId : board.getCreaturesInNest(nestId)) {
                     aCreature = std::dynamic_pointer_cast<Creature>(gameObjects.at(creatureId));
                     aCreature->notify(id);
                 }
             }
-            boardPosition.setNestId(nestId);
         } else {
-            isColliding = true;
             finalized = true;
         }
+    } else {
+        aCharacter->setPoint(movement.doStep());
         if (movement.isOver()) {
-            finalized =true;
+            finalized = true;
         }
     }
 

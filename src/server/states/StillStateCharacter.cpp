@@ -35,4 +35,9 @@ bool StillStateCharacter::isAttacking() {
     return false;
 }
 
+StillStateCharacter::StillStateCharacter() {
+    finalized = true;
+    stateId = CharacterStateID::Still;
+}
+
 

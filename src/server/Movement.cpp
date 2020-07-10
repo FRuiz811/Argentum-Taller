@@ -2,31 +2,31 @@
 
 Movement::Movement() : finalized(false), initialized(false) {}
 
-Movement::~Movement() {}
+Movement::~Movement() = default;
 
-bool Movement::isOver() {
+bool Movement::isOver() const {
     return finalized;
 }
 
-bool Movement::hasStart() {
+bool Movement::hasStart() const {
     return initialized;
 }
 
-void Movement::start(Position aFirstPosition, Direction aDirection, GameStatsConfig &gameStatsConfig, RaceID raceId) {
+void Movement::start(Point aFirstPoint, Direction aDirection, GameStatsConfig &gameStatsConfig, RaceID raceId) {
     amountSteps = gameStatsConfig.getAmountSteps(raceId);
     actualStep = 0;
     distance = gameStatsConfig.getDistance();
     direction = aDirection;
-    firstPosition = aFirstPosition;
+    firstPoint = aFirstPoint;
     initialized = true;
 }
 
-void Movement::start(Position aFirstPosition, Direction aDirection, GameStatsConfig &gameStatsConfig, CreatureID creatureId) {
+void Movement::start(Point aFirstPoint, Direction aDirection, GameStatsConfig &gameStatsConfig, CreatureID creatureId) {
     amountSteps = gameStatsConfig.getAmountSteps(creatureId);
     actualStep = 0;
     distance = gameStatsConfig.getDistance();
     direction = aDirection;
-    firstPosition = aFirstPosition;
+    firstPoint = aFirstPoint;
     initialized = true;
 }
 
@@ -37,8 +37,8 @@ void Movement::reset() {
     finalized = false;
 }
 
-Position Movement::doStep() {
-    Point newPoint = firstPosition.getPoint();
+Point Movement::doStep() {
+    Point newPoint = firstPoint;
     switch(direction) {
         case Direction::up:
             newPoint.y -= (distance/amountSteps) * actualStep;
@@ -57,7 +57,7 @@ Position Movement::doStep() {
     if (actualStep >= amountSteps) {
         finalized = true;
     }
-    return Position(newPoint, firstPosition.getWidth(), firstPosition.getHeight());
+    return newPoint;
 }
 
 void Movement::stop() {

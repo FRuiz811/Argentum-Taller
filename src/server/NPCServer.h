@@ -10,7 +10,7 @@ private:
     Profession* profession;
     std::unique_ptr<State> state;
 public:
-	NPCServer(uint id, Point point, const std::string& type);
+	NPCServer(uint id, const std::string& type, Point initialPoint, std::shared_ptr<Cell> initialCell);
 
     virtual ~NPCServer();
 
@@ -19,6 +19,12 @@ public:
     CharacterStateID getStateId() override;
 
     uint receiveDamage(float damage, GameStatsConfig &gameStatsConfig) override;
+
+    bool isDead() override;
+
+    void remove(Board &board) override;
+
+    bool isReadyToRemove() override;
 };
 
 #endif

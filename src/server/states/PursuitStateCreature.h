@@ -12,8 +12,6 @@ private:
     Movement movement;
     bool canAttack = false;
 
-    void findNextPosition(const std::shared_ptr<Creature>& creature, Position &characterPosition, Board &board, GameStatsConfig &gameStatsConfig);
-
 public:
     explicit PursuitStateCreature(uint id);
 

@@ -1,17 +1,17 @@
 #include <iostream>
+#include <utility>
 #include "GameCharacter.h"
 #include "states/StillStateCharacter.h"
 #include "GameStatsConfig.h"
 #include "states/DeadStateCharacter.h"
 
 PlayerInfo GameCharacter::getPlayerInfo() {
-    return PlayerInfo(id, boardPosition.getPosition().getPoint(), goldAmount, life, mana, textureHashId, direction,150,
-        100,100,exp,1500,level,inventory,state->getStateId());
+    return PlayerInfo(id, point, goldAmount, life, mana, textureHashId, direction,150,
+        100,100,exp,1500, level, inventory,state->getStateId());
 }
 
-GameCharacter::GameCharacter(uint id, RaceID aRace, GameClassID aClass, Point &point):
-GameObject(id), race(aRace), gameClass(aClass), queueInputs(true) {
-    boardPosition = BoardPosition(Position(point, 25, 60), 0, true);
+GameCharacter::GameCharacter(uint id, RaceID aRace, GameClassID aClass, std::shared_ptr<Cell> initialCell, Point initialPoint):
+        GameObject(id, initialPoint, std::move(initialCell)), race(aRace), gameClass(aClass), queueInputs(true) {
     this->life = 100;
     this->goldAmount = 100;
     this->mana = 100;
@@ -122,12 +122,11 @@ uint GameCharacter::receiveDamage(float damage, GameStatsConfig& gameStatsConfig
         if (realDamage > 0) {
             life = (life - realDamage > 0) ? life - realDamage : 0;
         }
-        std::cout << "Enemy attack damage: " << damage << std::endl;
-        std::cout << "Character defense: " << defense << std::endl;
-        std::cout << "Enemy real damage: " << realDamage << std::endl;
+//        std::cout << "Enemy attack damage: " << damage << std::endl;
+//        std::cout << "Character defense: " << defense << std::endl;
+//        std::cout << "Enemy real damage: " << realDamage << std::endl;
     }
     if (isDead()) {
-        state = std::unique_ptr<State>(new DeadStateCharacter());
         this->mana = 0;
         body = BodyID::Ghost;
         shield = ShieldID::Nothing;
@@ -151,6 +150,14 @@ InputInfo GameCharacter::getNextInputInfo() {
 
 WeaponID GameCharacter::getWeapon() {
     return weapon;
+}
+
+bool GameCharacter::isReadyToRemove() {
+    return false;
+}
+
+void GameCharacter::remove(Board &board) {
+    cell->free();
 }
 
 GameCharacter::~GameCharacter()= default;

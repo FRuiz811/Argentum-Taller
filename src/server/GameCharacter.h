@@ -1,15 +1,12 @@
 #ifndef PERSONAJE_H
 #define PERSONAJE_H
 
-
 #include "../common/PlayerInfo.h"
 #include "../common/StaticObject.h"
 #include "states/State.h"
 #include "../common/InputQueue.h"
 #include <vector>
-#include <unordered_map>
 #include <memory>
-#include "GameStats.h"
 
 class GameCharacter : public GameObject{
 private:
@@ -30,7 +27,7 @@ private:
 
     std::string updateTextureHashId();
 public:
-	GameCharacter(uint id, RaceID aRace, GameClassID aClass, Point& point);
+	GameCharacter(uint id, RaceID aRace, GameClassID aClass, std::shared_ptr<Cell> initialCell, Point initialPoint);
 
 	PlayerInfo getPlayerInfo();
 
@@ -38,7 +35,9 @@ public:
 
 	InputInfo getNextInputInfo();
 
-	WeaponID getWeapon();
+    bool isReadyToRemove() override;
+
+    WeaponID getWeapon();
 
 	void update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board, GameStatsConfig& gameStatsConfig) override;
 
@@ -49,6 +48,8 @@ public:
     ~GameCharacter();
 
     RaceID getRace() const;
+
+    void remove(Board &board) override;
 
     GameClassID getGameClass() const;
 

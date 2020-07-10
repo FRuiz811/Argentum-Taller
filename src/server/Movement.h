@@ -5,30 +5,29 @@
 #include <cstdint>
 #include "../common/Identificators.h"
 #include "GameStatsConfig.h"
-#include "../common/Position.h"
 
 class Movement {
 private:
     bool finalized;
     bool initialized;
-    Position firstPosition;
+    Point firstPoint;
     Direction direction;
-    float distance;
+    float distance{};
     uint8_t amountSteps = 0;
     uint8_t actualStep = 0;
 public:
     Movement();
-    bool isOver();
-    bool hasStart();
+    bool isOver() const;
+    bool hasStart() const;
 
-    void start(Position aFirstPosition, Direction aDirection, GameStatsConfig& gameStatsConfig, RaceID raceId);
-    void start(Position aFirstPosition, Direction aDirection, GameStatsConfig& gameStatsConfig, CreatureID creatureId);
+    void start(Point aFirstPoint, Direction aDirection, GameStatsConfig& gameStatsConfig, RaceID raceId);
+    void start(Point aFirstPoint, Direction aDirection, GameStatsConfig& gameStatsConfig, CreatureID creatureId);
 
     void reset();
 
     void stop();
 
-    Position doStep();
+    Point doStep();
 
 
     virtual ~Movement();

@@ -15,63 +15,52 @@ void DeadStateCharacter::performTask(uint id, std::unordered_map<uint, std::shar
                                      Board &board, GameStatsConfig &gameStatsConfig) {
 
     std::shared_ptr<GameCharacter> aCharacter = std::dynamic_pointer_cast<GameCharacter>(gameObjects.at(id));
-    BoardPosition& boardPosition = aCharacter->getBoardPosition();
-    if (aCharacter->hasAnInputInfo() && canTakeAnotherAction) {
-        inputInfo = aCharacter->getNextInputInfo();
-        switch (inputInfo.input) {
-            case InputID::stopMove:
-                movement.reset();
-                break;
-            case InputID::up:
-                canTakeAnotherAction = false;
-                movement.start(boardPosition.getPosition(), Direction::up, gameStatsConfig,
+    std::shared_ptr<Cell> characterCell = aCharacter->getActualCell();
+    if (!movement.hasStart()) {
+        if (aCharacter->hasAnInputInfo()) {
+            inputInfo = aCharacter->getNextInputInfo();
+            switch (inputInfo.input) {
+                case InputID::stopMove:
+                    movementAction = false;
+                    break;
+                case InputID::up:
+                    movementAction = true;
+                    direction = Direction::up;
+                    break;
+                case InputID::down:
+                    movementAction = true;
+                    direction = Direction::down;
+                    break;
+                case InputID::right:
+                    movementAction = true;
+                    direction = Direction::right;
+                    break;
+                case InputID::left:
+                    movementAction = true;
+                    direction = Direction::left;
+                    break;
+            }
+        }
+        if (movementAction) {
+            aCharacter->setDirection(direction);
+            if (board.characterCanMove(aCharacter->getActualCell(), direction)) {
+                std::shared_ptr<Cell> newCell = board.getNextCell(characterCell, direction);
+                movement.start(board.getPointFromCell(characterCell), direction, gameStatsConfig,
                                aCharacter->getRace());
-                direction = Direction::up;
-                aCharacter->setDirection(direction);
-                break;
-
-            case InputID::down:
+                characterCell->free();
+                newCell->occupied(id);
+                aCharacter->setCell(newCell);
                 canTakeAnotherAction = false;
-                movement.start(boardPosition.getPosition(), Direction::down, gameStatsConfig,
-                               aCharacter->getRace());
-                direction = Direction::down;
-                aCharacter->setDirection(direction);
-                break;
-            case InputID::right:
-                canTakeAnotherAction = false;
-                movement.start(boardPosition.getPosition(), Direction::right, gameStatsConfig,
-                               aCharacter->getRace());
-                direction = Direction::right;
-                aCharacter->setDirection(direction);
-                break;
-            case InputID::left:
-                canTakeAnotherAction = false;
-                movement.start(boardPosition.getPosition(), Direction::left, gameStatsConfig,
-                               aCharacter->getRace());
-                direction = Direction::left;
-                aCharacter->setDirection(direction);
-                break;
+            }
         }
     } else {
-        if (!movement.hasStart()) {
-            if (inputInfo.input == InputID::up || inputInfo.input == InputID::down ||
-                inputInfo.input == InputID::left || inputInfo.input == InputID::right) {
-
-                movement.start(boardPosition.getPosition(), direction, gameStatsConfig, aCharacter->getRace());
-                canTakeAnotherAction = false;
-            }
-        } else {
-            Position newPosition = movement.doStep();
-            if (!board.checkCollisions(boardPosition, newPosition, aCharacter->getId())) {
-                boardPosition.setPosition(newPosition);
-            } else {
-                movement.stop();
-            }
-            if (movement.isOver()) {
-                canTakeAnotherAction = true;
-            }
+        aCharacter->setPoint(movement.doStep());
+        if (movement.isOver()) {
+            movement.reset();
+            canTakeAnotherAction = true;
         }
     }
+
 
 }
 

@@ -124,7 +124,7 @@ bool GameStatsConfig::canEvade(RaceID race) const{
 
 uint8_t GameStatsConfig::getAmountSteps(RaceID raceId) const {
     RaceInfo raceInfo = races.at(raceId);
-    return  3 + (maxAgility - raceInfo.agility);
+    return  5 + (maxAgility - raceInfo.agility);
 }
 
 uint8_t GameStatsConfig::getCreaturesLimit() const {

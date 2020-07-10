@@ -1,0 +1,50 @@
+#include "Nest.h"
+#include <utility>
+#include <algorithm>
+
+Nest::Nest(uint8_t nestLimit, uint nestId, std::vector<std::shared_ptr<Cell>> cells):
+nestLimit(nestLimit), nestId(nestId), nestCells(std::move(cells)) {}
+
+bool Nest::isFull() const {
+    return creatures.size() == nestLimit;
+}
+
+std::shared_ptr<Cell> Nest::getFreeCell() {
+    std::random_shuffle(nestCells.begin(), nestCells.end());
+    std::shared_ptr<Cell> returnedCell;
+    for (auto &cell : nestCells) {
+        if (cell->isEmpty()) {
+            returnedCell = cell;
+        }
+    }
+    return returnedCell;
+}
+
+void Nest::addCreature(uint id) {
+    creatures.push_back(id);
+}
+
+const std::vector<uint> &Nest::getCreatures() const {
+    return creatures;
+}
+
+uint Nest::getNestId() const {
+    return nestId;
+}
+
+void Nest::removeCreature(uint id) {
+    auto iter = creatures.begin();
+    while (iter != creatures.end()) {
+        if ((*iter) == id) {
+            iter = this->creatures.erase(iter);
+        } else {
+            iter++;
+        }
+    }
+}
+
+int Nest::getAmountCreatures() {
+    return creatures.size();
+}
+
+Nest::~Nest() = default;

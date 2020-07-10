@@ -11,6 +11,8 @@
 
 class StillStateCharacter: public State {
 public:
+    StillStateCharacter();
+
     explicit StillStateCharacter(InputInfo);
 
     ~StillStateCharacter() override;

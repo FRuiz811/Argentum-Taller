@@ -10,6 +10,7 @@ private:
     Movement movement;
     Direction direction;
     bool canTakeAnotherAction = true;
+    bool movementAction = false;
 public:
     DeadStateCharacter();
 

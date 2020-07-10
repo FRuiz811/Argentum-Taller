@@ -4,58 +4,73 @@
 
 #include <vector>
 #include <memory>
+#include <queue>
 #include "../common/Point.h"
 #include "../common/StaticObject.h"
 #include "../common/ObjectLayer.h"
 #include "../common/PlayerInfo.h"
 #include "GameStats.h"
 #include "GameStatsConfig.h"
-#include "NestPoint.h"
-#include "NestPointContainer.h"
+#include "Nest.h"
+#include "NestContainer.h"
 #include "BoardPosition.h"
+#include "Cell.h"
+#include "../common/TiledMap.h"
 
 class Board {
 private:
     uint width{};
     uint height{};
+    uint cols{}, rows{};
     Point initialPoint;
-    std::vector<StaticObject> collisionObjects;
-    std::vector<StaticObject> cities;
-    NestPointContainer nestPointContainer;
-    std::unordered_map<uint, BoardPosition&, std::hash<uint>> gameObjectPositions;
+    NestContainer nestContainer;
+    std::vector<std::vector<std::shared_ptr<Cell>>> cells;
+
+    void addCity(StaticObject &city);
+    std::tuple<int, int> convertPoint(const Point &point);
+    void addCollisonObject(StaticObject &object);
+    std::pair<int, int> getCorrectPosition(std::shared_ptr<Cell> aCell, Direction aDirection);
 public:
     Board();
 
-    Board(std::vector<ObjectLayer> objectLayers, uint width,
-            uint height, uint8_t nestCreaturesLimit);
+    Board(TiledMap &map, uint8_t nestCreaturesLimit);
 
     virtual ~Board();
 
-    bool checkCollisions(BoardPosition& aBoardPosition, Position& newPosition, uint id);
+    std::shared_ptr<Cell> getCellFromPoint(const Point& aPoint);
 
-    bool checkCreaturesCollisions(BoardPosition& aBoardPosition, const Position& newPosition, uint id);
+    Point getPointFromCell(std::shared_ptr<Cell> aCell);
 
-    Point &getInitialPoint();
+    std::shared_ptr<Cell> getCell(uint x, uint y);
 
-    Point getInitialPointInNest(NestPoint& nestPoint);
+    std::shared_ptr<Cell> getInitialCell();
 
-    std::vector<uint> getCreaturesInNestPoint(uint nestId);
+    std::vector<std::pair<uint8_t, std::shared_ptr<Cell>>> getAdjacents(std::tuple<uint, uint>, uint8_t distance);
 
-    bool isInsideNest(Position& aPosition, uint nestId);
+    uint8_t getDistance(const std::shared_ptr<Cell>& firstCell, const std::shared_ptr<Cell>& secondCell);
 
-    bool isInsideACity(Position& aPosition);
+    std::shared_ptr<Cell> getInitialCellInNest(Nest& nest);
 
-    uint isInsideANest(Position& aPosition);
+    std::vector<uint> getCreaturesInNest(uint nestId);
 
-    uint getIdFromPoint(Point& aPoint);
+    Nest& getAvailableNest();
 
-    NestPoint& getAvailableNestPoint();
+    std::vector<std::shared_ptr<Cell>> setCellsInNest(const std::shared_ptr<Cell>& aNestCell, uint nestId);
 
-    void addGameObjectPosition(uint id, BoardPosition& boardPosition);
+    bool characterCanMove(const std::shared_ptr<Cell>& aCell, Direction aDirection);
 
-    bool checkCollisionsAndCities(Position &position);
+    bool creatureCanMove(const std::shared_ptr<Cell>& aCell, Direction aDirection);
 
-    void deleteGameObjectPosition(const uint id);
+    std::shared_ptr<Cell> getNextCell(const std::shared_ptr<Cell>& aCell, Direction aDirection);
+
+    std::shared_ptr<Cell> getBestCell(std::shared_ptr<Cell> actualCell, std::shared_ptr<Cell> DestinationCell);
+
+    Direction getDirection(const std::shared_ptr<Cell>& actualCell, const std::shared_ptr<Cell>& DestinationCell);
+
+    void removeCreatureFromNest(const std::shared_ptr<Cell>& aCell);
+
+    int getAmountCreatures();
+
 };
 
 

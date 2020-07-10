@@ -1,3 +1,4 @@
+#include <iostream>
 #include "GameObjectsContainer.h"
 
 GameObjectsContainer::GameObjectsContainer() = default;
@@ -26,6 +27,19 @@ std::shared_ptr<GameObject> GameObjectsContainer::getGameObject(uint id) {
     return gameObjects.at(id);
 }
 
-void GameObjectsContainer::deleteGameObject(uint id) {
+void GameObjectsContainer::deleteGameObject(uint id, Board &board) {
+    this->gameObjects.at(id)->remove(board);
     this->gameObjects.erase(id);
+}
+
+void GameObjectsContainer::removeDeadCreatures(Board &board) {
+    auto iter = this->gameObjects.begin();
+    while (iter != this->gameObjects.end()) {
+        if ((*iter).second->isReadyToRemove()) {
+            (*iter).second->remove(board);
+            iter = this->gameObjects.erase(iter);
+        } else {
+            iter++;
+        }
+    }
 }

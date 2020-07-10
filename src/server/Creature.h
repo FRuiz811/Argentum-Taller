@@ -12,7 +12,7 @@ private:
 
     InputInfo generateRandomInputInfo();
 public:
-    Creature(uint id, CreatureID creatureId, uint nestId, Point aPoint);
+    Creature(uint id, CreatureID creatureId, std::shared_ptr<Cell> initialCell, Point initialPoint);
 
     void update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board,
                 GameStatsConfig &gameStatsConfig) override;
@@ -29,6 +29,9 @@ public:
 
     virtual ~Creature();
 
+    void remove(Board &board) override;
+
+    bool isReadyToRemove() override;
 
 };
 
