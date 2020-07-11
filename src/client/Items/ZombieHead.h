@@ -8,7 +8,9 @@ class ZombieHead: public Head {
 public:
     ZombieHead(const TextureManager& manager);
 
-    virtual void render(int posX, int posY, int direction);
+    virtual void render(int posX, int posY);
+
+    virtual void update(int dir);
 
     ~ZombieHead();
 

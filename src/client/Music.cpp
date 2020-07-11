@@ -26,6 +26,10 @@ Mix_Music* Music::loadMusic(const std::string &fileName) {
 	return this->music;
 }
 
+void Music::setVolume(int volume) const{
+	Mix_VolumeMusic(volume);
+}
+
 void Music::pauseMusic() const {
 	if (Mix_PausedMusic() == 1)
 		Mix_ResumeMusic();

@@ -9,16 +9,21 @@ class Body: public Item {
 protected:
     int frame{0};
     float elapsed{0.0};
-    float animationSpeed{25.0};
+    float animationSpeed{30.0};
     int totalFrames{5};
     BodyID id{BodyID::Nothing};
+    Direction direction{Direction::down};
 public:
     Body(const Texture& texture, const int width, const int height, BodyID id = BodyID::Nothing) : 
         Item(texture, width, height), id(id) {}
     
-    virtual void render(int posX, int posY, int direction) = 0;
+    virtual void render(int posX, int posY) = 0;
 
-    void update(double dt) {
+    void update(double dt, Direction dir) {
+        if (this->direction != dir) {
+            this->direction = dir;
+            this->elapsed = 0;
+        }
         this->elapsed += dt;
         this->frame = int(this->elapsed/this->animationSpeed) % this->totalFrames;
     }

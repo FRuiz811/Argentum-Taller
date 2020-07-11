@@ -7,15 +7,15 @@
 TurtleShield::TurtleShield(const TextureManager& manager) :
  Shield(manager.getTexture(TextureID::TurtleShield),WIDTH_BODY,HEIGHT_BODY,ShieldID::TurtleShield) {}
 
-void TurtleShield::render(int posX, int posY, int direction) {
-    setDirection(direction);
-    SDL_Rect srcBody = {this->width*frame, this->height*direction, this->width, this->height};
+void TurtleShield::render(int posX, int posY) {
+    SDL_Rect srcBody = {this->width*frame, this->height*int(direction), this->width, this->height};
 	SDL_Rect dstBody = {posX, posY, this->width, this->height};
     this->texture.render(srcBody, dstBody);
 }
 
-void TurtleShield::update(double dt) {
-    Shield::update(dt);
+void TurtleShield::update(double dt,Direction dir) {
+    setDirection(int(dir));
+    Shield::update(dt,dir);
 }
 
 void TurtleShield::setDirection(int direction) {

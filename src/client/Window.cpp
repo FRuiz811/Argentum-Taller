@@ -121,9 +121,14 @@ Window::~Window() {
 		this->window = nullptr;
 	}
 
-	Mix_CloseAudio();
-	Mix_Quit();
-	IMG_Quit();
 	TTF_Quit();
+	IMG_Quit();
+	int numtimesopened, frequency, channels;
+	Uint16 format;
+	numtimesopened = Mix_QuerySpec(&frequency, &format, &channels);
+	for (int i = 0; i < numtimesopened; i++)
+		Mix_CloseAudio();
+	while(Mix_Init(0))
+    	Mix_Quit();
 	SDL_Quit();
 }

@@ -4,12 +4,14 @@
 #include "Character.h"
 #include "Camera.h"
 #include "TextureManager.h"
+#include "MusicManager.h"
 #include "../common/Point.h"
 #include "Items/Head.h"
 #include "Items/Body.h"
 #include "Items/Helmet.h"
 #include "Items/Shield.h"
 #include "Items/Weapon.h"
+#include "Items/Animation.h"
 #include "characterStates/CharacterState.h"
 #include "../common/Identificators.h"
 #include "../common/PlayerInfo.h"
@@ -23,6 +25,7 @@ class Player : public Character {
 private:
 	Point center;
 	const TextureManager& manager;
+	const MusicManager& mixer;
 	PlayerInfo playerInfo;	
 	std::shared_ptr<Body>  body = nullptr;
 	std::shared_ptr<CharacterState> state = nullptr;
@@ -31,7 +34,7 @@ private:
 	std::shared_ptr<Shield> shield = nullptr;
 	std::shared_ptr<Weapon> weapon = nullptr;
 	int frameHead;
-	uint health,gold,mana;
+	std::shared_ptr<Animation> animation = nullptr;
 
 	void setArmor(BodyID newArmor);
 	void setShield(ShieldID newShield);
@@ -42,7 +45,7 @@ private:
 	void setState(CharacterStateID newState);
 
 public:
-	Player(const TextureManager& manager, const PlayerInfo& playerInfo);
+	Player(const TextureManager& manager, const PlayerInfo& playerInfo, const MusicManager& mixer);
 
 	virtual void render(Camera& camera);
 	virtual void update(double dt);

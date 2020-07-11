@@ -8,6 +8,7 @@
 #include <iostream>
 #include "../common/Decoder.h"
 #include "../common/SocketException.h"
+#include "../common/Random.h"
 
 #define WRONGRACE "Raza invalida. Seleccione entre: elfo, gnomo, humano, enano."
 #define WRONGCLASS "Clase invalida. Seleccione entre: mago, clerigo, paladin, guerrero"
@@ -17,6 +18,7 @@
 #define PLAYERINFOMSG 0x01
 #define OBJECTSINFOMSG 0x02
 #define INTERACTMSG 0x05
+
 
 Game::Game() : window(ARGENTUM), protocol(), textureManager(window.getRenderer()),
     musicManager(), npcs(), commandQueue(true), dataQueue(false),
@@ -31,7 +33,7 @@ void Game::recieveMapAndPlayer() {
     PlayerInfo info = Decoder::decodePlayerInfo(msgPlayerInfo);
 
     this->map = std::make_shared<GameMap>(tiledMap,this->window.getRenderer());
-    this->player = std::make_shared<Player>(this->textureManager, info);
+    this->player = std::make_shared<Player>(this->textureManager, info, this->musicManager);
 }
 
 bool Game::init(char* argv[]) {
@@ -56,9 +58,9 @@ bool Game::init(char* argv[]) {
 }
 
 int Game::run() {
-    const Music& musica = musicManager.getMusic(MusicID::Start);
+    const Music& musica = musicManager.getMusic(MusicID::BackGround);
 	musica.playMusic(-1);
-
+    musica.setVolume(MIX_MAX_VOLUME/4);
     Presentation presentation(window, textureManager);
 	if (presentation.run())
 		return 0;
@@ -93,7 +95,7 @@ int Game::run() {
         
             this->update();
             this->render();
-
+            this->sounds();
 		    endLoop = chrono.lap();
 		    sleep = GAMELOOPTIME - (endLoop - initLoop);
 		    if (sleep > 0)
@@ -128,7 +130,7 @@ void Game::update() {
             for (GameObjectInfo& npc : objects) {
                 auto iter = this->npcs.find(npc.getId());
                 if (iter == this->npcs.end()){
-                    NPC aNpc(this->textureManager,npc);
+                    NPC aNpc(this->textureManager,npc,this->musicManager);
                     newNpcs.insert({npc.getId(),aNpc});
                 } else {
                     (*iter).second.updatePlayerInfo(npc);
@@ -163,6 +165,32 @@ void Game::render() {
 		this->map->drawHighLayers(*camera);
 
 		this->window.render();
+
+}
+
+void Game::sounds() {
+    int random = Random::get(1,1000);
+    MusicID effectId = MusicID::Nothing;
+    switch (random) {
+        case 1:
+            effectId = MusicID::Rain;
+            break;
+        case 2:
+            effectId = MusicID::Eagle;
+            break;
+        case 3:
+            effectId = MusicID::Wolf;
+            break;
+        case 4:
+            effectId = MusicID::Raven;
+            break;
+        default:
+            break;
+    }
+    if (effectId != MusicID::Nothing){
+        const Effect& effect = this->musicManager.getEffect(MusicID::Rain);
+        effect.playEffect();
+    }
 }
 
 void Game::close() {

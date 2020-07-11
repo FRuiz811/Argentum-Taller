@@ -29,6 +29,7 @@ GameCharacter::GameCharacter(uint id, RaceID aRace, GameClassID aClass, std::sha
 }
 
 void GameCharacter::update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) {
+    this->infoInteracting.type = 0;
     if (state->isOver()) {
         if (hasAnInputInfo() && !state->hasNextState()) {
             state->setNextState(getNextInputInfo());

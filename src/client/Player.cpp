@@ -24,53 +24,64 @@
 #include "Items/LongSword.h"
 #include "Items/Hammer.h"
 #include "Items/GnarledStick.h"
+#include "Items/HitAnimation.h"
+#include "Items/MagicArrowAnimation.h"
+#include "Items/ExplotionAnimation.h"
+#include "Items/MissileAnimation.h"
+#include "Items/MeditateAnimation.h"
+#include "Items/CureAnimation.h"
 #include <SDL2/SDL.h>
 #include <iostream>
 #include "characterStates/StillState.h"
 #include "characterStates/MoveState.h"
-#include "characterStates/DeadState.h"
 #include "characterStates/MeditateState.h"
 #include "characterStates/InteractState.h"
 #include "characterStates/AttackState.h"
 
 
-Player::Player(const TextureManager& manager, const PlayerInfo& playerInfo) :
-  Character(playerInfo.getX(),playerInfo.getY(),playerInfo.getId()),
-  center(playerInfo.getX(),playerInfo.getY()), manager(manager), playerInfo(playerInfo) {
+Player::Player(const TextureManager& manager, const PlayerInfo& playerInfo,
+  const MusicManager& mixer) : Character(playerInfo.getX(),playerInfo.getY(),
+  playerInfo.getId()), center(playerInfo.getX(),playerInfo.getY()),
+  manager(manager), playerInfo(playerInfo), mixer(mixer) {
 
-    this->direction = playerInfo.getDirection();
+  this->direction = playerInfo.getDirection();
 	this->frameHead = 0;
-    this->state = std::shared_ptr<CharacterState>(new StillState());
+  this->state = std::shared_ptr<CharacterState>(new StillState());
 	setArmor(playerInfo.getBodyID());
 	setHead(playerInfo.getHeadID());
 	setHelmet(playerInfo.getHelmetID());
 	setShield(playerInfo.getShieldID());
-    setWeapon(playerInfo.getWeaponID());
+  setWeapon(playerInfo.getWeaponID());
 }
 
 void Player::render(Camera& camera) {
- 	this->body->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y),int(this->direction));
+ 	this->body->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y));
   if (this->head != nullptr)
-    this->head->render(int(posX+4-camera.getCameraPosition().x), int((posY-this->body->getHeight()/2)-camera.getCameraPosition().y), this->frameHead);
+    this->head->render(int(posX+4-camera.getCameraPosition().x), int((posY-this->body->getHeight()/2)-camera.getCameraPosition().y));
   if (this->weapon != nullptr)
-    this->weapon->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y),int(this->direction));
+    this->weapon->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y));
   if (this->shield != nullptr)
-	  this->shield->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y),int(this->direction));
+	  this->shield->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y));
   if (this->helmet != nullptr)
-    this->helmet->render(int(posX+4-camera.getCameraPosition().x), int((posY-this->body->getHeight()/2)-camera.getCameraPosition().y), this->frameHead);
+    this->helmet->render(int(posX+4-camera.getCameraPosition().x), int((posY-this->body->getHeight()/2)-camera.getCameraPosition().y));
+  if (this->animation != nullptr)
+    this->animation->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y));
 }
+
 
 void Player::update(double dt) {
   if(this->state != nullptr &&
   this->state->getState() == CharacterStateID::Move) {
     Point aux(posX, posY);
     this->center = aux;
-    this->body->update(dt);
+    this->body->update(dt,direction);
     if (this->weapon != nullptr)
-      this->weapon->update(dt);
+      this->weapon->update(dt,direction);
     if (this->shield != nullptr)
-      this->shield->update(dt);
+      this->shield->update(dt,direction);
   }
+  if (this->animation != nullptr)
+    this->animation->update();
 }
 
 void Player::setFrameHead() {
@@ -88,6 +99,10 @@ void Player::setFrameHead() {
         this->frameHead = 3;
         break;
     }
+    if (this->head != nullptr)
+      this->head->update(this->frameHead);
+    if (this->helmet != nullptr)
+      this->helmet->update(this->frameHead);
 }
 
 void Player::updatePlayerInfo(PlayerInfo info) {
@@ -222,6 +237,7 @@ InputInfo Player::handleEvent(SDL_Event& event, Camera& camera) {
             Point coord = camera.calculateGlobalPosition(Point(x,y));
             input = this->state->selectTarget(*this, coord);
           }
+          this->animation = std::shared_ptr<Animation>(new CureAnimation(this->manager,mixer.getEffect(MusicID::Cure)));
   }
     return input;
 }
@@ -238,15 +254,13 @@ void Player::setState(CharacterStateID newState) {
 			case CharacterStateID::Move:
 				this->state = std::shared_ptr<CharacterState>(new MoveState());
 				break;
-			case CharacterStateID::Dead:
-				this->state = std::shared_ptr<CharacterState>(new DeadState());
-				break;
-            case CharacterStateID::Meditate:
-                this->state = std::shared_ptr<CharacterState>(new MeditateState());
-                break;
-            case CharacterStateID::Attack:
-                this->state = std::shared_ptr<CharacterState>(new AttackState());
-                break;
+      case CharacterStateID::Meditate:
+        this->state = std::shared_ptr<CharacterState>(new MeditateState());
+        //this->animation = std::shared_ptr<Animation>(new MeditateEffect());
+        break;
+      case CharacterStateID::Attack:
+        this->state = std::shared_ptr<CharacterState>(new AttackState());
+        break;
 		}
 	}
 }
@@ -298,6 +312,8 @@ void Player::setArmor(BodyID newArmor) {
             this->body = std::shared_ptr<Body>(new GhostBody(this->manager));
             break;
     }
+    if (this->body != nullptr)
+      this->body->update(0,direction);
   }
 }
 
@@ -333,6 +349,8 @@ void Player::setShield(ShieldID newShield) {
             this->shield = std::shared_ptr<Shield>(new IronShield(this->manager));
             break;
 		}
+    if (this->shield != nullptr)
+      this->shield->update(0,direction);
 	}
 }
 
@@ -370,6 +388,8 @@ void Player::setWeapon(WeaponID newWeapon){
             this->weapon = std::shared_ptr<Weapon>(new ElficFlaute(this->manager));
             break;
 		}
+    if (this->weapon != nullptr)
+      this->weapon->update(0,direction);
 	}
 }
 
