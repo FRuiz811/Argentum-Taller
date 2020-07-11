@@ -1,5 +1,6 @@
 #include "GameStatsConfig.h"
 #include "../common/Random.h"
+#include "ItemTranslator.h"
 #include <iostream>
 
 GameStatsConfig::GameStatsConfig(rapidjson::Document &json) {
@@ -36,25 +37,30 @@ GameStatsConfig::GameStatsConfig(rapidjson::Document &json) {
     for (auto &aItem: itemsArray) {
         items.insert(std::pair<ItemsInventoryID, ItemInfo>(ItemsInventoryID(aItem["id"].GetInt()), createItem(aItem)));
     }
+
+    rapidjson::Value::Array creatuesArray = json["creatures"].GetArray();
+    for (auto &aCreature : racesArray) {
+        creatures.insert(std::pair<CreatureID, CreatureInfo>(CreatureID(aCreature["id"].GetInt()), createCreatureInfo(aCreature)));
+    }
 }
 
 RaceInfo GameStatsConfig::createRaceInfo(rapidjson::Value &value) {
     RaceInfo aRaceInfo{};
-    aRaceInfo.intelligent = value["intelligent"].GetInt();
-    aRaceInfo.recoveryTime = value["recoveryTime"].GetInt();
-    aRaceInfo.constitution = value["constitution"].GetInt();
-    aRaceInfo.strength = value["strength"].GetInt();
-    aRaceInfo.agility = value["agility"].GetInt();
-    aRaceInfo.health = value["health"].GetInt();
-    aRaceInfo.mana = value["mana"].GetInt();
+    aRaceInfo.intelligent = value["intelligent"].GetFloat();
+    aRaceInfo.recoveryTime = value["recoveryTime"].GetFloat();
+    aRaceInfo.constitution = value["constitution"].GetFloat();
+    aRaceInfo.strength = value["strength"].GetFloat();
+    aRaceInfo.agility = value["agility"].GetFloat();
+    aRaceInfo.health = value["health"].GetFloat();
+    aRaceInfo.mana = value["mana"].GetFloat();
     return aRaceInfo;
 }
 
 GameClassInfo GameStatsConfig::createGameClass(rapidjson::Value &value) {
     GameClassInfo aGameClassInfo{};
-    aGameClassInfo.health = value["health"].GetInt();
-    aGameClassInfo.mana = value["mana"].GetInt();
-    aGameClassInfo.meditation = value["meditation"].GetInt();
+    aGameClassInfo.health = value["health"].GetFloat();
+    aGameClassInfo.mana = value["mana"].GetFloat();
+    aGameClassInfo.meditation = value["meditation"].GetFloat();
     return aGameClassInfo;
 }
 
@@ -75,28 +81,34 @@ ItemInfo GameStatsConfig::createItem(rapidjson::Value& value) {
     return aItemInfo;
 }
 
+CreatureInfo GameStatsConfig::createCreatureInfo(rapidjson::Value& value) {
+    CreatureInfo aCreatureInfo{};
+    aCreatureInfo.strength = value["strength"].GetFloat();
+    aCreatureInfo.agility = value["agility"].GetFloat();
+    aCreatureInfo.health = value["health"].GetFloat();
+    return aCreatureInfo;
+}
+
 const ItemInfo GameStatsConfig::getItem(ItemsInventoryID id) {
     return items.at(id);
 }
 
-float GameStatsConfig::getMaxHealth(RaceID race, GameClassID gameClass, uint level) {
-    float max = races.at(race).constitution * gameClasses.at(gameClass).health * races.at(race).health * level;
-    std::cout << max << std::endl;
+float GameStatsConfig::getMaxHealth(RaceID raceId, GameClassID gameClass, uint level) {
+    float max = races.at(raceId).constitution * gameClasses.at(gameClass).health * races.at(raceId).health * level;
     return max;
 }
 
-float GameStatsConfig::getRecoveryHealth(RaceID race, GameClassID gameClass) {
-    return 0;
+float GameStatsConfig::getRecoveryHealth(RaceID raceId) {
+    return races.at(raceId).recoveryTime;
 }
 
-float GameStatsConfig::getMaxMana(RaceID race, GameClassID gameClass, uint level) {
-    float max = races.at(race).intelligent*races.at(race).mana*gameClasses.at(gameClass).mana*level;
-    std::cout <<"mana: " << max << std::endl;
+float GameStatsConfig::getMaxMana(RaceID raceId, GameClassID gameClass, uint level) {
+    float max = races.at(raceId).intelligent * races.at(raceId).mana * gameClasses.at(gameClass).mana * level;
     return max;
 }
 
-float GameStatsConfig::getRecoveryMana(RaceID race, GameClassID gameClass) {
-    return 0;
+float GameStatsConfig::getRecoveryMana(RaceID race) {
+    return races.at(race).recoveryTime;
 }
 
 float GameStatsConfig::getRecoveryManaMeditation(RaceID race, GameClassID gameClass) {
@@ -104,27 +116,32 @@ float GameStatsConfig::getRecoveryManaMeditation(RaceID race, GameClassID gameCl
 }
 
 float GameStatsConfig::getGoldDrop(uint maxHealthNPC){
-    return 100;
+    return Random::getFloat(goldRandMin, goldRandMax) * maxHealthNPC;
 }
 
 float GameStatsConfig::getMaxGold(uint level){
-    return GameStatsConfig::goldMaxMult * pow(level, GameStatsConfig::goldMaxPot);
+    return goldMaxMult * pow(level, goldMaxPot);
 }
 
 float GameStatsConfig::getNextLevelLimit(uint level){
-    return expMaxMult * pow(level,expMaxPot);
+    return expMaxMult * pow(level, expMaxPot);
 }
 
-float GameStatsConfig::getExp(RaceID race, GameClassID gameClass, uint level, uint enemyLevel) {
-    return 0;
+float GameStatsConfig::getExp(float damage, uint level, uint enemyLevel) {
+    return damage * std::max((int)(enemyLevel - level + levelDifference), 0);
 }
 
-float GameStatsConfig::getAdditionalExp(RaceID race, GameClassID gameClass, uint level, uint enemyLevel){
-    return 10;
+float GameStatsConfig::getAdditionalExp(float damage, float enemyMaxLife , uint level, uint enemyLevel){
+    return Random::getFloat(expRandMin, expRandMax) * enemyMaxLife * std::max((int)(enemyLevel - level + levelDifference), 0);
 }
 
-float GameStatsConfig::getDamage(RaceID race, WeaponID weaponId){
-    return 10;
+float GameStatsConfig::getDamage(RaceID raceId, WeaponID weaponId){
+    RaceInfo aRaceInfo = races.at(raceId);
+    if (weaponId == WeaponID::Nothing) {
+        return aRaceInfo.strength;
+    }
+    ItemInfo aWeapon = items.at(ItemTranslator::weaponToItem(weaponId));
+    return aRaceInfo.strength * Random::get(aWeapon.minDamage, aWeapon.maxDamage);
 }
 
 bool GameStatsConfig::canEvade(RaceID race){
@@ -158,19 +175,42 @@ float GameStatsConfig::getDistance(){
 }
 
 uint8_t GameStatsConfig::getAmountSteps(CreatureID creatureId) {
-    return 20;
+    return 8 + (maxAgility - creatures.at(creatureId).agility);
 }
 
-float GameStatsConfig::getDamage(CreatureID){
-    return 5;
+float GameStatsConfig::getDamage(CreatureID creatureId){
+    return creatures.at(creatureId).strength;
 }
 
 float GameStatsConfig::getDefense(BodyID bodyId, ShieldID shieldId, HelmetID helmetId) {
-    return 0;
+    float defense = 0.0;
+    ItemInfo aItemInfo;
+    if (bodyId != BodyID::Nothing) {
+        aItemInfo = items.at(ItemTranslator::bodyToItem(bodyId));
+        defense += Random::get(aItemInfo.minDefense, aItemInfo.maxDefense);
+    }
+    if (shieldId != ShieldID::Nothing) {
+        aItemInfo = items.at(ItemTranslator::shieldToItem(shieldId));
+        defense += Random::get(aItemInfo.minDefense, aItemInfo.maxDefense);
+    }
+    if (helmetId != HelmetID::Nothing) {
+        aItemInfo = items.at(ItemTranslator::helmetToItem(helmetId));
+        defense += Random::get(aItemInfo.minDefense, aItemInfo.maxDefense);
+    }
+    return defense;
 }
 
 float GameStatsConfig::getDefense(CreatureID creatureId) {
     return 0;
+}
+
+bool GameStatsConfig::canEvade(CreatureID creatureId) {
+    double base = Random::getFloat(evadeRandMin,evadeRandMax);
+    return pow(base, creatures.at(creatureId).agility) < evadeProbability;
+}
+
+float GameStatsConfig::getMaxHealth(CreatureID creatureId, uint level) {
+    return creatures.at(creatureId).health * level;
 }
 
 int GameStatsConfig::getInventoryLimit() {
@@ -184,6 +224,7 @@ GameStatsConfig::~GameStatsConfig() = default;
 std::unordered_map<RaceID, RaceInfo, std::hash<RaceID>> GameStatsConfig::races;
 std::unordered_map<GameClassID, GameClassInfo, std::hash<GameClassID>> GameStatsConfig::gameClasses;
 std::unordered_map<ItemsInventoryID, ItemInfo, std::hash<ItemsInventoryID>> GameStatsConfig::items;
+std::unordered_map<CreatureID, CreatureInfo, std::hash<CreatureID>> GameStatsConfig::creatures;
 std::string GameStatsConfig::port{};
 float GameStatsConfig::goldRandMin = 0.0;
 float GameStatsConfig::goldRandMax = 0.0;
@@ -196,7 +237,7 @@ float GameStatsConfig::evadeRandMax = 0.0;
 float GameStatsConfig::evadeProbability = 0.0;
 float GameStatsConfig::expRandMin = 0.0;
 float GameStatsConfig::expRandMax = 0.0;
-float GameStatsConfig::levelDifference = 0.0;
+uint8_t GameStatsConfig::levelDifference = 0;
 float GameStatsConfig::maxAgility = 0.0;
 uint8_t GameStatsConfig::creaturesLimit = 0.0;
 uint8_t GameStatsConfig::nestCreaturesLimit = 0.0;

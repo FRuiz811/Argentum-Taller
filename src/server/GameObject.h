@@ -16,6 +16,7 @@ protected:
     std::string textureHashId;
     Direction direction;
     NPCInfo infoInteracting;
+    uint level;
 public:
 	explicit GameObject(uint id, Point initialPoint, std::shared_ptr<Cell> initialCell, Direction aDirection = Direction::down);
 
@@ -32,6 +33,12 @@ public:
     std::shared_ptr<Cell> &getActualCell();
 
     void setTextureHashId(const std::string &textureHashId);
+
+    virtual float getMaxLife() = 0;
+
+    uint getLevel();
+
+    void upLevel();
 
     virtual void update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board& board) = 0;
 

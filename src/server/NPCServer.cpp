@@ -51,4 +51,8 @@ void NPCServer::remove(Board &board) {
     cell->free();
 }
 
+float NPCServer::getMaxLife() {
+    return 0;
+}
+
 

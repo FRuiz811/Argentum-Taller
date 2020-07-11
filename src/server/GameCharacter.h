@@ -17,7 +17,6 @@ private:
     uint life;
     uint mana;
     float exp;
-    uint level{};
     std::unique_ptr<State> state;
     std::vector<ItemsInventoryID> inventory;
     InputQueue queueInputs;
@@ -42,7 +41,11 @@ public:
 
     WeaponID getWeapon();
 
-	void update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) override;
+    void gainExp(float newExp);
+
+    float getMaxLife() override;
+
+    void update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) override;
 
     uint receiveDamage(float damage) override;
 

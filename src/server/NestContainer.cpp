@@ -45,7 +45,8 @@ int NestContainer::getAmountCreatures() {
 
 uint8_t NestContainer::getNextIndex() {
     nestIndex++;
-    return  nestIndex >= length ? 0 : nestIndex;
+    nestIndex = nestIndex >= length ? 0 : nestIndex;
+    return nestIndex;
 }
 
 NestContainer::NestContainer() = default;

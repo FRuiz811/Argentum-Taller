@@ -34,6 +34,7 @@ Creature::Creature(uint id, CreatureID creatureId, std::shared_ptr<Cell> initial
     }
     this->state = std::unique_ptr<State>(new StillStateCreature());
     life = 50;
+    level = 1;
 }
 
 void Creature::notify(uint pursuitId) {
@@ -58,18 +59,22 @@ CreatureID Creature::getCreatureId() const {
 }
 
 uint Creature::receiveDamage(float damage) {
-    float defense = GameStatsConfig::getDefense(creatureId);
-    float realDamage = damage - defense;
-    if (realDamage > 0) {
-        life = (life - realDamage > 0) ? life - realDamage : 0;
-    }
-    std::cout << "Character attack damage: " << damage << std::endl;
-    std::cout << "Enemy defense: " << defense << std::endl;
-    std::cout << "Character real damage: " << realDamage << std::endl;
-    std::cout << "Enemy life is: " << life << std::endl;
-    if (isDead()) {
-        std::cout << "Enemy is dead" << realDamage << std::endl;
-        //Hacer drop aca.
+    if (GameStatsConfig::canEvade(creatureId)) {
+        std::cout << "Enemy fail attack" << std::endl;
+    } else {
+        float defense = GameStatsConfig::getDefense(creatureId);
+        float realDamage = damage - defense;
+        if (realDamage > 0) {
+            life = (life - realDamage > 0) ? life - realDamage : 0;
+        }
+        std::cout << "Character attack damage: " << damage << std::endl;
+        std::cout << "Enemy defense: " << defense << std::endl;
+        std::cout << "Character real damage: " << realDamage << std::endl;
+        std::cout << "Enemy life is: " << life << std::endl;
+        if (isDead()) {
+            std::cout << "Enemy is dead" << realDamage << std::endl;
+            //Hacer drop aca.
+        }
     }
     return life;
 }
@@ -90,6 +95,10 @@ bool Creature::isReadyToRemove() {
 void Creature::remove(Board &board) {
     board.removeCreatureFromNest(cell);
     cell->free();
+}
+
+float Creature::getMaxLife() {
+    return GameStatsConfig::getMaxHealth(creatureId, level);
 }
 
 Creature::~Creature() = default;

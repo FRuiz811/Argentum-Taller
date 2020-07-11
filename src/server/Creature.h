@@ -22,6 +22,8 @@ public:
 
     bool isDead();
 
+    float getMaxLife() override;
+
     CharacterStateID getStateId() override;
 
     uint receiveDamage(float damage) override;

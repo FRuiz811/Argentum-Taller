@@ -19,7 +19,7 @@ void GameObject::setTextureHashId(const std::string &textureHashId) {
 }
 
 GameObject::GameObject(uint id, Point initialPoint, std::shared_ptr<Cell> initialCell, Direction aDirection) :
-    id(id), point(initialPoint), cell(initialCell), direction(aDirection) {}
+    id(id), point(initialPoint), cell(initialCell), direction(aDirection), level(1) {}
 
 std::shared_ptr<Cell> &GameObject::getActualCell() {
     return cell;
@@ -39,6 +39,14 @@ NPCInfo GameObject::getInteractInfo() const {
 
 void GameObject::setInteractInfo(NPCInfo info) {
     this->infoInteracting = info;
+}
+
+uint GameObject::getLevel() {
+    return level;
+}
+
+void GameObject::upLevel() {
+    level++;
 }
 
 GameObject::~GameObject()= default;

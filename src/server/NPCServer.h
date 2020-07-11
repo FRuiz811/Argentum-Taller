@@ -23,6 +23,8 @@ public:
 
     uint receiveDamage(float damage) override;
 
+    float getMaxLife() override;
+
     bool isDead() override;
 
     void remove(Board &board) override;

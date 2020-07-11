@@ -7,7 +7,7 @@
 class AttackStateCharacter : public State {
 private:
     uint8_t timeBetweenAttacks = 0;
-    bool enemyIsAttack = false;
+    bool enemyReceiveDamage = false;
 public:
     AttackStateCharacter(InputInfo info);
 

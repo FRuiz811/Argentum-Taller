@@ -20,7 +20,7 @@ void ThPlayer::run() {
             if (canUpdate) {
                 this->protocol->send(Decoder::encodePlayerInfo(character->getPlayerInfo()));
                 this->protocol->send(Decoder::encodeGameObjects(gameObjectsInfo));
-                if (this->character->getStateId() == CharacterStateID::Interact && this->interacting.type !=0){
+                if (this->character->getStateId() == CharacterStateID::Interact && this->interacting.type != 0) {
                     this->protocol->send(Decoder::encodeNPCInfo(interacting));
                 }
                 canUpdate = false;

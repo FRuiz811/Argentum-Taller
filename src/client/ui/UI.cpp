@@ -61,7 +61,7 @@ void UI::updateMana(){
 
     int playerMana = this->playerTarget->getMana();
     int playerMaxMana = this->playerTarget->getMaxMana();
-    int mana = (playerMana * (widthSegment-2))/playerMaxMana;
+    int mana = playerMaxMana > 0 ? (playerMana * (widthSegment-2))/playerMaxMana : 0;
     std::string manaTotal = "("+ std::to_string(playerMana) + "/" + std::to_string(playerMaxMana) + ")";
     SDL_Texture* manaTexture = font.createText(manaTotal,&(window.getRenderer()), &width_text, &height_text);
     this->info.push_back(manaTexture);

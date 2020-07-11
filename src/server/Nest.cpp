@@ -1,6 +1,5 @@
 #include "Nest.h"
 #include <utility>
-#include <algorithm>
 
 Nest::Nest(uint8_t nestLimit, uint nestId, std::vector<std::shared_ptr<Cell>> cells):
 nestLimit(nestLimit), nestId(nestId), nestCells(std::move(cells)) {}
@@ -10,7 +9,6 @@ bool Nest::isFull() const {
 }
 
 std::shared_ptr<Cell> Nest::getFreeCell() {
-    std::random_shuffle(nestCells.begin(), nestCells.end());
     std::shared_ptr<Cell> returnedCell;
     for (auto &cell : nestCells) {
         if (cell->isEmpty()) {

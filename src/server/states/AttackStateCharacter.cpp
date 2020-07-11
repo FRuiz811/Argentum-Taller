@@ -18,12 +18,19 @@ void AttackStateCharacter::performTask(uint id, std::unordered_map<uint, std::sh
             std::shared_ptr<Cell> enemyCell = board.getCellFromPoint(inputInfo.position);
             if (enemyCell->getGameObjectId() != 0) {
                 std::shared_ptr<GameObject> aEnemy = gameObjects.at(enemyCell->getGameObjectId());
-                if (!aEnemy->isDead() && board.getDistance(aCharacter->getActualCell(), enemyCell) <= 2) {
-                    aEnemy->receiveDamage(GameStatsConfig::getDamage(aCharacter->getRace(), aCharacter->getWeapon()));
-                    enemyIsAttack = true;
+                if (!aEnemy->isDead() && board.getDistance(aCharacter->getActualCell(), enemyCell) == 1) {
+                    float damage = GameStatsConfig::getDamage(aCharacter->getRace(), aCharacter->getWeapon());
+                    aEnemy->receiveDamage(damage);
+                    aCharacter->gainExp(aEnemy->isDead() ?
+                        GameStatsConfig::getAdditionalExp(damage, aEnemy->getMaxLife(), aCharacter->getLevel(), aEnemy->getLevel()) :
+                        GameStatsConfig::getExp(damage, aCharacter->getLevel(), aEnemy->getLevel()));
+                    if (aCharacter->getExp() >= GameStatsConfig::getNextLevelLimit(aCharacter->getLevel())) {
+                        aCharacter->upLevel();
+                    }
+                    enemyReceiveDamage = true;
                 }
             }
-            if (!enemyIsAttack) {
+            if (!enemyReceiveDamage) {
                 finalized = true;
             }
         } else {
