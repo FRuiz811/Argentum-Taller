@@ -3,6 +3,7 @@
 #include "StillStateCharacter.h"
 #include "MoveStateCharacter.h"
 #include "InteractStateCharacter.h"
+#include "TransitionStateCharacter.h"
 
 EquipStateCharacter::~EquipStateCharacter() = default;
 
@@ -27,7 +28,7 @@ void EquipStateCharacter::setNextState(InputInfo info) {
     } else if(info.input == InputID::stopMove) {
         nextState = std::unique_ptr<State>(new StillStateCharacter(info));
     } else if (info.input == InputID::selectTarget) {
-        nextState = std::unique_ptr<State>(new InteractStateCharacter(info));
+        nextState = std::unique_ptr<State>(new TransitionStateCharacter(info));
     } else if (info.input == InputID::equipItem) {
         nextState = std::unique_ptr<State>(new EquipStateCharacter(info));
     }

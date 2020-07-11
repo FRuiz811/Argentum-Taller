@@ -20,6 +20,10 @@ public:
 
     std::tuple<int, int> getCoord();
 
+    friend bool operator==(Cell c1, const Cell& c2);
+
+    friend bool operator!=(Cell c1, const Cell& c2);
+
     bool isEmpty() const;
 
     void setEmpty(bool empty);

@@ -13,14 +13,24 @@ void AttackStateCharacter::performTask(uint id, std::unordered_map<uint, std::sh
 
     std::shared_ptr<GameCharacter> aCharacter = std::dynamic_pointer_cast<GameCharacter>(gameObjects.at(id));
     try {
-        std::shared_ptr<Cell> enemyCell = board.getCellFromPoint(inputInfo.position);
-        if (enemyCell->getGameObjectId() != 0) {
-            std::shared_ptr<GameObject> aEnemy = gameObjects.at(enemyCell->getGameObjectId());
-            if (!aEnemy->isDead() && board.getDistance(aCharacter->getActualCell(), enemyCell) == 1) {
-                aEnemy->receiveDamage(GameStatsConfig::getDamage(aCharacter->getRace(), aCharacter->getWeapon()));
+        if (timeBetweenAttacks == 0) {
+            timeBetweenAttacks = 10;
+            std::shared_ptr<Cell> enemyCell = board.getCellFromPoint(inputInfo.position);
+            if (enemyCell->getGameObjectId() != 0) {
+                std::shared_ptr<GameObject> aEnemy = gameObjects.at(enemyCell->getGameObjectId());
+                if (!aEnemy->isDead() && board.getDistance(aCharacter->getActualCell(), enemyCell) <= 2) {
+                    aEnemy->receiveDamage(GameStatsConfig::getDamage(aCharacter->getRace(), aCharacter->getWeapon()));
+                    enemyIsAttack = true;
+                }
+            }
+            if (!enemyIsAttack) {
+                finalized = true;
             }
         } else {
-            finalized = true;
+            timeBetweenAttacks--;
+            if (timeBetweenAttacks == 0) {
+                finalized = true;
+            }
         }
     } catch (const std::out_of_range& e) {
         finalized = true;
@@ -30,7 +40,7 @@ void AttackStateCharacter::performTask(uint id, std::unordered_map<uint, std::sh
 void AttackStateCharacter::setNextState(InputInfo info) {
     if (info.input == InputID::up || info.input == InputID::down ||
         info.input == InputID::left || info.input == InputID::right) {
-        this->nextState = std::unique_ptr<State>(new MoveStateCharacter(info));
+        nextState = std::unique_ptr<State>(new MoveStateCharacter(info));
     } else if (info.input == InputID::equipItem) {
         nextState = std::unique_ptr<State>(new EquipStateCharacter(info));
     } else {

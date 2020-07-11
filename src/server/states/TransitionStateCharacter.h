@@ -5,8 +5,10 @@
 #include "State.h"
 
 class TransitionStateCharacter : public State {
+private:
+    bool isAnAttack = true;
 public:
-    TransitionStateCharacter(const InputInfo &info);
+    TransitionStateCharacter(InputInfo info);
 
     ~TransitionStateCharacter() override;
 

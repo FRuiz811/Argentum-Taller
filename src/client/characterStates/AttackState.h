@@ -4,6 +4,8 @@
 #include "CharacterState.h"
 
 class AttackState: public CharacterState {
+private:
+    InputID beforeInput;
 public:
     AttackState();
     ~AttackState();

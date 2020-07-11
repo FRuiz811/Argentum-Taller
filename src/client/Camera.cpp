@@ -63,6 +63,7 @@ bool Camera::clickInMap(Point coordinates) const {
 
 void Camera::render(Point destiny) {
     limits(&destiny);
+    this->cam = {(this->window.getWidth()/WIDTHSEGMENT)*2,60,(this->window.getWidth()/WIDTHSEGMENT)*6, this->window.getHeight()-60};
     this->positionScreen.x = destiny.x - (((this->window.getWidth()/WIDTHSEGMENT)*6) / 2.0f);
     this->positionScreen.y = destiny.y - ((this->window.getHeight() - 60) / 2.0f);
     SDL_Rect display = {(this->window.getWidth()/WIDTHSEGMENT) * 2,60,

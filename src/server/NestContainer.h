@@ -8,8 +8,10 @@
 class NestContainer {
 private:
     std::vector<Nest> nests;
-    uint8_t pos = 0;
+    uint8_t nestIndex = 0;
     uint8_t length{};
+
+    uint8_t getNextIndex();
 public:
     NestContainer();
 

@@ -66,14 +66,16 @@ uint Creature::receiveDamage(float damage) {
     std::cout << "Character attack damage: " << damage << std::endl;
     std::cout << "Enemy defense: " << defense << std::endl;
     std::cout << "Character real damage: " << realDamage << std::endl;
+    std::cout << "Enemy life is: " << life << std::endl;
     if (isDead()) {
+        std::cout << "Enemy is dead" << realDamage << std::endl;
         //Hacer drop aca.
     }
     return life;
 }
 
 bool Creature::isDead() {
-    return life = 0;
+    return life == 0;
 }
 
 NPCInfo Creature::interact(GameObject& character, InputInfo input) {

@@ -71,8 +71,10 @@ std::tuple<int, int> Board::convertPoint(const Point &point) {
 void Board::addCollisonObject(StaticObject &collisionObject) {
     std::tuple<int, int> topLeft = convertPoint(collisionObject.getTopLeft());
     std::tuple<int, int> bottomRight = convertPoint(collisionObject.getBottomRight());
-    for (int i = std::get<0>(topLeft); i < std::get<0>(bottomRight); ++i) {
-        for (int j = std::get<1>(topLeft); j < std::get<1>(bottomRight); ++j) {
+    int diffX = std::get<0>(bottomRight) - std::get<0>(topLeft);
+    int diffY = std::get<1>(bottomRight) - std::get<1>(topLeft);
+    for (int i = std::get<0>(topLeft); diffX > 0 ? i < std::get<0>(bottomRight) : i <= std::get<0>(bottomRight); ++i) {
+        for (int j = std::get<1>(topLeft); diffY > 0 ? j < std::get<1>(bottomRight) : j <= std::get<1>(bottomRight); ++j) {
             cells[i][j]->setEmpty(false);
         }
     }
@@ -139,7 +141,7 @@ std::shared_ptr<Cell> Board::getInitialCellInNest(Nest &nest) {
 
 std::vector<std::shared_ptr<Cell>> Board::setCellsInNest(const std::shared_ptr<Cell>& aNestCell, uint nestId) {
     std::vector<std::shared_ptr<Cell>> cellInsideNest;
-    uint distance = 15;
+    uint distance = 8;
     uint leftLimitX = int(aNestCell->getX() - distance) >= 0 ? aNestCell->getX() - distance : 0;
     uint rightLimitX = int(aNestCell->getX() + distance) < cols ? aNestCell->getX() + distance : cols - 1;
     uint leftLimitY = int(aNestCell->getY() - distance) >= 0 ? aNestCell->getY() - distance : 0;
