@@ -61,16 +61,21 @@ void World::addCreatures() {
 void World::generateCreature() {
     uint id = getNextId();
     uint8_t randomId = Random::get(1, 4);
-    Nest& aNest = board.getAvailableNest();
-    std::shared_ptr<Cell> initialCell = board.getInitialCellInNest(aNest);
-    if (initialCell != nullptr) {
-        initialCell->occupied(id);
-        aNest.addCreature(id);
-        std::shared_ptr<Creature> aCreature(new Creature(id, CreatureID(randomId), initialCell, board.getPointFromCell(initialCell)));
-        gameObjectsContainer.addGameObject(aCreature, id);
-    } else {
+    try {
+        Nest& aNest = board.getAvailableNest();
+        std::shared_ptr<Cell> initialCell = board.getInitialCellInNest(aNest);
+        if (initialCell != nullptr) {
+            initialCell->occupied(id);
+            aNest.addCreature(id);
+            std::shared_ptr<Creature> aCreature(new Creature(id, CreatureID(randomId), initialCell, board.getPointFromCell(initialCell)));
+            gameObjectsContainer.addGameObject(aCreature, id);
+        } else {
+            std::cout << "Cannot create creature" << std::endl;
+        }
+    } catch (Exception& e) {
         std::cout << "Cannot create creature" << std::endl;
     }
+
 }
 
 

@@ -22,9 +22,11 @@ public:
 
     bool isDead();
 
-    CharacterStateID getStateId() override;
+    float getMaxLife() override;
 
-    uint receiveDamage(float damage) override;
+    void receiveDamage(float damage, WeaponID weaponId) override;
+
+    CharacterStateID getStateId() override;
 
     virtual NPCInfo interact(GameObject& character, InputInfo input);
     

@@ -1,9 +1,9 @@
 #include "AttackState.h"
 
 AttackState::AttackState() : 
-    CharacterState(CharacterStateID::Attack){}
+    CharacterState(CharacterStateID::Attack) , beforeInput(InputID::nothing) {}
 
-AttackState::~AttackState() {}
+AttackState::~AttackState() = default;
 
 InputInfo AttackState::moveUp(Character& character){
     InputInfo info;
@@ -12,6 +12,7 @@ InputInfo AttackState::moveUp(Character& character){
         info.input = InputID::nothing;
     Point aux(0.0,0.0);
     info.position = aux;
+    beforeInput = info.input;
     return info;
 }
 
@@ -22,6 +23,7 @@ InputInfo AttackState::moveDown(Character& character) {
         info.input = InputID::nothing;
     Point aux(0.0,0.0);
     info.position = aux;
+    beforeInput = info.input;
     return info;
 }
 
@@ -32,6 +34,7 @@ InputInfo AttackState::moveLeft(Character& character) {
         info.input = InputID::nothing;
     Point aux(0.0,0.0);
     info.position = aux;
+    beforeInput = info.input;
     return info;
 }
 
@@ -42,6 +45,7 @@ InputInfo AttackState::moveRight(Character& character) {
         info.input = InputID::nothing;
     Point aux(0.0,0.0);
     info.position = aux;
+    beforeInput = info.input;
     return info;
 }
 
@@ -50,6 +54,7 @@ InputInfo AttackState::stopMove(Character& character) {
     info.input = InputID::stopMove;
     Point aux(0.0,0.0);
     info.position = aux;
+    beforeInput = info.input;
     return info;
 }
 
@@ -58,13 +63,17 @@ InputInfo AttackState::selectItem(Character& character, int item) {
     Point aux(0.0,0.0);
     info.position = aux;
     info.input =InputID::nothing;
+    beforeInput = info.input;
     return info;
 }
 
 InputInfo AttackState::selectTarget(Character& character, Point position) {
     InputInfo info;
     info.position = position;
-    info.input =InputID::selectTarget;
+    info.input = InputID::selectTarget;
+    if (beforeInput == info.input)
+        info.input = InputID::nothing;
+    beforeInput = info.input;
     return info;
 }
 
@@ -73,6 +82,7 @@ InputInfo AttackState::meditate(Character& character) {
     Point aux(0.0,0.0);
     info.position = aux;
     info.input =InputID::nothing;
+    beforeInput = info.input;
     return info;
 }
 
@@ -81,6 +91,7 @@ InputInfo AttackState::resurrect(Character& character) {
     Point aux(0.0,0.0);
     info.position = aux;
     info.input =InputID::nothing;
+    beforeInput = info.input;
     return info;
 }
 
@@ -89,6 +100,7 @@ InputInfo AttackState::cure(Character& character) {
     Point aux(0.0,0.0);
     info.position = aux;
     info.input =InputID::nothing;
+    beforeInput = info.input;
     return info;
 }
 
@@ -97,6 +109,7 @@ InputInfo AttackState::takeItem(Character& character) {
     Point aux(0.0,0.0);
     info.position = aux;
     info.input =InputID::nothing;
+    beforeInput = info.input;
     return info;
 }
 
@@ -105,6 +118,7 @@ InputInfo AttackState::dropItem(Character& character, int item) {
     Point aux(0.0,0.0);
     info.position = aux;
     info.input =InputID::nothing;
+    beforeInput = info.input;
     return info;
 }
 
@@ -113,6 +127,7 @@ InputInfo AttackState::buyItem(Character& character,int item) {
     Point aux(0.0,0.0);
     info.position = aux;
     info.input =InputID::nothing;
+    beforeInput = info.input;
     return info;
 }
 
@@ -121,6 +136,7 @@ InputInfo AttackState::sellItem(Character& character,int item) {
     Point aux(0.0,0.0);
     info.position = aux;
     info.input =InputID::nothing;
+    beforeInput = info.input;
     return info;
 }
 
@@ -129,6 +145,7 @@ InputInfo AttackState::retire(Character& character,int item, bool isItem) {
     Point aux(0.0,0.0);
     info.position = aux;
     info.input = InputID::nothing;
+    beforeInput = info.input;
     return info;
 }
 
@@ -137,6 +154,7 @@ InputInfo AttackState::deposit(Character& character,int item, bool isItem) {
     Point aux(0.0,0.0);
     info.position = aux;
     info.input = InputID::nothing;
+    beforeInput = info.input;
     return info;
 }
 

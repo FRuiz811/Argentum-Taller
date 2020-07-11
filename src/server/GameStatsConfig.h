@@ -11,6 +11,7 @@ private:
     static std::unordered_map<RaceID, RaceInfo, std::hash<RaceID>> races;
     static std::unordered_map<GameClassID, GameClassInfo, std::hash<GameClassID>> gameClasses;
     static std::unordered_map<ItemsInventoryID, ItemInfo, std::hash<ItemsInventoryID>> items;
+    static std::unordered_map<CreatureID, CreatureInfo, std::hash<CreatureID>> creatures;
     static std::string port;
     static float goldRandMin;
     static float goldRandMax;
@@ -23,7 +24,7 @@ private:
     static float evadeProbability;
     static float expRandMin;
     static float expRandMax;
-    static float levelDifference;
+    static uint8_t levelDifference;
     static float maxAgility;
     static uint8_t creaturesLimit;
     static uint8_t nestCreaturesLimit;
@@ -32,6 +33,7 @@ private:
     RaceInfo createRaceInfo(rapidjson::Value &value);
     GameClassInfo createGameClass(rapidjson::Value &value);
     ItemInfo createItem(rapidjson::Value& value);
+    CreatureInfo createCreatureInfo(rapidjson::Value &value);
 public:
     GameStatsConfig();
 
@@ -39,19 +41,21 @@ public:
 
     virtual ~GameStatsConfig();
     static std::string getPort();
-    static float getMaxHealth(RaceID, GameClassID, uint level);
-    static float getRecoveryHealth(RaceID, GameClassID);
-    static float getMaxMana(RaceID, GameClassID, uint level);
-    static float getRecoveryMana(RaceID, GameClassID);
-    static float getRecoveryManaMeditation(RaceID, GameClassID);
+    static float getMaxHealth(RaceID raceId, GameClassID gameClassId, uint level);
+    static float getMaxHealth(CreatureID creatureId, uint level);
+    static float getRecoveryHealth(RaceID raceId);
+    static float getMaxMana(RaceID raceId, GameClassID gameClassId, uint level);
+    static float getRecoveryMana(RaceID raceId);
+    static float getRecoveryManaMeditation(RaceID raceId, GameClassID gameClassId);
     static float getGoldDrop(uint maxHealthNPC);
     static float getMaxGold(uint level);
     static float getNextLevelLimit(uint level);
-    static float getExp(RaceID, GameClassID, uint level, uint enemyLevel);
-    static float getAdditionalExp(RaceID, GameClassID, uint level, uint enemyLevel);
+    static float getExp(float damage, uint level, uint enemyLevel);
+    static float getAdditionalExp(float damage, float enemyMaxLife, uint level, uint enemyLevel);
     static float getDamage(RaceID race, WeaponID weaponId);
     static float getDamage(CreatureID creatureId);
-    static bool canEvade(RaceID);
+    static bool canEvade(RaceID raceId);
+    static bool canEvade(CreatureID creatureId);
     static float getDefense(BodyID bodyId, ShieldID shieldId, HelmetID helmetId);
     static float getDefense(CreatureID creatureId);
     static std::unordered_map<ItemsInventoryID,ItemInfo> getItems();

@@ -47,7 +47,7 @@ enum class TextureID {
 	MagicArrowEffect,
 	MissileEffect,
 	MeditateEffect,
-	ArcEffect,
+	HitEffect,
 	ManaPotion,
 	HealthPotion,
 	Gold,

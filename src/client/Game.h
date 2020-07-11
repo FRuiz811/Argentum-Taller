@@ -41,6 +41,7 @@ private:
 
     void update();
     void render();
+    void sounds();
     void close();
 public:
     Game();

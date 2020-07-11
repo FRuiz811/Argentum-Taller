@@ -8,6 +8,7 @@
 #include "Items/Shield.h"
 #include "Items/Weapon.h"
 #include "TextureManager.h"
+#include "MusicManager.h"
 #include "../common/Identificators.h"
 #include "../common/GameObjectInfo.h"
 #include "characterStates/CharacterState.h"
@@ -16,6 +17,7 @@
 class NPC : public Character {
 private:
     const TextureManager& manager;
+    const MusicManager& mixer;
     std::shared_ptr<Body>  body = nullptr;
 	std::shared_ptr<Head> head = nullptr;
 	std::shared_ptr<Helmet> helmet = nullptr;
@@ -26,6 +28,7 @@ private:
     bool isAlive{true};
     bool isItem{false};
     std::shared_ptr<CharacterState> state = nullptr;
+    //std::shared_ptr<Animation> animation = nullptr;
 
     void setArmor(BodyID newArmor);
 	void setShield(ShieldID newShield);
@@ -36,7 +39,7 @@ private:
     void setState(CharacterStateID newState);
 
 public:
-    NPC(const TextureManager& manager, const GameObjectInfo& gameObjectInfo);
+    NPC(const TextureManager& manager, const GameObjectInfo& gameObjectInfo, const MusicManager& mixer);
 
     virtual void render(Camera& camera);
 	virtual void update(double dt);

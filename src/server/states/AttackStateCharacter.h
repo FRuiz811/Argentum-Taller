@@ -6,7 +6,8 @@
 
 class AttackStateCharacter : public State {
 private:
-    uint8_t timeAttack = 10;
+    uint8_t timeBetweenAttacks = 0;
+    bool enemyReceiveDamage = false;
 public:
     AttackStateCharacter(InputInfo info);
 

@@ -4,95 +4,108 @@
     {
       "id": 1,
       "name": "Human",
-      "intelligent": 2,
-      "recoveryTime": 2,
-      "constitution": 3,
-      "strength": 3,
-      "agility": 2,
-      "health": 4,
-      "mana": 4
+      "intelligent": 3.5,
+      "recoveryTime": 3.5,
+      "constitution": 3.5,
+      "strength": 3.5,
+      "agility": 3.5,
+      "health": 3.5,
+      "mana": 3.5
     },
     {
       "id": 2,
       "name": "Elf",
-      "intelligent": 5,
-      "recoveryTime": 3,
-      "constitution": 1,
-      "strength": 2,
-      "agility": 5,
-      "health": 3,
-      "mana": 5
+      "intelligent": 4.3,
+      "recoveryTime": 3.8,
+      "constitution": 3,
+      "strength": 3,
+      "agility": 4.5,
+      "health": 3.2,
+      "mana": 3.7
     },
     {
       "id": 3,
       "name": "Dwarf",
-      "intelligent": 1,
-      "recoveryTime": 3,
-      "constitution": 5,
-      "strength": 4,
-      "agility": 1,
-      "health": 5,
-      "mana": 2
+      "intelligent": 3,
+      "recoveryTime": 4,
+      "constitution": 4.2,
+      "strength": 3.8,
+      "agility": 3,
+      "health": 3.5,
+      "mana": 3
     },
     {
       "id": 4,
       "name": "Gnome",
-      "intelligent": 4,
+      "intelligent": 3.7,
       "recoveryTime": 3,
-      "constitution": 3,
-      "strength": 3,
-      "agility": 3,
-      "health": 4,
-      "mana": 3
+      "constitution": 3.7,
+      "strength": 3.5,
+      "agility": 3.7,
+      "health": 3.5,
+      "mana": 3.3
     }
   ],
   "classes": [
     {
       "id": 1,
       "name": "Mage",
-      "health": 2,
-      "mana": 5,
-      "meditation": 5
+      "health": 3,
+      "mana": 3.9,
+      "meditation": 3.1
     },
     {
       "id": 2,
       "name": "Cleric",
-      "health": 3,
-      "mana": 4,
-      "meditation": 4
+      "health": 3.3,
+      "mana": 3.6,
+      "meditation": 3.1
     },
     {
       "id": 3,
       "name": "Paladin",
-      "health": 4,
-      "mana": 3,
-      "meditation": 4
+      "health": 3.6,
+      "mana": 3.2,
+      "meditation": 3.2
     },
     {
       "id": 4,
       "name": "Warrior",
-      "health": 5,
+      "health": 4,
       "mana": 0,
       "meditation": 0
     }
   ],
-  "goldRandMin": 0,
-  "goldRandMax": 0.2,
-  "goldMaxMult": 100,
-  "goldMaxPot": 1.1,
-  "expMaxMult": 1000,
-  "expMaxPot": 1.8,
-  "expRandMin": 0,
-  "expRandMax": 0.1,
-  "evadeRandMin": 0,
-  "evadeRandMax": 1,
-  "evadeProbability": 0.001,
-  "levelDifference": 10,
-  "maxAgility": 5,
-  "creaturesLimit": 20,
-  "nestCreaturesLimit": 3,
-  "distance": 32.0,
-  "inventoryLimit":9,
+  "creatures": [
+    {
+      "id": 1,
+      "name": "Goblin",
+      "strength": 10,
+      "agility": 4,
+      "health": 35
+    },
+    {
+      "id": 2,
+      "name": "Skeleton",
+      "strength": 18,
+      "agility": 3.2,
+      "health": 75
+    },
+    {
+      "id": 3,
+      "name": "Spider",
+      "strength": 23,
+      "agility": 3.8,
+      "health": 55
+    },
+    {
+      "id": 4,
+      "name": "Zombie",
+      "strength": 15,
+      "agility": 3,
+      "health": 62
+    }
+  ],
   "items": [
     {
       "id":1,
@@ -424,5 +437,22 @@
       "goldCost": 20,
       "type": "Potion"
     }
-  ]
+  ],
+  "goldRandMin": 0,
+  "goldRandMax": 0.2,
+  "goldMaxMult": 100,
+  "goldMaxPot": 1.1,
+  "expMaxMult": 1000,
+  "expMaxPot": 1.8,
+  "expRandMin": 0,
+  "expRandMax": 0.1,
+  "evadeRandMin": 0,
+  "evadeRandMax": 1,
+  "evadeProbability": 0.001,
+  "levelDifference": 10,
+  "maxAgility": 5,
+  "creaturesLimit": 20,
+  "nestCreaturesLimit": 3,
+  "distance": 32.0,
+  "inventoryLimit":9
 }

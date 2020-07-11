@@ -25,12 +25,14 @@ void PursuitStateCreature::performTask(uint id, std::unordered_map<uint, std::sh
                 } else {
                     std::shared_ptr<Cell> newCell;
                     newCell = board.getBestCell(creatureCell, enemyCell);
-                    Direction aDirection = board.getDirection(creatureCell, newCell);
-                    aCreature->setDirection(aDirection);
-                    movement.start(board.getPointFromCell(aCreature->getActualCell()), aDirection, aCreature->getCreatureId());
-                    aCreature->getActualCell()->free();
-                    newCell->occupied(id);
-                    aCreature->setCell(newCell);
+                    if (newCell != aCreature->getActualCell()) {
+                        Direction aDirection = board.getDirection(creatureCell, newCell);
+                        aCreature->setDirection(aDirection);
+                        movement.start(board.getPointFromCell(aCreature->getActualCell()), aDirection, aCreature->getCreatureId());
+                        aCreature->getActualCell()->free();
+                        newCell->occupied(id);
+                        aCreature->setCell(newCell);
+                    }
                 }
             } else {
                 finalized = true;

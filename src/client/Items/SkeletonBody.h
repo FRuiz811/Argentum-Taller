@@ -10,9 +10,9 @@ private:
 public:
     SkeletonBody(const TextureManager& manager);
 
-    virtual void render(int posX, int posY, int direction);
+    virtual void render(int posX, int posY);
 
-    virtual void update(double dt);
+    virtual void update(double dt,Direction dir);
 
     ~SkeletonBody();
 

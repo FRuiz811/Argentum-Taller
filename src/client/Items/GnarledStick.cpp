@@ -7,15 +7,15 @@
 GnarledStick::GnarledStick(const TextureManager& manager):
     Weapon(manager.getTexture(TextureID::GnarledStick),WIDTH_BODY,HEIGHT_BODY, WeaponID::GnarledStick) {}
 
-void GnarledStick::render(int posX, int posY, int direction) {
-    setDirection(direction);
-    SDL_Rect srcHead = {this->width*frame, this->height*direction, this->width, this->height};
-	SDL_Rect dstHead = {posX, posY, this->width, this->height};
-    this->texture.render(srcHead, dstHead);
+void GnarledStick::render(int posX, int posY) {
+    SDL_Rect srcWeapon = {this->width*frame, this->height*int(direction), this->width, this->height};
+	SDL_Rect dstWeapon = {posX, posY, this->width, this->height};
+    this->texture.render(srcWeapon, dstWeapon);
 }
 
-void GnarledStick::update(double dt) {
-    Weapon::update(dt);
+void GnarledStick::update(double dt,Direction dir) {
+    setDirection(int(dir));
+    Weapon::update(dt,dir);
 }
 
 void GnarledStick::setDirection(int direction) {

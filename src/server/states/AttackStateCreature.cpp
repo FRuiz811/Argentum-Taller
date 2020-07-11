@@ -15,7 +15,7 @@ AttackStateCreature::AttackStateCreature(uint enemyId) :
 void AttackStateCreature::performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) {
 
     if (timeBetweenAttacks == 0) {
-        timeBetweenAttacks = 30;
+        timeBetweenAttacks = 15;
         std::shared_ptr<Creature> aCreature = std::dynamic_pointer_cast<Creature>(gameObjects.at(id));
         try {
             std::shared_ptr<GameCharacter> aCharacter = std::dynamic_pointer_cast<GameCharacter>(gameObjects.at(enemyId));
@@ -26,7 +26,9 @@ void AttackStateCreature::performTask(uint id, std::unordered_map<uint, std::sha
                 finalized = true;
             } else {
                 if (board.getDistance(creatureCell, enemyCell) == 1) {
-                    if (aCharacter->receiveDamage(GameStatsConfig::getDamage(aCreature->getCreatureId())) == 0) {
+                    aCharacter->receiveDamage(GameStatsConfig::getDamage(aCreature->getCreatureId()),
+                            WeaponID::Nothing);
+                    if (aCharacter->isDead()) {
                         enemyIsDead = true;
                         finalized = true;
                     }

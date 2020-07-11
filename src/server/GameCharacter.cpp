@@ -7,8 +7,11 @@
 #include "ItemTranslator.h"
 
 PlayerInfo GameCharacter::getPlayerInfo() {
-    return PlayerInfo(id, point, goldAmount, life, mana, textureHashId, direction,150,
-        100,100,exp,1500, level, getStringInventory(),state->getStateId());
+    return PlayerInfo(id, point, goldAmount, life, mana, textureHashId, direction, GameStatsConfig::getMaxGold(level),
+                      GameStatsConfig::getMaxHealth(race, gameClass, level),
+                      GameStatsConfig::getMaxMana(race, gameClass, level),
+                      exp,GameStatsConfig::getNextLevelLimit(level), level,
+                      getStringInventory(),state->getStateId());
 }
 
 GameCharacter::GameCharacter(uint id, RaceID aRace, GameClassID aClass, std::shared_ptr<Cell> initialCell, Point initialPoint):
@@ -16,19 +19,19 @@ GameCharacter::GameCharacter(uint id, RaceID aRace, GameClassID aClass, std::sha
     ItemsInventoryID::HealthPotion, ItemsInventoryID::ManaPotion,ItemsInventoryID::LongSword,ItemsInventoryID::IronShield,
     ItemsInventoryID::LeatherArmor,ItemsInventoryID::Hood,ItemsInventoryID::Nothing,ItemsInventoryID::Nothing,ItemsInventoryID::Nothing
 }) {
-    this->life = 80;
+    this->life = GameStatsConfig::getMaxHealth(race, gameClass, level);
+    this->mana = GameStatsConfig::getMaxMana(race, gameClass, level);
     this->goldAmount = 100;
-    this->mana = 80;
     this->exp = 0;
-    this->level = 1;
     this->direction = Direction::down;
     this->textureHashId = updateTextureHashId(); //Solo debería tener la cabeza correspondiente y su cuerpo. "ht00|h03|b01|s00|w00"
     state = std::unique_ptr<State>(new StillStateCharacter());
 }
 
 void GameCharacter::update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) {
+    this->infoInteracting.type = 0;
     if (state->isOver()) {
-        if (hasAnInputInfo()) {
+        if (hasAnInputInfo() && !state->hasNextState()) {
             state->setNextState(getNextInputInfo());
         } else {
             state->resetState();
@@ -81,7 +84,7 @@ std::string GameCharacter::updateTextureHashId() {
 std::string GameCharacter::getStringInventory() const {
     std::string inv;
     std::string temp;
-    for (int i=0; i<9;i++){
+    for (int i=0; i < GameStatsConfig::getInventoryLimit() ;i++){
         temp = std::to_string(int(this->inventory.at(i)));
         if (temp.size() == 1)
             inv += "0";
@@ -172,7 +175,8 @@ CharacterStateID GameCharacter::getStateId() {
     return state->getStateId();
 }
 
-uint GameCharacter::receiveDamage(float damage) {
+void GameCharacter::receiveDamage(float damage, WeaponID weaponId) {
+    setAttackBy(weaponId);
     if (GameStatsConfig::canEvade(race)) {
         std::cout << "Enemy fail attack" << std::endl;
     } else {
@@ -193,11 +197,10 @@ uint GameCharacter::receiveDamage(float damage) {
         helmet = HelmetID::Nothing;
         //Acá se vacía el inventario y se debería hacer el drop
         this->inventory.clear();
-        for(int i=0; i<9;i++){
+        for(int i = 0; i < GameStatsConfig::getInventoryLimit(); ++i){
             this->inventory.push_back(ItemsInventoryID::Nothing);
         }
     }
-    return life;
 }
 
 bool GameCharacter::isDead() {
@@ -227,6 +230,14 @@ bool GameCharacter::isReadyToRemove() {
 
 void GameCharacter::remove(Board &board) {
     cell->free();
+}
+
+void GameCharacter::gainExp(float newExp) {
+    exp += newExp;
+}
+
+float GameCharacter::getMaxLife() {
+    return GameStatsConfig::getMaxHealth(race, gameClass, level);
 }
 
 GameCharacter::~GameCharacter()= default;

@@ -7,16 +7,17 @@
 BlueTunic::BlueTunic(const TextureManager& manager) :
  Body(manager.getTexture(TextureID::BlueTunic),WIDTH_BODY,HEIGHT_BODY,BodyID::BlueTunic) {}
 
-void BlueTunic::render(int posX, int posY, int direction) {
-    setDirection(direction);
-    SDL_Rect srcHead = {this->width*frame, this->height*direction, this->width, this->height};
+void BlueTunic::render(int posX, int posY) {
+    SDL_Rect srcHead = {this->width*frame, this->height*int(direction), this->width, this->height};
 	SDL_Rect dstHead = {posX, posY, this->width, this->height};
     this->texture.render(srcHead, dstHead);
 }
 
-void BlueTunic::update(double dt) {
-    Body::update(dt);
+void BlueTunic::update(double dt,Direction dir) {
+    setDirection(int(dir));
+    Body::update(dt,dir);
 }
+
 
 void BlueTunic::setDirection(int direction) {
     if (direction == 0 || direction == 1)

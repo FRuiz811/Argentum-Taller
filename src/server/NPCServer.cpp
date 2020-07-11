@@ -35,10 +35,6 @@ CharacterStateID NPCServer::getStateId() {
     return state->getStateId();
 }
 
-uint NPCServer::receiveDamage(float damage) {
-    return 0;
-}
-
 bool NPCServer::isReadyToRemove() {
     return false;
 }
@@ -49,6 +45,13 @@ bool NPCServer::isDead() {
 
 void NPCServer::remove(Board &board) {
     cell->free();
+}
+
+float NPCServer::getMaxLife() {
+    return 0;
+}
+
+void NPCServer::receiveDamage(float damage, WeaponID weaponId) {
 }
 
 

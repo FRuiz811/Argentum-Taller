@@ -21,7 +21,9 @@ public:
 
     virtual NPCInfo interact(GameObject& character, InputInfo input);
 
-    uint receiveDamage(float damage) override;
+    void receiveDamage(float damage, WeaponID weaponId) override;
+
+    float getMaxLife() override;
 
     bool isDead() override;
 

@@ -8,13 +8,11 @@ NestContainer::NestContainer(std::vector<Nest> nests) : nests(std::move(nests)) 
 }
 
 Nest& NestContainer::getNextNestAvailable() {
-    uint8_t initPos = pos;
-    Nest& nest = nests.at(pos++);
-    while (nest.isFull() && pos != initPos) {
-        if (pos == length) {
-            pos = 0;
-        }
-        nest = nests.at(pos++);
+    uint8_t counter = 0;
+    Nest& nest = nests.at(getNextIndex());
+    while (nest.isFull() && counter < length) {
+        nest = nests.at(getNextIndex());
+        counter++;
     }
     if (nest.isFull()) {
         throw Exception("There is not available nests to add creatures");
@@ -43,6 +41,12 @@ int NestContainer::getAmountCreatures() {
         amountCreatures += aNest.getAmountCreatures();
     }
     return amountCreatures;
+}
+
+uint8_t NestContainer::getNextIndex() {
+    nestIndex++;
+    nestIndex = nestIndex >= length ? 0 : nestIndex;
+    return nestIndex;
 }
 
 NestContainer::NestContainer() = default;

@@ -7,15 +7,15 @@
 RedCommonBody::RedCommonBody(const TextureManager& manager):
     Body(manager.getTexture(TextureID::RedCommonBody),WIDTH_BODY,HEIGHT_BODY,BodyID::RedCommon) {}
 
-void RedCommonBody::render(int posX, int posY, int direction) {
-    setDirection(direction);
-    SDL_Rect srcHead = {this->width*frame, this->height*direction, this->width, this->height};
+void RedCommonBody::render(int posX, int posY) {
+    SDL_Rect srcHead = {this->width*frame, this->height*int(direction), this->width, this->height};
 	SDL_Rect dstHead = {posX, posY, this->width, this->height};
     this->texture.render(srcHead, dstHead);
 }
 
-void RedCommonBody::update(double dt) {
-    Body::update(dt);
+void RedCommonBody::update(double dt,Direction dir) {
+    setDirection(int(dir));
+    Body::update(dt,dir);
 }
 
 void RedCommonBody::setDirection(int direction) {
