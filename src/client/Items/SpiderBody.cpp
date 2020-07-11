@@ -8,14 +8,14 @@ SpiderBody::SpiderBody(const TextureManager& manager):
         this->totalFrames = 4;
     }
 
-void SpiderBody::render(int posX, int posY, int direction) {
-    SDL_Rect srcBody = {this->width*frame, this->height*direction, this->width, this->height};
+void SpiderBody::render(int posX, int posY) {
+    SDL_Rect srcBody = {this->width*frame, this->height*int(direction), this->width, this->height};
 	SDL_Rect dstBody = {posX, posY, this->width, this->height};
     this->texture.render(srcBody, dstBody);
 }
 
-void SpiderBody::update(double dt) {
-    Body::update(dt);
+void SpiderBody::update(double dt,Direction dir) {
+    Body::update(dt,dir);
 }
 
 SpiderBody::~SpiderBody(){}

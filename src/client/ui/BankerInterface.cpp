@@ -164,10 +164,14 @@ void BankerInterface::render() {
     SDL_QueryTexture(this->texture, NULL, NULL, &w, &h);
     SDL_Rect banker = {15,15,w,h};
     SDL_RenderCopy(&(window->getRenderer()), this->texture, NULL, &banker);
-    if (this->goldValue != nullptr)
+    if (this->goldValue != nullptr) {
         SDL_DestroyTexture(this->goldValue);
-    if (this->goldInBank != nullptr)
+        this->goldValue = nullptr;
+    }
+    if (this->goldInBank != nullptr){
         SDL_DestroyTexture(this->goldInBank);
+        this->goldInBank = nullptr;
+    }
     if (pageGold) {
         renderGoldManagment();
     } else {

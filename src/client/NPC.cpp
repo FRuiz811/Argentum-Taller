@@ -35,13 +35,13 @@
 #include "Items/GnarledStick.h"
 #include "characterStates/StillState.h"
 #include "characterStates/MoveState.h"
-#include "characterStates/DeadState.h"
 #include "characterStates/MeditateState.h"
 #include "characterStates/InteractState.h"
 #include "characterStates/AttackState.h"
 
-NPC::NPC(const TextureManager& manager, const GameObjectInfo& gameObjectInfo):
-  Character(gameObjectInfo.getX(), gameObjectInfo.getY(), gameObjectInfo.getId()), manager(manager){
+NPC::NPC(const TextureManager& manager, const GameObjectInfo& gameObjectInfo, 
+  const MusicManager& mixer): Character(gameObjectInfo.getX(), gameObjectInfo.getY(),
+  gameObjectInfo.getId()), manager(manager), mixer(mixer){
     this->direction = gameObjectInfo.getDirection();
     setState(gameObjectInfo.getState());
     setFrameHead();
@@ -54,25 +54,25 @@ NPC::NPC(const TextureManager& manager, const GameObjectInfo& gameObjectInfo):
 
 void NPC::render(Camera& camera) {
     if (this->body != nullptr)
- 		this->body->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y),int(this->direction));
+ 		this->body->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y));
     if (this->weapon != nullptr)
-        this->weapon->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y),int(this->direction));
+        this->weapon->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y));
     if (this->shield != nullptr)
-	    this->shield->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y),int(this->direction));
+	    this->shield->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y));
     if (this->head != nullptr)
-        this->head->render(int(posX+4-camera.getCameraPosition().x), int((posY-this->body->getHeight()/2)-camera.getCameraPosition().y), this->frameHead);
+        this->head->render(int(posX+4-camera.getCameraPosition().x), int((posY-this->body->getHeight()/2)-camera.getCameraPosition().y));
     if (this->helmet != nullptr)
-        this->helmet->render(int(posX+4-camera.getCameraPosition().x), int((posY-this->body->getHeight()/2)-camera.getCameraPosition().y), this->frameHead);
+        this->helmet->render(int(posX+4-camera.getCameraPosition().x), int((posY-this->body->getHeight()/2)-camera.getCameraPosition().y));
 }
 
 void NPC::update(double dt) {
   if(this->state != nullptr && this->state->getState() == CharacterStateID::Move) {
     if(this->body !=nullptr)
-    	this->body->update(dt);
+    	this->body->update(dt,direction);
     if (this->weapon != nullptr)
-        this->weapon->update(dt);
+        this->weapon->update(dt,direction);
     if (this->shield != nullptr)
-        this->shield->update(dt);
+        this->shield->update(dt,direction);
   }
 }
 
@@ -104,6 +104,10 @@ void NPC::setFrameHead() {
         this->frameHead = 3;
         break; 
     }
+    if (this->head != nullptr)
+      this->head->update(this->frameHead);
+    if (this->helmet != nullptr)
+      this->helmet->update(this->frameHead);
 }
 
 void NPC::setHead(HeadID head) {
@@ -183,6 +187,8 @@ void NPC::setArmor(BodyID newArmor) {
             this->body = nullptr;
             break;
     }
+    if (this->body != nullptr)
+      this->body->update(0,direction);
   }
 }
 
@@ -218,6 +224,8 @@ void NPC::setShield(ShieldID newShield) {
         this->shield = std::shared_ptr<Shield>(new IronShield(this->manager));
         break;
 		}
+    if (this->shield != nullptr)
+     this->shield->update(0,direction);
 	}
 }
 
@@ -255,6 +263,8 @@ void NPC::setWeapon(WeaponID newWeapon){
         this->weapon = std::shared_ptr<Weapon>(new ElficFlaute(this->manager));
         break;
 		}
+    if (this->weapon != nullptr)
+      this->weapon->update(0,direction);
 	}
 }
 
@@ -270,11 +280,9 @@ void NPC::setState(CharacterStateID newState) {
 			case CharacterStateID::Move:
 				this->state = std::shared_ptr<CharacterState>(new MoveState());
 				break;
-			case CharacterStateID::Dead:
-				this->state = std::shared_ptr<CharacterState>(new DeadState());
-				break;
       case CharacterStateID::Meditate:
         this->state = std::shared_ptr<CharacterState>(new MeditateState());
+        //this->animation = std::shared_ptr<Animation>(new MeditateEffect());
         break;
       case CharacterStateID::Attack:
         this->state = std::shared_ptr<CharacterState>(new AttackState());
@@ -282,6 +290,10 @@ void NPC::setState(CharacterStateID newState) {
 		}
 	}
 }
+
+/*void NPC::updateBeingAttacked(WeapondID weapon) {
+  if (this->animation != nullptr || this->animation->finished())  
+}*/
 
 CharacterStateID& NPC::getState() {
   return this->state->getState();

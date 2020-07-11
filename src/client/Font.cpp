@@ -41,6 +41,8 @@ void Font::deleteText(SDL_Texture* text) {
 }
 
 Font::~Font(){
-	if(this->font)
+	if(this->font) {
 		TTF_CloseFont(this->font);
+		this->font = nullptr;
+	}
 }

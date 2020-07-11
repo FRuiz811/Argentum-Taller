@@ -18,6 +18,8 @@ public:
 
 	void pauseMusic() const;
 
+	void setVolume(int volume) const;
+
 	void stopMusic() const;
 
 	~Music();

@@ -7,15 +7,15 @@
 LongSword::LongSword(const TextureManager& manager):
     Weapon(manager.getTexture(TextureID::LongSword),WIDTH_BODY,HEIGHT_BODY, WeaponID::LongSword) {}
 
-void LongSword::render(int posX, int posY, int direction) {
-    setDirection(direction);
-    SDL_Rect srcHead = {this->width*frame, this->height*direction, this->width, this->height};
+void LongSword::render(int posX, int posY) {
+    SDL_Rect srcHead = {this->width*frame, this->height*int(direction), this->width, this->height};
 	SDL_Rect dstHead = {posX, posY, this->width, this->height};
     this->texture.render(srcHead, dstHead);
 }
 
-void LongSword::update(double dt) {
-    Weapon::update(dt);
+void LongSword::update(double dt,Direction dir) {
+    setDirection(int(dir));
+    Weapon::update(dt,dir);
 }
 
 void LongSword::setDirection(int direction) {

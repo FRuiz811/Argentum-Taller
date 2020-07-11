@@ -7,15 +7,15 @@
 ElficFlaute::ElficFlaute(const TextureManager& manager):
     Weapon(manager.getTexture(TextureID::ElficFlaute),WIDTH_BODY,HEIGHT_BODY, WeaponID::ElficFlaute) {}
 
-void ElficFlaute::render(int posX, int posY, int direction) {
-    setDirection(direction);
-    SDL_Rect srcHead = {this->width*frame, this->height*direction, this->width, this->height};
-	SDL_Rect dstHead = {posX-5, posY-5-this->height/4, this->width, this->height};
-    this->texture.render(srcHead, dstHead);
+void ElficFlaute::render(int posX, int posY) {
+    SDL_Rect srcWeapon = {this->width*frame, this->height*int(direction), this->width, this->height};
+	SDL_Rect dstWeapon = {posX, posY, this->width, this->height};
+    this->texture.render(srcWeapon, dstWeapon);
 }
 
-void ElficFlaute::update(double dt) {
-    Weapon::update(dt);
+void ElficFlaute::update(double dt,Direction dir) {
+    setDirection(int(dir));
+    Weapon::update(dt,dir);
 }
 
 void ElficFlaute::setDirection(int direction) {

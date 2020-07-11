@@ -289,7 +289,11 @@ void TextureManager::loadTextures() {
 	createTexture(TextureID::StatsBackground, "assets/img/StatsBackground.jpg");
 	createTexture(TextureID::ItemNothing, "assets/img/RecuadroItems.jpg");
 	createTexture(TextureID::MeditateEffect, "assets/img/Efecto Meditar.png", textColor);
-	createTexture(TextureID::ArcEffect, "assets/img/Efecto Flecha Arco.png", textColor);
+	createTexture(TextureID::HitEffect, "assets/img/Efecto Golpe.png", textColor);
+	createTexture(TextureID::MagicArrowEffect, "assets/img/Efecto Flecha Magica Sprite.png",textColor);
+	createTexture(TextureID::MissileEffect, "assets/img/Efecto Misil Sprite.png",textColor);
+	createTexture(TextureID::ExplotionEffect, "assets/img/Efecto Explosion Sprite.png",textColor);
+	createTexture(TextureID::HealthEffect, "assets/img/Efecto Curar Sprite.png",textColor);
 	createTexture(TextureID::Button, "assets/img/Boton.bmp");
 }
 
