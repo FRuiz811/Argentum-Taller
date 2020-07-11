@@ -175,7 +175,7 @@ float GameStatsConfig::getDistance(){
 }
 
 uint8_t GameStatsConfig::getAmountSteps(CreatureID creatureId) {
-    return 8 + (maxAgility - creatures.at(creatureId).agility);
+    return 10 + (maxAgility - creatures.at(creatureId).agility);
 }
 
 float GameStatsConfig::getDamage(CreatureID creatureId){

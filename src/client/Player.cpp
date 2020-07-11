@@ -51,7 +51,7 @@ Player::Player(const TextureManager& manager, const PlayerInfo& playerInfo,
 	setHead(playerInfo.getHeadID());
 	setHelmet(playerInfo.getHelmetID());
 	setShield(playerInfo.getShieldID());
-  setWeapon(playerInfo.getWeaponID());
+    setWeapon(playerInfo.getWeaponID());
 }
 
 void Player::render(Camera& camera) {

@@ -80,28 +80,28 @@
     {
       "id": 1,
       "name": "Goblin",
-      "strength": 3,
+      "strength": 10,
       "agility": 4,
       "health": 35
     },
     {
       "id": 2,
       "name": "Skeleton",
-      "strength": 3.6,
+      "strength": 18,
       "agility": 3.2,
       "health": 75
     },
     {
       "id": 3,
       "name": "Spider",
-      "strength": 3.8,
+      "strength": 23,
       "agility": 3.8,
       "health": 55
     },
     {
       "id": 4,
       "name": "Zombie",
-      "strength": 3.3,
+      "strength": 15,
       "agility": 3,
       "health": 62
     }
