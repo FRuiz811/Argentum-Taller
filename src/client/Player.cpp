@@ -51,7 +51,7 @@ Player::Player(const TextureManager& manager, const PlayerInfo& playerInfo,
 	setHead(playerInfo.getHeadID());
 	setHelmet(playerInfo.getHelmetID());
 	setShield(playerInfo.getShieldID());
-  setWeapon(playerInfo.getWeaponID());
+    setWeapon(playerInfo.getWeaponID());
 }
 
 void Player::render(Camera& camera) {
@@ -237,7 +237,7 @@ InputInfo Player::handleEvent(SDL_Event& event, Camera& camera) {
             Point coord = camera.calculateGlobalPosition(Point(x,y));
             input = this->state->selectTarget(*this, coord);
           }
-          this->animation = std::shared_ptr<Animation>(new CureAnimation(this->manager,mixer.getEffect(MusicID::Cure)));
+          this->animation = std::shared_ptr<Animation>(new MissileAnimation(this->manager,mixer.getEffect(MusicID::Misil)));
   }
     return input;
 }

@@ -175,7 +175,8 @@ CharacterStateID GameCharacter::getStateId() {
     return state->getStateId();
 }
 
-uint GameCharacter::receiveDamage(float damage) {
+void GameCharacter::receiveDamage(float damage, WeaponID weaponId) {
+    setAttackBy(weaponId);
     if (GameStatsConfig::canEvade(race)) {
         std::cout << "Enemy fail attack" << std::endl;
     } else {
@@ -200,7 +201,6 @@ uint GameCharacter::receiveDamage(float damage) {
             this->inventory.push_back(ItemsInventoryID::Nothing);
         }
     }
-    return life;
 }
 
 bool GameCharacter::isDead() {

@@ -17,6 +17,7 @@ protected:
     Direction direction;
     NPCInfo infoInteracting;
     uint level;
+    WeaponID attackBy;
 public:
 	explicit GameObject(uint id, Point initialPoint, std::shared_ptr<Cell> initialCell, Direction aDirection = Direction::down);
 
@@ -29,6 +30,8 @@ public:
     void setCell(std::shared_ptr<Cell> aCell);
 
     void setPoint(Point aPoint);
+
+    void setAttackBy(WeaponID attackBy);
 
     std::shared_ptr<Cell> &getActualCell();
 
@@ -46,7 +49,7 @@ public:
 
     virtual bool isDead() = 0;
 
-    virtual uint receiveDamage(float damage) = 0;
+    virtual void receiveDamage(float damage, WeaponID weaponId) = 0;
 
 	virtual NPCInfo interact(GameObject& character, InputInfo input) = 0;
 

@@ -20,7 +20,7 @@ void AttackStateCharacter::performTask(uint id, std::unordered_map<uint, std::sh
                 std::shared_ptr<GameObject> aEnemy = gameObjects.at(enemyCell->getGameObjectId());
                 if (!aEnemy->isDead() && board.getDistance(aCharacter->getActualCell(), enemyCell) == 1) {
                     float damage = GameStatsConfig::getDamage(aCharacter->getRace(), aCharacter->getWeapon());
-                    aEnemy->receiveDamage(damage);
+                    aEnemy->receiveDamage(damage, aCharacter->getWeapon());
                     aCharacter->gainExp(aEnemy->isDead() ?
                         GameStatsConfig::getAdditionalExp(damage, aEnemy->getMaxLife(), aCharacter->getLevel(), aEnemy->getLevel()) :
                         GameStatsConfig::getExp(damage, aCharacter->getLevel(), aEnemy->getLevel()));

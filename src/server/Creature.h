@@ -24,9 +24,9 @@ public:
 
     float getMaxLife() override;
 
-    CharacterStateID getStateId() override;
+    void receiveDamage(float damage, WeaponID weaponId) override;
 
-    uint receiveDamage(float damage) override;
+    CharacterStateID getStateId() override;
 
     virtual NPCInfo interact(GameObject& character, InputInfo input);
     
