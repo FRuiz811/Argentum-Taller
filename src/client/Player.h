@@ -33,7 +33,7 @@ private:
 	std::shared_ptr<Helmet> helmet = nullptr;
 	std::shared_ptr<Shield> shield = nullptr;
 	std::shared_ptr<Weapon> weapon = nullptr;
-	int frameHead;
+	int frameHead{0};
 	std::shared_ptr<Animation> animation = nullptr;
 
 	void setArmor(BodyID newArmor);

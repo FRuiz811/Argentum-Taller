@@ -28,7 +28,6 @@ private:
     bool isAlive{true};
     bool isItem{false};
     std::shared_ptr<CharacterState> state = nullptr;
-    //std::shared_ptr<Animation> animation = nullptr;
 
     void setArmor(BodyID newArmor);
 	void setShield(ShieldID newShield);

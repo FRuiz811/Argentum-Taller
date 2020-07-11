@@ -55,12 +55,12 @@ NPC::NPC(const TextureManager& manager, const GameObjectInfo& gameObjectInfo,
 void NPC::render(Camera& camera) {
     if (this->body != nullptr)
  		this->body->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y));
+    if (this->head != nullptr)
+        this->head->render(int(posX+4-camera.getCameraPosition().x), int((posY-this->body->getHeight()/2)-camera.getCameraPosition().y));
     if (this->weapon != nullptr)
         this->weapon->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y));
     if (this->shield != nullptr)
 	    this->shield->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y));
-    if (this->head != nullptr)
-        this->head->render(int(posX+4-camera.getCameraPosition().x), int((posY-this->body->getHeight()/2)-camera.getCameraPosition().y));
     if (this->helmet != nullptr)
         this->helmet->render(int(posX+4-camera.getCameraPosition().x), int((posY-this->body->getHeight()/2)-camera.getCameraPosition().y));
 }
