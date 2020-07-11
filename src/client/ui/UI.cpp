@@ -209,7 +209,7 @@ void UI::updateBuild() {
     const Texture& itemShield = manager.getTexture(info.getShieldID());
     SDL_Rect src = {0,0,52,52};
     itemHelmet.render(src,{widthSegment-16,50,32,32});
-    if (this->playerTarget->getState() == CharacterStateID::Dead){
+    if (this->playerTarget->getHealth() == 0) {
         itemHead.render({0,0,52,52},{widthSegment-16,85,32,32});
     } else {
         itemHead.render({0,0,17,17},{widthSegment-16,85,32,32});
@@ -227,6 +227,8 @@ void UI::updateInteract() {
             this->npc = std::shared_ptr<NPCInterface>(new PriestInterface(informationNPC,&window,manager,playerTarget));
         } else if (this->informationNPC.type == 3) {
             this->npc = std::shared_ptr<NPCInterface>(new BankerInterface(informationNPC,&window,manager,playerTarget));
+        } else {
+            updateBuild();
         }
     }
     if (this->npc != nullptr)
@@ -243,6 +245,7 @@ void UI::updateEquipment() {
         updateInteract();
     } else {
         this->npc = nullptr;
+        this->informationNPC.type = 0;
         updateBuild();
     }
 }

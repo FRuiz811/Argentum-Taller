@@ -8,7 +8,9 @@ class Hood: public Helmet {
 public:
     Hood(const TextureManager& manager);
 
-    virtual void render(int posX, int posY, int direction);
+    virtual void render(int posX, int posY);
+
+    virtual void update(int dir);
 
     ~Hood();
 

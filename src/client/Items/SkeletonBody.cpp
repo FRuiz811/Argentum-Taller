@@ -6,15 +6,15 @@
 SkeletonBody::SkeletonBody(const TextureManager& manager) :
  Body(manager.getTexture(TextureID::Skeleton),WIDTH_BODY,HEIGHT_BODY,BodyID::Skeleton) {}
 
-void SkeletonBody::render(int posX, int posY, int direction) {
-    setDirection(direction);
-    SDL_Rect srcBody = {this->width*frame, this->height*direction, this->width, this->height};
-	SDL_Rect dstBody = {posX, posY, int(this->width*1.5), int(this->height*1.5)};
+void SkeletonBody::render(int posX, int posY) {
+    SDL_Rect srcBody = {this->width*frame, this->height*int(direction), this->width, this->height};
+	SDL_Rect dstBody = {posX, posY, int(this->width*1.2), int(this->height*1.2)};
     this->texture.render(srcBody, dstBody);
 }
 
-void SkeletonBody::update(double dt) {
-    Body::update(dt);
+void SkeletonBody::update(double dt,Direction dir) {
+    setDirection(int(dir));
+    Body::update(dt,dir);
 }
 
 void SkeletonBody::setDirection(int direction) {

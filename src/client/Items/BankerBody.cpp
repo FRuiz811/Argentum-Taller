@@ -8,15 +8,15 @@
 BankerBody::BankerBody(const TextureManager& manager) :
  Body(manager.getTexture(TextureID::Banker),WIDTH_BODY,HEIGHT_BODY,BodyID::Banker) {}
 
-void BankerBody::render(int posX, int posY, int direction) {
-    setDirection(direction);
-    SDL_Rect srcBody = {this->width*frame, this->height*direction, this->width, this->height};
+void BankerBody::render(int posX, int posY) {
+    SDL_Rect srcBody = {this->width*frame, this->height*int(direction), this->width, this->height};
 	SDL_Rect dstBody = {posX, posY, this->width, this->height};
     this->texture.render(srcBody, dstBody);
 }
 
-void BankerBody::update(double dt) {
-    Body::update(dt);
+void BankerBody::update(double dt,Direction dir) {
+    setDirection(int(dir));
+    Body::update(dt,dir);
 }
 
 void BankerBody::setDirection(int direction) {

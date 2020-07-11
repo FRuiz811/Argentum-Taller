@@ -10,8 +10,7 @@ enum class CharacterStateID {
     Still, //Aplica a NPCServer
     Move,  //Aplica a NPCServer
     Attack, //Aplica a NPCServer
-    Meditate, 
-    Dead,
+    Meditate,
     Interact,
 };
 

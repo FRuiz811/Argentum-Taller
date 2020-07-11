@@ -8,8 +8,10 @@ class IronHelmet: public Helmet {
 public:
     IronHelmet(const TextureManager& manager);
 
-    virtual void render(int posX, int posY, int direction);
+    virtual void render(int posX, int posY);
 
+    virtual void update(int dir);
+    
     ~IronHelmet();
 
 };

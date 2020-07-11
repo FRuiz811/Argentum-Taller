@@ -50,12 +50,10 @@ void Priest::cure(uint* health, uint maxHelth, uint* mana, uint maxMana) const {
 }
 
 void Priest::resurrect(uint* health, uint maxHelth, uint* mana, uint maxMana,State* state) const {
-    if (state->getStateId() == CharacterStateID::Dead){
         cure(health,maxHelth, mana,maxMana);
         InputInfo info;
         info.input = InputID::resurrect;
         state->setNextState(info);
-    }
 }
 
 Priest::~Priest() {}
