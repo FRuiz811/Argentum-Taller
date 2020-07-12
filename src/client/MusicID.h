@@ -5,7 +5,6 @@ enum class MusicID {
 	Nothing,
 	BackGround,
 	Eagle,
-	Rain,
 	Wind,
 	Wolf,
 	Walk,
@@ -23,6 +22,7 @@ enum class MusicID {
 	Death,
 	Zombie,
 	Raven,
+	Heart,
 };
 
 #endif

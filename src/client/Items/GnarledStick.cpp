@@ -9,7 +9,7 @@ GnarledStick::GnarledStick(const TextureManager& manager):
 
 void GnarledStick::render(int posX, int posY) {
     SDL_Rect srcWeapon = {this->width*frame, this->height*int(direction), this->width, this->height};
-	SDL_Rect dstWeapon = {posX, posY, this->width, this->height};
+	SDL_Rect dstWeapon = {posX, posY-2, this->width, this->height};
     this->texture.render(srcWeapon, dstWeapon);
 }
 

@@ -9,7 +9,7 @@ MeditateAnimation::MeditateAnimation(const TextureManager& manager,const Effect&
 
 void MeditateAnimation::render(int x, int y) {
     if(!this->effectPlayed) {
-        this->effect.playEffect();
+        this->effect.playEffect(0,64);
         this->effectPlayed = false;
     }
     int row = this->totalFrames/2;

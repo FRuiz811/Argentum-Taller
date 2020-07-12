@@ -51,7 +51,7 @@ Player::Player(const TextureManager& manager, const PlayerInfo& playerInfo,
 	setHead(playerInfo.getHeadID());
 	setHelmet(playerInfo.getHelmetID());
 	setShield(playerInfo.getShieldID());
-    setWeapon(playerInfo.getWeaponID());
+  setWeapon(playerInfo.getWeaponID());
 }
 
 void Player::render(Camera& camera) {
@@ -64,8 +64,10 @@ void Player::render(Camera& camera) {
 	  this->shield->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y));
   if (this->helmet != nullptr)
     this->helmet->render(int(posX+4-camera.getCameraPosition().x), int((posY-this->body->getHeight()/2)-camera.getCameraPosition().y));
-  if (this->animation != nullptr)
+  if (this->animation != nullptr) {
     this->animation->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y));
+  }
+  playEffectLowLife();
 }
 
 
@@ -117,6 +119,19 @@ void Player::updatePlayerInfo(PlayerInfo info) {
   setShield(info.getShieldID());
   setWeapon(info.getWeaponID());
   setFrameHead();
+  setAnimation(info.getAttackWeapon());
+}
+
+void Player::playEffectLowLife() {
+  if(this->playerInfo.getLife() < this->playerInfo.getMaxLife()*0.1 && playLowLife) {
+    const Effect& effect = mixer.getEffect(MusicID::Heart);
+    effect.playEffect(-1);
+    playLowLife = false;
+  } else if (this->playerInfo.getLife() >= this->playerInfo.getMaxLife()*0.1 &&!playLowLife) {
+    const Effect& effect = mixer.getEffect(MusicID::Heart);
+    effect.pause();
+    playLowLife = true;
+  }
 }
 
 InputInfo Player::dropItem(int itemNumber) {
@@ -237,7 +252,6 @@ InputInfo Player::handleEvent(SDL_Event& event, Camera& camera) {
             Point coord = camera.calculateGlobalPosition(Point(x,y));
             input = this->state->selectTarget(*this, coord);
           }
-          this->animation = std::shared_ptr<Animation>(new MissileAnimation(this->manager,mixer.getEffect(MusicID::Misil)));
   }
     return input;
 }
@@ -391,6 +405,43 @@ void Player::setWeapon(WeaponID newWeapon){
     if (this->weapon != nullptr)
       this->weapon->update(0,direction);
 	}
+}
+
+void Player::setAnimation(WeaponID weaponEnemy) {
+  if (this->animation == nullptr || this->animation->finished()){
+      switch (weaponEnemy) {
+    	case WeaponID::Nothing:
+            this->animation = nullptr;
+            break;
+        case WeaponID::Ax:
+            this->animation = std::shared_ptr<Animation>(new HitAnimation(this->manager,mixer.getEffect(MusicID::Ax)));
+            break;
+        case WeaponID::AshStick:
+            this->animation = std::shared_ptr<Animation>(new MagicArrowAnimation(this->manager,mixer.getEffect(MusicID::MagicArrow)));
+            break;
+        case WeaponID::GnarledStick:
+            this->animation = std::shared_ptr<Animation>(new MissileAnimation(this->manager,mixer.getEffect(MusicID::Misil)));
+            break;
+        case WeaponID::SimpleArc:
+            this->animation = std::shared_ptr<Animation>(new HitAnimation(this->manager,mixer.getEffect(MusicID::Arrow)));
+            break;
+        case WeaponID::CompoundArc:
+            this->animation = std::shared_ptr<Animation>(new HitAnimation(this->manager,mixer.getEffect(MusicID::Arrow)));
+            break;
+        case WeaponID::LongSword:
+            this->animation = std::shared_ptr<Animation>(new HitAnimation(this->manager,mixer.getEffect(MusicID::Sword)));
+            break;
+        case WeaponID::Hammer:
+            this->animation = std::shared_ptr<Animation>(new HitAnimation(this->manager,mixer.getEffect(MusicID::Hammer)));
+            break;
+        case WeaponID::Crosier:
+            this->animation = std::shared_ptr<Animation>(new ExplotionAnimation(this->manager,mixer.getEffect(MusicID::Explotion)));
+            break;
+        case WeaponID::ElficFlaute:
+            this->animation = std::shared_ptr<Animation>(new CureAnimation(this->manager,mixer.getEffect(MusicID::Cure)));
+            break;
+      }
+		}
 }
 
 Point* Player::getCenter() {

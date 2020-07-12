@@ -13,7 +13,11 @@ public:
 
 	Effect(Effect&& other);
 
-	void playEffect(int times = 0) const;
+	void playEffect(int times = 0,int volume=-1) const;
+
+	void setDistance(int distance) const;
+
+	void pause() const;
 
 	~Effect();
 };

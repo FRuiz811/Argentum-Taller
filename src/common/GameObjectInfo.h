@@ -15,9 +15,11 @@ protected:
     std::string textureHashId;
     CharacterStateID state;
     bool item;
+    WeaponID attackBy;
 public:
     GameObjectInfo();
-    GameObjectInfo(uint id, const Point &point, std::string textureHashId, Direction direction, CharacterStateID state, bool item);
+    GameObjectInfo(uint id, const Point &point, std::string textureHashId, Direction direction, 
+        CharacterStateID state, bool item, WeaponID attackBy);
 
     const Point &getPoint() const;
 
@@ -40,6 +42,7 @@ public:
     ShieldID getShieldID() const;
     ItemsInventoryID getItemID() const;
     CharacterStateID getState() const;
+    WeaponID getAttackWeapon() const;
 
     bool isItem() const;
 };

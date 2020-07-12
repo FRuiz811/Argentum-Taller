@@ -251,7 +251,7 @@ void TextureManager::loadTextures() {
 	createTexture(TextureID::Hammer, "assets/img/Martillo Sprite.png", textColor);
 	createTexture(TextureID::SimpleArc, "assets/img/Arco Simple Sprite.png", textColor);
 	createTexture(TextureID::CompoundArc, "assets/img/Arco Compuesto Sprite.png", textColor);
-	createTexture(TextureID::GnarledStick, "assets/img/Baston Nudoso.png", textColor);
+	createTexture(TextureID::GnarledStick, "assets/img/Baston Nudoso Sprite.png", textColor);
 	createTexture(TextureID::Crosier, "assets/img/Baculo Engarzado Sprite.png", textColor);
 	createTexture(TextureID::Ax, "assets/img/Hacha Sprite.png", textColor);
 	createTexture(TextureID::ElficFlaute, "assets/img/Flauta Elfica Sprite.png", textColor);

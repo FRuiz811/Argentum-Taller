@@ -42,16 +42,16 @@ void MusicManager::loadSounds() {
 	createEffect(MusicID::MagicArrow, "assets/sound/Flecha Magica.wav");
 	createEffect(MusicID::Arrow, "assets/sound/Flecha.wav");
 	createEffect(MusicID::Goblin, "assets/sound/Goblin.wav");
-	createEffect(MusicID::Ax, "assets/sound/Ax.wav");
+	createEffect(MusicID::Ax, "assets/sound/Hacha.wav");
 	createEffect(MusicID::Hammer, "assets/sound/Martillo.wav");
 	createEffect(MusicID::Meditation, "assets/sound/Meditar.wav");
 	createEffect(MusicID::Misil, "assets/sound/Misil.wav");
 	createEffect(MusicID::Death, "assets/sound/Muerte.wav");
-	createEffect(MusicID::Rain, "assets/sound/Tormenta.wav");
 	createEffect(MusicID::Wind, "assets/sound/Viento.wav");
 	createEffect(MusicID::Zombie, "assets/sound/Zombie.wav");
 	createEffect(MusicID::Wolf, "assets/sound/Lobo.wav");
 	createEffect(MusicID::Raven, "assets/sound/Cuervo.wav");
+	createEffect(MusicID::Heart, "assets/sound/Latidos.wav");
 
 }
 

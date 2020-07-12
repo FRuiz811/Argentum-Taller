@@ -169,11 +169,11 @@ void Game::render() {
 }
 
 void Game::sounds() {
-    int random = Random::get(1,1000);
+    int random = Random::get(1,5000);
     MusicID effectId = MusicID::Nothing;
     switch (random) {
         case 1:
-            effectId = MusicID::Rain;
+            effectId = MusicID::Wind;
             break;
         case 2:
             effectId = MusicID::Eagle;
@@ -188,7 +188,7 @@ void Game::sounds() {
             break;
     }
     if (effectId != MusicID::Nothing){
-        const Effect& effect = this->musicManager.getEffect(MusicID::Rain);
+        const Effect& effect = this->musicManager.getEffect(effectId);
         effect.playEffect();
     }
 }

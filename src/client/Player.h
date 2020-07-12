@@ -33,9 +33,9 @@ private:
 	std::shared_ptr<Helmet> helmet = nullptr;
 	std::shared_ptr<Shield> shield = nullptr;
 	std::shared_ptr<Weapon> weapon = nullptr;
-	int frameHead;
+	int frameHead{0};
 	std::shared_ptr<Animation> animation = nullptr;
-
+	bool playLowLife{false};
 	void setArmor(BodyID newArmor);
 	void setShield(ShieldID newShield);
 	void setHelmet(HelmetID newHelmet);
@@ -43,6 +43,8 @@ private:
 	void setWeapon(WeaponID newWeapon);
 	void setFrameHead();
 	void setState(CharacterStateID newState);
+	void setAnimation(WeaponID weaponEnemy);
+	void playEffectLowLife();
 
 public:
 	Player(const TextureManager& manager, const PlayerInfo& playerInfo, const MusicManager& mixer);

@@ -23,8 +23,10 @@ private:
 
 public:
     PlayerInfo();
-    PlayerInfo(uint id, Point point, uint goldAmount, uint life, uint mana,const std::string& textureHashId, Direction direction,
-        uint safeGold, uint maxLife, uint maxMana, uint exp, uint maxExp, uint level,const std::string& inventory, CharacterStateID state);
+    PlayerInfo(uint id, Point point, uint goldAmount, uint life, uint mana,
+        const std::string& textureHashId, Direction direction,uint safeGold, 
+        uint maxLife, uint maxMana, uint exp, uint maxExp, uint level,
+        const std::string& inventory, CharacterStateID state, WeaponID attackBy);
 
     ~PlayerInfo() override;
 

@@ -2,11 +2,13 @@
 #define NPC_H
 
 #include "Character.h"
+#include "Items/Item.h"
 #include "Items/Head.h"
 #include "Items/Body.h"
 #include "Items/Helmet.h"
 #include "Items/Shield.h"
 #include "Items/Weapon.h"
+#include "Items/Animation.h"
 #include "TextureManager.h"
 #include "MusicManager.h"
 #include "../common/Identificators.h"
@@ -23,13 +25,12 @@ private:
 	std::shared_ptr<Helmet> helmet = nullptr;
 	std::shared_ptr<Shield> shield = nullptr;
 	std::shared_ptr<Weapon> weapon = nullptr;
-    //Agregar Item en caso de que no sea un jugador;
+	std::shared_ptr<Animation> animation = nullptr;
     int frameHead{0};
-    bool isAlive{true};
-    bool isItem{false};
     std::shared_ptr<CharacterState> state = nullptr;
-    //std::shared_ptr<Animation> animation = nullptr;
 
+    bool isItem{false};
+    std::shared_ptr<Item> item = nullptr;
     void setArmor(BodyID newArmor);
 	void setShield(ShieldID newShield);
 	void setHelmet(HelmetID newHelmet);
@@ -37,6 +38,9 @@ private:
 	void setWeapon(WeaponID newWeapon);
 	void setFrameHead();
     void setState(CharacterStateID newState);
+    void setAnimation(WeaponID weaponEnemy);
+    void setItem(ItemsInventoryID itemId);
+    MusicID selectSound();
 
 public:
     NPC(const TextureManager& manager, const GameObjectInfo& gameObjectInfo, const MusicManager& mixer);

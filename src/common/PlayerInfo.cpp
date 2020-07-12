@@ -16,9 +16,10 @@ uint PlayerInfo::getMana() const {
     return mana;
 }
 
-PlayerInfo::PlayerInfo(uint id, Point point, uint goldAmount, uint life, uint mana,const std::string& textureHashId, Direction direction,
-     uint safeGold, uint maxLife, uint maxMana, uint exp, uint maxExp, uint level,const std::string& inventory, CharacterStateID state):
-    GameObjectInfo(id, point, std::move(textureHashId), direction,state, false),
+PlayerInfo::PlayerInfo(uint id, Point point, uint goldAmount, uint life, uint mana,const std::string& textureHashId, 
+    Direction direction, uint safeGold, uint maxLife, uint maxMana, uint exp, uint maxExp,
+    uint level,const std::string& inventory, CharacterStateID state, WeaponID attackBy):
+    GameObjectInfo(id, point, std::move(textureHashId), direction,state, false,attackBy),
     goldAmount(goldAmount), life(life), mana(mana), safeGold(safeGold), maxLife(maxLife), maxMana(maxMana),
     exp(exp), maxExp(maxExp), level(level), inventory(inventory) {}
 

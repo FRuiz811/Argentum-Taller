@@ -11,7 +11,7 @@ void CureAnimation::render(int x, int y) {
     if (this->finish) 
         return;
     if(!this->effectPlayed) {
-        this->effect.playEffect();
+        this->effect.playEffect(0,64);
         this->effectPlayed = true;
     }
     int row = this->totalFrames/4;

@@ -77,7 +77,7 @@ ItemInfo GameStatsConfig::createItem(rapidjson::Value& value) {
     aItemInfo.maxDefense = value["maxDefense"].GetInt();
     aItemInfo.goldCost = value["goldCost"].GetInt();
     aItemInfo.type = value["type"].GetString();
-    aItemInfo.hasRange = value["hasRange"].GetBool();
+    aItemInfo.range = value["range"].GetInt();
     return aItemInfo;
 }
 
@@ -166,7 +166,7 @@ std::string GameStatsConfig::getPort() {
     return port;
 }
 
-std::unordered_map<ItemsInventoryID,ItemInfo> GameStatsConfig::getItems() {
+std::map<ItemsInventoryID,ItemInfo> GameStatsConfig::getItems() {
     return items;
 }
 
@@ -217,13 +217,21 @@ int GameStatsConfig::getInventoryLimit() {
     return GameStatsConfig::inventoryLimit;
 }
 
+int GameStatsConfig::getWeaponDistance(WeaponID aWeaponId) {
+    if ( aWeaponId == WeaponID::Nothing) {
+        return 1;
+    }
+    ItemInfo aItemInfo = items.at(ItemTranslator::weaponToItem(aWeaponId));
+    return aItemInfo.range;
+}
+
 GameStatsConfig::GameStatsConfig() = default;
 
 GameStatsConfig::~GameStatsConfig() = default;
 
 std::unordered_map<RaceID, RaceInfo, std::hash<RaceID>> GameStatsConfig::races;
 std::unordered_map<GameClassID, GameClassInfo, std::hash<GameClassID>> GameStatsConfig::gameClasses;
-std::unordered_map<ItemsInventoryID, ItemInfo, std::hash<ItemsInventoryID>> GameStatsConfig::items;
+std::map<ItemsInventoryID, ItemInfo> GameStatsConfig::items;
 std::unordered_map<CreatureID, CreatureInfo, std::hash<CreatureID>> GameStatsConfig::creatures;
 std::string GameStatsConfig::port{};
 float GameStatsConfig::goldRandMin = 0.0;

@@ -9,8 +9,8 @@
 #define INITMSG 0x04
 #define INTERACTMSG 0x05
 #define INITLENGTH 2
-#define OBJECTLENGTH 17
-#define PLAYERINFOLENGTH 46
+#define OBJECTLENGTH 18
+#define PLAYERINFOLENGTH 47
 #define COMMANDLENGTH 7
 #define MAPLENGTH 240046
 #define ITEM 0x01
@@ -104,6 +104,8 @@ std::vector<uint8_t> Decoder::encodePlayerInfo(const PlayerInfo &info) {
     encodeEquipmentPlayer(info, encodeMsg);
     encodeInventory(info, encodeMsg);
     encodeStatePlayer(info, encodeMsg);
+    uint8_t attackBy = (uint8_t) info.getAttackWeapon();
+    encodeMsg.push_back(attackBy);
     return std::move(encodeMsg);
 }
 
@@ -186,8 +188,9 @@ PlayerInfo Decoder::decodePlayerInfo(Message msg) {
     auto dir = (Direction) (ntohs(msg.read16()));
     uint16_t x = ntohs(msg.read16());
     uint16_t y = ntohs(msg.read16());
+    auto attackBy = (WeaponID) msg.read8();
     PlayerInfo info(id, Point(x,y), gold, life, mana, equipment, dir,
-                    safeGold,maxLife,maxMana,exp,maxExp,level,inventory,state);
+                    safeGold,maxLife,maxMana,exp,maxExp,level,inventory,state,attackBy);
     return info;
 }
 
@@ -215,6 +218,7 @@ void Decoder::encodeItem(GameObjectInfo object, std::vector<uint8_t>& encodeMsg)
     uint16_t posY = htons(object.getPoint().y);
     conversorTo8(posX,16, encodeMsg);
     conversorTo8(posY,16, encodeMsg);
+    encodeMsg.push_back(ZERO); //Un item no puede ser atacado
 }
 
 void Decoder::encodeCharacter(GameObjectInfo object, std::vector<uint8_t>& encodeMsg) {
@@ -224,15 +228,15 @@ void Decoder::encodeCharacter(GameObjectInfo object, std::vector<uint8_t>& encod
     auto idBody = (uint8_t) object.getBodyID();
     auto idShield = (uint8_t) object.getShieldID();
     auto idWeapon = (uint8_t) object.getWeaponID();
-
+    auto attackBy = (uint8_t) object.getAttackWeapon();
     encodeMsg.push_back(idHelmet);
     encodeMsg.push_back(idHead);
     encodeMsg.push_back(idBody);
     encodeMsg.push_back(idShield);
     encodeMsg.push_back(idWeapon);
     encodeMsg.push_back(ZERO); //Correspondiente al valor del item que no es
-
     encodeStatePlayer(object, encodeMsg);
+    encodeMsg.push_back(attackBy);
 }
 
 std::vector<uint8_t> Decoder::encodeGameObjects(const std::vector<GameObjectInfo> &objects) {
@@ -272,7 +276,8 @@ std::vector<GameObjectInfo> Decoder::decodeGameObjects(Message msg) {
         auto dir = (Direction) (ntohs(msg.read16()));
         uint16_t x = ntohs(msg.read16());
         uint16_t y = ntohs(msg.read16());
-        GameObjectInfo info(id,Point(x,y),equipment,dir,state,type);
+        auto attackBy = (WeaponID) msg.read8();
+        GameObjectInfo info(id,Point(x,y),equipment,dir,state,type,attackBy);
         objects.push_back(info);
     }
     return std::move(objects);
@@ -377,7 +382,7 @@ TiledMap Decoder::decodeMap(Message msg) {
     return TiledMap(width, height, tileWidth, tileHeight, tileLayers, tileSets);
 }
 
-std::vector<uint8_t> Decoder::encodeNPCInfo(NPCInfo info) {
+std::vector<uint8_t> Decoder::encodeNPCInfo(const NPCInfo& info) {
     std::vector<uint8_t> encodeMsg;
     uint32_t length = 0;
     conversorTo8(htonl(length), 32, encodeMsg);

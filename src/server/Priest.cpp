@@ -1,6 +1,6 @@
 #include "Priest.h"
 
-Priest* Priest::priest = 0;
+Priest* Priest::priest = nullptr;
 
 Priest::Priest() :items() {
     this->actions.push_back(ActionsProfessionID::Cure);
@@ -10,13 +10,13 @@ Priest::Priest() :items() {
 
 
 Priest* Priest::getInstance() {
-    if (priest == 0)
+    if (priest == nullptr)
         priest = new Priest();
     return priest;
 }
 
-void Priest::init(std::unordered_map<ItemsInventoryID, ItemInfo>itemsToInit) {
-    for (auto iter: itemsToInit){
+void Priest::init(const std::map<ItemsInventoryID, ItemInfo>&itemsToInit) {
+    for (auto &iter: itemsToInit){
         if(iter.second.type == "Potion")
             this->items.insert({iter.first, iter.second.goldCost});
     }
@@ -31,8 +31,8 @@ ItemsInventoryID Priest::buyItem(ItemsInventoryID idItem, uint* balance) const {
     return idItem;
 }
 
-const std::unordered_map<ItemsInventoryID,uint> Priest::getItems() const {
-    return std::move(items);
+std::unordered_map<ItemsInventoryID,uint> Priest::getItems() const {
+    return items;
 }
 
 NPCInfo Priest::getInfo(uint id) {
@@ -56,4 +56,8 @@ void Priest::resurrect(uint* health, uint maxHelth, uint* mana, uint maxMana,Sta
         state->setNextState(info);
 }
 
-Priest::~Priest() {}
+void Priest::processInput(GameCharacter &character, InputInfo inputInfo) {
+
+}
+
+Priest::~Priest() = default;
