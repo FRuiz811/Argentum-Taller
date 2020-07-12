@@ -1,12 +1,15 @@
 #include "BankerInterface.h"
 #include <SDL2/SDL.h>
 
+#include <memory>
+#include <utility>
+
 #define WIDTHBUTTON 70
 #define HEIGTHBUTTON 25
 #define ITEMSBANKER 12
 
 BankerInterface::BankerInterface(NPCInfo info,Window* window, const TextureManager& manager,Player* player) : 
-    NPCInterface(info,window,manager,player),buttonsNPC(), buttonsItemsNPC(), arrows() {
+    NPCInterface(std::move(info),window,manager,player),buttonsNPC(), buttonsItemsNPC(), arrows() {
     int width_text, height_text;
     SDL_Texture* banker = font.createText("Banquero",
         &(window->getRenderer()), &width_text, &height_text);
@@ -14,7 +17,7 @@ BankerInterface::BankerInterface(NPCInfo info,Window* window, const TextureManag
     this->inBank = font.createText("Oro en Banco: ",
         &(window->getRenderer()), &width_text, &height_text);
     SDL_Rect rect = {(this->window->getWidth()/8)*2-40,((this->window->getHeight()-60)/2)-HEIGTHBUTTON*3,20,20};
-    this->changeScreen = std::shared_ptr<ArrowButton>(new ArrowButton(&(window->getRenderer()),font,">",rect, manager));
+    this->changeScreen = std::make_shared<ArrowButton>(&(window->getRenderer()),font,">",rect, manager);
 }
 
 void BankerInterface::renderGoldManagment() {
@@ -49,11 +52,11 @@ void BankerInterface::renderGoldManagment() {
 
     bool loadButtons =false;
     
-    if(this->arrows.size() == 0) {
+    if(this->arrows.empty()) {
         SDL_Rect rect = {100,120,20,20};
-        this->arrows.push_back(std::shared_ptr<ArrowButton>(new ArrowButton(&(window->getRenderer()),font,"+",rect, manager)));
+        this->arrows.push_back(std::make_shared<ArrowButton>(&(window->getRenderer()),font,"+",rect, manager));
         rect = {100,160,20,20};
-        this->arrows.push_back(std::shared_ptr<ArrowButton>(new ArrowButton(&(window->getRenderer()),font,"-",rect, manager)));
+        this->arrows.push_back(std::make_shared<ArrowButton>(&(window->getRenderer()),font,"-",rect, manager));
     }
     for (auto& button: arrows) {
         button->setViewport({0,(this->window->getHeight())/2,
@@ -110,8 +113,7 @@ void BankerInterface::renderItems() {
         src = {0,0,52,52};
         dst = {9+(i%3)*50,50+(i/3)*50,32,32};
         if (loadButtons) {
-            selection = std::shared_ptr<SelectButton>(new 
-            SelectButton(&(window->getRenderer()),dst,manager,i));
+            selection = std::make_shared<SelectButton>(&(window->getRenderer()),dst,manager,(int)information.itemsInBank[j]);
             this->buttonsItemsNPC.push_back(selection);
         }
         this->buttonsItemsNPC[i]->setViewport({0,(this->window->getHeight())/2,
@@ -146,7 +148,7 @@ void BankerInterface::renderItems() {
 
     if(loadButtons) {
         SDL_Rect rect = {(this->window->getWidth()/8)*2-40,((this->window->getHeight()-60)/2)-HEIGTHBUTTON*4,20,20};
-        this->arrow = std::shared_ptr<ArrowButton>(new ArrowButton(&(window->getRenderer()),font,"+",rect, manager));
+        this->arrow = std::make_shared<ArrowButton>(&(window->getRenderer()),font,"+",rect, manager);
     }
     if (this->arrow != nullptr){
         this->arrow->setViewport({0,(this->window->getHeight())/2,

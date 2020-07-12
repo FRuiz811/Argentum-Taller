@@ -101,5 +101,19 @@ uint Banker::retireGold(uint accountHolder, uint amountGold) {
 }
 
 void Banker::processInput(GameCharacter &character, InputInfo inputInfo) {
+    switch (inputInfo.input) {
+        case InputID::buy:
+            break;
+        case InputID::sell:
+            break;
+        case InputID::depositItem:
+            break;
+        case InputID::retireItem:
+            break;
+        case InputID::depositGold:
+            break;
+        case InputID::retireGold:
+            break;
+    }
 
 }

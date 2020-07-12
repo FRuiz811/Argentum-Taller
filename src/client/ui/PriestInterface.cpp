@@ -1,5 +1,7 @@
 #include "PriestInterface.h"
 
+#include <memory>
+
 #define WIDTHBUTTON 70
 #define HEIGTHBUTTON 25
 
@@ -33,8 +35,7 @@ void PriestInterface::render() {
         src = {0,0,52,52};
         dst = {9+(i%3)*50,50+(i/3)*50,32,32};
         if (loadButtons) {
-            selection = std::shared_ptr<SelectButton>(new 
-            SelectButton(&(window->getRenderer()),dst,manager,i));
+            selection = std::make_shared<SelectButton>(&(window->getRenderer()),dst,manager, (int)iter.first);
             this->buttonsItemsNPC.push_back(selection);
         }
         this->buttonsItemsNPC[i]->setViewport({0,(this->window->getHeight())/2,(this->window->getWidth()/8)*2,(this->window->getHeight())/2});
