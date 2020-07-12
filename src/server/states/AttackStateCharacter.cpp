@@ -12,13 +12,13 @@ void AttackStateCharacter::performTask(uint id, std::unordered_map<uint, std::sh
                                        Board &board) {
 
     std::shared_ptr<GameCharacter> aCharacter = std::dynamic_pointer_cast<GameCharacter>(gameObjects.at(id));
-    try {
-        if (timeBetweenAttacks == 0) {
-            timeBetweenAttacks = 10;
-            std::shared_ptr<Cell> enemyCell = board.getCellFromPoint(inputInfo.position);
-            if (enemyCell->getGameObjectId() != 0) {
-                std::shared_ptr<GameObject> aEnemy = gameObjects.at(enemyCell->getGameObjectId());
-                if (!aEnemy->isDead() && board.getDistance(aCharacter->getActualCell(), enemyCell) == 1) {
+    if (timeBetweenAttacks == 0) {
+        timeBetweenAttacks = 10;
+        std::shared_ptr<Cell> enemyCell = board.getCellFromPoint(inputInfo.position);
+        if (enemyCell->getGameObjectId() != 0) {
+            try {
+                aEnemy = gameObjects.at(enemyCell->getGameObjectId());
+                if (!aEnemy->isDead() && board.getDistance(aCharacter->getActualCell(), enemyCell) <= GameStatsConfig::getWeaponDistance(aCharacter->getWeapon())) {
                     float damage = GameStatsConfig::getDamage(aCharacter->getRace(), aCharacter->getWeapon());
                     aEnemy->receiveDamage(damage, aCharacter->getWeapon());
                     aCharacter->gainExp(aEnemy->isDead() ?
@@ -29,18 +29,19 @@ void AttackStateCharacter::performTask(uint id, std::unordered_map<uint, std::sh
                     }
                     enemyReceiveDamage = true;
                 }
-            }
-            if (!enemyReceiveDamage) {
-                finalized = true;
-            }
-        } else {
-            timeBetweenAttacks--;
-            if (timeBetweenAttacks == 0) {
-                finalized = true;
+            } catch (const std::out_of_range& e) {
+                std::cout << "Cannot get Enemy" << std::endl;
             }
         }
-    } catch (const std::out_of_range& e) {
-        finalized = true;
+        if (!enemyReceiveDamage) {
+            finalized = true;
+        }
+    } else {
+        timeBetweenAttacks--;
+        if (timeBetweenAttacks == 0) {
+            finalized = true;
+            aEnemy->setAttackBy(WeaponID::Nothing);
+        }
     }
 }
 

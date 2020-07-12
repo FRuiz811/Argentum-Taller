@@ -77,7 +77,7 @@ ItemInfo GameStatsConfig::createItem(rapidjson::Value& value) {
     aItemInfo.maxDefense = value["maxDefense"].GetInt();
     aItemInfo.goldCost = value["goldCost"].GetInt();
     aItemInfo.type = value["type"].GetString();
-    aItemInfo.hasRange = value["hasRange"].GetBool();
+    aItemInfo.range = value["range"].GetInt();
     return aItemInfo;
 }
 
@@ -215,6 +215,14 @@ float GameStatsConfig::getMaxHealth(CreatureID creatureId, uint level) {
 
 int GameStatsConfig::getInventoryLimit() {
     return GameStatsConfig::inventoryLimit;
+}
+
+int GameStatsConfig::getWeaponDistance(WeaponID aWeaponId) {
+    if ( aWeaponId == WeaponID::Nothing) {
+        return 1;
+    }
+    ItemInfo aItemInfo = items.at(ItemTranslator::weaponToItem(aWeaponId));
+    return aItemInfo.range;
 }
 
 GameStatsConfig::GameStatsConfig() = default;

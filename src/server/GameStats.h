@@ -23,7 +23,7 @@ struct ItemInfo {
     uint8_t id;
     std::string name;
     bool damage;
-    bool hasRange;
+    uint8_t range;
     uint8_t minDamage;
     uint8_t maxDamage;
     uint8_t manaUsed;
