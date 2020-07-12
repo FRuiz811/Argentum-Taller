@@ -16,10 +16,6 @@ private:
 
     ItemsInventoryID buyItem(ItemsInventoryID idItem, uint* balance) const;
 
-    void cure(uint* health, uint maxHelth, uint* mana, uint maxMana) const;
-
-    void resurrect(uint* health, uint maxHelth, uint* mana, uint maxMana,State* state) const;
-
     std::unordered_map<ItemsInventoryID,uint> getItems() const;
 
 public:

@@ -40,7 +40,7 @@ public:
 
 	bool inventoryIsFull();
 
-	void addItemToInventory(ItemsInventoryID aItemInventoryId);
+	bool addItemToInventory(ItemsInventoryID aItemInventoryId);
 
 	ItemsInventoryID removeItemFromInventory(ItemsInventoryID aItemToFind);
 
@@ -53,6 +53,8 @@ public:
     void gainExp(float newExp);
 
     float getMaxLife() override;
+
+    void cure();
 
     void update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) override;
 

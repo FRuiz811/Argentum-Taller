@@ -12,7 +12,8 @@
 
 UI::UI(Window& window, Player* player, const TextureManager& manager) : 
 window(window), playerTarget(player), manager(manager),
- font("assets/font/Prince Valiant.ttf",18,{0xA4, 0xA4, 0xA4}), texts() {
+ font("assets/font/Prince Valiant.ttf",18,{0xA4, 0xA4, 0xA4}), texts(), 
+ itemsID() {
 	createTexts();
     SDL_Rect buttonRect;
     for (int i = 0; i<9; i++) {
@@ -159,6 +160,7 @@ void UI::updateStates() {
 }
 
 void UI::updateItems() {
+    itemsID.clear();
     int w,h;
     SDL_QueryTexture(this->texts[4], NULL, NULL, &w, &h);
     SDL_Rect invText = {15,15,w,h};
@@ -174,6 +176,7 @@ void UI::updateItems() {
         item = items.substr(2*i+i,2);
         idItem = std::stoi(item);
         const Texture& item = manager.getTexture((ItemsInventoryID)idItem);
+        itemsID.push_back((ItemsInventoryID)idItem);
         buttonsItems[i]->setViewport({0,60,widthSegment*2,(this->window.getHeight()-60)/2});
         if (idItem > 0) {
             buttonsItems[i]->render();
@@ -288,7 +291,7 @@ InputInfo UI::handleClick(SDL_Event& event) {
                     info = button->onClick(itemSelected+1);
             }
             if (this->npc != nullptr)
-                info = this->npc->handleClick(x,y,itemSelected);
+                info = this->npc->handleClick(x,y,int(itemsID[itemSelected]));
             break;
                 
     }

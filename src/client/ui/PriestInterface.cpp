@@ -28,20 +28,30 @@ void PriestInterface::render() {
     std::shared_ptr<SelectButton> selection;
     SDL_Texture* textureGold;
     bool loadButtons = false;
+
+    std::vector<std::pair<ItemsInventoryID, uint>> items(information.items.begin(),information.items.end());
+
+    if (this->itemsPriest.size() == 0) {
+        for (auto iter: items) {
+            this->itemsPriest.push_back(iter.first);
+        }
+    }
+
     if (this->buttonsItemsNPC.size() == 0)
         loadButtons = true;
-    for (auto& iter: this->information.items) {
-        const Texture& item = manager.getTexture(iter.first);
+
+    for (int j = 0; j < items.size(); j++) {
+        const Texture& item = manager.getTexture(items[j].first);
         src = {0,0,52,52};
         dst = {9+(i%3)*50,50+(i/3)*50,32,32};
         if (loadButtons) {
-            selection = std::make_shared<SelectButton>(&(window->getRenderer()),dst,manager, (int)iter.first);
+            selection = std::make_shared<SelectButton>(&(window->getRenderer()),dst,manager,j);
             this->buttonsItemsNPC.push_back(selection);
         }
         this->buttonsItemsNPC[i]->setViewport({0,(this->window->getHeight())/2,(this->window->getWidth()/8)*2,(this->window->getHeight())/2});
         this->buttonsItemsNPC[i]->render();
         item.render(src,dst);
-        textureGold = font.createText(std::to_string(iter.second),&(window->getRenderer()),&w,&h);
+        textureGold = font.createText(std::to_string(items[j].second),&(window->getRenderer()),&w,&h);
         this->gold.push_back(textureGold);
         src = {0,0,w,h};
         dst = {20+(i%3)*50, 65+(i/3)*50,w,h};
@@ -92,7 +102,7 @@ InputInfo PriestInterface::handleClick(int x, int y, int itemSelected) {
     }
     for (auto& button: buttonsNPC) {
         if (button->inside(x,y))
-            info = button->onClick(itemSelectedNPC+1);
+            info = button->onClick(int(itemsPriest[itemSelectedNPC]));
         }
     return info;
 }

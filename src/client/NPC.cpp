@@ -85,7 +85,8 @@ void NPC::render(Camera& camera) {
       }
     }
   } else {
-    
+    if (this->item != nullptr)
+      this->item->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y));
   }
 }
 
@@ -114,7 +115,8 @@ void NPC::updatePlayerInfo(const GameObjectInfo &info) {
     setWeapon(info.getWeaponID());
     setFrameHead();
     setAnimation(info.getAttackWeapon());
-    setItem(info.getItemID());
+    if (info.isItem())
+      setItem(info.getItemID());
 }
 
 void NPC::setItem(ItemsInventoryID itemId) {

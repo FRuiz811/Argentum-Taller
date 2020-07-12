@@ -16,12 +16,15 @@ ItemsInventoryID Inventory::getItem(int index) const {
     return inventoryItems.at(index);
 }
 
-void Inventory::addItem(ItemsInventoryID aItemInventoryId) {
+bool Inventory::addItem(ItemsInventoryID aItemInventoryId) {
+    bool added = false;
     if (!isFull() && aItemInventoryId != ItemsInventoryID::Nothing) {
         auto iter = std::find(inventoryItems.begin(), inventoryItems.end(), ItemsInventoryID::Nothing);
         (*iter) = aItemInventoryId;
         itemsAmount++;
+        added = true;
     }
+    return added;
 }
 
 bool Inventory::isFull() const {

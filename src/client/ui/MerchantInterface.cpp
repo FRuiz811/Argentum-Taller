@@ -5,7 +5,7 @@
 #define ITEMSMERCHANT 12
 
 MerchantInterface::MerchantInterface(NPCInfo info,Window* window, const TextureManager& manager,Player* player) : 
-    NPCInterface(info,window,manager,player), buttonsItemsNPC(), buttonsNPC(), gold() {
+    NPCInterface(info,window,manager,player), buttonsItemsNPC(), buttonsNPC(), gold(), itemsMerchant() {
     int width_text, height_text;
     SDL_Texture* merchant = font.createText("Comerciante",
         &(window->getRenderer()), &width_text, &height_text);
@@ -30,6 +30,12 @@ void MerchantInterface::render() {
     this->pagMax = information.items.size() / ITEMSMERCHANT + 1;
     std::vector<std::pair<ItemsInventoryID, uint>> items(information.items.begin(),information.items.end());
 
+    if (this->itemsMerchant.size() == 0) {
+        for (auto iter: items) {
+            this->itemsMerchant.push_back(iter.first);
+        }
+    }
+
     if (this->buttonsItemsNPC.size() == 0)
         loadButtons = true;
 
@@ -46,7 +52,7 @@ void MerchantInterface::render() {
         dst = {9+(i%3)*50,50+(i/3)*50,32,32};
         if (loadButtons) {
             selection = std::shared_ptr<SelectButton>(new 
-            SelectButton(&(window->getRenderer()),dst,manager, (int)items[j].first - 1));
+            SelectButton(&(window->getRenderer()),dst,manager,j));
             this->buttonsItemsNPC.push_back(selection);
         }
         this->buttonsItemsNPC[i]->setViewport({0,(this->window->getHeight())/2,
@@ -112,9 +118,9 @@ InputInfo MerchantInterface::handleClick(int x, int y, int itemSelected) {
         }        
     }
     if (buttonsNPC[0]->inside(x,y))
-        info = buttonsNPC[0]->onClick(itemSelectedNPC+1);
+        info = buttonsNPC[0]->onClick(int(itemsMerchant[itemSelectedNPC+pagItems*ITEMSMERCHANT]));
     if (buttonsNPC[1]->inside(x,y))
-        info = buttonsNPC[1]->onClick(itemSelected+1);
+        info = buttonsNPC[1]->onClick(itemSelected);
 
     if (this->arrow != nullptr && this->arrow->inside(x,y)) {
         this->arrow->onClick();

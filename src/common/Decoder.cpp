@@ -392,9 +392,9 @@ std::vector<uint8_t> Decoder::encodeNPCInfo(const NPCInfo& info) {
     uint8_t cantAccions = info.actions.size();
     length += 1;
     encodeMsg.push_back(cantAccions);
-    for (auto iter: info.actions) {
+    for (int j = 0; j< info.actions.size();j++) {
         length += 1;
-        encodeMsg.push_back(uint8_t(iter));
+        encodeMsg.push_back(uint8_t(info.actions[j]));
     }
     if (info.type != 0) {
         uint8_t cantItems = info.items.size();

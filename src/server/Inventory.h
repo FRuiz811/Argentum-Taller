@@ -15,7 +15,7 @@ public:
 
     ItemsInventoryID getItem(int index) const;
 
-    void addItem(ItemsInventoryID aItemInventoryId);
+    bool addItem(ItemsInventoryID aItemInventoryId);
 
     bool isFull() const;
 

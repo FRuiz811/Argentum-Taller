@@ -24,6 +24,7 @@ private:
     std::vector<SDL_Texture*> texts; //Textos que se muestran en la interfaz
     std::vector<SDL_Texture*> info; //Informacion de los stats del jugador
     std::vector<std::shared_ptr<RaisedButton>> buttonsInventory; //Botones del inventario
+    std::vector<ItemsInventoryID> itemsID;
     std::vector<std::shared_ptr<SelectButton>> buttonsItems; //Items mostrados en el inventario
 
     NPCInfo informationNPC;

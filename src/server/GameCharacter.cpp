@@ -15,9 +15,7 @@ PlayerInfo GameCharacter::getPlayerInfo() {
 }
 
 GameCharacter::GameCharacter(uint id, RaceID aRace, GameClassID aClass, std::shared_ptr<Cell> initialCell, Point initialPoint):
-        GameObject(id, initialPoint, std::move(initialCell)), race(aRace), gameClass(aClass), queueInputs(true), inventory({
-    ItemsInventoryID::HealthPotion, ItemsInventoryID::ManaPotion,ItemsInventoryID::LongSword, ItemsInventoryID::IronShield,
-    ItemsInventoryID::LeatherArmor, ItemsInventoryID::Hood}) {
+        GameObject(id, initialPoint, std::move(initialCell)), race(aRace), gameClass(aClass), queueInputs(true), inventory({ItemsInventoryID::Nothing}) {
 
     this->life = GameStatsConfig::getMaxHealth(race, gameClass, level);
     this->mana = GameStatsConfig::getMaxMana(race, gameClass, level);
@@ -200,6 +198,11 @@ WeaponID GameCharacter::getWeapon() {
     return weapon;
 }
 
+void GameCharacter::cure(){
+    this->life = GameStatsConfig::getMaxHealth(race,gameClass, level);
+    this->mana = GameStatsConfig::getMaxMana(race,gameClass, level);
+}
+
 NPCInfo GameCharacter::interact(GameObject& character, InputInfo input) {
     NPCInfo info;
     return info;
@@ -225,8 +228,8 @@ bool GameCharacter::inventoryIsFull() {
     return inventory.isFull();
 }
 
-void GameCharacter::addItemToInventory(ItemsInventoryID aItemInventoryId) {
-    inventory.addItem(aItemInventoryId);
+bool GameCharacter::addItemToInventory(ItemsInventoryID aItemInventoryId) {
+   return inventory.addItem(aItemInventoryId);
 }
 
 void GameCharacter::setGoldAmount(uint goldAmount) {

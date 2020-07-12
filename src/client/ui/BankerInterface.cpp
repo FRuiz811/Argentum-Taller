@@ -113,7 +113,7 @@ void BankerInterface::renderItems() {
         src = {0,0,52,52};
         dst = {9+(i%3)*50,50+(i/3)*50,32,32};
         if (loadButtons) {
-            selection = std::make_shared<SelectButton>(&(window->getRenderer()),dst,manager,(int)information.itemsInBank[j]);
+            selection = std::make_shared<SelectButton>(&(window->getRenderer()),dst,manager,j);
             this->buttonsItemsNPC.push_back(selection);
         }
         this->buttonsItemsNPC[i]->setViewport({0,(this->window->getHeight())/2,
@@ -210,9 +210,9 @@ InputInfo BankerInterface::handleClick(int x, int y, int itemSelected) {
             info = buttonsNPC[1]->onClick(amountGold);
     } else {
         if (buttonsNPC[0]->inside(x,y))
-            info = buttonsNPC[0]->onClick(itemSelected+1);
+            info = buttonsNPC[0]->onClick(itemSelected);
         if (buttonsNPC[1]->inside(x,y))
-            info = buttonsNPC[1]->onClick(itemSelectedNPC+1);
+            info = buttonsNPC[1]->onClick(itemSelectedNPC);
     }
    if (this->changeScreen != nullptr && this->changeScreen->inside(x,y)) {
         this->changeScreen->onClick();
