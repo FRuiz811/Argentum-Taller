@@ -71,4 +71,8 @@ void Camera::render(Point destiny) {
     SDL_RenderSetViewport(&(this->window.getRenderer()), &display);
 }
 
+int Camera::distanceFromTarget(Point coordinates) const {
+    return this->playerTarget->distance(coordinates);
+}
+
 Camera::~Camera()= default;

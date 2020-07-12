@@ -3,7 +3,7 @@
 #include <utility>
 
 GameObjectInfo GameObject::getGameObjectInfo() {
-    return GameObjectInfo(id, point, textureHashId, direction,getStateId(),false);
+    return GameObjectInfo(id, point, textureHashId, direction,getStateId(),false,attackBy);
 }
 
 uint GameObject::getId() const {

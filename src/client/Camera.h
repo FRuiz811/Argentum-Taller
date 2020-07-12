@@ -36,6 +36,8 @@ public:
     
     Point calculateGlobalPosition(Point coordinates) const;
 
+    int distanceFromTarget(Point coordinates) const;
+
     ~Camera();
 };
 

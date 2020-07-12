@@ -11,12 +11,12 @@ PlayerInfo GameCharacter::getPlayerInfo() {
                       GameStatsConfig::getMaxHealth(race, gameClass, level),
                       GameStatsConfig::getMaxMana(race, gameClass, level),
                       exp,GameStatsConfig::getNextLevelLimit(level), level,
-                      getStringInventory(),state->getStateId());
+                      getStringInventory(),state->getStateId(),attackBy);
 }
 
 GameCharacter::GameCharacter(uint id, RaceID aRace, GameClassID aClass, std::shared_ptr<Cell> initialCell, Point initialPoint):
         GameObject(id, initialPoint, std::move(initialCell)), race(aRace), gameClass(aClass), queueInputs(true), inventory({
-    ItemsInventoryID::HealthPotion, ItemsInventoryID::ManaPotion,ItemsInventoryID::LongSword,ItemsInventoryID::IronShield,
+    ItemsInventoryID::HealthPotion, ItemsInventoryID::ManaPotion,ItemsInventoryID::Ax,ItemsInventoryID::IronShield,
     ItemsInventoryID::LeatherArmor,ItemsInventoryID::Hood,ItemsInventoryID::Nothing,ItemsInventoryID::Nothing,ItemsInventoryID::Nothing
 }) {
     this->life = GameStatsConfig::getMaxHealth(race, gameClass, level);

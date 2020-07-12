@@ -7,6 +7,7 @@
 #include "Items/Helmet.h"
 #include "Items/Shield.h"
 #include "Items/Weapon.h"
+#include "Items/Animation.h"
 #include "TextureManager.h"
 #include "MusicManager.h"
 #include "../common/Identificators.h"
@@ -23,6 +24,7 @@ private:
 	std::shared_ptr<Helmet> helmet = nullptr;
 	std::shared_ptr<Shield> shield = nullptr;
 	std::shared_ptr<Weapon> weapon = nullptr;
+	std::shared_ptr<Animation> animation = nullptr;
     //Agregar Item en caso de que no sea un jugador;
     int frameHead{0};
     bool isAlive{true};
@@ -36,6 +38,8 @@ private:
 	void setWeapon(WeaponID newWeapon);
 	void setFrameHead();
     void setState(CharacterStateID newState);
+    void setAnimation(WeaponID weaponEnemy);
+    MusicID selectSound();
 
 public:
     NPC(const TextureManager& manager, const GameObjectInfo& gameObjectInfo, const MusicManager& mixer);

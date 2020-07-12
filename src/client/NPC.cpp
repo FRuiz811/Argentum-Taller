@@ -33,11 +33,18 @@
 #include "Items/LongSword.h"
 #include "Items/Hammer.h"
 #include "Items/GnarledStick.h"
+#include "Items/HitAnimation.h"
+#include "Items/MagicArrowAnimation.h"
+#include "Items/ExplotionAnimation.h"
+#include "Items/MissileAnimation.h"
+#include "Items/MeditateAnimation.h"
+#include "Items/CureAnimation.h"
 #include "characterStates/StillState.h"
 #include "characterStates/MoveState.h"
 #include "characterStates/MeditateState.h"
 #include "characterStates/InteractState.h"
 #include "characterStates/AttackState.h"
+#include "../common/Random.h"
 
 NPC::NPC(const TextureManager& manager, const GameObjectInfo& gameObjectInfo, 
   const MusicManager& mixer): Character(gameObjectInfo.getX(), gameObjectInfo.getY(),
@@ -53,6 +60,8 @@ NPC::NPC(const TextureManager& manager, const GameObjectInfo& gameObjectInfo,
 }
 
 void NPC::render(Camera& camera) {
+  int distance = camera.distanceFromTarget(this->getPosition());
+  if(distance < 800){
     if (this->body != nullptr)
  		this->body->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y));
     if (this->head != nullptr)
@@ -63,6 +72,17 @@ void NPC::render(Camera& camera) {
 	    this->shield->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y));
     if (this->helmet != nullptr)
         this->helmet->render(int(posX+4-camera.getCameraPosition().x), int((posY-this->body->getHeight()/2)-camera.getCameraPosition().y));
+    if (this->animation != nullptr)
+        this->animation->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y));
+    MusicID effectId = selectSound();
+    if (Random::get(0,500) == 1 && effectId != MusicID::Nothing) {
+      const Effect& effect = mixer.getEffect(effectId);
+      if (distance > 255)
+        distance = 255;
+      effect.setDistance(distance);
+      effect.playEffect(0,64);
+    }
+  }
 }
 
 void NPC::update(double dt) {
@@ -74,6 +94,8 @@ void NPC::update(double dt) {
     if (this->shield != nullptr)
         this->shield->update(dt,direction);
   }
+  if (this->animation != nullptr)
+    this->animation->update();
 }
 
 void NPC::updatePlayerInfo(const GameObjectInfo &info) {
@@ -87,6 +109,25 @@ void NPC::updatePlayerInfo(const GameObjectInfo &info) {
     setShield(info.getShieldID());
     setWeapon(info.getWeaponID());
     setFrameHead();
+    setAnimation(info.getAttackWeapon());
+}
+
+MusicID NPC::selectSound() {
+  MusicID effectId = MusicID::Nothing;
+  switch (this->body->getId()) {
+     case BodyID::Goblin:
+            effectId = MusicID::Goblin;
+            break;
+        case BodyID::Skeleton:
+            effectId = MusicID::Skeleton;
+            break;
+        case BodyID::Zombie:
+            effectId = MusicID::Zombie;
+            break;
+        default:
+          effectId = MusicID::Nothing;
+  }
+  return effectId;
 }
 
 void NPC::setFrameHead() {
@@ -291,9 +332,42 @@ void NPC::setState(CharacterStateID newState) {
 	}
 }
 
-/*void NPC::updateBeingAttacked(WeapondID weapon) {
-  if (this->animation != nullptr || this->animation->finished())  
-}*/
+void NPC::setAnimation(WeaponID weaponEnemy) {
+  if (this->animation == nullptr || this->animation->finished()){
+      switch (weaponEnemy) {
+    	case WeaponID::Nothing:
+            this->animation = nullptr;
+            break;
+        case WeaponID::Ax:
+            this->animation = std::shared_ptr<Animation>(new HitAnimation(this->manager,mixer.getEffect(MusicID::Ax)));
+            break;
+        case WeaponID::AshStick:
+            this->animation = std::shared_ptr<Animation>(new MagicArrowAnimation(this->manager,mixer.getEffect(MusicID::MagicArrow)));
+            break;
+        case WeaponID::GnarledStick:
+            this->animation = std::shared_ptr<Animation>(new MissileAnimation(this->manager,mixer.getEffect(MusicID::Misil)));
+            break;
+        case WeaponID::SimpleArc:
+            this->animation = std::shared_ptr<Animation>(new HitAnimation(this->manager,mixer.getEffect(MusicID::Arrow)));
+            break;
+        case WeaponID::CompoundArc:
+            this->animation = std::shared_ptr<Animation>(new HitAnimation(this->manager,mixer.getEffect(MusicID::Arrow)));
+            break;
+        case WeaponID::LongSword:
+            this->animation = std::shared_ptr<Animation>(new HitAnimation(this->manager,mixer.getEffect(MusicID::Sword)));
+            break;
+        case WeaponID::Hammer:
+            this->animation = std::shared_ptr<Animation>(new HitAnimation(this->manager,mixer.getEffect(MusicID::Hammer)));
+            break;
+        case WeaponID::Crosier:
+            this->animation = std::shared_ptr<Animation>(new ExplotionAnimation(this->manager,mixer.getEffect(MusicID::Explotion)));
+            break;
+        case WeaponID::ElficFlaute:
+            this->animation = std::shared_ptr<Animation>(new CureAnimation(this->manager,mixer.getEffect(MusicID::Cure)));
+            break;
+      }
+		}
+}
 
 CharacterStateID& NPC::getState() {
   return this->state->getState();
