@@ -24,7 +24,7 @@ private:
     std::vector<GameObjectInfo> gameObjectsInfo;
     NPCInfo interacting;
 public:
-    ThPlayer(std::shared_ptr<CommunicationProtocol> protocol, std::shared_ptr<GameCharacter> aCharacter);
+    ThPlayer(const std::shared_ptr<CommunicationProtocol>& protocol, std::shared_ptr<GameCharacter> aCharacter);
 
     virtual void run();
 

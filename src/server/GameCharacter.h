@@ -6,6 +6,7 @@
 #include "states/State.h"
 #include "../common/InputQueue.h"
 #include "../common/Identificators.h"
+#include "Inventory.h"
 #include <vector>
 #include <memory>
 
@@ -18,7 +19,7 @@ private:
     uint mana;
     float exp;
     std::unique_ptr<State> state;
-    std::vector<ItemsInventoryID> inventory;
+    Inventory inventory;
     InputQueue queueInputs;
     WeaponID weapon{WeaponID::Nothing};
     ShieldID shield{ShieldID::Nothing};
@@ -26,7 +27,7 @@ private:
     BodyID body{BodyID::Nothing};
 
     std::string updateTextureHashId();
-    void consumePotion(ItemInfo potion);
+    void consumePotion(const ItemInfo& potion);
 
 public:
 	GameCharacter(uint id, RaceID aRace, GameClassID aClass, std::shared_ptr<Cell> initialCell, Point initialPoint);
@@ -36,6 +37,14 @@ public:
 	bool hasAnInputInfo();
 
 	InputInfo getNextInputInfo();
+
+	bool inventoryIsFull();
+
+	void addItemToInventory(ItemsInventoryID aItemInventoryId);
+
+	ItemsInventoryID removeItemFromInventory(ItemsInventoryID aItemToFind);
+
+	void gainGold(int aGoldAmount);
 
     bool isReadyToRemove() override;
 
@@ -59,7 +68,9 @@ public:
 
     GameClassID getGameClass() const;
 
-    uint getGoldAmount() const;
+    uint getGoldAmount();
+
+    void setGoldAmount(uint goldAmount);
 
     CharacterStateID getStateId() override;
 

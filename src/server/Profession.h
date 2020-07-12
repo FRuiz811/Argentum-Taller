@@ -3,6 +3,8 @@
 
 #include <vector>
 #include "../common/Identificators.h"
+#include "GameObject.h"
+#include "GameCharacter.h"
 
 class Profession {
 protected:
@@ -13,8 +15,10 @@ public:
     ~Profession(){}
     
     std::vector<ActionsProfessionID> getActions() const {
-        return std::move(actions);
+        return actions;
     }
+
+    virtual void processInput(GameCharacter& character, InputInfo inputInfo) = 0;
 
     virtual NPCInfo getInfo(uint id) = 0;
 };

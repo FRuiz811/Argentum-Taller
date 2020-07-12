@@ -382,7 +382,7 @@ TiledMap Decoder::decodeMap(Message msg) {
     return TiledMap(width, height, tileWidth, tileHeight, tileLayers, tileSets);
 }
 
-std::vector<uint8_t> Decoder::encodeNPCInfo(NPCInfo info) {
+std::vector<uint8_t> Decoder::encodeNPCInfo(const NPCInfo& info) {
     std::vector<uint8_t> encodeMsg;
     uint32_t length = 0;
     conversorTo8(htonl(length), 32, encodeMsg);

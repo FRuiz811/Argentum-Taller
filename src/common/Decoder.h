@@ -30,7 +30,7 @@ public:
 
     static std::vector<uint8_t> encodeMap(const TiledMap&);
 
-    static std::vector<uint8_t> encodeNPCInfo(NPCInfo info);
+    static std::vector<uint8_t> encodeNPCInfo(const NPCInfo& info);
 
     static std::vector<uint8_t> encodeGameObjects(const std::vector<GameObjectInfo> &objects);
     //Se recibe como parámetro el mensaje recibido desde el servidor. Los primeros 5 bytes ya fueron

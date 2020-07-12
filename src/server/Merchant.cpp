@@ -1,6 +1,7 @@
 #include "Merchant.h"
+#include "GameCharacter.h"
 
-Merchant* Merchant::merchant = 0;
+Merchant* Merchant::merchant = nullptr;
 
 Merchant::Merchant() :items() {
     this->actions.push_back(ActionsProfessionID::Buy);
@@ -8,32 +9,35 @@ Merchant::Merchant() :items() {
 }
 
 Merchant* Merchant::getInstance() {
-    if (merchant == 0)
+    if (merchant == nullptr)
         merchant = new Merchant();
     return merchant;
 }
 
-void Merchant::init(std::unordered_map<ItemsInventoryID, ItemInfo>itemsToInit) {
-    for (auto iter: itemsToInit){
+void Merchant::init(const std::map<ItemsInventoryID, ItemInfo>&itemsToInit) {
+    for (auto &iter: itemsToInit){
         this->items.insert({iter.first, iter.second.goldCost});
     }
 }
 
 ItemsInventoryID Merchant::buyItem(ItemsInventoryID idItem, uint* balance) const {
-    auto iter = items.find(idItem);
-    if (*balance < (*iter).second)
+    uint itemPrice = items.at(idItem);
+    if (*balance < itemPrice)
         return ItemsInventoryID::Nothing;
-    *balance -= (*iter).second;
+    *balance -= itemPrice;
     return idItem;
 }
 
 uint Merchant::sellItem(ItemsInventoryID idItem) const {
+    if (ItemsInventoryID::Nothing == idItem ) {
+        return 0;
+    }
     auto iter = items.find(idItem);
     return (*iter).second;
 }
 
-const std::unordered_map<ItemsInventoryID,uint> Merchant::getItems() const {
-    return std::move(items);
+std::unordered_map<ItemsInventoryID,uint> Merchant::getItems() const {
+    return items;
 }
 
 NPCInfo Merchant::getInfo(uint id) {
@@ -45,5 +49,21 @@ NPCInfo Merchant::getInfo(uint id) {
     return info;
 }
 
+void Merchant::processInput(GameCharacter &character, InputInfo inputInfo) {
+    switch (inputInfo.input) {
+        case InputID::sell:
+            character.gainGold(sellItem(character.removeItemFromInventory(ItemsInventoryID(inputInfo.aditional))));
+            break;
+        case InputID::buy:
+            uint goldAmount = character.getGoldAmount();
+            ItemsInventoryID aItem = buyItem(ItemsInventoryID(inputInfo.aditional), &goldAmount);
+            if (aItem != ItemsInventoryID::Nothing) {
+                character.addItemToInventory(aItem);
+                character.setGoldAmount(goldAmount);
+            }
+            break;
+    }
+}
 
-Merchant::~Merchant() {}
+
+Merchant::~Merchant() = default;

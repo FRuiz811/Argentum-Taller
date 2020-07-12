@@ -36,6 +36,8 @@ public:
 
     virtual NPCInfo getInfo(uint id);
 
+    void processInput(GameCharacter &character, InputInfo inputInfo) override;
+
     ~Banker();
 };
 

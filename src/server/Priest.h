@@ -20,14 +20,16 @@ private:
 
     void resurrect(uint* health, uint maxHelth, uint* mana, uint maxMana,State* state) const;
 
-    const std::unordered_map<ItemsInventoryID,uint> getItems() const;
+    std::unordered_map<ItemsInventoryID,uint> getItems() const;
 
 public:
     static Priest* getInstance();
 
-    void init(std::unordered_map<ItemsInventoryID, ItemInfo> itemsToInit);
+    void init(const std::map<ItemsInventoryID, ItemInfo>& itemsToInit);
 
     virtual NPCInfo getInfo(uint id);
+
+    void processInput(GameCharacter &character, InputInfo inputInfo) override;
 
     ~Priest();
 };

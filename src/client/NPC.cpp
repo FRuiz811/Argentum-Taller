@@ -60,28 +60,32 @@ NPC::NPC(const TextureManager& manager, const GameObjectInfo& gameObjectInfo,
 }
 
 void NPC::render(Camera& camera) {
-  int distance = camera.distanceFromTarget(this->getPosition());
-  if(distance < 800){
-    if (this->body != nullptr)
- 		this->body->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y));
-    if (this->head != nullptr)
-        this->head->render(int(posX+4-camera.getCameraPosition().x), int((posY-this->body->getHeight()/2)-camera.getCameraPosition().y));
-    if (this->weapon != nullptr)
-        this->weapon->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y));
-    if (this->shield != nullptr)
-	    this->shield->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y));
-    if (this->helmet != nullptr)
-        this->helmet->render(int(posX+4-camera.getCameraPosition().x), int((posY-this->body->getHeight()/2)-camera.getCameraPosition().y));
-    if (this->animation != nullptr)
-        this->animation->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y));
-    MusicID effectId = selectSound();
-    if (Random::get(0,500) == 1 && effectId != MusicID::Nothing) {
-      const Effect& effect = mixer.getEffect(effectId);
-      if (distance > 255)
-        distance = 255;
-      effect.setDistance(distance);
-      effect.playEffect(0,64);
+  if (!isItem) {
+    int distance = camera.distanceFromTarget(this->getPosition());
+    if(distance < 800){
+      if (this->body != nullptr)
+      this->body->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y));
+      if (this->head != nullptr)
+          this->head->render(int(posX+4-camera.getCameraPosition().x), int((posY-this->body->getHeight()/2)-camera.getCameraPosition().y));
+      if (this->weapon != nullptr)
+          this->weapon->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y));
+      if (this->shield != nullptr)
+        this->shield->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y));
+      if (this->helmet != nullptr)
+          this->helmet->render(int(posX+4-camera.getCameraPosition().x), int((posY-this->body->getHeight()/2)-camera.getCameraPosition().y));
+      if (this->animation != nullptr)
+          this->animation->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y));
+      MusicID effectId = selectSound();
+      if (Random::get(0,500) == 1 && effectId != MusicID::Nothing) {
+        const Effect& effect = mixer.getEffect(effectId);
+        if (distance > 255)
+          distance = 255;
+        effect.setDistance(distance);
+        effect.playEffect(0,64);
+      }
     }
+  } else {
+    
   }
 }
 
@@ -110,6 +114,12 @@ void NPC::updatePlayerInfo(const GameObjectInfo &info) {
     setWeapon(info.getWeaponID());
     setFrameHead();
     setAnimation(info.getAttackWeapon());
+    setItem(info.getItemID());
+}
+
+void NPC::setItem(ItemsInventoryID itemId) {
+  this->isItem = true;
+  this->item = std::shared_ptr<Item>(new Item(manager.getTexture(itemId),32,32));
 }
 
 MusicID NPC::selectSound() {
