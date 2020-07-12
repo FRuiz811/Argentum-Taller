@@ -47,7 +47,7 @@ public:
 
     void update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) override;
 
-    uint receiveDamage(float damage) override;
+    void receiveDamage(float damage, WeaponID weaponId) override;
 
     bool isDead();
 

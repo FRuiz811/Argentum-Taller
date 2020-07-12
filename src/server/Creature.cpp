@@ -58,7 +58,8 @@ CreatureID Creature::getCreatureId() const {
     return creatureId;
 }
 
-uint Creature::receiveDamage(float damage) {
+void Creature::receiveDamage(float damage, WeaponID weaponId) {
+    setAttackBy(weaponId);
     if (GameStatsConfig::canEvade(creatureId)) {
         std::cout << "Enemy fail attack" << std::endl;
     } else {
@@ -76,7 +77,6 @@ uint Creature::receiveDamage(float damage) {
             //Hacer drop aca.
         }
     }
-    return life;
 }
 
 bool Creature::isDead() {
