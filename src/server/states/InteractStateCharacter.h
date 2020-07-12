@@ -4,6 +4,9 @@
 #include "State.h"
 
 class InteractStateCharacter: public State {
+private:
+    bool interacting = false;
+    std::shared_ptr<GameObject> aNpc = nullptr;
 public:
     InteractStateCharacter(const InputInfo &info);
 

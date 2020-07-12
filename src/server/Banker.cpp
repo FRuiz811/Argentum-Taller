@@ -1,6 +1,6 @@
 #include "Banker.h"
 
-Banker* Banker::banker = 0;
+Banker* Banker::banker = nullptr;
 
 Banker::Banker() :accountsItems(), accountsGold(2500) {
     this->actions.push_back(ActionsProfessionID::DepositGold);
@@ -10,7 +10,7 @@ Banker::Banker() :accountsItems(), accountsGold(2500) {
 }
 
 Banker* Banker::getInstance() {
-    if (banker == 0)
+    if (banker == nullptr)
         banker = new Banker();
     return banker;
 }
@@ -98,4 +98,8 @@ uint Banker::retireGold(uint accountHolder, uint amountGold) {
         (*iter).second -= amountGold;
     }
     return amountGold;
+}
+
+void Banker::processInput(GameCharacter &character, InputInfo inputInfo) {
+
 }

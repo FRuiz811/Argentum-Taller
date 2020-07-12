@@ -26,7 +26,10 @@ NPCServer::NPCServer(uint id, const std::string& type, Point initialPoint, std::
 
 void NPCServer::update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) {}
 
-NPCInfo NPCServer::interact(GameObject& character, InputInfo input) {
+NPCInfo NPCServer::interact(GameObject& character, InputInfo inputInfo) {
+    if (inputInfo.input != InputID::selectTarget) {
+        this->profession->processInput(dynamic_cast<GameCharacter &>(character), inputInfo);
+    }
     NPCInfo info = this->profession->getInfo(character.getId());
     return info;
 }

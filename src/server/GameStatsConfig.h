@@ -5,12 +5,13 @@
 #include "GameStats.h"
 #include "../common/Identificators.h"
 #include <rapidjson/document.h>
+#include <map>
 
 class GameStatsConfig {
 private:
     static std::unordered_map<RaceID, RaceInfo, std::hash<RaceID>> races;
     static std::unordered_map<GameClassID, GameClassInfo, std::hash<GameClassID>> gameClasses;
-    static std::unordered_map<ItemsInventoryID, ItemInfo, std::hash<ItemsInventoryID>> items;
+    static std::map<ItemsInventoryID, ItemInfo> items;
     static std::unordered_map<CreatureID, CreatureInfo, std::hash<CreatureID>> creatures;
     static std::string port;
     static float goldRandMin;
@@ -58,7 +59,7 @@ public:
     static bool canEvade(CreatureID creatureId);
     static float getDefense(BodyID bodyId, ShieldID shieldId, HelmetID helmetId);
     static float getDefense(CreatureID creatureId);
-    static std::unordered_map<ItemsInventoryID,ItemInfo> getItems();
+    static std::map<ItemsInventoryID,ItemInfo> getItems();
     static uint8_t getAmountSteps(RaceID raceId);
     static uint8_t getAmountSteps(CreatureID creatureId);
     static uint8_t getCreaturesLimit();

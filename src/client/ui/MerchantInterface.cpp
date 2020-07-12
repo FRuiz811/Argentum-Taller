@@ -27,8 +27,8 @@ void MerchantInterface::render() {
     SDL_Texture* textureGold;
     bool loadButtons = false;
 
-    this->pagMax = information.items.size()/ITEMSMERCHANT+1;
-    std::vector<std::pair<ItemsInventoryID,uint>> items(information.items.begin(),information.items.end());
+    this->pagMax = information.items.size() / ITEMSMERCHANT + 1;
+    std::vector<std::pair<ItemsInventoryID, uint>> items(information.items.begin(),information.items.end());
 
     if (this->buttonsItemsNPC.size() == 0)
         loadButtons = true;
@@ -46,7 +46,7 @@ void MerchantInterface::render() {
         dst = {9+(i%3)*50,50+(i/3)*50,32,32};
         if (loadButtons) {
             selection = std::shared_ptr<SelectButton>(new 
-            SelectButton(&(window->getRenderer()),dst,manager,i));
+            SelectButton(&(window->getRenderer()),dst,manager, (int)items[j].first - 1));
             this->buttonsItemsNPC.push_back(selection);
         }
         this->buttonsItemsNPC[i]->setViewport({0,(this->window->getHeight())/2,

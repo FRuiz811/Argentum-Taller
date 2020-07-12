@@ -7,7 +7,7 @@
 #define ERRORSOCKET "Error en la comunicaciónn en ThPlayer::run() "
 #define ERRORDISPATCHER "Error en ThPlayer::run() "
 
-ThPlayer::ThPlayer(std::shared_ptr<CommunicationProtocol> protocol, std::shared_ptr<GameCharacter> aCharacter) :
+ThPlayer::ThPlayer(const std::shared_ptr<CommunicationProtocol>& protocol, std::shared_ptr<GameCharacter> aCharacter) :
 protocol(protocol), keepTalking(true), character(std::move(aCharacter)),
 receiver(protocol, character->getQueueInputs()) {}
 

@@ -1,8 +1,6 @@
 #include "ThPlayerReceiver.h"
 #include <iostream>
 #include <utility>
-#include "../common/Message.h"
-#include "../common/Decoder.h"
 #include "../common/SocketException.h"
 
 #define UNKNOW_ERROR "Unknow Error"
@@ -11,7 +9,7 @@
 
 
 ThPlayerReceiver::ThPlayerReceiver(std::shared_ptr<CommunicationProtocol> protocol, InputQueue& queue) :
-    keepTalking(true), protocol(protocol), queue(queue) {}
+    keepTalking(true), protocol(std::move(protocol)), queue(queue) {}
 
 void ThPlayerReceiver::setId(uint id) {
     this->id = id;

@@ -166,7 +166,7 @@ std::string GameStatsConfig::getPort() {
     return port;
 }
 
-std::unordered_map<ItemsInventoryID,ItemInfo> GameStatsConfig::getItems() {
+std::map<ItemsInventoryID,ItemInfo> GameStatsConfig::getItems() {
     return items;
 }
 
@@ -231,7 +231,7 @@ GameStatsConfig::~GameStatsConfig() = default;
 
 std::unordered_map<RaceID, RaceInfo, std::hash<RaceID>> GameStatsConfig::races;
 std::unordered_map<GameClassID, GameClassInfo, std::hash<GameClassID>> GameStatsConfig::gameClasses;
-std::unordered_map<ItemsInventoryID, ItemInfo, std::hash<ItemsInventoryID>> GameStatsConfig::items;
+std::map<ItemsInventoryID, ItemInfo> GameStatsConfig::items;
 std::unordered_map<CreatureID, CreatureInfo, std::hash<CreatureID>> GameStatsConfig::creatures;
 std::string GameStatsConfig::port{};
 float GameStatsConfig::goldRandMin = 0.0;

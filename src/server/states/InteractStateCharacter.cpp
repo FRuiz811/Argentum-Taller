@@ -13,18 +13,38 @@ InteractStateCharacter::~InteractStateCharacter() = default;
 void InteractStateCharacter::performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) {
 
     std::shared_ptr<GameCharacter> aCharacter = std::dynamic_pointer_cast<GameCharacter>(gameObjects.at(id));
-    try {
-        std::shared_ptr<Cell> npcCell = board.getCellFromPoint(inputInfo.position);
+    std::shared_ptr<Cell> npcCell = board.getCellFromPoint(inputInfo.position);
+    if (!interacting) {
         if (npcCell->getGameObjectId() != 0) {
-            std::shared_ptr<GameObject> aNpc = gameObjects.at(npcCell->getGameObjectId());
+            aNpc = gameObjects.at(npcCell->getGameObjectId());
             if (board.getDistance(npcCell, aCharacter->getActualCell()) == 1) {
                 NPCInfo info = aNpc->interact(*aCharacter,inputInfo);
-                aCharacter->setInteractInfo(info);
+                if (info.type != 0) {
+                    aCharacter->setInteractInfo(info);
+                    interacting = true;
+                } else {
+                    finalized = true;
+                }
             }
-        } 
-        finalized = true;
-    } catch (const std::out_of_range& e) {
-        finalized = true;
+        } else {
+            finalized = true;
+        }
+    } else {
+        if (aCharacter->hasAnInputInfo()) {
+            InputInfo info = aCharacter->getNextInputInfo();
+            if (info.input == InputID::buy || info.input == InputID::cure ||
+                info.input == InputID::sell || info.input == InputID::resurrect ||
+                info.input == InputID::retireItem || info.input == InputID::retireGold ||
+                info.input == InputID::depositItem || info.input == InputID::depositGold) {
+                try {
+                    aCharacter->setInteractInfo(aNpc->interact(*aCharacter, info));
+                } catch (Exception &e) {
+                    finalized = true;
+                }
+            } else {
+                finalized = true;
+            }
+        }
     }
 }
 
@@ -32,11 +52,6 @@ void InteractStateCharacter::setNextState(InputInfo info) {
     if (info.input == InputID::up || info.input == InputID::down ||
         info.input == InputID::left || info.input == InputID::right) {
         nextState = std::unique_ptr<State>(new MoveStateCharacter(info));
-    } else if (info.input == InputID::buy || info.input == InputID::cure ||
-        info.input == InputID::sell || info.input == InputID::resurrect ||
-        info.input == InputID::retireItem || info.input == InputID::retireGold ||
-        info.input == InputID::depositItem || info.input == InputID::depositGold) {
-        nextState = std::unique_ptr<State>(new InteractStateCharacter(info));
     } else if (info.input == InputID::equipItem) {
         nextState = std::unique_ptr<State>(new EquipStateCharacter(info));
     } else {
