@@ -53,7 +53,7 @@ ItemsInventoryID Inventory::removeItem(ItemsInventoryID aItemToRemove) {
     }
     (*iter) = ItemsInventoryID::Nothing;
     itemsAmount--;
-    return (*iter);
+    return aItemToRemove;
 }
 
 Inventory::~Inventory() = default;
