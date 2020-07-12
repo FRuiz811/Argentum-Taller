@@ -66,6 +66,7 @@ public:
     static uint8_t getNestCreatureLimit();
     static float getDistance();
     static int getInventoryLimit();
+    static int getWeaponDistance(WeaponID aWeaponId);
 };
 
 
