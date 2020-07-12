@@ -57,6 +57,16 @@ void Priest::resurrect(uint* health, uint maxHelth, uint* mana, uint maxMana,Sta
 }
 
 void Priest::processInput(GameCharacter &character, InputInfo inputInfo) {
+    switch (inputInfo.input) {
+        case InputID::resurrect:
+            break;
+        case InputID::cure:
+            break;
+        case InputID::buy:
+            break;
+        case InputID::sell:
+            break;
+    }
 
 }
 
