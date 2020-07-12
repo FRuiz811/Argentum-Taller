@@ -176,11 +176,6 @@ void GameCharacter::receiveDamage(float damage, WeaponID weaponId) {
         shield = ShieldID::Nothing;
         weapon = WeaponID::Nothing;
         helmet = HelmetID::Nothing;
-        //Acá se vacía el inventario y se debería hacer el drop
-        this->inventory.clear();
-        for(int i = 0; i < GameStatsConfig::getInventoryLimit(); ++i){
-            this->inventory.addItem(ItemsInventoryID::Nothing);
-        }
     }
 }
 
@@ -239,6 +234,30 @@ ItemsInventoryID GameCharacter::removeItemFromInventory(ItemsInventoryID aItemTo
 
 void GameCharacter::gainGold(int aGoldAmount) {
     goldAmount += aGoldAmount;
+}
+
+std::vector<DropItem> GameCharacter::getDrop() {
+    std::vector<DropItem> dropsItems;
+    for (auto &aInventoryItem : inventory.getInventoryItems()) {
+        if (aInventoryItem != ItemsInventoryID::Nothing) {
+            dropsItems.emplace_back(aInventoryItem, 1);
+        }
+    }
+    int diffGold = goldAmount - GameStatsConfig::getMaxGold(level);
+    if (diffGold > 0) {
+        goldAmount = GameStatsConfig::getMaxGold(level);
+        dropsItems.emplace_back(ItemsInventoryID::Gold, diffGold);
+    }
+    inventory.clear();
+    return dropsItems;
+}
+
+bool GameCharacter::isItem() {
+    return false;
+}
+
+bool GameCharacter::canDropsItems() {
+    return isDead() && !inventory.isEmpty();
 }
 
 GameCharacter::~GameCharacter()= default;

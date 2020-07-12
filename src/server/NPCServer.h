@@ -19,11 +19,17 @@ public:
 
     CharacterStateID getStateId() override;
 
-    virtual NPCInfo interact(GameObject& character, InputInfo input);
+    NPCInfo interact(GameObject& character, InputInfo input) override;
 
     void receiveDamage(float damage, WeaponID weaponId) override;
 
+    bool isItem() override;
+
+    bool canDropsItems() override;
+
     float getMaxLife() override;
+
+    std::vector<DropItem> getDrop() override;
 
     bool isDead() override;
 

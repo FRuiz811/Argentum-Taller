@@ -5,7 +5,6 @@
 #include <vector>
 #include <unordered_map>
 #include "State.h"
-#include "../../common/PlayerStats.h"
 #include "../GameObject.h"
 #include "../../common/StaticObject.h"
 

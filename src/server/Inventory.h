@@ -15,9 +15,13 @@ public:
 
     ItemsInventoryID getItem(int index) const;
 
+    bool isEmpty();
+
     void addItem(ItemsInventoryID aItemInventoryId);
 
     bool isFull() const;
+
+    const std::vector<ItemsInventoryID> &getInventoryItems() const;
 
     ItemsInventoryID removeItem(ItemsInventoryID aItemToRemove);
 
