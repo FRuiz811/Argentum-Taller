@@ -8,6 +8,7 @@ class AttackStateCharacter : public State {
 private:
     uint8_t timeBetweenAttacks = 0;
     bool enemyReceiveDamage = false;
+    std::shared_ptr<GameObject> aEnemy = nullptr;
 public:
     AttackStateCharacter(InputInfo info);
 

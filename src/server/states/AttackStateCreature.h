@@ -9,6 +9,7 @@ private:
     uint enemyId;
     bool enemyIsDead;
     uint8_t timeBetweenAttacks = 0;
+    std::shared_ptr<GameObject> aEnemy = nullptr;
 public:
     AttackStateCreature(uint enemyId);
 

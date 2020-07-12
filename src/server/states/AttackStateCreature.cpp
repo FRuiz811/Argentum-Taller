@@ -18,21 +18,22 @@ void AttackStateCreature::performTask(uint id, std::unordered_map<uint, std::sha
         timeBetweenAttacks = 15;
         std::shared_ptr<Creature> aCreature = std::dynamic_pointer_cast<Creature>(gameObjects.at(id));
         try {
-            std::shared_ptr<GameCharacter> aCharacter = std::dynamic_pointer_cast<GameCharacter>(gameObjects.at(enemyId));
+            aEnemy = std::dynamic_pointer_cast<GameCharacter>(gameObjects.at(enemyId));
             std::shared_ptr<Cell> creatureCell = aCreature->getActualCell();
-            std::shared_ptr<Cell> enemyCell = aCharacter->getActualCell();
-            if (aCharacter->isDead()) {
+            std::shared_ptr<Cell> enemyCell = aEnemy->getActualCell();
+            if (aEnemy->isDead()) {
                 enemyIsDead = true;
                 finalized = true;
             } else {
-                if (board.getDistance(creatureCell, enemyCell) == 1) {
-                    aCharacter->receiveDamage(GameStatsConfig::getDamage(aCreature->getCreatureId()),
+                if (board.getDistance(creatureCell, enemyCell) == GameStatsConfig::getWeaponDistance(WeaponID::Nothing)) {
+                    aEnemy->receiveDamage(GameStatsConfig::getDamage(aCreature->getCreatureId()),
                             WeaponID::Nothing);
-                    if (aCharacter->isDead()) {
+                    if (aEnemy->isDead()) {
                         enemyIsDead = true;
                         finalized = true;
                     }
                 } else {
+                    aEnemy->setAttackBy(WeaponID::Nothing);
                     finalized = true;
                 }
             }
