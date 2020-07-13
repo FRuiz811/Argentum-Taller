@@ -16,12 +16,15 @@ ItemsInventoryID Inventory::getItem(int index) const {
     return inventoryItems.at(index);
 }
 
-void Inventory::addItem(ItemsInventoryID aItemInventoryId) {
+bool Inventory::addItem(ItemsInventoryID aItemInventoryId) {
+    bool added = false;
     if (!isFull() && aItemInventoryId != ItemsInventoryID::Nothing) {
         auto iter = std::find(inventoryItems.begin(), inventoryItems.end(), ItemsInventoryID::Nothing);
         (*iter) = aItemInventoryId;
         itemsAmount++;
+        added = true;
     }
+    return added;
 }
 
 bool Inventory::isFull() const {
@@ -30,6 +33,10 @@ bool Inventory::isFull() const {
 
 void Inventory::clear() {
     inventoryItems.clear();
+    itemsAmount = 0;
+    for (int i = 0; i < limit; ++i){
+        inventoryItems.push_back(ItemsInventoryID::Nothing);
+    }
 }
 
 std::string Inventory::getStringInventory() const {
@@ -53,7 +60,15 @@ ItemsInventoryID Inventory::removeItem(ItemsInventoryID aItemToRemove) {
     }
     (*iter) = ItemsInventoryID::Nothing;
     itemsAmount--;
-    return (*iter);
+    return aItemToRemove;
+}
+
+const std::vector<ItemsInventoryID> &Inventory::getInventoryItems() const {
+    return inventoryItems;
+}
+
+bool Inventory::isEmpty() {
+    return itemsAmount == 0;
 }
 
 Inventory::~Inventory() = default;

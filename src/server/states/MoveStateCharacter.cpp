@@ -86,3 +86,7 @@ bool MoveStateCharacter::isOnPursuit(uint pursuitId) {
 bool MoveStateCharacter::isAttacking() {
     return false;
 }
+
+bool MoveStateCharacter::isMeditating() {
+    return false;
+}

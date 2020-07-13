@@ -23,4 +23,8 @@
      return false;
  }
 
+ bool StillStateCreature::isMeditating() {
+     return false;
+ }
+
  StillStateCreature::~StillStateCreature() = default;

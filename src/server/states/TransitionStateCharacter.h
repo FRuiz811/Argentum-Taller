@@ -21,6 +21,8 @@ public:
 
     bool isOnPursuit(uint pursuitId) override;
 
+    bool isMeditating() override;
+
     bool isAttacking() override;
 };
 

@@ -4,7 +4,6 @@
 
 #include <zconf.h>
 #include <string>
-#include "Position.h"
 #include "Identificators.h"
 
 class GameObjectInfo {

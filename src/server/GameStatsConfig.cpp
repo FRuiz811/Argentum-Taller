@@ -112,11 +112,11 @@ float GameStatsConfig::getRecoveryMana(RaceID race) {
 }
 
 float GameStatsConfig::getRecoveryManaMeditation(RaceID race, GameClassID gameClass) {
-    return races.at(race).intelligent * gameClasses.at(gameClass).meditation;
+    return (races.at(race).intelligent * gameClasses.at(gameClass).meditation);
 }
 
-float GameStatsConfig::getGoldDrop(uint maxHealthNPC){
-    return Random::getFloat(goldRandMin, goldRandMax) * maxHealthNPC;
+float GameStatsConfig::getGoldDrop(CreatureID creatureId, uint level){
+    return Random::getFloat(goldRandMin, goldRandMax) * GameStatsConfig::getMaxHealth(creatureId, level);
 }
 
 float GameStatsConfig::getMaxGold(uint level){
@@ -223,6 +223,10 @@ int GameStatsConfig::getWeaponDistance(WeaponID aWeaponId) {
     }
     ItemInfo aItemInfo = items.at(ItemTranslator::weaponToItem(aWeaponId));
     return aItemInfo.range;
+}
+
+int GameStatsConfig::getWeaponCost(WeaponID aWeaponId) {
+    return items.at(ItemTranslator::weaponToItem(aWeaponId)).manaUsed;
 }
 
 GameStatsConfig::GameStatsConfig() = default;

@@ -22,6 +22,8 @@ public:
 
     void resetState() override;
 
+    bool isMeditating() override;
+
     bool isAttacking() override;
 };
 

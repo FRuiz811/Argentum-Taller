@@ -15,7 +15,7 @@ void InteractStateCharacter::performTask(uint id, std::unordered_map<uint, std::
     std::shared_ptr<GameCharacter> aCharacter = std::dynamic_pointer_cast<GameCharacter>(gameObjects.at(id));
     std::shared_ptr<Cell> npcCell = board.getCellFromPoint(inputInfo.position);
     if (!interacting) {
-        if (npcCell->getGameObjectId() != 0) {
+        if (npcCell->getGameObjectId() != 0 && npcCell != aCharacter->getActualCell()) {
             aNpc = gameObjects.at(npcCell->getGameObjectId());
             if (board.getDistance(npcCell, aCharacter->getActualCell()) == 1) {
                 NPCInfo info = aNpc->interact(*aCharacter,inputInfo);
@@ -68,5 +68,9 @@ bool InteractStateCharacter::isOnPursuit(uint pursuitId) {
 }
 
 bool InteractStateCharacter::isAttacking() {
+    return false;
+}
+
+bool InteractStateCharacter::isMeditating() {
     return false;
 }

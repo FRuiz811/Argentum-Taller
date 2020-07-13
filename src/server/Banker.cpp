@@ -30,7 +30,7 @@ uint Banker::checkBalance(uint accountHolder) {
         createNewAccount(accountHolder);
         return 0;
     }
-    return (*iter).second;
+    return accountsGold[accountHolder];
 }
 
 void Banker::createNewAccount(uint accountHolder) {
@@ -47,6 +47,8 @@ ItemsInventoryID Banker::retireItem(uint accountHolder, uint item) {
         createNewAccount(accountHolder);
         return ItemsInventoryID::Nothing;
     }
+    if (accountsItems[accountHolder].size() == 0)
+        return ItemsInventoryID::Nothing;
     ItemsInventoryID itemToRetire = (*iter).second.at(item);
     (*iter).second.at(item) = ItemsInventoryID::Nothing;
     auto it = (*iter).second.begin();
@@ -83,7 +85,7 @@ void Banker::depositGold(uint accountHolder, uint amountGold) {
     auto iter = accountsGold.find(accountHolder);
     if (iter == accountsGold.end())
         createNewAccount(accountHolder);
-    (*iter).second += amountGold;
+    accountsGold[accountHolder] += amountGold;
 }
 
 uint Banker::retireGold(uint accountHolder, uint amountGold) {
@@ -92,27 +94,42 @@ uint Banker::retireGold(uint accountHolder, uint amountGold) {
         createNewAccount(accountHolder);
         return 0;
     }
-    if ((*iter).second < amountGold) {
-        (*iter).second = 0;
+    if (accountsGold[accountHolder] < amountGold) {
+        amountGold = accountsGold[accountHolder];
+        accountsGold[accountHolder] = 0;
     } else {
-        (*iter).second -= amountGold;
+        accountsGold[accountHolder] -= amountGold;
     }
     return amountGold;
 }
 
 void Banker::processInput(GameCharacter &character, InputInfo inputInfo) {
+    bool addedToInventory;
+    ItemsInventoryID aItem;
+    int gold;
     switch (inputInfo.input) {
-        case InputID::buy:
-            break;
-        case InputID::sell:
-            break;
         case InputID::depositItem:
+            character.removeItemFromInventory(ItemsInventoryID(inputInfo.aditional));
+            depositItem(character.getId(),ItemsInventoryID(inputInfo.aditional));
             break;
         case InputID::retireItem:
+            aItem = retireItem(character.getId(),inputInfo.aditional);
+            if (aItem != ItemsInventoryID::Nothing) {
+                addedToInventory = character.addItemToInventory(aItem);
+                if(!addedToInventory)
+                    depositItem(character.getId(),aItem);
+            }
             break;
         case InputID::depositGold:
+            gold = character.getGoldAmount();
+            if (inputInfo.aditional > gold)
+                inputInfo.aditional = gold;
+            depositGold(character.getId(),inputInfo.aditional);
+            character.setGoldAmount(character.getGoldAmount()-inputInfo.aditional);
             break;
         case InputID::retireGold:
+            gold = retireGold(character.getId(),inputInfo.aditional);
+            character.setGoldAmount(character.getGoldAmount()+gold);
             break;
     }
 

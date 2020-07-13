@@ -44,20 +44,26 @@ NPCInfo Priest::getInfo(uint id) {
     return info;
 }
 
-void Priest::cure(uint* health, uint maxHelth, uint* mana, uint maxMana) const {
-    *health = maxHelth;
-    *mana = maxMana;
-}
-
-void Priest::resurrect(uint* health, uint maxHelth, uint* mana, uint maxMana,State* state) const {
-        cure(health,maxHelth, mana,maxMana);
-        InputInfo info;
-        info.input = InputID::resurrect;
-        state->setNextState(info);
-}
-
 void Priest::processInput(GameCharacter &character, InputInfo inputInfo) {
-
+    uint sell,goldAmount;
+        switch (inputInfo.input) {
+        case InputID::buy:
+            goldAmount = character.getGoldAmount();
+            if (!character.inventoryIsFull()) {
+                ItemsInventoryID aItem = buyItem(ItemsInventoryID(inputInfo.aditional), &goldAmount);
+                if (aItem != ItemsInventoryID::Nothing) {
+                    character.addItemToInventory(aItem);
+                    character.setGoldAmount(goldAmount);
+                }
+            }
+            break;
+        case InputID::resurrect:
+            if (character.isDead())
+                character.cure();
+            break;
+        case InputID::cure:
+            character.cure();
+        }
 }
 
 Priest::~Priest() = default;

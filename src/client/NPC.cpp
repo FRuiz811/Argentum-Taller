@@ -1,4 +1,6 @@
 #include "NPC.h"
+
+#include <memory>
 #include "Items/ElfHead.h"
 #include "Items/HumanHead.h"
 #include "Items/DwarfHead.h"
@@ -85,7 +87,8 @@ void NPC::render(Camera& camera) {
       }
     }
   } else {
-    
+    if (this->item != nullptr)
+      this->item->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y));
   }
 }
 
@@ -114,28 +117,31 @@ void NPC::updatePlayerInfo(const GameObjectInfo &info) {
     setWeapon(info.getWeaponID());
     setFrameHead();
     setAnimation(info.getAttackWeapon());
-    setItem(info.getItemID());
+    if (info.isItem())
+      setItem(info.getItemID());
 }
 
 void NPC::setItem(ItemsInventoryID itemId) {
   this->isItem = true;
-  this->item = std::shared_ptr<Item>(new Item(manager.getTexture(itemId),32,32));
+  this->item = std::make_shared<Item>(manager.getTexture(itemId),32,32);
 }
 
 MusicID NPC::selectSound() {
   MusicID effectId = MusicID::Nothing;
-  switch (this->body->getId()) {
-     case BodyID::Goblin:
-            effectId = MusicID::Goblin;
-            break;
-        case BodyID::Skeleton:
-            effectId = MusicID::Skeleton;
-            break;
-        case BodyID::Zombie:
-            effectId = MusicID::Zombie;
-            break;
-        default:
-          effectId = MusicID::Nothing;
+  if (body != nullptr) {
+      switch (this->body->getId()) {
+          case BodyID::Goblin:
+              effectId = MusicID::Goblin;
+              break;
+          case BodyID::Skeleton:
+              effectId = MusicID::Skeleton;
+              break;
+          case BodyID::Zombie:
+              effectId = MusicID::Zombie;
+              break;
+          default:
+              effectId = MusicID::Nothing;
+      }
   }
   return effectId;
 }

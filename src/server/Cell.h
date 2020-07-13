@@ -11,6 +11,7 @@ private:
     uint gameObjectId;
     bool city;
     uint nestId;
+    uint itemId;
 public:
     Cell(uint x, uint y);
 
@@ -20,9 +21,17 @@ public:
 
     std::tuple<int, int> getCoord();
 
-    friend bool operator==(Cell c1, const Cell& c2);
+    friend bool operator==(const Cell& c1, const Cell& c2);
 
-    friend bool operator!=(Cell c1, const Cell& c2);
+    friend bool operator!=(const Cell& c1, const Cell& c2);
+
+    void removeItem();
+
+    bool hasItem() const;
+
+    void setItemId(uint itemId);
+
+    uint getItemId() const;
 
     bool isEmpty() const;
 
