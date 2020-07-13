@@ -100,10 +100,13 @@ InputInfo PriestInterface::handleClick(int x, int y, int itemSelected) {
             }
         }        
     }
-    for (auto& button: buttonsNPC) {
-        if (button->inside(x,y))
-            info = button->onClick(int(itemsPriest[itemSelectedNPC]));
+    for (int i = 0; i < this->buttonsNPC.size(); i++) {
+        if (buttonsNPC[i]->inside(x,y)) {
+            if (i == 2 && itemSelectedNPC == -1)    
+                continue;
+            info = buttonsNPC[i]->onClick(int(itemsPriest[itemSelectedNPC]));
         }
+    }
     return info;
 }
 

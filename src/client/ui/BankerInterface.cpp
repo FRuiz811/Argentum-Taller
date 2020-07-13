@@ -98,9 +98,10 @@ void BankerInterface::renderItems() {
 
     this->pagMaxInBank = information.itemsInBank.size()/ITEMSBANKER+1;
 
-    if (this->buttonsItemsNPC.size() == 0)
+    if (this->buttonsItemsNPC.size() != information.itemsInBank.size()) {
         loadButtons = true;
-
+        this->buttonsItemsNPC.clear();
+    }
     uint max; 
     if ((pagItemsInBank+1)*ITEMSBANKER > information.itemsInBank.size()){
         max = information.itemsInBank.size();
