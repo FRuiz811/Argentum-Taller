@@ -209,10 +209,12 @@ InputInfo BankerInterface::handleClick(int x, int y, int itemSelected) {
         if (buttonsNPC[1]->inside(x,y))
             info = buttonsNPC[1]->onClick(amountGold);
     } else {
-        if (buttonsNPC[0]->inside(x,y))
+        if (buttonsNPC[0]->inside(x,y) && itemSelected > 0)
             info = buttonsNPC[0]->onClick(itemSelected);
-        if (buttonsNPC[1]->inside(x,y))
+        if (buttonsNPC[1]->inside(x,y) && itemSelectedNPC > -1) {
             info = buttonsNPC[1]->onClick(itemSelectedNPC);
+            itemSelectedNPC = -1;
+        }
     }
    if (this->changeScreen != nullptr && this->changeScreen->inside(x,y)) {
         this->changeScreen->onClick();
