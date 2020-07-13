@@ -47,8 +47,6 @@ public:
 
     uint getLevel();
 
-    void upLevel();
-
     virtual void update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board& board) = 0;
 
     virtual CharacterStateID getStateId() = 0;

@@ -40,6 +40,7 @@ void GameCharacter::update(std::unordered_map<uint, std::shared_ptr<GameObject>>
     }
     state->performTask(id, gameObjects, board);
     this->textureHashId = updateTextureHashId();
+    updateHealthAndMana();
 }
 
 std::string GameCharacter::updateTextureHashId() {
@@ -141,10 +142,6 @@ uint GameCharacter::getMana() const {
 
 float GameCharacter::getExp() const {
     return exp;
-}
-
-uint GameCharacter::getLevel() const {
-    return level;
 }
 
 InputQueue &GameCharacter::getQueueInputs() {
@@ -261,6 +258,32 @@ bool GameCharacter::isItem() {
 
 bool GameCharacter::canDropsItems() {
     return isDead() && !inventory.isEmpty();
+}
+
+void GameCharacter::consumeMana() {
+    if (weapon != WeaponID::Nothing) {
+        mana -= GameStatsConfig::getWeaponCost(weapon);
+    }
+}
+
+void GameCharacter::upLevel() {
+    level++;
+    life = getMaxLife();
+    mana = GameStatsConfig::getMaxMana(race, gameClass, level);
+}
+
+bool GameCharacter::canPerformAttack() {
+    return weapon != WeaponID::Nothing && GameStatsConfig::getWeaponCost(weapon) <= mana;
+}
+
+void GameCharacter::updateHealthAndMana() {
+    float manaMax = GameStatsConfig::getMaxMana(race, gameClass, level);
+    float lifeIncrement = GameStatsConfig::getRecoveryHealth(race);
+    life = life + lifeIncrement > getMaxLife() ? getMaxLife() : lifeIncrement + life;
+    float manaIncrement = state->isMeditating() ?
+            GameStatsConfig::getRecoveryManaMeditation(race, gameClass) :
+            GameStatsConfig::getRecoveryMana(race);
+    mana = mana + manaIncrement > manaMax ? manaMax : mana + manaIncrement;
 }
 
 GameCharacter::~GameCharacter()= default;

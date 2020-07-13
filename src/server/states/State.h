@@ -34,6 +34,8 @@ public:
 
     virtual bool isAttacking() = 0;
 
+    virtual bool isMeditating() = 0;
+
     std::unique_ptr<State> getNextState();
 
     bool hasNextState();

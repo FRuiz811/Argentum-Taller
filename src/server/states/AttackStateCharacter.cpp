@@ -15,11 +15,15 @@ void AttackStateCharacter::performTask(uint id, std::unordered_map<uint, std::sh
     if (timeBetweenAttacks == 0) {
         timeBetweenAttacks = 10;
         std::shared_ptr<Cell> enemyCell = board.getCellFromPoint(inputInfo.position);
-        if (enemyCell->getGameObjectId() != 0) {
+        if (enemyCell->getGameObjectId() != 0 && enemyCell != aCharacter->getActualCell()) {
             try {
                 aEnemy = gameObjects.at(enemyCell->getGameObjectId());
-                if (!aEnemy->isDead() && board.getDistance(aCharacter->getActualCell(), enemyCell) <= GameStatsConfig::getWeaponDistance(aCharacter->getWeapon())) {
+                if (!aEnemy->isDead() &&
+                    board.getDistance(aCharacter->getActualCell(), enemyCell) <= GameStatsConfig::getWeaponDistance(aCharacter->getWeapon()) &&
+                    aCharacter->canPerformAttack()) {
+
                     float damage = GameStatsConfig::getDamage(aCharacter->getRace(), aCharacter->getWeapon());
+                    aCharacter->consumeMana();
                     aEnemy->receiveDamage(damage, aCharacter->getWeapon());
                     aCharacter->gainExp(aEnemy->isDead() ?
                         GameStatsConfig::getAdditionalExp(damage, aEnemy->getMaxLife(), aCharacter->getLevel(), aEnemy->getLevel()) :
@@ -66,4 +70,8 @@ bool AttackStateCharacter::isOnPursuit(uint pursuitId) {
 
 bool AttackStateCharacter::isAttacking() {
     return true;
+}
+
+bool AttackStateCharacter::isMeditating() {
+    return false;
 }

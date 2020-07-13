@@ -68,6 +68,7 @@ public:
     static float getDistance();
     static int getInventoryLimit();
     static int getWeaponDistance(WeaponID aWeaponId);
+    static int getWeaponCost(WeaponID aWeaponId);
 };
 
 

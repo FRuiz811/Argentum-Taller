@@ -38,3 +38,7 @@ bool MeditateStateCharacter::isOnPursuit(uint pursuitId) {
 bool MeditateStateCharacter::isAttacking() {
     return false;
 }
+
+bool MeditateStateCharacter::isMeditating() {
+    return true;
+}

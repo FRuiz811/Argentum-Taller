@@ -45,3 +45,7 @@ bool EquipStateCharacter::isOnPursuit(uint pursuitId) {
 bool EquipStateCharacter::isAttacking() {
     return false;
 }
+
+bool EquipStateCharacter::isMeditating() {
+    return false;
+}

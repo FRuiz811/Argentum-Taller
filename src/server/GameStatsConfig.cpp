@@ -112,7 +112,7 @@ float GameStatsConfig::getRecoveryMana(RaceID race) {
 }
 
 float GameStatsConfig::getRecoveryManaMeditation(RaceID race, GameClassID gameClass) {
-    return races.at(race).intelligent * gameClasses.at(gameClass).meditation;
+    return (races.at(race).intelligent * gameClasses.at(gameClass).meditation);
 }
 
 float GameStatsConfig::getGoldDrop(CreatureID creatureId, uint level){
@@ -251,3 +251,7 @@ uint8_t GameStatsConfig::creaturesLimit = 0.0;
 uint8_t GameStatsConfig::nestCreaturesLimit = 0.0;
 float GameStatsConfig::distance = 0.0;
 int GameStatsConfig::inventoryLimit = 0;
+
+int GameStatsConfig::getWeaponCost(WeaponID aWeaponId) {
+    return items.at(ItemTranslator::weaponToItem(aWeaponId)).manaUsed;
+}

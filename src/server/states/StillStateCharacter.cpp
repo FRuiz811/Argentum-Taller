@@ -42,4 +42,8 @@ StillStateCharacter::StillStateCharacter() {
     stateId = CharacterStateID::Still;
 }
 
+bool StillStateCharacter::isMeditating() {
+    return false;
+}
+
 

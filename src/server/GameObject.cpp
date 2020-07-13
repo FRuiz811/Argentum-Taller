@@ -45,10 +45,6 @@ uint GameObject::getLevel() {
     return level;
 }
 
-void GameObject::upLevel() {
-    level++;
-}
-
 void GameObject::setAttackBy(WeaponID attackBy) {
     GameObject::attackBy = attackBy;
 }
