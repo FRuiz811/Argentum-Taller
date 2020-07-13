@@ -233,6 +233,8 @@ void UI::updateInteract() {
         } else {
             updateBuild();
         }
+    } else {
+        npc->update(this->informationNPC);
     }
     if (this->npc != nullptr)
         this->npc->render(); 

@@ -24,6 +24,8 @@ public:
 
     virtual void render() = 0;
 
+    void update(NPCInfo npcInfo);
+
     virtual InputInfo handleClick(int x, int y, int itemSelected) = 0;
 
     ~NPCInterface();

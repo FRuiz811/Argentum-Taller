@@ -8,8 +8,8 @@
 #define HEIGTHBUTTON 25
 #define ITEMSBANKER 12
 
-BankerInterface::BankerInterface(NPCInfo info,Window* window, const TextureManager& manager,Player* player) : 
-    NPCInterface(std::move(info),window,manager,player),buttonsNPC(), buttonsItemsNPC(), arrows() {
+BankerInterface::BankerInterface(NPCInfo info, Window* window, const TextureManager& manager, Player* player) :
+    NPCInterface(std::move(info), window, manager, player), buttonsNPC(), buttonsItemsNPC(), arrows() {
     int width_text, height_text;
     SDL_Texture* banker = font.createText("Banquero",
         &(window->getRenderer()), &width_text, &height_text);
@@ -24,14 +24,14 @@ void BankerInterface::renderGoldManagment() {
     int w,h;
     int i =0;
     SDL_QueryTexture(this->inBank, NULL, NULL, &w, &h);
-    SDL_Rect inBank = {15,45,w,h};
-    SDL_RenderCopy(&(window->getRenderer()), this->inBank, NULL, &inBank);
-    inBank = {15,45+h,w,h};
+    SDL_Rect bank = {15, 45, w, h};
+    SDL_RenderCopy(&(window->getRenderer()), this->inBank, NULL, &bank);
+    bank = {15, 45 + h, w, h};
     this->goldInBank = font.createText(std::to_string(information.gold),
         &(window->getRenderer()), &w, &h);
-    inBank.w = w;
-    inBank.h = h;
-    SDL_RenderCopy(&(window->getRenderer()), this->goldInBank, NULL, &inBank);
+    bank.w = w;
+    bank.h = h;
+    SDL_RenderCopy(&(window->getRenderer()), this->goldInBank, NULL, &bank);
 
     const Texture& goldTexture = manager.getTexture(TextureID::Gold);
     SDL_Rect srcGold = {0,0,32,32};
