@@ -56,3 +56,7 @@ std::shared_ptr<RaisedButton> NPCInterface::createButtonAction(ActionsProfession
 NPCInterface::~NPCInterface() {
     SDL_DestroyTexture(this->texture);
 }
+
+void NPCInterface::update(NPCInfo npcInfo) {
+    information = npcInfo;
+}

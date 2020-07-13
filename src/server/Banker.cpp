@@ -113,23 +113,23 @@ void Banker::processInput(GameCharacter &character, InputInfo inputInfo) {
             depositItem(character.getId(),ItemsInventoryID(inputInfo.aditional));
             break;
         case InputID::retireItem:
-            aItem = retireItem(character.getId(),inputInfo.aditional);
+            aItem = retireItem(character.getId(), inputInfo.aditional);
             if (aItem != ItemsInventoryID::Nothing) {
                 addedToInventory = character.addItemToInventory(aItem);
                 if(!addedToInventory)
-                    depositItem(character.getId(),aItem);
+                    depositItem(character.getId(), aItem);
             }
             break;
         case InputID::depositGold:
             gold = character.getGoldAmount();
             if (inputInfo.aditional > gold)
                 inputInfo.aditional = gold;
-            depositGold(character.getId(),inputInfo.aditional);
-            character.setGoldAmount(character.getGoldAmount()-inputInfo.aditional);
+            depositGold(character.getId(), inputInfo.aditional);
+            character.setGoldAmount(character.getGoldAmount() - inputInfo.aditional);
             break;
         case InputID::retireGold:
-            gold = retireGold(character.getId(),inputInfo.aditional);
-            character.setGoldAmount(character.getGoldAmount()+gold);
+            gold = retireGold(character.getId(), inputInfo.aditional);
+            character.gainGold(gold);
             break;
     }
 
