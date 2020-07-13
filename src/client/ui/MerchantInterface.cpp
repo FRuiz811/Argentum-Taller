@@ -117,7 +117,7 @@ InputInfo MerchantInterface::handleClick(int x, int y, int itemSelected) {
             }
         }        
     }
-    if (buttonsNPC[0]->inside(x,y))
+    if (buttonsNPC[0]->inside(x,y) && itemSelectedNPC > -1)
         info = buttonsNPC[0]->onClick(int(itemsMerchant[itemSelectedNPC+pagItems*ITEMSMERCHANT]));
     if (buttonsNPC[1]->inside(x,y))
         info = buttonsNPC[1]->onClick(itemSelected);

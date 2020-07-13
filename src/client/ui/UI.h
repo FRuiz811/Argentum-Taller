@@ -30,6 +30,8 @@ private:
     NPCInfo informationNPC;
     int widthSegment;
     int itemSelected{-1};
+    int maxExpPreviousLevel{0};
+    int maxExpActualLevel{0};
 
     void updateStates();
     void updateHealth();
