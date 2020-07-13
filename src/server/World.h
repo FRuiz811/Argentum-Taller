@@ -44,11 +44,15 @@ private:
 
     void generateCreature();
 
+    void generateItem(const DropItem &dropItem, const std::shared_ptr<Cell>& emptyCell);
+
     void clearFinishedPlayers();
 
     void clearDeadCreatures();
 
     void update();
+
+    void checkDrops();
 public:
     explicit World(GameStatsConfig& configuration);
 

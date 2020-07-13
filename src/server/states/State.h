@@ -4,7 +4,6 @@
 #include <unordered_map>
 #include <memory>
 #include <vector>
-#include "../../common/PlayerStats.h"
 #include "../../common/StaticObject.h"
 #include "../GameObject.h"
 
@@ -34,6 +33,8 @@ public:
     virtual bool isOnPursuit(uint pursuitId) = 0;
 
     virtual bool isAttacking() = 0;
+
+    virtual bool isMeditating() = 0;
 
     std::unique_ptr<State> getNextState();
 

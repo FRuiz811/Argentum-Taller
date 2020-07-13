@@ -2,11 +2,11 @@
 #define OBJETOJUEGO_H
 
 #include <string>
-#include "../common/Position.h"
 #include "../common/Identificators.h"
 #include "../common/GameObjectInfo.h"
 #include "GameStatsConfig.h"
 #include "Board.h"
+#include "DropItem.h"
 
 class GameObject{
 protected:
@@ -31,6 +31,12 @@ public:
 
     void setPoint(Point aPoint);
 
+    virtual bool isItem() = 0;
+
+    virtual bool canDropsItems() = 0;
+
+    virtual std::vector<DropItem> getDrop() = 0;
+
     void setAttackBy(WeaponID attackBy);
 
     std::shared_ptr<Cell> &getActualCell();
@@ -40,8 +46,6 @@ public:
     virtual float getMaxLife() = 0;
 
     uint getLevel();
-
-    void upLevel();
 
     virtual void update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board& board) = 0;
 

@@ -5,7 +5,6 @@
 #include <vector>
 #include <unordered_map>
 #include "State.h"
-#include "../../common/PlayerStats.h"
 #include "../GameObject.h"
 #include "../../common/StaticObject.h"
 
@@ -22,6 +21,8 @@ public:
     void setNextState(InputInfo info) override;
 
     void resetState() override;
+
+    bool isMeditating() override;
 
     bool isAttacking() override;
 

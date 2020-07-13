@@ -23,6 +23,8 @@ public:
 
     bool isAttacking() override;
 
+    bool isMeditating() override;
+
     void setNextState(InputInfo info) override;
 };
 

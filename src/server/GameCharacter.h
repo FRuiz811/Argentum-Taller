@@ -15,8 +15,8 @@ private:
     RaceID race{RaceID::Nothing};
     GameClassID gameClass{GameClassID::Nothing};
     uint goldAmount;
-    uint life;
-    uint mana;
+    float life;
+    float mana;
     float exp;
     std::unique_ptr<State> state;
     Inventory inventory;
@@ -36,6 +36,12 @@ public:
 
 	bool hasAnInputInfo();
 
+	void consumeMana();
+
+    void upLevel();
+
+    bool canPerformAttack();
+
 	InputInfo getNextInputInfo();
 
 	bool inventoryIsFull();
@@ -50,7 +56,13 @@ public:
 
     WeaponID getWeapon();
 
+    std::vector<DropItem> getDrop() override;
+
     void gainExp(float newExp);
+
+    bool isItem() override;
+
+    bool canDropsItems() override;
 
     float getMaxLife() override;
 
@@ -82,8 +94,6 @@ public:
 
     float getExp() const;
 
-    uint getLevel() const;
-
     std::string getStringInventory() const;
 
     InputQueue &getQueueInputs();
@@ -91,6 +101,8 @@ public:
     virtual NPCInfo interact(GameObject& character, InputInfo input);
 
     void equipItem(int itemToEquip);
+
+    void updateHealthAndMana();
 };
 
 #endif

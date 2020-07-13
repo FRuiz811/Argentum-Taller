@@ -30,3 +30,7 @@ bool TransitionStateCharacter::isOnPursuit(uint pursuitId) {
 bool TransitionStateCharacter::isAttacking() {
     return false;
 }
+
+bool TransitionStateCharacter::isMeditating() {
+    return false;
+}

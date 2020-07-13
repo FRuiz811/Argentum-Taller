@@ -1,7 +1,7 @@
 #include <tuple>
 #include "Cell.h"
 
-Cell::Cell(uint x, uint y) : x(x), y(y), empty(true), gameObjectId(0), city(false), nestId(0) {}
+Cell::Cell(uint x, uint y) : x(x), y(y), empty(true), gameObjectId(0), city(false), nestId(0), itemId(0) {}
 
 bool Cell::isEmpty() const {
     return empty;
@@ -53,12 +53,28 @@ std::tuple<int, int> Cell::getCoord() {
     return {x, y};
 }
 
-bool operator==(Cell c1, const Cell &c2) {
+bool operator==(const Cell& c1, const Cell &c2) {
     return c1.x == c2.x && c1.y == c2.y;
 }
 
-bool operator!=(Cell c1, const Cell &c2) {
+bool operator!=(const Cell& c1, const Cell &c2) {
     return !(c1==c2);
+}
+
+void Cell::removeItem() {
+    itemId = 0;
+}
+
+uint Cell::getItemId() const {
+    return itemId;
+}
+
+bool Cell::hasItem() const {
+    return itemId != 0;
+}
+
+void Cell::setItemId(uint itemId) {
+    Cell::itemId = itemId;
 }
 
 Cell::~Cell() = default;

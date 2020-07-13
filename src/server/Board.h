@@ -13,7 +13,6 @@
 #include "GameStatsConfig.h"
 #include "Nest.h"
 #include "NestContainer.h"
-#include "BoardPosition.h"
 #include "Cell.h"
 #include "../common/TiledMap.h"
 
@@ -29,7 +28,7 @@ private:
     void addCity(StaticObject &city);
     std::tuple<int, int> convertPoint(const Point &point);
     void addCollisonObject(StaticObject &object);
-    std::pair<int, int> getCorrectPosition(std::shared_ptr<Cell> aCell, Direction aDirection);
+    std::pair<int, int> getCorrectPosition(const std::shared_ptr<Cell>& aCell, Direction aDirection);
 public:
     Board();
 
@@ -39,7 +38,7 @@ public:
 
     std::shared_ptr<Cell> getCellFromPoint(const Point& aPoint);
 
-    Point getPointFromCell(std::shared_ptr<Cell> aCell);
+    Point getPointFromCell(const std::shared_ptr<Cell>& aCell);
 
     std::shared_ptr<Cell> getCell(uint x, uint y);
 
@@ -63,13 +62,15 @@ public:
 
     std::shared_ptr<Cell> getNextCell(const std::shared_ptr<Cell>& aCell, Direction aDirection);
 
-    std::shared_ptr<Cell> getBestCell(std::shared_ptr<Cell> actualCell, std::shared_ptr<Cell> DestinationCell);
+    std::shared_ptr<Cell> getBestCell(const std::shared_ptr<Cell>& actualCell, const std::shared_ptr<Cell>& DestinationCell);
 
     Direction getDirection(const std::shared_ptr<Cell>& actualCell, const std::shared_ptr<Cell>& DestinationCell);
 
     void removeCreatureFromNest(const std::shared_ptr<Cell>& aCell);
 
     int getAmountCreatures();
+
+    std::shared_ptr<Cell> getNextEmptyCell(const std::shared_ptr<Cell>& aCell);
 
 };
 

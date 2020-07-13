@@ -40,6 +40,7 @@ void GameCharacter::update(std::unordered_map<uint, std::shared_ptr<GameObject>>
     }
     state->performTask(id, gameObjects, board);
     this->textureHashId = updateTextureHashId();
+    updateHealthAndMana();
 }
 
 std::string GameCharacter::updateTextureHashId() {
@@ -143,10 +144,6 @@ float GameCharacter::getExp() const {
     return exp;
 }
 
-uint GameCharacter::getLevel() const {
-    return level;
-}
-
 InputQueue &GameCharacter::getQueueInputs() {
     return queueInputs;
 }
@@ -174,11 +171,6 @@ void GameCharacter::receiveDamage(float damage, WeaponID weaponId) {
         shield = ShieldID::Nothing;
         weapon = WeaponID::Nothing;
         helmet = HelmetID::Nothing;
-        //Acá se vacía el inventario y se debería hacer el drop
-        this->inventory.clear();
-        for(int i = 0; i < GameStatsConfig::getInventoryLimit(); ++i){
-            this->inventory.addItem(ItemsInventoryID::Nothing);
-        }
     }
 }
 
@@ -242,6 +234,56 @@ ItemsInventoryID GameCharacter::removeItemFromInventory(ItemsInventoryID aItemTo
 
 void GameCharacter::gainGold(int aGoldAmount) {
     goldAmount += aGoldAmount;
+}
+
+std::vector<DropItem> GameCharacter::getDrop() {
+    std::vector<DropItem> dropsItems;
+    for (auto &aInventoryItem : inventory.getInventoryItems()) {
+        if (aInventoryItem != ItemsInventoryID::Nothing) {
+            dropsItems.emplace_back(aInventoryItem, 1);
+        }
+    }
+    int diffGold = goldAmount - GameStatsConfig::getMaxGold(level);
+    if (diffGold > 0) {
+        goldAmount = GameStatsConfig::getMaxGold(level);
+        dropsItems.emplace_back(ItemsInventoryID::Gold, diffGold);
+    }
+    inventory.clear();
+    return dropsItems;
+}
+
+bool GameCharacter::isItem() {
+    return false;
+}
+
+bool GameCharacter::canDropsItems() {
+    return isDead() && !inventory.isEmpty();
+}
+
+void GameCharacter::consumeMana() {
+    if (weapon != WeaponID::Nothing) {
+        mana -= GameStatsConfig::getWeaponCost(weapon);
+    }
+}
+
+void GameCharacter::upLevel() {
+    level++;
+    life = getMaxLife();
+    mana = GameStatsConfig::getMaxMana(race, gameClass, level);
+}
+
+bool GameCharacter::canPerformAttack() {
+    return weapon != WeaponID::Nothing && GameStatsConfig::getWeaponCost(weapon) <= mana;
+}
+
+void GameCharacter::updateHealthAndMana() {
+    float manaMax = GameStatsConfig::getMaxMana(race, gameClass, level);
+    float lifeIncrement = GameStatsConfig::getRecoveryHealth(race);
+    life = life + lifeIncrement > getMaxLife() ? getMaxLife() : lifeIncrement + life;
+    float manaIncrement = state->isMeditating() ?
+            GameStatsConfig::getRecoveryManaMeditation(race, gameClass) :
+            GameStatsConfig::getRecoveryMana(race);
+    mana = mana + manaIncrement > manaMax ? manaMax : mana + manaIncrement;
 }
 
 GameCharacter::~GameCharacter()= default;

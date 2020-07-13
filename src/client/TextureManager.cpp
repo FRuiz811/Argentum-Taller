@@ -216,9 +216,13 @@ const Texture& TextureManager::getTexture(ItemsInventoryID id) const {
 		case ItemsInventoryID::ManaPotion:
 			idText = TextureID::ManaPotion;
 			break;
+        case ItemsInventoryID::Gold:
+            idText = TextureID::Gold;
+            break;
 		case ItemsInventoryID::Nothing:
 			idText = TextureID::ItemNothing;
-	}
+
+    }
 	const Texture& texture = getTexture(idText);
 	return texture;
 }

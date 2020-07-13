@@ -20,6 +20,8 @@ public:
 
     bool isAttacking() override;
 
+    bool isMeditating() override;
+
 };
 
 
