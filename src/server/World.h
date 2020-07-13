@@ -48,7 +48,7 @@ private:
 
     void clearFinishedPlayers();
 
-    void clearDeadCreatures();
+    void removeCreaturesAndItems();
 
     void update();
 

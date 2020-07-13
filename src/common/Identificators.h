@@ -142,10 +142,10 @@ enum class GameClassID {
 
 enum class CreatureID {
     Nothing,
-    Goblin,
+    Zombie,
     Skeleton,
     Spider,
-    Zombie
+    Goblin,
 };
 
 enum class ActionsProfessionID {

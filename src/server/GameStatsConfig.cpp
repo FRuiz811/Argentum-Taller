@@ -39,7 +39,7 @@ GameStatsConfig::GameStatsConfig(rapidjson::Document &json) {
     }
 
     rapidjson::Value::Array creatuesArray = json["creatures"].GetArray();
-    for (auto &aCreature : racesArray) {
+    for (auto &aCreature : creatuesArray) {
         creatures.insert(std::pair<CreatureID, CreatureInfo>(CreatureID(aCreature["id"].GetInt()), createCreatureInfo(aCreature)));
     }
 }

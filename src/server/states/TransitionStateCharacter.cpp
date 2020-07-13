@@ -7,6 +7,7 @@ TransitionStateCharacter::~TransitionStateCharacter() = default;
 
 TransitionStateCharacter::TransitionStateCharacter(InputInfo info) : State(info) {
     finalized = true;
+    stateId = CharacterStateID::Still;
 }
 
 void TransitionStateCharacter::performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) {

@@ -124,20 +124,8 @@ RaceID GameCharacter::getRace() const {
     return race;
 }
 
-GameClassID GameCharacter::getGameClass() const {
-    return gameClass;
-}
-
 uint GameCharacter::getGoldAmount() {
     return goldAmount;
-}
-
-uint GameCharacter::getLife() const {
-    return life;
-}
-
-uint GameCharacter::getMana() const {
-    return mana;
 }
 
 float GameCharacter::getExp() const {
@@ -238,17 +226,25 @@ void GameCharacter::gainGold(int aGoldAmount) {
 
 std::vector<DropItem> GameCharacter::getDrop() {
     std::vector<DropItem> dropsItems;
-    for (auto &aInventoryItem : inventory.getInventoryItems()) {
-        if (aInventoryItem != ItemsInventoryID::Nothing) {
-            dropsItems.emplace_back(aInventoryItem, 1);
+    if (isDead()) {
+        for (auto &aInventoryItem : inventory.getInventoryItems()) {
+            if (aInventoryItem != ItemsInventoryID::Nothing) {
+                dropsItems.emplace_back(aInventoryItem, 1);
+            }
         }
+        int diffGold = goldAmount - GameStatsConfig::getMaxGold(level);
+        if (diffGold > 0) {
+            goldAmount = GameStatsConfig::getMaxGold(level);
+            dropsItems.emplace_back(ItemsInventoryID::Gold, diffGold);
+        }
+        inventory.clear();
+    } else {
+        ItemsInventoryID itemToRemove = removeItemFromInventory(itemToDrop);
+        if (itemToRemove != ItemsInventoryID::Nothing) {
+            dropsItems.emplace_back(itemToRemove, 1);
+        }
+        itemToDrop = ItemsInventoryID::Nothing;
     }
-    int diffGold = goldAmount - GameStatsConfig::getMaxGold(level);
-    if (diffGold > 0) {
-        goldAmount = GameStatsConfig::getMaxGold(level);
-        dropsItems.emplace_back(ItemsInventoryID::Gold, diffGold);
-    }
-    inventory.clear();
     return dropsItems;
 }
 
@@ -257,7 +253,7 @@ bool GameCharacter::isItem() {
 }
 
 bool GameCharacter::canDropsItems() {
-    return isDead() && !inventory.isEmpty();
+    return isDead() && !inventory.isEmpty() || itemToDrop != ItemsInventoryID::Nothing;
 }
 
 void GameCharacter::consumeMana() {
@@ -284,6 +280,21 @@ void GameCharacter::updateHealthAndMana() {
             GameStatsConfig::getRecoveryManaMeditation(race, gameClass) :
             GameStatsConfig::getRecoveryMana(race);
     mana = mana + manaIncrement > manaMax ? manaMax : mana + manaIncrement;
+}
+
+bool GameCharacter::takeItem(ItemsInventoryID anItemId, int amount) {
+    bool canTake;
+    if (anItemId == ItemsInventoryID::Gold) {
+        goldAmount += amount;
+        canTake = true;
+    } else {
+        canTake = inventory.addItem(anItemId);
+    }
+    return canTake;
+}
+
+void GameCharacter::dropItem(ItemsInventoryID anItemId) {
+    itemToDrop = anItemId;
 }
 
 GameCharacter::~GameCharacter()= default;

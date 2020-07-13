@@ -104,7 +104,7 @@ void World::run() {
         }
         clearFinishedPlayers();
         checkDrops();
-        clearDeadCreatures();
+        removeCreaturesAndItems();
         endLoop = chrono.lap();
         sleep = GAMELOOPTIME - (endLoop - initLoop);
         if (sleep > 0)
@@ -152,8 +152,8 @@ void World::clearFinishedPlayers() {
     }
 }
 
-void World::clearDeadCreatures() {
-    gameObjectsContainer.removeDeadCreatures(board);
+void World::removeCreaturesAndItems() {
+    gameObjectsContainer.removeCreaturesAndItems(board);
 }
 
 void World::checkDrops() {

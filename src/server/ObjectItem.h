@@ -22,6 +22,12 @@ public:
 
     bool isItem() override;
 
+    void take();
+
+    int getAmount() const;
+
+    ItemsInventoryID getItemId() const;
+
     bool canDropsItems() override;
 
     std::vector<DropItem> getDrop() override;

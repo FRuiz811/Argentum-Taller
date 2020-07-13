@@ -25,6 +25,7 @@ private:
     ShieldID shield{ShieldID::Nothing};
     HelmetID helmet{HelmetID::Nothing};
     BodyID body{BodyID::Nothing};
+    ItemsInventoryID itemToDrop = ItemsInventoryID::Nothing;
 
     std::string updateTextureHashId();
     void consumePotion(const ItemInfo& potion);
@@ -72,7 +73,7 @@ public:
 
     void receiveDamage(float damage, WeaponID weaponId) override;
 
-    bool isDead();
+    bool isDead() override;
 
     ~GameCharacter();
 
@@ -80,17 +81,11 @@ public:
 
     void remove(Board &board) override;
 
-    GameClassID getGameClass() const;
-
     uint getGoldAmount();
 
     void setGoldAmount(uint goldAmount);
 
     CharacterStateID getStateId() override;
-
-    uint getLife() const;
-
-    uint getMana() const;
 
     float getExp() const;
 
@@ -98,9 +93,13 @@ public:
 
     InputQueue &getQueueInputs();
 
-    virtual NPCInfo interact(GameObject& character, InputInfo input);
+    NPCInfo interact(GameObject& character, InputInfo input) override;
 
     void equipItem(int itemToEquip);
+
+    bool takeItem(ItemsInventoryID anItemId, int amount);
+
+    void dropItem(ItemsInventoryID anItemId);
 
     void updateHealthAndMana();
 };
