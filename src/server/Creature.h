@@ -10,6 +10,7 @@ private:
     CreatureID creatureId;
     std::unique_ptr<State> state;
     bool itemDrop = false;
+    uint8_t timeToRemove = 10;
 
     InputInfo generateRandomInputInfo();
 public:

@@ -225,6 +225,10 @@ int GameStatsConfig::getWeaponDistance(WeaponID aWeaponId) {
     return aItemInfo.range;
 }
 
+int GameStatsConfig::getWeaponCost(WeaponID aWeaponId) {
+    return items.at(ItemTranslator::weaponToItem(aWeaponId)).manaUsed;
+}
+
 GameStatsConfig::GameStatsConfig() = default;
 
 GameStatsConfig::~GameStatsConfig() = default;
@@ -251,7 +255,3 @@ uint8_t GameStatsConfig::creaturesLimit = 0.0;
 uint8_t GameStatsConfig::nestCreaturesLimit = 0.0;
 float GameStatsConfig::distance = 0.0;
 int GameStatsConfig::inventoryLimit = 0;
-
-int GameStatsConfig::getWeaponCost(WeaponID aWeaponId) {
-    return items.at(ItemTranslator::weaponToItem(aWeaponId)).manaUsed;
-}

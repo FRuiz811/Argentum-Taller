@@ -90,7 +90,10 @@ NPCInfo Creature::interact(GameObject& character, InputInfo input) {
 }
 
 bool Creature::isReadyToRemove() {
-    return isDead();
+    if (isDead()) {
+        timeToRemove--;
+    }
+    return timeToRemove == 0;
 }
 
 void Creature::remove(Board &board) {
