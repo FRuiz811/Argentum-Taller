@@ -119,7 +119,7 @@ void UI::updateLevelAndExpirience() {
 
     int playerExp = this->playerTarget->getExp();
     int playerMaxExp = this->playerTarget->getMaxExp();
-    int exp = (playerExp * (widthSegment-2))/playerMaxExp;
+    int exp = ((playerExp-this->maxExpPreviousLevel) * (widthSegment-2))/playerMaxExp;
     std::string expTotal = "("+ std::to_string(playerExp) + "/" + std::to_string(playerMaxExp) + ")";
     SDL_Texture* expTexture = font.createText(expTotal,&(window.getRenderer()), &width_text, &height_text);
     this->info.push_back(expTexture);
@@ -137,6 +137,11 @@ void UI::updateLevelAndExpirience() {
     SDL_Rect fillExp = {26+widthSegment*6,31, exp,18};
 	SDL_SetRenderDrawColor(&(this->window.getRenderer()), 0x00, 0xFF, 0x00, 0xFF);		
 	SDL_RenderFillRect(&(this->window.getRenderer()), &fillExp);
+
+    if (this->maxExpActualLevel != playerMaxExp) {
+        this->maxExpPreviousLevel = this->maxExpActualLevel;
+        this->maxExpActualLevel = playerMaxExp;
+    }
 
 }
 
