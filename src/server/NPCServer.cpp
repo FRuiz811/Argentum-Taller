@@ -57,4 +57,14 @@ float NPCServer::getMaxLife() {
 void NPCServer::receiveDamage(float damage, WeaponID weaponId) {
 }
 
+std::vector<DropItem> NPCServer::getDrop() {
+    return std::vector<DropItem>();
+}
 
+bool NPCServer::isItem() {
+    return false;
+}
+
+bool NPCServer::canDropsItems() {
+    return false;
+}

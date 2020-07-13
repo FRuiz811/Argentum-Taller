@@ -115,8 +115,8 @@ float GameStatsConfig::getRecoveryManaMeditation(RaceID race, GameClassID gameCl
     return races.at(race).intelligent * gameClasses.at(gameClass).meditation;
 }
 
-float GameStatsConfig::getGoldDrop(uint maxHealthNPC){
-    return Random::getFloat(goldRandMin, goldRandMax) * maxHealthNPC;
+float GameStatsConfig::getGoldDrop(CreatureID creatureId, uint level){
+    return Random::getFloat(goldRandMin, goldRandMax) * GameStatsConfig::getMaxHealth(creatureId, level);
 }
 
 float GameStatsConfig::getMaxGold(uint level){

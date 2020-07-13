@@ -3,6 +3,7 @@
 #include "NPCServer.h"
 #include "../common/Random.h"
 #include "Creature.h"
+#include "ObjectItem.h"
 #include <iostream>
 
 #define GAMELOOPTIME 1000000/30.0
@@ -78,11 +79,19 @@ void World::generateCreature() {
 
 }
 
+void World::generateItem(const DropItem& dropItem, const std::shared_ptr<Cell>& initialCell) {
+    uint id = getNextId();
+    std::shared_ptr<ObjectItem> aObjectItem(new ObjectItem(id, board.getPointFromCell(initialCell), initialCell, dropItem));
+    initialCell->setItemId(id);
+    gameObjectsContainer.addGameObject(aObjectItem, id);
+    std::cout << "Item created -- ID: " << id << std::endl;
+}
+
 
 void World::run() {
     Chrono chrono;
     double initLoop, endLoop, sleep;
-    int amountCreaturesDiff = 0;
+    int amountCreaturesDiff;
     while (keepTalking) {
         initLoop = chrono.lap();
         amountCreaturesDiff = GameStatsConfig::getCreaturesLimit() - board.getAmountCreatures();
@@ -94,6 +103,7 @@ void World::run() {
             aPlayer.second->update(getUpdatedGameObjects());
         }
         clearFinishedPlayers();
+        checkDrops();
         clearDeadCreatures();
         endLoop = chrono.lap();
         sleep = GAMELOOPTIME - (endLoop - initLoop);
@@ -144,6 +154,16 @@ void World::clearFinishedPlayers() {
 
 void World::clearDeadCreatures() {
     gameObjectsContainer.removeDeadCreatures(board);
+}
+
+void World::checkDrops() {
+    for (auto &aGameObject : gameObjectsContainer.getUpdatedGameObjects()) {
+        if (aGameObject->canDropsItems()) {
+            for (auto &dropItem : aGameObject->getDrop()) {
+                generateItem(dropItem, board.getNextEmptyCell(aGameObject->getActualCell()));
+            }
+        }
+    }
 }
 
 World::~World() = default;

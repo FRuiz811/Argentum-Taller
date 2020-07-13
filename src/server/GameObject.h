@@ -2,11 +2,11 @@
 #define OBJETOJUEGO_H
 
 #include <string>
-#include "../common/Position.h"
 #include "../common/Identificators.h"
 #include "../common/GameObjectInfo.h"
 #include "GameStatsConfig.h"
 #include "Board.h"
+#include "DropItem.h"
 
 class GameObject{
 protected:
@@ -30,6 +30,12 @@ public:
     void setCell(std::shared_ptr<Cell> aCell);
 
     void setPoint(Point aPoint);
+
+    virtual bool isItem() = 0;
+
+    virtual bool canDropsItems() = 0;
+
+    virtual std::vector<DropItem> getDrop() = 0;
 
     void setAttackBy(WeaponID attackBy);
 

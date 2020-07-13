@@ -114,6 +114,7 @@ enum class ItemsInventoryID {
     PlateArmor,
     HealthPotion,
     ManaPotion,
+    Gold,
 };
 
 enum class Direction{

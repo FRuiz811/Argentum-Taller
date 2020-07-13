@@ -73,6 +73,7 @@ void Creature::receiveDamage(float damage, WeaponID weaponId) {
         std::cout << "Character real damage: " << realDamage << std::endl;
         std::cout << "Enemy life is: " << life << std::endl;
         if (isDead()) {
+            itemDrop = true;
             std::cout << "Enemy is dead" << realDamage << std::endl;
             //Hacer drop aca.
         }
@@ -99,6 +100,21 @@ void Creature::remove(Board &board) {
 
 float Creature::getMaxLife() {
     return GameStatsConfig::getMaxHealth(creatureId, level);
+}
+
+std::vector<DropItem> Creature::getDrop() {
+    std::vector<DropItem> dropItems;
+    dropItems.emplace_back(ItemsInventoryID::Gold, GameStatsConfig::getGoldDrop(creatureId, level));
+    itemDrop = false;
+    return dropItems;
+}
+
+bool Creature::isItem() {
+    return false;
+}
+
+bool Creature::canDropsItems() {
+    return itemDrop;
 }
 
 Creature::~Creature() = default;

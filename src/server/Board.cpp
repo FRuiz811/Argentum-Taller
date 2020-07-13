@@ -1,5 +1,4 @@
 #include "Board.h"
-
 #include <memory>
 #include <cstdlib>
 
@@ -95,6 +94,7 @@ std::shared_ptr<Cell> Board::getInitialCell() {
         for (auto &adjacent : getAdjacents(convertPoint(initialPoint), 4)) {
             if (adjacent.second->isEmpty()) {
                 cell = adjacent.second;
+                break;
             }
         }
     }
@@ -131,7 +131,7 @@ uint8_t Board::getDistance(const std::shared_ptr<Cell>& firstCell, const std::sh
     return std::abs(int(firstCell->getX() - secondCell->getX())) + std::abs(int(firstCell->getY() - secondCell->getY()));
 }
 
-Point Board::getPointFromCell(std::shared_ptr<Cell> aCell) {
+Point Board::getPointFromCell(const std::shared_ptr<Cell>& aCell) {
     return Point(aCell->getX() * (width/cols), aCell->getY() * (height/rows));
 }
 
@@ -183,7 +183,7 @@ bool Board::creatureCanMove(const std::shared_ptr<Cell> &aCell, Direction aDirec
     return canMove;
 }
 
-std::pair<int, int> Board::getCorrectPosition(std::shared_ptr<Cell> aCell, Direction aDirection) {
+std::pair<int, int> Board::getCorrectPosition(const std::shared_ptr<Cell>& aCell, Direction aDirection) {
     int x = aCell->getX();
     int y = aCell->getY();
     switch(aDirection) {
@@ -203,7 +203,7 @@ std::pair<int, int> Board::getCorrectPosition(std::shared_ptr<Cell> aCell, Direc
     return {x, y};
 }
 
-std::shared_ptr<Cell> Board::getBestCell(std::shared_ptr<Cell> actualCell, std::shared_ptr<Cell> destinationCell) {
+std::shared_ptr<Cell> Board::getBestCell(const std::shared_ptr<Cell>& actualCell, const std::shared_ptr<Cell>& destinationCell) {
     uint distance = getDistance(actualCell, destinationCell);
     std::shared_ptr<Cell> bestCell = actualCell;
     for (auto &adjacent : getAdjacents(actualCell->getCoord(), 1)) {
@@ -240,4 +240,19 @@ void Board::removeCreatureFromNest(const std::shared_ptr<Cell>& aCell) {
 
 int Board::getAmountCreatures() {
     return nestContainer.getAmountCreatures();
+}
+
+std::shared_ptr<Cell> Board::getNextEmptyCell(const std::shared_ptr<Cell> &aCell) {
+    std::shared_ptr<Cell> cell = aCell;
+    uint distance = 0;
+    while (!cell->isEmpty() || cell->hasItem()) {
+        distance++;
+        for (auto &adjacent : getAdjacents(aCell->getCoord(), distance)) {
+            if (adjacent.second->isEmpty() && !adjacent.second->isCity() && !adjacent.second->hasItem()) {
+                cell = adjacent.second;
+                break;
+            }
+        }
+    }
+    return cell;
 }

@@ -4,6 +4,8 @@
 #include "CharacterState.h"
 
 class InteractState: public CharacterState {
+private: 
+    InputID beforeInput;
 public:
     InteractState();
     ~InteractState();

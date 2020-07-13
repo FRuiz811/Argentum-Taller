@@ -50,7 +50,13 @@ public:
 
     WeaponID getWeapon();
 
+    std::vector<DropItem> getDrop() override;
+
     void gainExp(float newExp);
+
+    bool isItem() override;
+
+    bool canDropsItems() override;
 
     float getMaxLife() override;
 

@@ -48,7 +48,7 @@ public:
     static float getMaxMana(RaceID raceId, GameClassID gameClassId, uint level);
     static float getRecoveryMana(RaceID raceId);
     static float getRecoveryManaMeditation(RaceID raceId, GameClassID gameClassId);
-    static float getGoldDrop(uint maxHealthNPC);
+    static float getGoldDrop(CreatureID creatureId, uint level);
     static float getMaxGold(uint level);
     static float getNextLevelLimit(uint level);
     static float getExp(float damage, uint level, uint enemyLevel);
