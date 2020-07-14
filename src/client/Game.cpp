@@ -2,8 +2,6 @@
 #include <memory>
 #include <stdexcept>
 #include "Presentation.h"
-#include "../common/Chrono.h"
-#include "../common/TiledMap.h"
 #include <arpa/inet.h>
 #include <iostream>
 #include "../common/Decoder.h"
@@ -14,7 +12,7 @@
 #define WRONGCLASS "Clase invalida. Seleccione entre: mago, clerigo, paladin, guerrero"
 #define ARGENTUM "Argentum Online Taller"
 #define INITERROR "Error en Game::init: "
-#define GAMELOOPTIME 1000000/30.0
+#define GAMELOOPTIME 1000000/45.0
 #define PLAYERINFOMSG 0x01
 #define OBJECTSINFOMSG 0x02
 #define INTERACTMSG 0x05

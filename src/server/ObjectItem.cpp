@@ -29,7 +29,7 @@ NPCInfo ObjectItem::interact(GameObject &character, InputInfo input) {
 }
 
 bool ObjectItem::isReadyToRemove() {
-    return timeToBeRemove == 0;
+    return timeToBeRemove <= 0;
 }
 
 void ObjectItem::remove(Board &board) {

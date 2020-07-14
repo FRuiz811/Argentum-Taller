@@ -22,11 +22,13 @@ public:
 
     std::shared_ptr<Cell> getFreeCell();
 
+    friend bool operator<(const Nest& firstNest, const Nest& secondNest);
+
     uint getNestId() const;
 
     const std::vector<uint> &getCreatures() const;
 
-    int getAmountCreatures();
+    int getAmountCreatures() const ;
 
     void removeCreature(uint id);
 

@@ -5,7 +5,17 @@ Nest::Nest(uint8_t nestLimit, uint nestId, std::vector<std::shared_ptr<Cell>> ce
 nestLimit(nestLimit), nestId(nestId), nestCells(std::move(cells)) {}
 
 bool Nest::isFull() const {
-    return creatures.size() == nestLimit;
+    bool isFull = creatures.size() == nestLimit;
+    if (!isFull) {
+        isFull = true;
+        for (auto &aCell : nestCells) {
+            if (aCell->isEmpty()) {
+                isFull = false;
+                break;
+            }
+        }
+    }
+    return isFull;
 }
 
 std::shared_ptr<Cell> Nest::getFreeCell() {
@@ -41,8 +51,13 @@ void Nest::removeCreature(uint id) {
     }
 }
 
-int Nest::getAmountCreatures() {
+int Nest::getAmountCreatures() const {
     return creatures.size();
 }
+
+bool operator<(const Nest& firstNest,const Nest &secondNest) {
+    return firstNest.getAmountCreatures() < secondNest.getAmountCreatures();
+}
+
 
 Nest::~Nest() = default;

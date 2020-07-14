@@ -60,7 +60,7 @@ std::string GameCharacter::updateTextureHashId() {
         equipment += "00|";
     }
     equipment += "b";
-    if (this->body == BodyID::Nothing) {
+    if (this->body == BodyID::Nothing || (this->body == BodyID::Ghost && !isDead())) {
         this->body = (BodyID)(Random::get(1,3));
     }
     std::string idBody = std::to_string((int)this->body);
@@ -181,6 +181,7 @@ WeaponID GameCharacter::getWeapon() {
 void GameCharacter::cure(){
     this->life = GameStatsConfig::getMaxHealth(race,gameClass, level);
     this->mana = GameStatsConfig::getMaxMana(race,gameClass, level);
+
 }
 
 NPCInfo GameCharacter::interact(GameObject& character, InputInfo input) {

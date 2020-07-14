@@ -44,7 +44,6 @@ void AttackStateCreature::performTask(uint id, std::unordered_map<uint, std::sha
     } else {
         timeBetweenAttacks--;
     }
-
 }
 
 void AttackStateCreature::setNextState(InputInfo info) {

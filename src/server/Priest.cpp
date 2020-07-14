@@ -45,7 +45,7 @@ NPCInfo Priest::getInfo(uint id) {
 }
 
 void Priest::processInput(GameCharacter &character, InputInfo inputInfo) {
-    uint sell,goldAmount;
+    uint sell, goldAmount;
         switch (inputInfo.input) {
         case InputID::buy:
             goldAmount = character.getGoldAmount();

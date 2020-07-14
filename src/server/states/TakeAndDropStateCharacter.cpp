@@ -14,6 +14,10 @@ void TakeAndDropStateCharacter::performTask(uint id, std::unordered_map<uint, st
                                             Board &board) {
 
     std::shared_ptr<GameCharacter> aCharacter = std::dynamic_pointer_cast<GameCharacter>(gameObjects.at(id));
+    if (aCharacter->isDead()) {
+        finalized = true;
+        return;
+    }
     std::shared_ptr<Cell> characterCell = aCharacter->getActualCell();
     switch (inputInfo.input) {
         case InputID::dropItem:

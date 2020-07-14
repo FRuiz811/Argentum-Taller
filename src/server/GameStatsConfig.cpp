@@ -99,7 +99,7 @@ float GameStatsConfig::getMaxHealth(RaceID raceId, GameClassID gameClass, uint l
 }
 
 float GameStatsConfig::getRecoveryHealth(RaceID raceId) {
-    return races.at(raceId).recoveryTime/ (30 * 30);
+    return races.at(raceId).recoveryTime/ (45 * 10);
 }
 
 float GameStatsConfig::getMaxMana(RaceID raceId, GameClassID gameClass, uint level) {
@@ -108,11 +108,11 @@ float GameStatsConfig::getMaxMana(RaceID raceId, GameClassID gameClass, uint lev
 }
 
 float GameStatsConfig::getRecoveryMana(RaceID race) {
-    return races.at(race).recoveryTime / (30 * 30);
+    return races.at(race).recoveryTime / (45 * 10);
 }
 
 float GameStatsConfig::getRecoveryManaMeditation(RaceID race, GameClassID gameClass) {
-    return (races.at(race).intelligent * gameClasses.at(gameClass).meditation) / (30 * 30);
+    return (races.at(race).intelligent * gameClasses.at(gameClass).meditation) / (45 * 10);
 }
 
 float GameStatsConfig::getGoldDrop(CreatureID creatureId, uint level){
@@ -175,7 +175,7 @@ float GameStatsConfig::getDistance(){
 }
 
 uint8_t GameStatsConfig::getAmountSteps(CreatureID creatureId) {
-    return 10 + (maxAgility - creatures.at(creatureId).agility);
+    return 30 + (maxAgility - creatures.at(creatureId).agility);
 }
 
 float GameStatsConfig::getDamage(CreatureID creatureId){

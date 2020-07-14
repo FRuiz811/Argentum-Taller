@@ -6,7 +6,7 @@
 #include "ObjectItem.h"
 #include <iostream>
 
-#define GAMELOOPTIME 1000000/30.0
+#define GAMELOOPTIME 1000000/45.0
 
 World::World(GameStatsConfig& configuration) : gameStatsConfig(configuration), 
     current_id(1), keepTalking(true) {

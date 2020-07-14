@@ -2,23 +2,32 @@
 #include "../common/Exception.h"
 
 #include <utility>
+#include <algorithm>
 
 NestContainer::NestContainer(std::vector<Nest> nests) : nests(std::move(nests)) {
     length = this->nests.size();
 }
 
 Nest& NestContainer::getNextNestAvailable() {
-    uint8_t counter = 0;
-    Nest& nest = nests.at(getNextIndex());
-    while (nest.isFull() && counter < length) {
-        nest = nests.at(getNextIndex());
-        counter++;
+    std::sort_heap(nests.begin(), nests.end());
+    for (auto &aNest : nests) {
+        if (!aNest.isFull() ) {
+            return aNest;
+        }
     }
-    if (nest.isFull()) {
-        throw Exception("There is not available nests to add creatures");
-    }
-    return nest;
+    throw Exception("There is not available nests to add creatures");
 }
+//    uint8_t counter = 0;
+//    Nest& nest = nests.at(getNextIndex());
+//    while (nest.isFull() && counter < length) {
+//        nest = nests.at(getNextIndex());
+//        counter++;
+//    }
+//    if (nest.isFull()) {
+//
+//    }
+//    return nest;
+
 
 std::vector<Nest> &NestContainer::getNests() {
     return nests;

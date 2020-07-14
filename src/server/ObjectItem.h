@@ -6,7 +6,7 @@
 
 class ObjectItem : public GameObject {
 private:
-    int timeToBeRemove = 30 * 60;
+    int timeToBeRemove = 45 * 300;
     int amount;
     ItemsInventoryID itemId;
 public:
