@@ -233,6 +233,12 @@ void UI::updateBuild() {
             &(window.getRenderer()),font,"Guardar",{9,205,WIDTHBUTTON,HEIGTHBUTTON}, manager,playerTarget));
     }
 
+    for(auto& button: buttonsBuild){
+        button->setViewport({0,(this->window.getHeight())/2,widthSegment*2,
+                            (this->window.getHeight())/2});
+        button->render();
+    }
+
     SDL_Rect src = {0,0,52,52};
     itemHelmet.render(src,{widthSegment-16,50,32,32});
     if (this->playerTarget->getHealth() == 0) {
@@ -244,11 +250,6 @@ void UI::updateBuild() {
     itemWeapon.render(src,{widthSegment-64,130,32,32});
     itemShield.render(src,{widthSegment+32,130,32,32});
 
-    for(auto& button: buttonsBuild){
-        button->setViewport({0,(this->window.getHeight())/2,widthSegment*2,
-                            (this->window.getHeight())/2});
-        button->render();
-    }
     this->unequipButton->setViewport({0,(this->window.getHeight())/2,widthSegment*2,
                             (this->window.getHeight())/2});
     this->unequipButton->render();
@@ -342,9 +343,9 @@ InputInfo UI::handleClick(SDL_Event& event) {
                 }        
             }   
 
-            if (this->npc != nullptr) 
+            if (this->npc != nullptr) {
                 info = this->npc->handleClick(x,y,int(itemsID[itemSelected]));
-            else {
+            } else if (this->unequipButton != nullptr) {
                 if (this->unequipButton->inside(x,y) && buildSelected > -1)
                     info = this->unequipButton->onClick(buildSelected);
             }
