@@ -6,6 +6,7 @@
 #include "TransitionStateCharacter.h"
 #include "../ObjectItem.h"
 #include "TakeAndDropStateCharacter.h"
+#include "MeditateStateCharacter.h"
 #include <iostream>
 
 StillStateCharacter::~StillStateCharacter() = default;
@@ -28,6 +29,8 @@ void StillStateCharacter::setNextState(InputInfo info) {
         nextState = std::unique_ptr<State>(new EquipStateCharacter(info));
     } else if (info.input == InputID::takeItem || info.input == InputID::dropItem) {
         nextState = std::unique_ptr<State>(new TakeAndDropStateCharacter(info));
+    } else if (info.input == InputID::meditate) {
+        nextState = std::unique_ptr<State>(new MeditateStateCharacter());
     }
 }
 

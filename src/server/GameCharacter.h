@@ -99,7 +99,7 @@ public:
 
     bool takeItem(ItemsInventoryID anItemId, int amount);
 
-    void dropItem(ItemsInventoryID anItemId);
+    void dropItem(int index);
 
     void updateHealthAndMana();
 };

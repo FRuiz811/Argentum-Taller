@@ -18,7 +18,7 @@ void TakeAndDropStateCharacter::performTask(uint id, std::unordered_map<uint, st
     switch (inputInfo.input) {
         case InputID::dropItem:
             if (!characterCell->hasItem()) {
-                aCharacter->dropItem(ItemsInventoryID(inputInfo.aditional));
+                aCharacter->dropItem(inputInfo.aditional - 1);
             }
             break;
         case InputID::takeItem:
@@ -45,7 +45,7 @@ void TakeAndDropStateCharacter::setNextState(InputInfo info) {
 }
 
 void TakeAndDropStateCharacter::resetState() {
-
+    nextState = std::unique_ptr<State>(new StillStateCharacter());
 }
 
 bool TakeAndDropStateCharacter::isOnPursuit(uint pursuitId) {

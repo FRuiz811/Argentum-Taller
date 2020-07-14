@@ -239,10 +239,7 @@ std::vector<DropItem> GameCharacter::getDrop() {
         }
         inventory.clear();
     } else {
-        ItemsInventoryID itemToRemove = removeItemFromInventory(itemToDrop);
-        if (itemToRemove != ItemsInventoryID::Nothing) {
-            dropsItems.emplace_back(itemToRemove, 1);
-        }
+        dropsItems.emplace_back(itemToDrop, 1);
         itemToDrop = ItemsInventoryID::Nothing;
     }
     return dropsItems;
@@ -293,8 +290,11 @@ bool GameCharacter::takeItem(ItemsInventoryID anItemId, int amount) {
     return canTake;
 }
 
-void GameCharacter::dropItem(ItemsInventoryID anItemId) {
-    itemToDrop = anItemId;
+void GameCharacter::dropItem(int index) {
+    ItemsInventoryID itemToRemove = inventory.getItem(index);
+    if (itemToRemove != ItemsInventoryID::Nothing) {
+        itemToDrop =  this->inventory.removeItem(itemToRemove);
+    }
 }
 
 GameCharacter::~GameCharacter()= default;

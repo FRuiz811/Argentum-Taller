@@ -248,7 +248,7 @@ std::shared_ptr<Cell> Board::getNextEmptyCell(const std::shared_ptr<Cell> &aCell
     while (!cell->isEmpty() || cell->hasItem()) {
         distance++;
         for (auto &adjacent : getAdjacents(aCell->getCoord(), distance)) {
-            if (adjacent.second->isEmpty() && !adjacent.second->isCity() && !adjacent.second->hasItem()) {
+            if (adjacent.second->isEmpty() && !adjacent.second->hasItem()) {
                 cell = adjacent.second;
                 break;
             }
