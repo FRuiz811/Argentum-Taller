@@ -21,7 +21,7 @@ public:
     virtual InputInfo stopMove(Character& character) = 0;
 
     virtual InputInfo selectItem(Character& character, int item) = 0;
-
+    virtual InputInfo unequipItem(Character& character, int item) = 0;
     virtual InputInfo dropItem(Character& character, int item) = 0;
     virtual InputInfo takeItem(Character& character) = 0;
     virtual InputInfo resurrect(Character& character) = 0;

@@ -158,3 +158,11 @@ InputInfo AttackState::deposit(Character& character,int item, bool isItem) {
     return info;
 }
 
+InputInfo AttackState::unequipItem(Character& character,int item) {
+    InputInfo info;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    info.input = InputID::nothing;
+    beforeInput = info.input;
+    return info;
+}

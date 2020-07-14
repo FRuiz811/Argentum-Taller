@@ -339,7 +339,7 @@ void NPC::setState(CharacterStateID newState) {
 				break;
       case CharacterStateID::Meditate:
         this->state = std::shared_ptr<CharacterState>(new MeditateState());
-        //this->animation = std::shared_ptr<Animation>(new MeditateEffect());
+        this->animation = std::shared_ptr<Animation>(new MeditateAnimation(this->manager,mixer.getEffect(MusicID::Meditation)));
         break;
       case CharacterStateID::Attack:
         this->state = std::shared_ptr<CharacterState>(new AttackState());

@@ -26,10 +26,13 @@ private:
     std::vector<std::shared_ptr<RaisedButton>> buttonsInventory; //Botones del inventario
     std::vector<ItemsInventoryID> itemsID;
     std::vector<std::shared_ptr<SelectButton>> buttonsItems; //Items mostrados en el inventario
+    std::vector<std::shared_ptr<SelectButton>> buttonsBuild; //Items mostrados en el equipamiento
+    std::shared_ptr<RaisedButton> unequipButton;
 
     NPCInfo informationNPC;
     int widthSegment;
     int itemSelected{-1};
+    int buildSelected{-1};
     int maxExpPreviousLevel{0};
     int maxExpActualLevel{0};
 

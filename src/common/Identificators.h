@@ -34,6 +34,7 @@ enum class InputID {
     equipItem,
     dropItem, 
     takeItem, //t
+    unequipItem,
 };
 
 enum class HelmetID {
