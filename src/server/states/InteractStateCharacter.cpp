@@ -32,6 +32,10 @@ void InteractStateCharacter::performTask(uint id, std::unordered_map<uint, std::
     } else {
         if (aCharacter->hasAnInputInfo()) {
             InputInfo info = aCharacter->getNextInputInfo();
+            if (aCharacter->isDead() && !(info.input == InputID::resurrect)) {
+                finalized = true;
+                return;
+            }
             if (info.input == InputID::buy || info.input == InputID::cure ||
                 info.input == InputID::sell || info.input == InputID::resurrect ||
                 info.input == InputID::retireItem || info.input == InputID::retireGold ||

@@ -146,6 +146,5 @@ InputInfo MoveState::unequipItem(Character& character,int item) {
     Point aux(0.0,0.0);
     info.position = aux;
     info.input = InputID::nothing;
-    beforeInput = info.input;
     return info;
 }

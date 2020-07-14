@@ -270,13 +270,15 @@ bool GameCharacter::canPerformAttack() {
 }
 
 void GameCharacter::updateHealthAndMana() {
-    float manaMax = GameStatsConfig::getMaxMana(race, gameClass, level);
-    float lifeIncrement = GameStatsConfig::getRecoveryHealth(race);
-    life = life + lifeIncrement > getMaxLife() ? getMaxLife() : lifeIncrement + life;
-    float manaIncrement = state->isMeditating() ?
-            GameStatsConfig::getRecoveryManaMeditation(race, gameClass) :
-            GameStatsConfig::getRecoveryMana(race);
-    mana = mana + manaIncrement > manaMax ? manaMax : mana + manaIncrement;
+    if (!isDead()) {
+        float manaMax = GameStatsConfig::getMaxMana(race, gameClass, level);
+        float lifeIncrement = GameStatsConfig::getRecoveryHealth(race);
+        life = life + lifeIncrement > getMaxLife() ? getMaxLife() : lifeIncrement + life;
+        float manaIncrement = state->isMeditating() ?
+                              GameStatsConfig::getRecoveryManaMeditation(race, gameClass) :
+                              GameStatsConfig::getRecoveryMana(race);
+        mana = mana + manaIncrement > manaMax ? manaMax : mana + manaIncrement;
+    }
 }
 
 bool GameCharacter::takeItem(ItemsInventoryID anItemId, int amount) {

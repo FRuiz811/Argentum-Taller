@@ -12,6 +12,10 @@ void AttackStateCharacter::performTask(uint id, std::unordered_map<uint, std::sh
                                        Board &board) {
 
     std::shared_ptr<GameCharacter> aCharacter = std::dynamic_pointer_cast<GameCharacter>(gameObjects.at(id));
+    if (aCharacter->isDead()) {
+        finalized = true;
+        return;
+    }
     if (timeBetweenAttacks == 0) {
         timeBetweenAttacks = 10;
         std::shared_ptr<Cell> enemyCell = board.getCellFromPoint(inputInfo.position);
