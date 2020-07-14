@@ -49,3 +49,15 @@ bool ObjectItem::canDropsItems() {
 }
 
 ObjectItem::~ObjectItem() = default;
+
+int ObjectItem::getAmount() const {
+    return amount;
+}
+
+ItemsInventoryID ObjectItem::getItemId() const {
+    return itemId;
+}
+
+void ObjectItem::take() {
+    timeToBeRemove = 0;
+}

@@ -26,6 +26,6 @@ public:
 
     void deleteGameObject(const uint id, Board &board);
 
-    void removeDeadCreatures(Board& board);
+    void removeCreaturesAndItems(Board& board);
 };
 #endif //ARGENTUM_TALLER_GAMEOBJECTSCONTAINER_H

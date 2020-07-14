@@ -4,6 +4,9 @@
 #include "../GameCharacter.h"
 #include "EquipStateCharacter.h"
 #include "TransitionStateCharacter.h"
+#include "../ObjectItem.h"
+#include "TakeAndDropStateCharacter.h"
+#include "MeditateStateCharacter.h"
 #include <iostream>
 
 StillStateCharacter::~StillStateCharacter() = default;
@@ -13,8 +16,8 @@ StillStateCharacter::StillStateCharacter(InputInfo anInputInfo) : State(anInputI
     stateId = CharacterStateID::Still;
 }
 
-void
-StillStateCharacter::performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) {}
+void StillStateCharacter::performTask(uint id,
+        std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) {}
 
 void StillStateCharacter::setNextState(InputInfo info) {
     if (info.input == InputID::up || info.input == InputID::down ||
@@ -24,6 +27,10 @@ void StillStateCharacter::setNextState(InputInfo info) {
         this->nextState = std::unique_ptr<State>(new TransitionStateCharacter(info));
     } else if (info.input == InputID::equipItem) {
         nextState = std::unique_ptr<State>(new EquipStateCharacter(info));
+    } else if (info.input == InputID::takeItem || info.input == InputID::dropItem) {
+        nextState = std::unique_ptr<State>(new TakeAndDropStateCharacter(info));
+    } else if (info.input == InputID::meditate) {
+        nextState = std::unique_ptr<State>(new MeditateStateCharacter());
     }
 }
 
