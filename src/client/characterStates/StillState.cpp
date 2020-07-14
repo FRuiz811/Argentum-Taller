@@ -133,3 +133,12 @@ InputInfo StillState::deposit(Character& character,int item, bool isItem) {
     info.input = InputID::nothing;
     return info;
 }
+
+InputInfo StillState::unequipItem(Character& character, int item) {
+    InputInfo info;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    info.input = InputID::unequipItem;
+    info.aditional = item;
+    return info;
+}

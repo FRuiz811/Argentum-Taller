@@ -174,6 +174,11 @@ InputInfo Player::sell(int itemNumber) {
   return info;
 }
 
+InputInfo Player::unequipItem(int itemNumber) {
+  InputInfo info = this->state->unequipItem(*this,itemNumber);
+  return info;
+}
+
 InputInfo Player::handleEvent(SDL_Event& event, Camera& camera) {
   InputInfo input;
 	if(event.type == SDL_KEYDOWN) {
@@ -270,7 +275,7 @@ void Player::setState(CharacterStateID newState) {
 				break;
       case CharacterStateID::Meditate:
         this->state = std::shared_ptr<CharacterState>(new MeditateState());
-        //this->animation = std::shared_ptr<Animation>(new MeditateEffect());
+        this->animation = std::shared_ptr<Animation>(new MeditateAnimation(this->manager,mixer.getEffect(MusicID::Meditation)));
         break;
       case CharacterStateID::Attack:
         this->state = std::shared_ptr<CharacterState>(new AttackState());

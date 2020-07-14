@@ -63,6 +63,7 @@ public:
 	InputInfo sell(int itemNumber);
 	InputInfo deposit(int information, bool isItem);
 	InputInfo retire(int information, bool isItem);
+	InputInfo unequipItem(int itemNumber);
 	Point* getCenter();
 
 	uint getLevel();
