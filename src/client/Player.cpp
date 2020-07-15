@@ -123,7 +123,8 @@ void Player::updatePlayerInfo(PlayerInfo info) {
 }
 
 void Player::playEffectLowLife() {
-  if(this->playerInfo.getLife() < this->playerInfo.getMaxLife()*0.1 && playLowLife) {
+  if(this->playerInfo.getLife() < this->playerInfo.getMaxLife()*0.1 &&
+    this->playerInfo.getLife() != 0 && playLowLife) {
     const Effect& effect = mixer.getEffect(MusicID::Heart);
     effect.playEffect(-1);
     playLowLife = false;
@@ -198,13 +199,13 @@ InputInfo Player::handleEvent(SDL_Event& event, Camera& camera) {
             case SDLK_r:
                 input = this->state->resurrect(*this);
                 break;
-            case SDLK_t:
+            case SDLK_q:
                 input = this->state->takeItem(*this);
                 break;
             case SDLK_h:
                 input = this->state->cure(*this);
                 break;
-            case SDLK_y:
+            case SDLK_e:
                 input = this->state->meditate(*this);
                 break;
             case SDLK_1:
@@ -262,6 +263,10 @@ InputInfo Player::handleEvent(SDL_Event& event, Camera& camera) {
 }
 
 void Player::setState(CharacterStateID newState) {
+  if(this->state != nullptr && 
+     this->state->getState() == CharacterStateID::Meditate &&
+     newState != CharacterStateID::Meditate)
+     this->animation = nullptr;
 	if(this->state == nullptr || this->state->getState() != newState) {
 		switch (newState) {
 			case CharacterStateID::Still:

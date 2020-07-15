@@ -65,7 +65,7 @@ InputInfo MeditateState::meditate(Character& character) {
     InputInfo info;
     Point aux(0.0,0.0);
     info.position = aux;
-    info.input =InputID::nothing;
+    info.input =InputID::meditate;
     return info;
 }
 
