@@ -128,7 +128,8 @@ void Player::playEffectLowLife() {
     const Effect& effect = mixer.getEffect(MusicID::Heart);
     effect.playEffect(-1);
     playLowLife = false;
-  } else if (this->playerInfo.getLife() >= this->playerInfo.getMaxLife()*0.1 &&!playLowLife) {
+  } else if (this->playerInfo.getLife() >= this->playerInfo.getMaxLife()*0.1 &&
+   !playLowLife && this->playerInfo.getLife() == 0) {
     const Effect& effect = mixer.getEffect(MusicID::Heart);
     effect.pause();
     playLowLife = true;
