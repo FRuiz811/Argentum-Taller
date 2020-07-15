@@ -2,7 +2,6 @@
 #include "../GameCharacter.h"
 #include "StillStateCharacter.h"
 #include "MoveStateCharacter.h"
-#include "EquipStateCharacter.h"
 
 AttackStateCharacter::~AttackStateCharacter() = default;
 
@@ -14,6 +13,9 @@ void AttackStateCharacter::performTask(uint id, std::unordered_map<uint, std::sh
     std::shared_ptr<GameCharacter> aCharacter = std::dynamic_pointer_cast<GameCharacter>(gameObjects.at(id));
     if (aCharacter->isDead()) {
         finalized = true;
+        if (aEnemy != nullptr) {
+            aEnemy->setAttackBy(WeaponID::Nothing);
+        }
         return;
     }
     if (timeBetweenAttacks == 0) {
@@ -48,7 +50,9 @@ void AttackStateCharacter::performTask(uint id, std::unordered_map<uint, std::sh
         timeBetweenAttacks--;
         if (timeBetweenAttacks == 0) {
             finalized = true;
-            aEnemy->setAttackBy(WeaponID::Nothing);
+            if (aEnemy != nullptr) {
+                aEnemy->setAttackBy(WeaponID::Nothing);
+            }
         }
     }
 }
@@ -57,8 +61,6 @@ void AttackStateCharacter::setNextState(InputInfo info) {
     if (info.input == InputID::up || info.input == InputID::down ||
         info.input == InputID::left || info.input == InputID::right) {
         nextState = std::unique_ptr<State>(new MoveStateCharacter(info));
-    } else if (info.input == InputID::equipItem) {
-        nextState = std::unique_ptr<State>(new EquipStateCharacter(info));
     } else {
         nextState = std::unique_ptr<State>(new StillStateCharacter(info));
     }

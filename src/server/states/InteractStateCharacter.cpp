@@ -56,15 +56,13 @@ void InteractStateCharacter::setNextState(InputInfo info) {
     if (info.input == InputID::up || info.input == InputID::down ||
         info.input == InputID::left || info.input == InputID::right) {
         nextState = std::unique_ptr<State>(new MoveStateCharacter(info));
-    } else if (info.input == InputID::equipItem) {
-        nextState = std::unique_ptr<State>(new EquipStateCharacter(info));
     } else {
         nextState = std::unique_ptr<State>(new StillStateCharacter(info));
     }
 }
 
 void InteractStateCharacter::resetState() {
-
+    nextState = std::unique_ptr<State>(new StillStateCharacter());
 }
 
 bool InteractStateCharacter::isOnPursuit(uint pursuitId) {

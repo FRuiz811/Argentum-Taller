@@ -30,13 +30,12 @@ void ThPlayer::run() {
         } catch(const SocketException& e) {
            std::cout << ERRORSOCKET << e.what() << std::endl;
            this->stop();
-           
         } catch(const std::exception& e){
             std::cerr << ERRORDISPATCHER << e.what() << std::endl;
-            this->keepTalking = false;
+            this->stop();
         } catch (...) {
-            this->keepTalking = false;
             std::cerr << UNKNOW_ERROR << std::endl;
+            this->stop();
         }
     }
 }
@@ -53,12 +52,11 @@ bool ThPlayer::is_alive() const {
 }
 
 void ThPlayer::update(std::vector<std::shared_ptr<GameObject>> gameObject) {
-    canUpdate = true;
     this->gameObjectsInfo.clear();
     std::vector<std::shared_ptr<GameObject>>::iterator iter;
     iter = gameObject.begin();
     while (iter != gameObject.end()){
-        if ((*iter)->getId() == character->getId()){
+        if ((*iter)->getId() == character->getId()) {
             this->interacting = (*iter)->getInteractInfo();
             iter = gameObject.erase(iter);
         } else {
@@ -66,7 +64,9 @@ void ThPlayer::update(std::vector<std::shared_ptr<GameObject>> gameObject) {
             iter++;
         }
     }
+    canUpdate = true;
     cv.notify_all();
+
 }
 
 ThPlayer::~ThPlayer()= default;
