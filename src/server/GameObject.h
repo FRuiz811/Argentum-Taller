@@ -65,6 +65,8 @@ public:
 
     virtual void remove(Board &board) = 0;
 
+    virtual bool canBeAttacked(int enemyLevel) const = 0;
+
     ~GameObject();
 };
 

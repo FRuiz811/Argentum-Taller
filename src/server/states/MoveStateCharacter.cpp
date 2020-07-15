@@ -69,7 +69,7 @@ void MoveStateCharacter::setNextState(InputInfo info) {
         nextState = std::unique_ptr<State>(new StillStateCharacter(info));
     } else if (info.input == InputID::selectTarget) {
         this->nextState = std::unique_ptr<State>(new TransitionStateCharacter(info));
-    } else if (info.input == InputID::equipItem) {
+    } else if (info.input == InputID::equipItem || info.input == InputID::unequipItem) {
         nextState = std::unique_ptr<State>(new EquipStateCharacter(info));
     }
 }

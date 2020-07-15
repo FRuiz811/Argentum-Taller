@@ -24,7 +24,7 @@ void AttackStateCharacter::performTask(uint id, std::unordered_map<uint, std::sh
                 aEnemy = gameObjects.at(enemyCell->getGameObjectId());
                 if (!aEnemy->isDead() &&
                     board.getDistance(aCharacter->getActualCell(), enemyCell) <= GameStatsConfig::getWeaponDistance(aCharacter->getWeapon()) &&
-                    aCharacter->canPerformAttack()) {
+                    aCharacter->canPerformAttack() && aEnemy->canBeAttacked(aCharacter->getLevel())) {
 
                     float damage = GameStatsConfig::getDamage(aCharacter->getRace(), aCharacter->getWeapon());
                     aCharacter->consumeMana();
@@ -57,7 +57,7 @@ void AttackStateCharacter::setNextState(InputInfo info) {
     if (info.input == InputID::up || info.input == InputID::down ||
         info.input == InputID::left || info.input == InputID::right) {
         nextState = std::unique_ptr<State>(new MoveStateCharacter(info));
-    } else if (info.input == InputID::equipItem) {
+    } else if (info.input == InputID::equipItem || info.input == InputID::unequipItem) {
         nextState = std::unique_ptr<State>(new EquipStateCharacter(info));
     } else {
         nextState = std::unique_ptr<State>(new StillStateCharacter(info));

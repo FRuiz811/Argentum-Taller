@@ -44,6 +44,8 @@ public:
 
     bool isReadyToRemove() override;
 
+    bool canBeAttacked(int enemyLevel) const;
+
 };
 
 

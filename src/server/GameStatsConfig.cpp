@@ -23,6 +23,8 @@ GameStatsConfig::GameStatsConfig(rapidjson::Document &json) {
     nestCreaturesLimit = json["nestCreaturesLimit"].GetInt();
     distance = json["distance"].GetFloat();
     inventoryLimit = json["inventoryLimit"].GetInt();
+    newbieLevel = json["newbieLevel"].GetInt();
+    maxDiffLevel = json["maxDiffLevel"].GetInt();
 
     rapidjson::Value::Array racesArray = json["races"].GetArray();
     for (auto &aRace : racesArray) {
@@ -229,6 +231,19 @@ int GameStatsConfig::getWeaponCost(WeaponID aWeaponId) {
     return items.at(ItemTranslator::weaponToItem(aWeaponId)).manaUsed;
 }
 
+bool GameStatsConfig::canAttack(int level, int enemyLevel) {
+    if (isNewbie(level) || isNewbie(enemyLevel))
+        return false;
+    int diff = level - enemyLevel;
+    if (diff < -GameStatsConfig::maxDiffLevel || diff > GameStatsConfig::maxDiffLevel) 
+        return false;
+    return true;
+}
+
+bool GameStatsConfig::isNewbie(int level){
+    return level <= GameStatsConfig::newbieLevel; 
+}
+
 GameStatsConfig::GameStatsConfig() = default;
 
 GameStatsConfig::~GameStatsConfig() = default;
@@ -255,3 +270,5 @@ uint8_t GameStatsConfig::creaturesLimit = 0.0;
 uint8_t GameStatsConfig::nestCreaturesLimit = 0.0;
 float GameStatsConfig::distance = 0.0;
 int GameStatsConfig::inventoryLimit = 0;
+int GameStatsConfig::newbieLevel = 0;
+int GameStatsConfig::maxDiffLevel = 0;

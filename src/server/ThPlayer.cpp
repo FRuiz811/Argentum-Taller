@@ -30,12 +30,11 @@ void ThPlayer::run() {
         } catch(const SocketException& e) {
            std::cout << ERRORSOCKET << e.what() << std::endl;
            this->stop();
-           
         } catch(const std::exception& e){
             std::cerr << ERRORDISPATCHER << e.what() << std::endl;
-            this->keepTalking = false;
+            this->stop();
         } catch (...) {
-            this->keepTalking = false;
+            this->stop();
             std::cerr << UNKNOW_ERROR << std::endl;
         }
     }
@@ -53,7 +52,7 @@ bool ThPlayer::is_alive() const {
 }
 
 void ThPlayer::update(std::vector<std::shared_ptr<GameObject>> gameObject) {
-    canUpdate = true;
+    std::unique_lock<std::mutex> lock(m);
     this->gameObjectsInfo.clear();
     std::vector<std::shared_ptr<GameObject>>::iterator iter;
     iter = gameObject.begin();
@@ -66,6 +65,7 @@ void ThPlayer::update(std::vector<std::shared_ptr<GameObject>> gameObject) {
             iter++;
         }
     }
+    canUpdate = true;
     cv.notify_all();
 }
 

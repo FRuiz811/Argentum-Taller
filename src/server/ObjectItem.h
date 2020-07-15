@@ -41,6 +41,8 @@ public:
     void remove(Board &board) override;
 
     virtual ~ObjectItem();
+
+    bool canBeAttacked(int enemyLevel) const;
 };
 
 

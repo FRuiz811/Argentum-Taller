@@ -97,11 +97,15 @@ public:
 
     void equipItem(int itemToEquip);
 
+    void unequipItem(int itemToUnequip);
+
     bool takeItem(ItemsInventoryID anItemId, int amount);
 
     void dropItem(int index);
 
     void updateHealthAndMana();
+
+    bool canBeAttacked(int enemyLevel) const;
 };
 
 #endif

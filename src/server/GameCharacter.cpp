@@ -113,6 +113,28 @@ void GameCharacter::equipItem(int itemToEquip) {
     this->inventory.addItem(item);
 }
 
+void GameCharacter::unequipItem(int itemToUnequip) {
+    ItemsInventoryID item = ItemsInventoryID::Nothing;
+    if (!inventoryIsFull()) {
+        switch (itemToUnequip) {
+            case 0:
+                item = ItemTranslator::helmetToItem(this->helmet);
+                this->helmet = HelmetID::Nothing;
+                break;
+            case 1:
+                item = ItemTranslator::weaponToItem(this->weapon);
+                this->weapon = WeaponID::Nothing;
+                break;
+            case 2:
+                item = ItemTranslator::shieldToItem(this->shield);
+                this->shield = ShieldID::Nothing;
+                break;
+        }
+    }
+    this->inventory.removeItem(ItemsInventoryID::Nothing);
+    this->inventory.addItem(item);
+}
+
 void GameCharacter::consumePotion(const ItemInfo& potion) {
     uint maxMana = GameStatsConfig::getMaxMana(this->race, this->gameClass,this->level);
     uint maxHealth = GameStatsConfig::getMaxHealth(this->race, this->gameClass,this->level);
@@ -298,6 +320,10 @@ void GameCharacter::dropItem(int index) {
     if (itemToRemove != ItemsInventoryID::Nothing) {
         itemToDrop =  this->inventory.removeItem(itemToRemove);
     }
+}
+
+bool GameCharacter::canBeAttacked(int enemyLevel) const {
+    return GameStatsConfig::canAttack(this->level, enemyLevel);
 }
 
 GameCharacter::~GameCharacter()= default;
