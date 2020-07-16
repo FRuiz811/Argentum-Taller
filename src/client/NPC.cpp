@@ -326,6 +326,10 @@ void NPC::setWeapon(WeaponID newWeapon){
 }
 
 void NPC::setState(CharacterStateID newState) {
+  if(this->state != nullptr && 
+     this->state->getState() == CharacterStateID::Meditate &&
+     newState != CharacterStateID::Meditate)
+     this->animation = nullptr;
 	if(this->state == nullptr || this->state->getState() != newState) {
 		switch (newState) {
 			case CharacterStateID::Still:

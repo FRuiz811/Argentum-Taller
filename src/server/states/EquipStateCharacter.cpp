@@ -15,8 +15,12 @@ void EquipStateCharacter::performTask(uint id,
         std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) {
 
     std::shared_ptr<GameCharacter> aCharacter = std::dynamic_pointer_cast<GameCharacter>(gameObjects.at(id));
-    if (inputInfo.aditional != 0) {
-        aCharacter->equipItem(inputInfo.aditional);
+    if (inputInfo.input == InputID::unequipItem) {
+        aCharacter->unequipItem(inputInfo.aditional);
+    } else {
+        if (inputInfo.aditional != 0) {
+            aCharacter->equipItem(inputInfo.aditional);
+        }
     }
 }
 

@@ -119,4 +119,9 @@ bool Creature::canDropsItems() {
     return itemDrop;
 }
 
+bool Creature::canBeAttacked(int enemyLevel) const {
+    return true;
+}
+
+
 Creature::~Creature() = default;

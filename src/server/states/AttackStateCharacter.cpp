@@ -26,7 +26,7 @@ void AttackStateCharacter::performTask(uint id, std::unordered_map<uint, std::sh
                 aEnemy = gameObjects.at(enemyCell->getGameObjectId());
                 if (!aEnemy->isDead() &&
                     board.getDistance(aCharacter->getActualCell(), enemyCell) <= GameStatsConfig::getWeaponDistance(aCharacter->getWeapon()) &&
-                    aCharacter->canPerformAttack()) {
+                    aCharacter->canPerformAttack() && aEnemy->canBeAttacked(aCharacter->getLevel())) {
 
                     float damage = GameStatsConfig::getDamage(aCharacter->getRace(), aCharacter->getWeapon());
                     aCharacter->consumeMana();

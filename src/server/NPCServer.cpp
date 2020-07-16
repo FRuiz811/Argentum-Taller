@@ -68,3 +68,7 @@ bool NPCServer::isItem() {
 bool NPCServer::canDropsItems() {
     return false;
 }
+
+bool NPCServer::canBeAttacked(int enemyLevel) const {
+    return false;
+}

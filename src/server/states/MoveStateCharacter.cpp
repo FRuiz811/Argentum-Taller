@@ -4,8 +4,6 @@
 #include "StillStateCharacter.h"
 #include "../Creature.h"
 #include "AttackStateCharacter.h"
-#include "EquipStateCharacter.h"
-#include "TransitionStateCharacter.h"
 
 MoveStateCharacter::~MoveStateCharacter() = default;
 

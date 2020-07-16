@@ -31,6 +31,8 @@ private:
     static uint8_t nestCreaturesLimit;
     static float distance;
     static int inventoryLimit;
+    static int newbieLevel;
+    static int maxDiffLevel;
     RaceInfo createRaceInfo(rapidjson::Value &value);
     GameClassInfo createGameClass(rapidjson::Value &value);
     ItemInfo createItem(rapidjson::Value& value);
@@ -69,6 +71,8 @@ public:
     static int getInventoryLimit();
     static int getWeaponDistance(WeaponID aWeaponId);
     static int getWeaponCost(WeaponID aWeaponId);
+    static bool canAttack(int level, int enemyLevel);
+    static bool isNewbie(int level);
 };
 
 

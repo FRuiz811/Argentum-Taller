@@ -47,7 +47,7 @@ std::string Inventory::getStringInventory() const {
         if (temp.size() == 1)
             inv += "0";
         inv += temp;
-        if (i != 8)
+        if (i != limit-1)
             inv += "|";
     }
     return std::move(inv);

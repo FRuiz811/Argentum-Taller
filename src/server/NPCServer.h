@@ -36,6 +36,8 @@ public:
     void remove(Board &board) override;
 
     bool isReadyToRemove() override;
+
+    bool canBeAttacked(int enemyLevel) const ;
 };
 
 #endif

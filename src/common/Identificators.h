@@ -21,7 +21,7 @@ enum class InputID {
     down, //s
     left, //a
     right, //d
-    meditate, //y
+    meditate, //q
     resurrect, //r
     cure, //h
     buy,      
@@ -33,7 +33,7 @@ enum class InputID {
     selectTarget, //click
     equipItem,
     dropItem, 
-    takeItem, //t
+    takeItem, //e
     unequipItem,
 };
 

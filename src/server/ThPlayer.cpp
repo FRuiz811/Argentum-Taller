@@ -66,7 +66,6 @@ void ThPlayer::update(std::vector<std::shared_ptr<GameObject>> gameObject) {
     }
     canUpdate = true;
     cv.notify_all();
-
 }
 
 ThPlayer::~ThPlayer()= default;

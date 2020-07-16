@@ -61,3 +61,7 @@ ItemsInventoryID ObjectItem::getItemId() const {
 void ObjectItem::take() {
     timeToBeRemove = 0;
 }
+
+bool ObjectItem::canBeAttacked(int enemyLevel) const {
+    return false;
+}

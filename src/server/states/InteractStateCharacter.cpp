@@ -2,7 +2,6 @@
 #include "StillStateCharacter.h"
 #include "MoveStateCharacter.h"
 #include "../GameCharacter.h"
-#include "EquipStateCharacter.h"
 
 InteractStateCharacter::InteractStateCharacter(const InputInfo &info) : State(info) {
     stateId = CharacterStateID::Interact;
