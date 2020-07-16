@@ -99,10 +99,10 @@ void World::run() {
             generateCreature();
         }
         update();
+        clearFinishedPlayers();
         for (auto &aPlayer : players) {
             aPlayer.second->update(getUpdatedGameObjects());
         }
-        clearFinishedPlayers();
         checkDrops();
         removeCreaturesAndItems();
         endLoop = chrono.lap();

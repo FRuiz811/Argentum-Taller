@@ -9,7 +9,6 @@ EquipStateCharacter::~EquipStateCharacter() = default;
 
 EquipStateCharacter::EquipStateCharacter(const InputInfo &info) : State(info) {
     finalized = true;
-
 }
 
 void EquipStateCharacter::performTask(uint id,
@@ -29,12 +28,8 @@ void EquipStateCharacter::setNextState(InputInfo info) {
     if (info.input == InputID::up || info.input == InputID::down ||
         info.input == InputID::left || info.input == InputID::right) {
         nextState = std::unique_ptr<State>(new MoveStateCharacter(info));
-    } else if(info.input == InputID::stopMove) {
+    } else {
         nextState = std::unique_ptr<State>(new StillStateCharacter(info));
-    } else if (info.input == InputID::selectTarget) {
-        nextState = std::unique_ptr<State>(new TransitionStateCharacter(info));
-    } else if (info.input == InputID::equipItem || info.input == InputID::unequipItem) {
-        nextState = std::unique_ptr<State>(new EquipStateCharacter(info));
     }
 }
 

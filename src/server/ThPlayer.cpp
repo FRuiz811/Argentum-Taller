@@ -34,8 +34,8 @@ void ThPlayer::run() {
             std::cerr << ERRORDISPATCHER << e.what() << std::endl;
             this->stop();
         } catch (...) {
-            this->stop();
             std::cerr << UNKNOW_ERROR << std::endl;
+            this->stop();
         }
     }
 }
@@ -52,12 +52,11 @@ bool ThPlayer::is_alive() const {
 }
 
 void ThPlayer::update(std::vector<std::shared_ptr<GameObject>> gameObject) {
-    std::unique_lock<std::mutex> lock(m);
     this->gameObjectsInfo.clear();
     std::vector<std::shared_ptr<GameObject>>::iterator iter;
     iter = gameObject.begin();
     while (iter != gameObject.end()){
-        if ((*iter)->getId() == character->getId()){
+        if ((*iter)->getId() == character->getId()) {
             this->interacting = (*iter)->getInteractInfo();
             iter = gameObject.erase(iter);
         } else {
