@@ -15,7 +15,7 @@ PlayerInfo GameCharacter::getPlayerInfo() {
 }
 
 GameCharacter::GameCharacter(uint id, RaceID aRace, GameClassID aClass, std::shared_ptr<Cell> initialCell, Point initialPoint):
-        GameObject(id, initialPoint, std::move(initialCell)), race(aRace), gameClass(aClass), queueInputs(true), inventory({ItemsInventoryID::Nothing}) {
+        GameObject(id, initialPoint, std::move(initialCell)), race(aRace), gameClass(aClass), queueInputs(true), inventory({}) {
 
     this->life = GameStatsConfig::getMaxHealth(race, gameClass, level);
     this->mana = GameStatsConfig::getMaxMana(race, gameClass, level);
