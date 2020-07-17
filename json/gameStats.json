@@ -451,12 +451,11 @@
   "evadeRandMin": 0,
   "evadeRandMax": 1,
   "evadeProbability": 0.001,
-  "levelDifference": 10,
   "maxAgility": 5,
   "creaturesLimit": 40,
   "nestCreaturesLimit": 3,
   "distance": 32.0,
   "inventoryLimit":9,
   "newbieLevel": 4,
-  "maxDiffLevel": 2
+  "levelDifference": 10
 }

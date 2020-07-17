@@ -24,7 +24,6 @@ GameStatsConfig::GameStatsConfig(rapidjson::Document &json) {
     distance = json["distance"].GetFloat();
     inventoryLimit = json["inventoryLimit"].GetInt();
     newbieLevel = json["newbieLevel"].GetInt();
-    maxDiffLevel = json["maxDiffLevel"].GetInt();
 
     rapidjson::Value::Array racesArray = json["races"].GetArray();
     for (auto &aRace : racesArray) {
@@ -235,7 +234,7 @@ bool GameStatsConfig::canAttack(int level, int enemyLevel) {
     if (isNewbie(level) || isNewbie(enemyLevel))
         return false;
     int diff = level - enemyLevel;
-    if (diff < -GameStatsConfig::maxDiffLevel || diff > GameStatsConfig::maxDiffLevel) 
+    if (diff < -GameStatsConfig::levelDifference || diff > GameStatsConfig::levelDifference) 
         return false;
     return true;
 }
@@ -271,4 +270,3 @@ uint8_t GameStatsConfig::nestCreaturesLimit = 0.0;
 float GameStatsConfig::distance = 0.0;
 int GameStatsConfig::inventoryLimit = 0;
 int GameStatsConfig::newbieLevel = 0;
-int GameStatsConfig::maxDiffLevel = 0;

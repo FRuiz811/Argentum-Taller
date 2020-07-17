@@ -10,7 +10,7 @@
 
 #define WRONGRACE "Raza invalida. Seleccione entre: elfo, gnomo, humano, enano."
 #define WRONGCLASS "Clase invalida. Seleccione entre: mago, clerigo, paladin, guerrero"
-#define ARGENTUM "Argentum Online Taller"
+#define ARGENTUM "Argentum Taller"
 #define INITERROR "Error en Game::init: "
 #define GAMELOOPTIME 1000000/45.0
 #define PLAYERINFOMSG 0x01
