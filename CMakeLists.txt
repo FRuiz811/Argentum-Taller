@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
 project(Argentum_Taller)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11  -pedantic -pedantic-errors -O3 -ggdb -DDEBUG -fno-inline")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -pedantic -pedantic-errors -O3 -ggdb -DDEBUG -fno-inline")
 
 INCLUDE(FindPkgConfig)
 

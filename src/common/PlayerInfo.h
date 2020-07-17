@@ -8,15 +8,15 @@
 
 class PlayerInfo : public GameObjectInfo{
 private:
-    uint goldAmount{0};
-    uint life{100};
-    uint mana{100};
-    uint level{1};
-    uint exp{0};
-    uint maxLife{100};
-    uint maxMana{100};
-    uint maxExp{1000};
-    uint safeGold{50};
+    uint goldAmount{};
+    uint life{};
+    uint mana{};
+    uint level{};
+    uint exp{};
+    uint maxLife{};
+    uint maxMana{};
+    uint maxExp{};
+    uint safeGold{};
     std::string inventory;
     std::string name;
 

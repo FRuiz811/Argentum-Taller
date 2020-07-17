@@ -106,10 +106,10 @@ std::vector<std::pair<uint8_t, std::shared_ptr<Cell>>> Board::getAdjacents(std::
     int x = std::get<0>(position);
     int y = std::get<1>(position);
     std::shared_ptr<Cell> originCell = getCell(x, y);
-    uint leftLimitX = x - distance >= 0 ? x - distance : 0;
-    uint rightLimitX = x + distance < cols ? x + distance : cols - 1;
-    uint leftLimitY = y - distance >= 0 ? y - distance : 0;
-    uint rightLimitY = y + distance < rows ? y + distance : rows - 1;
+    int leftLimitX = x - distance >= 0 ? x - distance : 0;
+    int rightLimitX = x + distance < cols ? x + distance : cols - 1;
+    int leftLimitY = y - distance >= 0 ? y - distance : 0;
+    int rightLimitY = y + distance < rows ? y + distance : rows - 1;
     std::shared_ptr<Cell> aCell;
     for (size_t i = leftLimitX; i <= rightLimitX; ++i) {
         for (size_t j = leftLimitY; j <= rightLimitY; ++j) {

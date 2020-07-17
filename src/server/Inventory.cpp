@@ -4,10 +4,10 @@
 #include <algorithm>
 #include "GameStatsConfig.h"
 
-Inventory::Inventory(std::vector<ItemsInventoryID> aInventoryItems) :
-inventoryItems(std::move(aInventoryItems)), itemsAmount(inventoryItems.size()),
+Inventory::Inventory() :
+inventoryItems(), itemsAmount(0),
 limit(GameStatsConfig::getInventoryLimit()){
-    for (int i = itemsAmount; i < limit; ++i){
+    for (int i = 0; i < limit; ++i){
         inventoryItems.push_back(ItemsInventoryID::Nothing);
     }
 }
@@ -50,7 +50,7 @@ std::string Inventory::getStringInventory() const {
         if (i != limit-1)
             inv += "|";
     }
-    return std::move(inv);
+    return inv;
 }
 
 ItemsInventoryID Inventory::removeItem(ItemsInventoryID aItemToRemove) {

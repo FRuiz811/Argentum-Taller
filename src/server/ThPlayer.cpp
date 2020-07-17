@@ -9,23 +9,21 @@
 
 ThPlayer::ThPlayer(const std::shared_ptr<CommunicationProtocol>& protocol, std::shared_ptr<GameCharacter> aCharacter) :
 protocol(protocol), keepTalking(true), character(std::move(aCharacter)),
-receiver(protocol, character->getQueueInputs()) {}
+receiver(protocol, character->getQueueInputs()), worldInfoQueue(true) {}
 
 void ThPlayer::run() {
     this->receiver.setId(character->getId());
     this->receiver.start();
     while (this->keepTalking) {
         try{
-            std::unique_lock<std::mutex> lock(m);
-            if (canUpdate) {
-                this->protocol->send(Decoder::encodePlayerInfo(character->getPlayerInfo()));
-                this->protocol->send(Decoder::encodeGameObjects(gameObjectsInfo));
-                if (this->character->getStateId() == CharacterStateID::Interact && this->interacting.type != 0) {
-                    this->protocol->send(Decoder::encodeNPCInfo(this->interacting));
+            if (!worldInfoQueue.empty()) {
+                WorldInfo worldInfo = worldInfoQueue.pop();
+                const PlayerInfo& aPlayerInfo = worldInfo.getPlayerInfo();
+                this->protocol->send(Decoder::encodePlayerInfo(aPlayerInfo));
+                this->protocol->send(Decoder::encodeGameObjects(worldInfo.getGameObjectsInfo()));
+                if (aPlayerInfo.getState() == CharacterStateID::Interact && worldInfo.getNpcInfo().type != 0) {
+                    this->protocol->send(Decoder::encodeNPCInfo(worldInfo.getNpcInfo()));
                 }
-                canUpdate = false;
-            } else {
-                cv.wait(lock);  
             }
         } catch(const SocketException& e) {
            std::cout << ERRORSOCKET << e.what() << std::endl;
@@ -51,21 +49,8 @@ bool ThPlayer::is_alive() const {
     return this->keepTalking;
 }
 
-void ThPlayer::update(std::vector<std::shared_ptr<GameObject>> gameObject) {
-    this->gameObjectsInfo.clear();
-    std::vector<std::shared_ptr<GameObject>>::iterator iter;
-    iter = gameObject.begin();
-    while (iter != gameObject.end()){
-        if ((*iter)->getId() == character->getId()) {
-            this->interacting = (*iter)->getInteractInfo();
-            iter = gameObject.erase(iter);
-        } else {
-            this->gameObjectsInfo.push_back((*iter)->getGameObjectInfo());
-            iter++;
-        }
-    }
-    canUpdate = true;
-    cv.notify_all();
+void ThPlayer::update(const WorldInfo& worldInfo) {
+    worldInfoQueue.push(worldInfo);
 }
 
 ThPlayer::~ThPlayer()= default;

@@ -11,7 +11,7 @@ private:
     uint8_t itemsAmount;
     uint8_t limit;
 public:
-    explicit Inventory(std::vector<ItemsInventoryID> inventoryItems);
+    Inventory();
 
     ItemsInventoryID getItem(int index) const;
 

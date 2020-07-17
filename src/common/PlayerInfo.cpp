@@ -20,8 +20,8 @@ PlayerInfo::PlayerInfo(uint id, Point point, uint goldAmount, uint life, uint ma
     Direction direction, uint safeGold, uint maxLife, uint maxMana, uint exp, uint maxExp,
     uint level,std::string  inventory, CharacterStateID state, WeaponID attackBy)
     :GameObjectInfo(id, point, textureHashId, direction,state, false ,attackBy),
-    goldAmount(goldAmount), life(life), mana(mana), safeGold(safeGold), maxLife(maxLife), maxMana(maxMana),
-    exp(exp), maxExp(maxExp), level(level), inventory(std::move(inventory)) {}
+    goldAmount(goldAmount), life(life), mana(mana), level(level), exp(exp), maxLife(maxLife),
+    maxMana(maxMana), maxExp(maxExp), safeGold(safeGold) , inventory(std::move(inventory)) {}
 
 PlayerInfo::PlayerInfo() : GameObjectInfo() {}
 

@@ -2,7 +2,6 @@
 #include "World.h"
 #include "../common/JsonReader.h"
 #include "PlayerAcceptor.h"
-#include <iostream>
 #include <string>
 
 #define EXIT "q"    

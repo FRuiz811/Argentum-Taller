@@ -23,6 +23,8 @@ public:
 
     GameObjectInfo getGameObjectInfo();
 
+    virtual PlayerInfo getPlayerInfo();
+
     uint getId() const;
 
     void setDirection(Direction direction);
