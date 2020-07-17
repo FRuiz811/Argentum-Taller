@@ -52,21 +52,21 @@
       "name": "Mage",
       "health": 3,
       "mana": 3.9,
-      "meditation": 3.1
+      "meditation": 3.5
     },
     {
       "id": 2,
       "name": "Cleric",
       "health": 3.3,
       "mana": 3.6,
-      "meditation": 3.1
+      "meditation": 3.3
     },
     {
       "id": 3,
       "name": "Paladin",
       "health": 3.6,
       "mana": 3.2,
-      "meditation": 3.2
+      "meditation": 3.1
     },
     {
       "id": 4,
@@ -451,12 +451,11 @@
   "evadeRandMin": 0,
   "evadeRandMax": 1,
   "evadeProbability": 0.001,
-  "levelDifference": 10,
   "maxAgility": 5,
   "creaturesLimit": 40,
   "nestCreaturesLimit": 3,
   "distance": 32.0,
   "inventoryLimit":9,
   "newbieLevel": 4,
-  "maxDiffLevel": 2
+  "levelDifference": 10
 }

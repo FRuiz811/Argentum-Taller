@@ -55,7 +55,7 @@ std::string Inventory::getStringInventory() const {
 
 ItemsInventoryID Inventory::removeItem(ItemsInventoryID aItemToRemove) {
     auto iter = std::find(inventoryItems.begin(), inventoryItems.end(), aItemToRemove);
-    if (iter == inventoryItems.end()) {
+    if (iter == inventoryItems.end() || aItemToRemove == ItemsInventoryID::Nothing) {
         return ItemsInventoryID::Nothing;
     }
     (*iter) = ItemsInventoryID::Nothing;

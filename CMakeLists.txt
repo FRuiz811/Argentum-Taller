@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
 project(Argentum_Taller)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -pedantic -pedantic-errors -O3 -ggdb -DDEBUG -fno-inline")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -pedantic -pedantic-errors -O3 -ggdb -DDEBUG -fno-inline -pthread")
 
 INCLUDE(FindPkgConfig)
 
@@ -12,8 +12,8 @@ PKG_SEARCH_MODULE(SDL2_mixer REQUIRED SDL2_mixer)
 
 INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIR} ${SDL2TTF_INCLUDE_DIR} ${SDL2MIXER_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/include)
-INCLUDE_DIRECTORIES(client)
-INCLUDE_DIRECTORIES(server)
+INCLUDE_DIRECTORIES(src/client)
+INCLUDE_DIRECTORIES(src/server)
 
 file(GLOB_RECURSE CLIENT_SOURCES
         src/client/*.h
@@ -27,10 +27,24 @@ file(GLOB_RECURSE COMMON_SOURCES
         src/common/*.h
         src/common/*.cpp)
 
-add_executable(client ${CLIENT_SOURCES} ${COMMON_SOURCES})
-add_executable(client1 ${CLIENT_SOURCES} ${COMMON_SOURCES})
-add_executable(server ${SERVER_SOURCES} ${COMMON_SOURCES})
+add_executable(argentum_client ${CLIENT_SOURCES} ${COMMON_SOURCES})
+add_executable(argentum_server ${SERVER_SOURCES} ${COMMON_SOURCES})
 
-target_link_libraries(client -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer pthread)
-target_link_libraries(client1 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer pthread)
-target_link_libraries(server pthread)
+target_link_libraries(argentum_client -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer pthread)
+target_link_libraries(argentum_server pthread)
+
+set(DEV yes)
+if(DEV)
+        set(ROOT_DIR ./)
+else()
+        set(ROOT_DIR /var/Argentum)
+endif()
+
+file(COPY assets DESTINATION ${ROOT_DIR}/assets)
+file(COPY json/gameStats.json json/bigMapNPC.json json/finishedMap.json DESTINATION ${ROOT_DIR})
+file(COPY include DESTINATION ${ROOT_DIR}/include)
+
+INSTALL(TARGETS argentum_client argentum_server DESTINATION /usr/bin)
+INSTALL(DIRECTORY assets DESTINATION ${ROOT_DIR}/assets)
+INSTALL(DIRECTORY include DESTINATION ${ROOT_DIR}/include)
+INSTALL(FILES gameStats.json bigMapNPC.json finishedMap.json DESTINATION /etc/Argentum)

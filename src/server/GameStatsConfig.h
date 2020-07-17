@@ -32,7 +32,6 @@ private:
     static float distance;
     static int inventoryLimit;
     static int newbieLevel;
-    static int maxDiffLevel;
     RaceInfo createRaceInfo(rapidjson::Value &value);
     GameClassInfo createGameClass(rapidjson::Value &value);
     ItemInfo createItem(rapidjson::Value& value);
