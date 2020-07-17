@@ -19,8 +19,8 @@ private:
     float mana;
     float exp;
     std::unique_ptr<State> state;
-    Inventory inventory;
     InputQueue queueInputs;
+    Inventory inventory;
     WeaponID weapon{WeaponID::Nothing};
     ShieldID shield{ShieldID::Nothing};
     HelmetID helmet{HelmetID::Nothing};
@@ -33,9 +33,9 @@ private:
 public:
 	GameCharacter(uint id, RaceID aRace, GameClassID aClass, std::shared_ptr<Cell> initialCell, Point initialPoint);
 
-	PlayerInfo getPlayerInfo();
-
 	bool hasAnInputInfo();
+
+    PlayerInfo getPlayerInfo() override;
 
 	void consumeMana();
 

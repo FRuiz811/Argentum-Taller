@@ -49,4 +49,8 @@ void GameObject::setAttackBy(WeaponID attackBy) {
     GameObject::attackBy = attackBy;
 }
 
+PlayerInfo GameObject::getPlayerInfo() {
+    return PlayerInfo();
+}
+
 GameObject::~GameObject()= default;

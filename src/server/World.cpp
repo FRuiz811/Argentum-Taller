@@ -23,9 +23,7 @@ World::World(GameStatsConfig& configuration) : gameStatsConfig(configuration),
 }
 
 uint World::getNextId() {
-    uint id = this->current_id;
-    this->current_id++;
-    return id;
+    return current_id++;
 }
 
 std::shared_ptr<GameCharacter> World::createCharacter(RaceID race, GameClassID gameClass) {
@@ -65,14 +63,10 @@ void World::generateCreature() {
     try {
         Nest& aNest = board.getAvailableNest();
         std::shared_ptr<Cell> initialCell = board.getInitialCellInNest(aNest);
-        if (initialCell != nullptr) {
-            initialCell->occupied(id);
-            aNest.addCreature(id);
-            std::shared_ptr<Creature> aCreature(new Creature(id, CreatureID(randomId), initialCell, board.getPointFromCell(initialCell)));
-            gameObjectsContainer.addGameObject(aCreature, id);
-        } else {
-            std::cout << "Cannot create creature" << std::endl;
-        }
+        initialCell->occupied(id);
+        aNest.addCreature(id);
+        std::shared_ptr<Creature> aCreature(new Creature(id, CreatureID(randomId), initialCell, board.getPointFromCell(initialCell)));
+        gameObjectsContainer.addGameObject(aCreature, id);
     } catch (Exception& e) {
         std::cout << "Cannot create creature" << std::endl;
     }
@@ -92,16 +86,18 @@ void World::run() {
     Chrono chrono;
     double initLoop, endLoop, sleep;
     int amountCreaturesDiff;
+    std::vector<std::shared_ptr<GameObject>> gameObjects;
     while (keepTalking) {
         initLoop = chrono.lap();
         amountCreaturesDiff = GameStatsConfig::getCreaturesLimit() - board.getAmountCreatures();
-        for (size_t i = 0; i < amountCreaturesDiff; ++i) {
+        if (amountCreaturesDiff > 0) {
             generateCreature();
         }
         update();
         clearFinishedPlayers();
         for (auto &aPlayer : players) {
-            aPlayer.second->update(getUpdatedGameObjects());
+            gameObjects = gameObjectsContainer.getUpdatedGameObjects();
+            aPlayer.second->update(WorldInfo(gameObjects, aPlayer.first));
         }
         checkDrops();
         removeCreaturesAndItems();
