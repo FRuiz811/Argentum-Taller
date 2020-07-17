@@ -31,6 +31,9 @@ Creature::Creature(uint id, CreatureID creatureId, std::shared_ptr<Cell> initial
         case CreatureID::Zombie:
             this->textureHashId = "ht00|h06|b14|s00|w00";
             break;
+        default:
+            this->textureHashId = nullptr;
+            break;
     }
     this->state = std::unique_ptr<State>(new StillStateCreature());
     life = GameStatsConfig::getMaxHealth(creatureId, level);

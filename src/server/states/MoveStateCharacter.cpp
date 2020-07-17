@@ -21,6 +21,9 @@ MoveStateCharacter::MoveStateCharacter(const InputInfo &info) : State(info) {
         case InputID::right:
             direction = Direction::right;
             break;
+        default:
+            direction = Direction::down;
+            break;
     }
     stateId = CharacterStateID::Move;
 }

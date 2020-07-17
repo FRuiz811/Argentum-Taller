@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
 project(Argentum_Taller)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -pedantic -pedantic-errors -O3 -ggdb -DDEBUG -fno-inline -pthread")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Werror -pedantic -pedantic-errors -O3 -ggdb -DDEBUG -fno-inline -pthread")
 
 INCLUDE(FindPkgConfig)
 
@@ -40,11 +40,11 @@ else()
         set(ROOT_DIR /var/Argentum)
 endif()
 
-file(COPY assets DESTINATION ${ROOT_DIR}/assets)
-file(COPY json/gameStats.json json/bigMapNPC.json json/finishedMap.json DESTINATION ${ROOT_DIR})
-file(COPY include DESTINATION ${ROOT_DIR}/include)
+file(COPY assets DESTINATION ./)
+file(COPY json/gameStats.json json/bigMapNPC.json json/finishedMap.json DESTINATION ./)
+file(COPY include DESTINATION ./)
 
 INSTALL(TARGETS argentum_client argentum_server DESTINATION /usr/bin)
-INSTALL(DIRECTORY assets DESTINATION ${ROOT_DIR}/assets)
-INSTALL(DIRECTORY include DESTINATION ${ROOT_DIR}/include)
+INSTALL(DIRECTORY assets DESTINATION /var/Argentum)
+INSTALL(DIRECTORY include DESTINATION /var/Argentum)
 INSTALL(FILES gameStats.json bigMapNPC.json finishedMap.json DESTINATION /etc/Argentum)

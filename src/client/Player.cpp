@@ -42,7 +42,7 @@
 Player::Player(const TextureManager& manager, const PlayerInfo& playerInfo,
   const MusicManager& mixer) : Character(playerInfo.getX(),playerInfo.getY(),
   playerInfo.getId()), center(playerInfo.getX(),playerInfo.getY()),
-  manager(manager), playerInfo(playerInfo), mixer(mixer) {
+  manager(manager), mixer(mixer), playerInfo(playerInfo){
 
   this->direction = playerInfo.getDirection();
 	this->frameHead = 0;
@@ -308,6 +308,9 @@ void Player::setHead(HeadID head) {
             case HeadID::Gnome:
                 this->head = std::shared_ptr<Head>(new GnomeHead(this->manager));
                 break;
+            default:
+              this->head = nullptr;
+              break;
     }
   }
 }
@@ -336,6 +339,9 @@ void Player::setArmor(BodyID newArmor) {
         case BodyID::Ghost:
             this->body = std::shared_ptr<Body>(new GhostBody(this->manager));
             break;
+        default:
+            this->body = nullptr;
+            break;
     }
     if (this->body != nullptr)
       this->body->update(0,direction);
@@ -357,6 +363,9 @@ void Player::setHelmet(HelmetID newHelmet) {
         case HelmetID::MagicHat:
             this->helmet = std::shared_ptr<Helmet>(new MagicHat(this->manager));
             break;
+        default:
+            this->helmet = nullptr;
+            break;
     }
   }
 }
@@ -372,6 +381,9 @@ void Player::setShield(ShieldID newShield) {
             break;
         case ShieldID::IronShield:
             this->shield = std::shared_ptr<Shield>(new IronShield(this->manager));
+            break;
+        default:
+            this->shield = nullptr;
             break;
 		}
     if (this->shield != nullptr)
@@ -412,6 +424,9 @@ void Player::setWeapon(WeaponID newWeapon){
         case WeaponID::ElficFlaute:
             this->weapon = std::shared_ptr<Weapon>(new ElficFlaute(this->manager));
             break;
+        default:
+            this->weapon = nullptr;
+            break;
 		}
     if (this->weapon != nullptr)
       this->weapon->update(0,direction);
@@ -450,6 +465,9 @@ void Player::setAnimation(WeaponID weaponEnemy) {
             break;
         case WeaponID::ElficFlaute:
             this->animation = std::shared_ptr<Animation>(new CureAnimation(this->manager,mixer.getEffect(MusicID::Cure)));
+            break;
+        default:
+            this->animation = nullptr;
             break;
       }
 		}

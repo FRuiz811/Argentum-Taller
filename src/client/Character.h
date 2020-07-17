@@ -11,7 +11,7 @@ protected:
     Direction direction{Direction::down};
 
 public:
-    Character(float posX, float posY, int id) : posX(posX), posY(posY), id(id) {}
+    Character(float posX, float posY, int id) : id(id), posX(posX), posY(posY) {}
 
     virtual void render(Camera& camera) = 0;
 

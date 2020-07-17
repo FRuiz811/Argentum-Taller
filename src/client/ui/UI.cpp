@@ -12,8 +12,8 @@
 #define ITEMSMERCHANT 12
 
 UI::UI(Window& window, Player* player, const TextureManager& manager) : 
-window(window), playerTarget(player), manager(manager),
- font("assets/font/Prince Valiant.ttf",18,{0xA4, 0xA4, 0xA4}), texts(), 
+ playerTarget(player),window(window), manager(manager),
+ font("assets/font/Prince Valiant.ttf",18,{0xA4, 0xA4, 0xA4}), texts(), info(),
  itemsID(), buttonsBuild() {
 	createTexts();
     SDL_Rect buttonRect;

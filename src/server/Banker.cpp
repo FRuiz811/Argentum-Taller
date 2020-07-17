@@ -131,6 +131,8 @@ void Banker::processInput(GameCharacter &character, InputInfo inputInfo) {
             gold = retireGold(character.getId(), inputInfo.aditional);
             character.gainGold(gold);
             break;
+        default:
+            break;
     }
 
 }

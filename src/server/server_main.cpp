@@ -5,7 +5,7 @@
 #include <string>
 
 #define EXIT "q"    
-#define INVALIDARGUMENTS "Error argumentos inválidos: ./server <path configuracion>"
+#define INVALIDARGUMENTS "Error argumentos inválidos: argentum_server <path configuracion>"
 
 int main(int argc, char* argv[]) {
     if (argc != 2) {

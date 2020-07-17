@@ -33,6 +33,8 @@ void TakeAndDropStateCharacter::performTask(uint id, std::unordered_map<uint, st
                 }
             }
             break;
+        default:
+            break;
     }
     finalized = true;
 }

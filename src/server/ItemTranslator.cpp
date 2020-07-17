@@ -3,7 +3,7 @@
 ItemTranslator::ItemTranslator() = default;
 
 ItemsInventoryID ItemTranslator::weaponToItem(WeaponID weapon){
-    ItemsInventoryID idItem;
+    ItemsInventoryID idItem = ItemsInventoryID::Nothing;
     switch(weapon) {
 		case WeaponID::SimpleArc:
 			idItem = ItemsInventoryID::SimpleArc;
@@ -40,7 +40,7 @@ ItemsInventoryID ItemTranslator::weaponToItem(WeaponID weapon){
 }
 
 ItemsInventoryID ItemTranslator::bodyToItem(BodyID body){
-    ItemsInventoryID idItem;
+    ItemsInventoryID idItem = ItemsInventoryID::Nothing;
     switch(body) {
 		case BodyID::BlueCommon:
 			idItem = ItemsInventoryID::BlueCommon;
@@ -60,12 +60,15 @@ ItemsInventoryID ItemTranslator::bodyToItem(BodyID body){
 		case BodyID::PlateArmor:
 			idItem = ItemsInventoryID::PlateArmor;
 			break;
+		default:
+			idItem = ItemsInventoryID::Nothing;
+			break;
     }
     return idItem;
 }
 
 ItemsInventoryID ItemTranslator::helmetToItem(HelmetID helmet){
-    ItemsInventoryID idItem;
+    ItemsInventoryID idItem = ItemsInventoryID::Nothing;
     switch(helmet) {
 		case HelmetID::Hood:
 			idItem = ItemsInventoryID::Hood;
@@ -79,12 +82,15 @@ ItemsInventoryID ItemTranslator::helmetToItem(HelmetID helmet){
 		case HelmetID::Nothing:
 			idItem = ItemsInventoryID::Nothing;
 			break;
+		default:
+			idItem = ItemsInventoryID::Nothing;
+			break;
 	}
     return idItem;
 }
 
 ItemsInventoryID ItemTranslator::shieldToItem(ShieldID shield){
-    ItemsInventoryID idItem;
+    ItemsInventoryID idItem = ItemsInventoryID::Nothing;
 	switch(shield) {
 		case ShieldID::IronShield:
 			idItem = ItemsInventoryID::IronShield;
@@ -136,7 +142,7 @@ WeaponID ItemTranslator::itemToWeapon(ItemsInventoryID item){
 }
 
 ShieldID ItemTranslator::itemToShield(ItemsInventoryID item){
-    ShieldID shield;
+    ShieldID shield = ShieldID::Nothing;
     switch (item) {
         case ItemsInventoryID::IronShield:
 			shield = ShieldID::IronShield;
@@ -151,7 +157,7 @@ ShieldID ItemTranslator::itemToShield(ItemsInventoryID item){
 }
 
 BodyID ItemTranslator::itemToBody(ItemsInventoryID item){
-    BodyID body;
+    BodyID body = BodyID::Nothing;
     switch (item) {
         case ItemsInventoryID::BlueCommon:
 			body = BodyID::BlueCommon;
@@ -171,12 +177,15 @@ BodyID ItemTranslator::itemToBody(ItemsInventoryID item){
 		case ItemsInventoryID::PlateArmor:
 			body = BodyID::PlateArmor;
 			break;
+		default:
+			body = BodyID::Nothing;
+			break;
     }
     return body;
 }
     
 HelmetID ItemTranslator::itemToHelmet(ItemsInventoryID item){
-    HelmetID helmet;
+    HelmetID helmet = HelmetID::Nothing;
     switch (item) {
         case ItemsInventoryID::Hood:
 			helmet = HelmetID::Hood;
@@ -190,6 +199,9 @@ HelmetID ItemTranslator::itemToHelmet(ItemsInventoryID item){
         case ItemsInventoryID::Nothing:
             helmet = HelmetID::Nothing;
             break;
+		default:
+			helmet = HelmetID::Nothing;
+			break;
     }
     return helmet;
 }

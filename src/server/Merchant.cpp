@@ -67,6 +67,8 @@ void Merchant::processInput(GameCharacter &character, InputInfo inputInfo) {
                 }
             }
             break;
+        default:
+            break;
     }
 }
 

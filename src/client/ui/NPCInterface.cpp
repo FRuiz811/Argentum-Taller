@@ -48,6 +48,10 @@ std::shared_ptr<RaisedButton> NPCInterface::createButtonAction(ActionsProfession
         text = "Retirar";
         button = std::shared_ptr<RaisedButton>(new RetireGoldButton(&(window->getRenderer()),font,text,rect, manager,player));
         break;
+    case ActionsProfessionID::Nothing:
+        text = "";
+        button = nullptr;
+        break;
     }
     return button;
 }
