@@ -25,6 +25,10 @@ void RaisedButton::render(){
     }
 }
 
+void RaisedButton::updatePosition(SDL_Rect position) {
+    Button::updatePosition(position);
+}
+
 bool RaisedButton::inside(int x, int y) {
     bool inside = true;
     if (x < this->button.x+viewport.x)

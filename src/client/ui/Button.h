@@ -16,31 +16,21 @@ protected:
     bool clicked;
     
 public:
-    Button(SDL_Renderer* renderer, Font& font,std::string text, SDL_Rect position, const TextureManager& manager) :
-        text(text), button(position), manager(manager), renderer(renderer), clicked(false) {
-        int w,h;
-        font.setSize(this->textSize);
-        this->texture = font.createText(text,renderer,&w,&h);  
-    }
+    Button(SDL_Renderer* renderer, Font& font,std::string text, SDL_Rect position, const TextureManager& manager);
     
-    Button(SDL_Renderer* renderer,SDL_Rect position, const TextureManager& manager) :
-    button(position), manager(manager),  renderer(renderer), clicked(false){}
+    Button(SDL_Renderer* renderer,SDL_Rect position, const TextureManager& manager);
 
     virtual bool inside(int x, int y) = 0;
 
     virtual void render() = 0;
 
-    void onClick() {
-        this->clicked = !this->clicked;
-    }
+    void onClick();
 
-    void setViewport(SDL_Rect viewport) {
-        this->viewport = viewport;
-    }
+    virtual void updatePosition(SDL_Rect position);
 
-    ~Button() {
-        SDL_DestroyTexture(this->texture);
-    }
+    void setViewport(SDL_Rect viewport);
+
+    ~Button();
 };
 
 #endif
