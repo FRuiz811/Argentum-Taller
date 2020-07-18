@@ -29,7 +29,7 @@ private:
     int frameHead{0};
     std::shared_ptr<CharacterState> state = nullptr;
 
-    bool isItem{false};
+    bool aItem{false};
     std::shared_ptr<Item> item = nullptr;
     void setArmor(BodyID newArmor);
 	void setShield(ShieldID newShield);
@@ -47,7 +47,7 @@ public:
 
     virtual void render(Camera& camera);
 	virtual void update(double dt);
-
+    bool isItem() const;
     void updatePlayerInfo(const GameObjectInfo& info);
     CharacterStateID& getState();
     ~NPC();

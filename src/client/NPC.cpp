@@ -62,7 +62,7 @@ NPC::NPC(const TextureManager& manager, const GameObjectInfo& gameObjectInfo,
 }
 
 void NPC::render(Camera& camera) {
-  if (!isItem) {
+  if (!aItem) {
     int distance = camera.distanceFromTarget(this->getPosition());
     if(distance < 800){
       if (this->body != nullptr)
@@ -121,8 +121,12 @@ void NPC::updatePlayerInfo(const GameObjectInfo &info) {
       setItem(info.getItemID());
 }
 
+bool NPC::isItem() const {
+  return this->aItem;
+}
+
 void NPC::setItem(ItemsInventoryID itemId) {
-  this->isItem = true;
+  this->aItem = true;
   this->item = std::make_shared<Item>(manager.getTexture(itemId),32,32);
 }
 

@@ -344,7 +344,10 @@ InputInfo UI::handleClick(SDL_Event& event) {
             }   
 
             if (this->npc != nullptr) {
-                info = this->npc->handleClick(x,y,int(itemsID[itemSelected]));
+                int itemId = 0;
+                if (itemSelected != -1)
+                    itemId = int(itemsID[itemSelected]);
+                info = this->npc->handleClick(x,y,itemId);
             } else if (this->unequipButton != nullptr) {
                 if (this->unequipButton->inside(x,y) && buildSelected > -1)
                     info = this->unequipButton->onClick(buildSelected);
