@@ -15,6 +15,7 @@ class Merchant:public Profession {
 private:
     Merchant();
     std::unordered_map<ItemsInventoryID, uint, std::hash<ItemsInventoryID>> items;
+
     static Merchant* merchant;
 
     ItemsInventoryID buyItem(ItemsInventoryID idItem, uint* balance) const;
@@ -31,7 +32,7 @@ public:
 
     void processInput(GameCharacter &character, InputInfo inputInfo) override;
 
-    ~Merchant();
+    virtual ~Merchant();
 };
 
 #endif

@@ -15,7 +15,7 @@ PlayerInfo GameCharacter::getPlayerInfo() {
 }
 
 GameCharacter::GameCharacter(uint id, RaceID aRace, GameClassID aClass, std::shared_ptr<Cell> initialCell, Point initialPoint):
-        GameObject(id, initialPoint, std::move(initialCell)), race(aRace), gameClass(aClass), queueInputs(true), inventory({ItemsInventoryID::Nothing}) {
+        GameObject(id, initialPoint, std::move(initialCell)), race(aRace), gameClass(aClass), queueInputs(true), inventory() {
 
     this->life = GameStatsConfig::getMaxHealth(race, gameClass, level);
     this->mana = GameStatsConfig::getMaxMana(race, gameClass, level);
@@ -60,7 +60,7 @@ std::string GameCharacter::updateTextureHashId() {
         equipment += "00|";
     }
     equipment += "b";
-    if (this->body == BodyID::Nothing) {
+    if (this->body == BodyID::Nothing || (this->body == BodyID::Ghost && !isDead())) {
         this->body = (BodyID)(Random::get(1,3));
     }
     std::string idBody = std::to_string((int)this->body);
@@ -77,7 +77,7 @@ std::string GameCharacter::updateTextureHashId() {
     if (idWeapon.size() == 1)
         equipment += "0";
     equipment += idWeapon;
-    return std::move(equipment);
+    return equipment;
 }
 
 std::string GameCharacter::getStringInventory() const {
@@ -113,6 +113,28 @@ void GameCharacter::equipItem(int itemToEquip) {
     this->inventory.addItem(item);
 }
 
+void GameCharacter::unequipItem(int itemToUnequip) {
+    ItemsInventoryID item = ItemsInventoryID::Nothing;
+    if (!inventoryIsFull()) {
+        switch (itemToUnequip) {
+            case 0:
+                item = ItemTranslator::helmetToItem(this->helmet);
+                this->helmet = HelmetID::Nothing;
+                break;
+            case 1:
+                item = ItemTranslator::weaponToItem(this->weapon);
+                this->weapon = WeaponID::Nothing;
+                break;
+            case 2:
+                item = ItemTranslator::shieldToItem(this->shield);
+                this->shield = ShieldID::Nothing;
+                break;
+        }
+    }
+    this->inventory.removeItem(ItemsInventoryID::Nothing);
+    this->inventory.addItem(item);
+}
+
 void GameCharacter::consumePotion(const ItemInfo& potion) {
     uint maxMana = GameStatsConfig::getMaxMana(this->race, this->gameClass,this->level);
     uint maxHealth = GameStatsConfig::getMaxHealth(this->race, this->gameClass,this->level);
@@ -124,20 +146,8 @@ RaceID GameCharacter::getRace() const {
     return race;
 }
 
-GameClassID GameCharacter::getGameClass() const {
-    return gameClass;
-}
-
 uint GameCharacter::getGoldAmount() {
     return goldAmount;
-}
-
-uint GameCharacter::getLife() const {
-    return life;
-}
-
-uint GameCharacter::getMana() const {
-    return mana;
 }
 
 float GameCharacter::getExp() const {
@@ -193,6 +203,7 @@ WeaponID GameCharacter::getWeapon() {
 void GameCharacter::cure(){
     this->life = GameStatsConfig::getMaxHealth(race,gameClass, level);
     this->mana = GameStatsConfig::getMaxMana(race,gameClass, level);
+
 }
 
 NPCInfo GameCharacter::interact(GameObject& character, InputInfo input) {
@@ -238,17 +249,22 @@ void GameCharacter::gainGold(int aGoldAmount) {
 
 std::vector<DropItem> GameCharacter::getDrop() {
     std::vector<DropItem> dropsItems;
-    for (auto &aInventoryItem : inventory.getInventoryItems()) {
-        if (aInventoryItem != ItemsInventoryID::Nothing) {
-            dropsItems.emplace_back(aInventoryItem, 1);
+    if (isDead()) {
+        for (auto &aInventoryItem : inventory.getInventoryItems()) {
+            if (aInventoryItem != ItemsInventoryID::Nothing) {
+                dropsItems.emplace_back(aInventoryItem, 1);
+            }
         }
+        int diffGold = goldAmount - GameStatsConfig::getMaxGold(level);
+        if (diffGold > 0) {
+            goldAmount = GameStatsConfig::getMaxGold(level);
+            dropsItems.emplace_back(ItemsInventoryID::Gold, diffGold);
+        }
+        inventory.clear();
+    } else {
+        dropsItems.emplace_back(itemToDrop, 1);
+        itemToDrop = ItemsInventoryID::Nothing;
     }
-    int diffGold = goldAmount - GameStatsConfig::getMaxGold(level);
-    if (diffGold > 0) {
-        goldAmount = GameStatsConfig::getMaxGold(level);
-        dropsItems.emplace_back(ItemsInventoryID::Gold, diffGold);
-    }
-    inventory.clear();
     return dropsItems;
 }
 
@@ -257,7 +273,7 @@ bool GameCharacter::isItem() {
 }
 
 bool GameCharacter::canDropsItems() {
-    return isDead() && !inventory.isEmpty();
+    return (isDead() && !inventory.isEmpty()) || itemToDrop != ItemsInventoryID::Nothing;
 }
 
 void GameCharacter::consumeMana() {
@@ -277,13 +293,37 @@ bool GameCharacter::canPerformAttack() {
 }
 
 void GameCharacter::updateHealthAndMana() {
-    float manaMax = GameStatsConfig::getMaxMana(race, gameClass, level);
-    float lifeIncrement = GameStatsConfig::getRecoveryHealth(race);
-    life = life + lifeIncrement > getMaxLife() ? getMaxLife() : lifeIncrement + life;
-    float manaIncrement = state->isMeditating() ?
-            GameStatsConfig::getRecoveryManaMeditation(race, gameClass) :
-            GameStatsConfig::getRecoveryMana(race);
-    mana = mana + manaIncrement > manaMax ? manaMax : mana + manaIncrement;
+    if (!isDead()) {
+        float manaMax = GameStatsConfig::getMaxMana(race, gameClass, level);
+        float lifeIncrement = GameStatsConfig::getRecoveryHealth(race);
+        life = life + lifeIncrement > getMaxLife() ? getMaxLife() : lifeIncrement + life;
+        float manaIncrement = state->isMeditating() ?
+                              GameStatsConfig::getRecoveryManaMeditation(race, gameClass) :
+                              GameStatsConfig::getRecoveryMana(race);
+        mana = mana + manaIncrement > manaMax ? manaMax : mana + manaIncrement;
+    }
+}
+
+bool GameCharacter::takeItem(ItemsInventoryID anItemId, int amount) {
+    bool canTake;
+    if (anItemId == ItemsInventoryID::Gold) {
+        goldAmount += amount;
+        canTake = true;
+    } else {
+        canTake = inventory.addItem(anItemId);
+    }
+    return canTake;
+}
+
+void GameCharacter::dropItem(int index) {
+    ItemsInventoryID itemToRemove = inventory.getItem(index);
+    if (itemToRemove != ItemsInventoryID::Nothing) {
+        itemToDrop =  this->inventory.removeItem(itemToRemove);
+    }
+}
+
+bool GameCharacter::canBeAttacked(int enemyLevel) const {
+    return GameStatsConfig::canAttack(this->level, enemyLevel);
 }
 
 GameCharacter::~GameCharacter()= default;

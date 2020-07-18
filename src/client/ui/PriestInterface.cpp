@@ -6,7 +6,7 @@
 #define HEIGTHBUTTON 25
 
 PriestInterface::PriestInterface(NPCInfo info,Window* window, const TextureManager& manager,Player* player) : 
-    NPCInterface(info,window,manager,player), buttonsItemsNPC(), buttonsNPC(), gold() {
+    NPCInterface(info,window,manager,player),buttonsNPC(), buttonsItemsNPC(), gold() {
     int width_text, height_text;
     SDL_Texture* priest = font.createText("Sacerdote",
         &(window->getRenderer()), &width_text, &height_text);
@@ -40,7 +40,7 @@ void PriestInterface::render() {
     if (this->buttonsItemsNPC.size() == 0)
         loadButtons = true;
 
-    for (int j = 0; j < items.size(); j++) {
+    for (uint j = 0; j < items.size(); j++) {
         const Texture& item = manager.getTexture(items[j].first);
         src = {0,0,52,52};
         dst = {9+(i%3)*50,50+(i/3)*50,32,32};
@@ -100,10 +100,13 @@ InputInfo PriestInterface::handleClick(int x, int y, int itemSelected) {
             }
         }        
     }
-    for (auto& button: buttonsNPC) {
-        if (button->inside(x,y))
-            info = button->onClick(int(itemsPriest[itemSelectedNPC]));
+    for (uint i = 0; i < this->buttonsNPC.size(); i++) {
+        if (buttonsNPC[i]->inside(x,y)) {
+            if (i == 2 && itemSelectedNPC == -1)    
+                continue;
+            info = buttonsNPC[i]->onClick(int(itemsPriest[itemSelectedNPC]));
         }
+    }
     return info;
 }
 

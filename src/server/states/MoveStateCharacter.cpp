@@ -4,12 +4,11 @@
 #include "StillStateCharacter.h"
 #include "../Creature.h"
 #include "AttackStateCharacter.h"
-#include "EquipStateCharacter.h"
-#include "TransitionStateCharacter.h"
 
 MoveStateCharacter::~MoveStateCharacter() = default;
 
-MoveStateCharacter::MoveStateCharacter(const InputInfo &info) : State(info) {
+MoveStateCharacter::MoveStateCharacter(const InputInfo &info) : State(info),
+ direction(Direction::down), movement() {
     switch(info.input) {
         case InputID::up:
             direction = Direction::up;
@@ -22,6 +21,9 @@ MoveStateCharacter::MoveStateCharacter(const InputInfo &info) : State(info) {
             break;
         case InputID::right:
             direction = Direction::right;
+            break;
+        default:
+            direction = Direction::down;
             break;
     }
     stateId = CharacterStateID::Move;
@@ -67,10 +69,6 @@ void MoveStateCharacter::setNextState(InputInfo info) {
         this->nextState = std::unique_ptr<State>(new MoveStateCharacter(info));
     } else if(info.input == InputID::stopMove) {
         nextState = std::unique_ptr<State>(new StillStateCharacter(info));
-    } else if (info.input == InputID::selectTarget) {
-        this->nextState = std::unique_ptr<State>(new TransitionStateCharacter(info));
-    } else if (info.input == InputID::equipItem) {
-        nextState = std::unique_ptr<State>(new EquipStateCharacter(info));
     }
 }
 

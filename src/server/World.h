@@ -26,7 +26,7 @@ private:
     Board board;
     GameStatsConfig& gameStatsConfig;
     GameObjectsContainer gameObjectsContainer;
-    uint current_id;
+    std::atomic<uint> current_id;
     std::atomic<bool> keepTalking;
     mutable std::mutex m;
     std::unordered_map<uint, ThPlayer*> players;
@@ -48,7 +48,7 @@ private:
 
     void clearFinishedPlayers();
 
-    void clearDeadCreatures();
+    void removeCreaturesAndItems();
 
     void update();
 

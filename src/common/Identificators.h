@@ -21,7 +21,7 @@ enum class InputID {
     down, //s
     left, //a
     right, //d
-    meditate, //y
+    meditate, //q
     resurrect, //r
     cure, //h
     buy,      
@@ -33,7 +33,8 @@ enum class InputID {
     selectTarget, //click
     equipItem,
     dropItem, 
-    takeItem, //t
+    takeItem, //e
+    unequipItem,
 };
 
 enum class HelmetID {
@@ -142,10 +143,10 @@ enum class GameClassID {
 
 enum class CreatureID {
     Nothing,
-    Goblin,
+    Zombie,
     Skeleton,
     Spider,
-    Zombie
+    Goblin,
 };
 
 enum class ActionsProfessionID {

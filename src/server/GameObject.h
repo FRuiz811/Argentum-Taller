@@ -23,6 +23,8 @@ public:
 
     GameObjectInfo getGameObjectInfo();
 
+    virtual PlayerInfo getPlayerInfo();
+
     uint getId() const;
 
     void setDirection(Direction direction);
@@ -64,6 +66,8 @@ public:
     virtual bool isReadyToRemove() = 0;
 
     virtual void remove(Board &board) = 0;
+
+    virtual bool canBeAttacked(int enemyLevel) const = 0;
 
     ~GameObject();
 };

@@ -22,14 +22,14 @@ void MeditateStateCharacter::setNextState(InputInfo info) {
         this->nextState = std::unique_ptr<State>(new MoveStateCharacter(info));
     } else if (info.input == InputID::selectTarget) {
         this->nextState = std::unique_ptr<State>(new TransitionStateCharacter(info));
-    } else if (info.input == InputID::equipItem)  {
+    } else if (info.input == InputID::equipItem || info.input == InputID::unequipItem)  {
         this->nextState = std::unique_ptr<State>(new EquipStateCharacter(info));
+    } else if (info.input == InputID::meditate) {
+        this->nextState = std::unique_ptr<State>(new StillStateCharacter(info));
     }
 }
 
-void MeditateStateCharacter::resetState() {
-
-}
+void MeditateStateCharacter::resetState() {}
 
 bool MeditateStateCharacter::isOnPursuit(uint pursuitId) {
     return false;

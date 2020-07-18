@@ -23,7 +23,7 @@ const Texture& TextureManager::getTexture(TextureID id) const {
 }
 
 const Texture& TextureManager::getTexture(BodyID id) const {
-	TextureID idItem;
+	TextureID idItem = TextureID::ItemNothing;
 	switch(id) {
 		case BodyID::BlueCommon:
 			idItem = TextureID::ItemBlueCommonBody;
@@ -45,13 +45,17 @@ const Texture& TextureManager::getTexture(BodyID id) const {
 			break;
 		case BodyID::Ghost:
 			idItem = TextureID::ItemNothing;
+			break;
+		default:
+			idItem = TextureID::ItemNothing;
+			break;
 	}
 	const Texture& texture = getTexture(idItem);
 	return texture;
 }
 
 const Texture& TextureManager::getTexture(HeadID id) const {
-	TextureID idItem;
+	TextureID idItem = TextureID::ItemNothing;
 	switch(id) {
 		case HeadID::Elf:
 			idItem = TextureID::ElfHead;
@@ -67,13 +71,17 @@ const Texture& TextureManager::getTexture(HeadID id) const {
 			break;
 		case HeadID::Nothing:
 			idItem = TextureID::ItemNothing;
+			break;
+		default:
+			idItem = TextureID::ItemNothing;
+			break;
 	}
 	const Texture& texture = getTexture(idItem);
 	return texture;
 }
 
 const Texture& TextureManager::getTexture(HelmetID id) const {
-	TextureID idItem;
+	TextureID idItem = TextureID::ItemNothing;
 	switch(id) {
 		case HelmetID::Hood:
 			idItem = TextureID::ItemHood;
@@ -87,13 +95,16 @@ const Texture& TextureManager::getTexture(HelmetID id) const {
 		case HelmetID::Nothing:
 			idItem = TextureID::ItemNothing;
 			break;
+		default:
+			idItem = TextureID::ItemNothing;
+			break;
 	}
 	const Texture& texture = getTexture(idItem);
 	return texture;
 }
 
 const Texture& TextureManager::getTexture(WeaponID id) const {
-	TextureID idItem;
+	TextureID idItem = TextureID::ItemNothing;
 	switch(id) {
 		case WeaponID::SimpleArc:
 			idItem = TextureID::ItemSimpleArc;
@@ -125,13 +136,16 @@ const Texture& TextureManager::getTexture(WeaponID id) const {
 		case WeaponID::Nothing:
 			idItem = TextureID::ItemNothing;
 			break;
+		default:
+			idItem = TextureID::ItemNothing;
+			break;
 	}
 	const Texture& texture = getTexture(idItem);
 	return texture;
 }
 
 const Texture& TextureManager::getTexture(ShieldID id) const {
-	TextureID idItem;
+	TextureID idItem = TextureID::ItemNothing;
 	switch(id) {
 		case ShieldID::IronShield:
 			idItem = TextureID::ItemIronShield;
@@ -148,7 +162,7 @@ const Texture& TextureManager::getTexture(ShieldID id) const {
 }
 
 const Texture& TextureManager::getTexture(ItemsInventoryID id) const {
-	TextureID idText;
+	TextureID idText = TextureID::ItemNothing;
 	switch(id) {
 		case ItemsInventoryID::SimpleArc:
 			idText = TextureID::ItemSimpleArc;
@@ -221,7 +235,10 @@ const Texture& TextureManager::getTexture(ItemsInventoryID id) const {
             break;
 		case ItemsInventoryID::Nothing:
 			idText = TextureID::ItemNothing;
-
+			break;
+		default:
+			idText = TextureID::ItemNothing;
+			break;
     }
 	const Texture& texture = getTexture(idText);
 	return texture;

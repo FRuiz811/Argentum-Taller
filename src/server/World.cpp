@@ -6,7 +6,7 @@
 #include "ObjectItem.h"
 #include <iostream>
 
-#define GAMELOOPTIME 1000000/30.0
+#define GAMELOOPTIME 1000000/45.0
 
 World::World(GameStatsConfig& configuration) : gameStatsConfig(configuration), 
     current_id(1), keepTalking(true) {
@@ -16,6 +16,8 @@ World::World(GameStatsConfig& configuration) : gameStatsConfig(configuration),
     this->merchant->init(configuration.getItems());
     this->priest = Priest::getInstance();
     this->priest->init(configuration.getItems());
+    this->merchant->init(configuration.getItems());
+    this->priest->init(configuration.getItems());
     this->map = TiledMap(jsonMap);
     this->board = Board(map, GameStatsConfig::getNestCreatureLimit());
     addNPCs(map.getObjectLayers());
@@ -23,9 +25,7 @@ World::World(GameStatsConfig& configuration) : gameStatsConfig(configuration),
 }
 
 uint World::getNextId() {
-    uint id = this->current_id;
-    this->current_id++;
-    return id;
+    return current_id++;
 }
 
 std::shared_ptr<GameCharacter> World::createCharacter(RaceID race, GameClassID gameClass) {
@@ -65,14 +65,10 @@ void World::generateCreature() {
     try {
         Nest& aNest = board.getAvailableNest();
         std::shared_ptr<Cell> initialCell = board.getInitialCellInNest(aNest);
-        if (initialCell != nullptr) {
-            initialCell->occupied(id);
-            aNest.addCreature(id);
-            std::shared_ptr<Creature> aCreature(new Creature(id, CreatureID(randomId), initialCell, board.getPointFromCell(initialCell)));
-            gameObjectsContainer.addGameObject(aCreature, id);
-        } else {
-            std::cout << "Cannot create creature" << std::endl;
-        }
+        initialCell->occupied(id);
+        aNest.addCreature(id);
+        std::shared_ptr<Creature> aCreature(new Creature(id, CreatureID(randomId), initialCell, board.getPointFromCell(initialCell)));
+        gameObjectsContainer.addGameObject(aCreature, id);
     } catch (Exception& e) {
         std::cout << "Cannot create creature" << std::endl;
     }
@@ -92,19 +88,21 @@ void World::run() {
     Chrono chrono;
     double initLoop, endLoop, sleep;
     int amountCreaturesDiff;
+    std::vector<std::shared_ptr<GameObject>> gameObjects;
     while (keepTalking) {
         initLoop = chrono.lap();
         amountCreaturesDiff = GameStatsConfig::getCreaturesLimit() - board.getAmountCreatures();
-        for (size_t i = 0; i < amountCreaturesDiff; ++i) {
+        if (amountCreaturesDiff > 0) {
             generateCreature();
         }
         update();
-        for (auto &aPlayer : players) {
-            aPlayer.second->update(getUpdatedGameObjects());
-        }
         clearFinishedPlayers();
+        for (auto &aPlayer : players) {
+            gameObjects = gameObjectsContainer.getUpdatedGameObjects();
+            aPlayer.second->update(WorldInfo(gameObjects, aPlayer.first));
+        }
         checkDrops();
-        clearDeadCreatures();
+        removeCreaturesAndItems();
         endLoop = chrono.lap();
         sleep = GAMELOOPTIME - (endLoop - initLoop);
         if (sleep > 0)
@@ -152,8 +150,8 @@ void World::clearFinishedPlayers() {
     }
 }
 
-void World::clearDeadCreatures() {
-    gameObjectsContainer.removeDeadCreatures(board);
+void World::removeCreaturesAndItems() {
+    gameObjectsContainer.removeCreaturesAndItems(board);
 }
 
 void World::checkDrops() {
@@ -166,4 +164,9 @@ void World::checkDrops() {
     }
 }
 
-World::~World() = default;
+World::~World() {
+    delete priest;
+    delete merchant;
+    delete banker;
+}
+

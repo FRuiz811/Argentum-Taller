@@ -19,7 +19,8 @@ void GameObject::setTextureHashId(const std::string &textureHashId) {
 }
 
 GameObject::GameObject(uint id, Point initialPoint, std::shared_ptr<Cell> initialCell, Direction aDirection) :
-    id(id), point(initialPoint), cell(std::move(initialCell)), direction(aDirection), level(1), attackBy(WeaponID::Nothing) {}
+    point(initialPoint), cell(std::move(initialCell)), id(id), textureHashId(), direction(aDirection),
+    infoInteracting(), level(1), attackBy(WeaponID::Nothing) {}
 
 std::shared_ptr<Cell> &GameObject::getActualCell() {
     return cell;
@@ -47,6 +48,10 @@ uint GameObject::getLevel() {
 
 void GameObject::setAttackBy(WeaponID attackBy) {
     GameObject::attackBy = attackBy;
+}
+
+PlayerInfo GameObject::getPlayerInfo() {
+    return PlayerInfo();
 }
 
 GameObject::~GameObject()= default;

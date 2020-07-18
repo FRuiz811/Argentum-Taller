@@ -41,7 +41,7 @@ void GameObjectsContainer::deleteGameObject(uint id, Board &board) {
     this->gameObjects.erase(id);
 }
 
-void GameObjectsContainer::removeDeadCreatures(Board &board) {
+void GameObjectsContainer::removeCreaturesAndItems(Board &board) {
     auto iter = this->gameObjects.begin();
     while (iter != this->gameObjects.end()) {
         if ((*iter).second->isReadyToRemove()) {

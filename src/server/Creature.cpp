@@ -31,9 +31,12 @@ Creature::Creature(uint id, CreatureID creatureId, std::shared_ptr<Cell> initial
         case CreatureID::Zombie:
             this->textureHashId = "ht00|h06|b14|s00|w00";
             break;
+        default:
+            this->textureHashId = nullptr;
+            break;
     }
     this->state = std::unique_ptr<State>(new StillStateCreature());
-    life = 50;
+    life = GameStatsConfig::getMaxHealth(creatureId, level);
     level = 1;
 }
 
@@ -75,7 +78,6 @@ void Creature::receiveDamage(float damage, WeaponID weaponId) {
         if (isDead()) {
             itemDrop = true;
             std::cout << "Enemy is dead" << realDamage << std::endl;
-            //Hacer drop aca.
         }
     }
 }
@@ -119,5 +121,10 @@ bool Creature::isItem() {
 bool Creature::canDropsItems() {
     return itemDrop;
 }
+
+bool Creature::canBeAttacked(int enemyLevel) const {
+    return true;
+}
+
 
 Creature::~Creature() = default;

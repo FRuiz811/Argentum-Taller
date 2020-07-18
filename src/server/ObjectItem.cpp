@@ -29,7 +29,7 @@ NPCInfo ObjectItem::interact(GameObject &character, InputInfo input) {
 }
 
 bool ObjectItem::isReadyToRemove() {
-    return timeToBeRemove == 0;
+    return timeToBeRemove <= 0;
 }
 
 void ObjectItem::remove(Board &board) {
@@ -49,3 +49,19 @@ bool ObjectItem::canDropsItems() {
 }
 
 ObjectItem::~ObjectItem() = default;
+
+int ObjectItem::getAmount() const {
+    return amount;
+}
+
+ItemsInventoryID ObjectItem::getItemId() const {
+    return itemId;
+}
+
+void ObjectItem::take() {
+    timeToBeRemove = 0;
+}
+
+bool ObjectItem::canBeAttacked(int enemyLevel) const {
+    return false;
+}

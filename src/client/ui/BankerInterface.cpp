@@ -98,9 +98,10 @@ void BankerInterface::renderItems() {
 
     this->pagMaxInBank = information.itemsInBank.size()/ITEMSBANKER+1;
 
-    if (this->buttonsItemsNPC.size() == 0)
+    if (this->buttonsItemsNPC.size() != information.itemsInBank.size()) {
         loadButtons = true;
-
+        this->buttonsItemsNPC.clear();
+    }
     uint max; 
     if ((pagItemsInBank+1)*ITEMSBANKER > information.itemsInBank.size()){
         max = information.itemsInBank.size();
@@ -108,7 +109,7 @@ void BankerInterface::renderItems() {
         max =(pagItemsInBank+1)*ITEMSBANKER;
     }
 
-    for (int j = pagItemsInBank*ITEMSBANKER; j < max; j++) {
+    for (uint j = pagItemsInBank*ITEMSBANKER; j < max; j++) {
         const Texture& item = manager.getTexture(information.itemsInBank[j]);
         src = {0,0,52,52};
         dst = {9+(i%3)*50,50+(i/3)*50,32,32};
@@ -160,9 +161,6 @@ void BankerInterface::renderItems() {
 
 void BankerInterface::render() {
     int w,h;
-    int i = 0;
-    int width = 0;
-    int height = 0;
     SDL_QueryTexture(this->texture, NULL, NULL, &w, &h);
     SDL_Rect banker = {15,15,w,h};
     SDL_RenderCopy(&(window->getRenderer()), this->texture, NULL, &banker);

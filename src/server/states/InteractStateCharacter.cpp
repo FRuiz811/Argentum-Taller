@@ -2,7 +2,6 @@
 #include "StillStateCharacter.h"
 #include "MoveStateCharacter.h"
 #include "../GameCharacter.h"
-#include "EquipStateCharacter.h"
 
 InteractStateCharacter::InteractStateCharacter(const InputInfo &info) : State(info) {
     stateId = CharacterStateID::Interact;
@@ -32,6 +31,10 @@ void InteractStateCharacter::performTask(uint id, std::unordered_map<uint, std::
     } else {
         if (aCharacter->hasAnInputInfo()) {
             InputInfo info = aCharacter->getNextInputInfo();
+            if (aCharacter->isDead() && !(info.input == InputID::resurrect)) {
+                finalized = true;
+                return;
+            }
             if (info.input == InputID::buy || info.input == InputID::cure ||
                 info.input == InputID::sell || info.input == InputID::resurrect ||
                 info.input == InputID::retireItem || info.input == InputID::retireGold ||
@@ -52,15 +55,13 @@ void InteractStateCharacter::setNextState(InputInfo info) {
     if (info.input == InputID::up || info.input == InputID::down ||
         info.input == InputID::left || info.input == InputID::right) {
         nextState = std::unique_ptr<State>(new MoveStateCharacter(info));
-    } else if (info.input == InputID::equipItem) {
-        nextState = std::unique_ptr<State>(new EquipStateCharacter(info));
     } else {
         nextState = std::unique_ptr<State>(new StillStateCharacter(info));
     }
 }
 
 void InteractStateCharacter::resetState() {
-
+    nextState = std::unique_ptr<State>(new StillStateCharacter());
 }
 
 bool InteractStateCharacter::isOnPursuit(uint pursuitId) {

@@ -10,7 +10,6 @@ NPCServer::~NPCServer() = default;
 
 NPCServer::NPCServer(uint id, const std::string& type, Point initialPoint, std::shared_ptr<Cell> initialCell) :
     GameObject(id, initialPoint, std::move(initialCell)) {
-
     if (type == "banker") {
         textureHashId = "ht00|h00|b08|s00|w00";
         this->profession = Banker::getInstance();
@@ -66,5 +65,9 @@ bool NPCServer::isItem() {
 }
 
 bool NPCServer::canDropsItems() {
+    return false;
+}
+
+bool NPCServer::canBeAttacked(int enemyLevel) const {
     return false;
 }

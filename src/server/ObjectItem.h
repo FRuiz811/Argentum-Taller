@@ -6,7 +6,7 @@
 
 class ObjectItem : public GameObject {
 private:
-    int timeToBeRemove = 30 * 60;
+    int timeToBeRemove = 45 * 300;
     int amount;
     ItemsInventoryID itemId;
 public:
@@ -22,6 +22,12 @@ public:
 
     bool isItem() override;
 
+    void take();
+
+    int getAmount() const;
+
+    ItemsInventoryID getItemId() const;
+
     bool canDropsItems() override;
 
     std::vector<DropItem> getDrop() override;
@@ -35,6 +41,8 @@ public:
     void remove(Board &board) override;
 
     virtual ~ObjectItem();
+
+    bool canBeAttacked(int enemyLevel) const;
 };
 
 

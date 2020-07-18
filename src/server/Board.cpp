@@ -103,8 +103,8 @@ std::shared_ptr<Cell> Board::getInitialCell() {
 
 std::vector<std::pair<uint8_t, std::shared_ptr<Cell>>> Board::getAdjacents(std::tuple<uint, uint> position, uint8_t distance) {
     std::vector<std::pair<uint8_t, std::shared_ptr<Cell>>> adjacents;
-    int x = std::get<0>(position);
-    int y = std::get<1>(position);
+    uint x = std::get<0>(position);
+    uint y = std::get<1>(position);
     std::shared_ptr<Cell> originCell = getCell(x, y);
     uint leftLimitX = x - distance >= 0 ? x - distance : 0;
     uint rightLimitX = x + distance < cols ? x + distance : cols - 1;
@@ -143,9 +143,9 @@ std::vector<std::shared_ptr<Cell>> Board::setCellsInNest(const std::shared_ptr<C
     std::vector<std::shared_ptr<Cell>> cellInsideNest;
     uint distance = 8;
     uint leftLimitX = int(aNestCell->getX() - distance) >= 0 ? aNestCell->getX() - distance : 0;
-    uint rightLimitX = int(aNestCell->getX() + distance) < cols ? aNestCell->getX() + distance : cols - 1;
+    uint rightLimitX = aNestCell->getX() + distance < cols ? aNestCell->getX() + distance : cols - 1;
     uint leftLimitY = int(aNestCell->getY() - distance) >= 0 ? aNestCell->getY() - distance : 0;
-    uint rightLimitY = int(aNestCell->getY() + distance) < rows ? aNestCell->getY() + distance : rows - 1;
+    uint rightLimitY = aNestCell->getY() + distance < rows ? aNestCell->getY() + distance : rows - 1;
     std::shared_ptr<Cell> aCell;
     for (size_t i = leftLimitY; i <= rightLimitY; ++i) {
         for (size_t j = leftLimitX; j <= rightLimitX; ++j) {
@@ -161,7 +161,7 @@ std::vector<std::shared_ptr<Cell>> Board::setCellsInNest(const std::shared_ptr<C
 
 bool Board::characterCanMove(const std::shared_ptr<Cell> &aCell, Direction aDirection) {
     bool canMove = false;
-    std::pair<int, int> aPosition = getCorrectPosition(aCell, aDirection);
+    std::pair<uint, uint> aPosition = getCorrectPosition(aCell, aDirection);
     if (aPosition.first >= 0 && aPosition.first < cols && aPosition.second >= 0 && aPosition.second < rows) {
         canMove = getCell(aPosition.first, aPosition.second)->isEmpty();
     }
@@ -169,13 +169,13 @@ bool Board::characterCanMove(const std::shared_ptr<Cell> &aCell, Direction aDire
 }
 
 std::shared_ptr<Cell> Board::getNextCell(const std::shared_ptr<Cell> &aCell, Direction aDirection) {
-    std::pair<int, int> aPosition = getCorrectPosition(aCell, aDirection);
+    std::pair<uint, uint> aPosition = getCorrectPosition(aCell, aDirection);
     return getCell(aPosition.first, aPosition.second);
 }
 
 bool Board::creatureCanMove(const std::shared_ptr<Cell> &aCell, Direction aDirection) {
     bool canMove = false;
-    std::pair<int, int> aPosition = getCorrectPosition(aCell, aDirection);
+    std::pair<uint, uint> aPosition = getCorrectPosition(aCell, aDirection);
     if (aPosition.first >= 0 && aPosition.first < cols && aPosition.second >= 0 && aPosition.second < rows) {
         std::shared_ptr<Cell> nestCell = getCell(aPosition.first, aPosition.second);
         canMove = nestCell->isEmpty() && nestCell->getNestId() == aCell->getNestId();
@@ -248,7 +248,7 @@ std::shared_ptr<Cell> Board::getNextEmptyCell(const std::shared_ptr<Cell> &aCell
     while (!cell->isEmpty() || cell->hasItem()) {
         distance++;
         for (auto &adjacent : getAdjacents(aCell->getCoord(), distance)) {
-            if (adjacent.second->isEmpty() && !adjacent.second->isCity() && !adjacent.second->hasItem()) {
+            if (adjacent.second->isEmpty() && !adjacent.second->hasItem()) {
                 cell = adjacent.second;
                 break;
             }

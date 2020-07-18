@@ -19,12 +19,13 @@ private:
     float mana;
     float exp;
     std::unique_ptr<State> state;
-    Inventory inventory;
     InputQueue queueInputs;
+    Inventory inventory;
     WeaponID weapon{WeaponID::Nothing};
     ShieldID shield{ShieldID::Nothing};
     HelmetID helmet{HelmetID::Nothing};
     BodyID body{BodyID::Nothing};
+    ItemsInventoryID itemToDrop = ItemsInventoryID::Nothing;
 
     std::string updateTextureHashId();
     void consumePotion(const ItemInfo& potion);
@@ -32,9 +33,9 @@ private:
 public:
 	GameCharacter(uint id, RaceID aRace, GameClassID aClass, std::shared_ptr<Cell> initialCell, Point initialPoint);
 
-	PlayerInfo getPlayerInfo();
-
 	bool hasAnInputInfo();
+
+    PlayerInfo getPlayerInfo() override;
 
 	void consumeMana();
 
@@ -72,7 +73,7 @@ public:
 
     void receiveDamage(float damage, WeaponID weaponId) override;
 
-    bool isDead();
+    bool isDead() override;
 
     ~GameCharacter();
 
@@ -80,17 +81,11 @@ public:
 
     void remove(Board &board) override;
 
-    GameClassID getGameClass() const;
-
     uint getGoldAmount();
 
     void setGoldAmount(uint goldAmount);
 
     CharacterStateID getStateId() override;
-
-    uint getLife() const;
-
-    uint getMana() const;
 
     float getExp() const;
 
@@ -98,11 +93,19 @@ public:
 
     InputQueue &getQueueInputs();
 
-    virtual NPCInfo interact(GameObject& character, InputInfo input);
+    NPCInfo interact(GameObject& character, InputInfo input) override;
 
     void equipItem(int itemToEquip);
 
+    void unequipItem(int itemToUnequip);
+
+    bool takeItem(ItemsInventoryID anItemId, int amount);
+
+    void dropItem(int index);
+
     void updateHealthAndMana();
+
+    bool canBeAttacked(int enemyLevel) const;
 };
 
 #endif

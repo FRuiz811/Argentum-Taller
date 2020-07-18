@@ -15,12 +15,13 @@
 #define MAPLENGTH 240046
 #define ITEM 0x01
 #define CHARACTER 0x00
+#define LIMITINVENTORY 9
 
 
 Decoder::Decoder() = default;
 
 void Decoder::conversorTo8(uint32_t value, uint8_t from, std::vector<uint8_t>& encodeMsg) {
-    int max;
+    int max = 0;
     if (from == 16) {
         max = 2;
     } else if (from == 32) {
@@ -58,7 +59,7 @@ void Decoder::encodeInventory(const PlayerInfo &info, std::vector<uint8_t>& enco
     std::string inventory = info.getInventory();
     std::string item;
     uint8_t idItem;
-    for (int i = 0; i<9; i++) {
+    for (int i = 0; i<LIMITINVENTORY; i++) {
         item = inventory.substr(2*i+i,2);
         idItem = std::stoi(item);
         encodeMsg.push_back(idItem);
@@ -106,7 +107,7 @@ std::vector<uint8_t> Decoder::encodePlayerInfo(const PlayerInfo &info) {
     encodeStatePlayer(info, encodeMsg);
     uint8_t attackBy = (uint8_t) info.getAttackWeapon();
     encodeMsg.push_back(attackBy);
-    return std::move(encodeMsg);
+    return encodeMsg;
 }
 
 std::string Decoder::decodeEquipment(Message& msg, bool isGameObject) {
@@ -151,23 +152,23 @@ std::string Decoder::decodeEquipment(Message& msg, bool isGameObject) {
             equipment += "0";
         equipment += temp;
     }
-    return std::move(equipment);
+    return equipment;
 }
 
 std::string Decoder::decodeInventory(Message& msg) {
     std::string inventory;
     uint8_t id;
     std::string temp;
-    for (int i=0; i<9;i++) {
+    for (int i=0; i<LIMITINVENTORY;i++) {
         id = msg.read8();
         temp = std::to_string(id);
         if (temp.size() == 1)
             inventory += "0";
         inventory += temp;
-        if (i != 8)
+        if (i != LIMITINVENTORY-1)
             inventory += "|";
     }
-    return std::move(inventory);
+    return inventory;
 }
 
 PlayerInfo Decoder::decodePlayerInfo(Message msg) {
@@ -259,16 +260,15 @@ std::vector<uint8_t> Decoder::encodeGameObjects(const std::vector<GameObjectInfo
             encodeCharacter(object, encodeMsg);
         }
     }
-    return std::move(encodeMsg);
+    return encodeMsg;
 }
 
 std::vector<GameObjectInfo> Decoder::decodeGameObjects(Message msg) {
     std::vector<GameObjectInfo> objects;
     msg.clear();
     uint32_t cantObjects = ntohl(msg.read32());
-    uint32_t pos;
     std::string equipment;
-    for (int i=0; i < cantObjects ; i++) {
+    for (uint i=0; i < cantObjects ; i++) {
         uint16_t id = ntohs(msg.read16());
         uint8_t type = msg.read8();
         equipment = decodeEquipment(msg, true);
@@ -280,7 +280,7 @@ std::vector<GameObjectInfo> Decoder::decodeGameObjects(Message msg) {
         GameObjectInfo info(id,Point(x,y),equipment,dir,state,type,attackBy);
         objects.push_back(info);
     }
-    return std::move(objects);
+    return objects;
 }
 
 std::vector<uint8_t> Decoder::encodeCommand(InputInfo input) {
@@ -300,7 +300,7 @@ std::vector<uint8_t> Decoder::encodeCommand(InputInfo input) {
     uint16_t adition = htons(input.aditional);
     conversorTo8(adition,16, encodeMsg);
 
-    return std::move(encodeMsg);
+    return encodeMsg;
 
 }
 
@@ -323,7 +323,7 @@ std::vector<uint8_t> Decoder::encodeInit(RaceID race, GameClassID gameClass) {
     auto playerClass = (uint8_t) gameClass;
     encodeMsg.push_back(breed);
     encodeMsg.push_back(playerClass);
-    return std::move(encodeMsg);
+    return encodeMsg;
 }
 
 std::vector<uint8_t> Decoder::encodeMap(const TiledMap &tiledMap) {
@@ -353,7 +353,7 @@ std::vector<uint8_t> Decoder::encodeMap(const TiledMap &tiledMap) {
         conversorTo8(htons(aTileSet.getFirstgid()), 16, encodeMsg);
         encodeMsg.push_back(aTileSet.getId());
     }
-    return std::move(encodeMsg);
+    return encodeMsg;
 }
 
 TiledMap Decoder::decodeMap(Message msg) {
@@ -392,7 +392,7 @@ std::vector<uint8_t> Decoder::encodeNPCInfo(const NPCInfo& info) {
     uint8_t cantAccions = info.actions.size();
     length += 1;
     encodeMsg.push_back(cantAccions);
-    for (int j = 0; j< info.actions.size();j++) {
+    for (uint j = 0; j< info.actions.size();j++) {
         length += 1;
         encodeMsg.push_back(uint8_t(info.actions[j]));
     }
@@ -431,7 +431,7 @@ std::vector<uint8_t> Decoder::encodeNPCInfo(const NPCInfo& info) {
     for(int i = 0; i < 4; i++)
         encodeMsg.at(i) = *(ptr+i);
 
-    return std::move(encodeMsg);
+    return encodeMsg;
 }
 
 NPCInfo Decoder::decodeNPCInfo(Message msg){

@@ -2,6 +2,7 @@
 #include "UI.h"
 #include "EquipButton.h"
 #include "DropButton.h"
+#include "UnequipButton.h"
 #include "PriestInterface.h"
 #include "MerchantInterface.h"
 #include "BankerInterface.h"
@@ -11,9 +12,9 @@
 #define ITEMSMERCHANT 12
 
 UI::UI(Window& window, Player* player, const TextureManager& manager) : 
-window(window), playerTarget(player), manager(manager),
- font("assets/font/Prince Valiant.ttf",18,{0xA4, 0xA4, 0xA4}), texts(), 
- itemsID() {
+ playerTarget(player),window(window), manager(manager),
+ font("assets/font/Prince Valiant.ttf",18,{0xA4, 0xA4, 0xA4}), texts(), info(),
+ itemsID(), buttonsBuild() {
 	createTexts();
     SDL_Rect buttonRect;
     for (int i = 0; i<9; i++) {
@@ -23,7 +24,7 @@ window(window), playerTarget(player), manager(manager),
         this->buttonsItems.push_back(button);
     }
     std::shared_ptr<RaisedButton> equipButton = std::shared_ptr<RaisedButton>(new 
-        EquipButton(&(window.getRenderer()),font,"Equipar",{9,205,70,HEIGTHBUTTON}, manager,playerTarget));
+        EquipButton(&(window.getRenderer()),font,"Equipar",{9,205,WIDTHBUTTON,HEIGTHBUTTON}, manager,playerTarget));
     std::shared_ptr<RaisedButton> dropButton = std::shared_ptr<RaisedButton>(new 
         DropButton(&(window.getRenderer()),font,"Tirar",{109,205,WIDTHBUTTON,HEIGTHBUTTON}, manager,playerTarget));
     this->buttonsInventory.push_back(equipButton);
@@ -119,7 +120,7 @@ void UI::updateLevelAndExpirience() {
 
     int playerExp = this->playerTarget->getExp();
     int playerMaxExp = this->playerTarget->getMaxExp();
-    int exp = ((playerExp-this->maxExpPreviousLevel) * (widthSegment-2))/playerMaxExp;
+    int exp = ((playerExp-this->maxExpPreviousLevel) * (widthSegment-2))/(playerMaxExp-this->maxExpPreviousLevel);
     std::string expTotal = "("+ std::to_string(playerExp) + "/" + std::to_string(playerMaxExp) + ")";
     SDL_Texture* expTexture = font.createText(expTotal,&(window.getRenderer()), &width_text, &height_text);
     this->info.push_back(expTexture);
@@ -209,12 +210,35 @@ void UI::updateBuild() {
     SDL_QueryTexture(this->texts[5], NULL, NULL, &w, &h);
     SDL_Rect equipment = {15,15,w,h};
     SDL_RenderCopy(&(window.getRenderer()), this->texts[5], NULL, &equipment);
+
     PlayerInfo info = this->playerTarget->getInfo();
     const Texture& itemBody = manager.getTexture(info.getBodyID());
     const Texture& itemHead = manager.getTexture(info.getHeadID());
     const Texture& itemHelmet = manager.getTexture(info.getHelmetID());
     const Texture& itemWeapon = manager.getTexture(info.getWeaponID());
     const Texture& itemShield = manager.getTexture(info.getShieldID());
+
+    if (this->buttonsBuild.size() == 0) {
+        std::shared_ptr<SelectButton> button;
+        button = std::shared_ptr<SelectButton>(new SelectButton(
+            &(window.getRenderer()),{widthSegment-16,50,32,32},manager,0));
+        this->buttonsBuild.push_back(button);
+        button = std::shared_ptr<SelectButton>(new SelectButton(
+            &(window.getRenderer()),{widthSegment-64,130,32,32},manager,1));
+        this->buttonsBuild.push_back(button);
+        button = std::shared_ptr<SelectButton>(new SelectButton(
+            &(window.getRenderer()),{widthSegment+32,130,32,32},manager,2));
+        this->buttonsBuild.push_back(button);
+        this->unequipButton = std::shared_ptr<RaisedButton> (new UnequipButton(
+            &(window.getRenderer()),font,"Guardar",{9,205,WIDTHBUTTON,HEIGTHBUTTON}, manager,playerTarget));
+    }
+
+    for(auto& button: buttonsBuild){
+        button->setViewport({0,(this->window.getHeight())/2,widthSegment*2,
+                            (this->window.getHeight())/2});
+        button->render();
+    }
+
     SDL_Rect src = {0,0,52,52};
     itemHelmet.render(src,{widthSegment-16,50,32,32});
     if (this->playerTarget->getHealth() == 0) {
@@ -225,6 +249,11 @@ void UI::updateBuild() {
     itemBody.render(src,{widthSegment-32,117,64,64});
     itemWeapon.render(src,{widthSegment-64,130,32,32});
     itemShield.render(src,{widthSegment+32,130,32,32});
+
+    this->unequipButton->setViewport({0,(this->window.getHeight())/2,widthSegment*2,
+                            (this->window.getHeight())/2});
+    this->unequipButton->render();
+
 }
 
 void UI::updateInteract() {
@@ -253,6 +282,9 @@ void UI::updateEquipment() {
     SDL_RenderCopy(&(this->window.getRenderer()), statBackground.getTexture(), NULL, &dst);
     if (this->playerTarget->getState() == CharacterStateID::Interact) {
         updateInteract();
+        this->buttonsBuild.clear();
+        this->unequipButton = nullptr;
+        this->buildSelected = -1;
     } else {
         this->npc = nullptr;
         this->informationNPC.type = 0;
@@ -297,8 +329,29 @@ InputInfo UI::handleClick(SDL_Event& event) {
                 if (button->inside(x,y))
                     info = button->onClick(itemSelected+1);
             }
-            if (this->npc != nullptr)
-                info = this->npc->handleClick(x,y,int(itemsID[itemSelected]));
+            for(auto& button: buttonsBuild){      
+                newItemSelected = button->inside(x,y);
+                if (newItemSelected) {
+                    if(buildSelected == -1) {
+                        buildSelected = button->getId();
+                    } else if (buildSelected == button->getId()) {
+                        buildSelected = -1;
+                    } else if (buildSelected != button->getId()) {
+                        buttonsBuild[buildSelected]->onClick();
+                        buildSelected = button->getId();
+                    }
+                }        
+            }   
+
+            if (this->npc != nullptr) {
+                int itemId = 0;
+                if (itemSelected != -1)
+                    itemId = int(itemsID[itemSelected]);
+                info = this->npc->handleClick(x,y,itemId);
+            } else if (this->unequipButton != nullptr) {
+                if (this->unequipButton->inside(x,y) && buildSelected > -1)
+                    info = this->unequipButton->onClick(buildSelected);
+            }
             break;
                 
     }

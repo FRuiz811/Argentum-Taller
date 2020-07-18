@@ -65,7 +65,7 @@ InputInfo MeditateState::meditate(Character& character) {
     InputInfo info;
     Point aux(0.0,0.0);
     info.position = aux;
-    info.input =InputID::nothing;
+    info.input =InputID::meditate;
     return info;
 }
 
@@ -133,3 +133,13 @@ InputInfo MeditateState::deposit(Character& character,int item, bool isItem) {
     info.input = InputID::nothing;
     return info;
 }
+
+InputInfo MeditateState::unequipItem(Character& character, int item) {
+    InputInfo info;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    info.input = InputID::unequipItem;
+    info.aditional = item;
+    return info;
+}
+

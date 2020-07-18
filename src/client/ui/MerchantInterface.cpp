@@ -5,7 +5,7 @@
 #define ITEMSMERCHANT 12
 
 MerchantInterface::MerchantInterface(NPCInfo info,Window* window, const TextureManager& manager,Player* player) : 
-    NPCInterface(info,window,manager,player), buttonsItemsNPC(), buttonsNPC(), gold(), itemsMerchant() {
+    NPCInterface(info,window,manager,player), buttonsNPC(), buttonsItemsNPC(), gold(), itemsMerchant() {
     int width_text, height_text;
     SDL_Texture* merchant = font.createText("Comerciante",
         &(window->getRenderer()), &width_text, &height_text);
@@ -46,7 +46,7 @@ void MerchantInterface::render() {
         max =(pagItems+1)*ITEMSMERCHANT;
     }
 
-    for (int j = pagItems*ITEMSMERCHANT; j < max; j++) {
+    for (uint j = pagItems*ITEMSMERCHANT; j < max; j++) {
         const Texture& item = manager.getTexture(items[j].first);
         src = {0,0,52,52};
         dst = {9+(i%3)*50,50+(i/3)*50,32,32};

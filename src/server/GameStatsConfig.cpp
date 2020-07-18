@@ -23,6 +23,7 @@ GameStatsConfig::GameStatsConfig(rapidjson::Document &json) {
     nestCreaturesLimit = json["nestCreaturesLimit"].GetInt();
     distance = json["distance"].GetFloat();
     inventoryLimit = json["inventoryLimit"].GetInt();
+    newbieLevel = json["newbieLevel"].GetInt();
 
     rapidjson::Value::Array racesArray = json["races"].GetArray();
     for (auto &aRace : racesArray) {
@@ -39,7 +40,7 @@ GameStatsConfig::GameStatsConfig(rapidjson::Document &json) {
     }
 
     rapidjson::Value::Array creatuesArray = json["creatures"].GetArray();
-    for (auto &aCreature : racesArray) {
+    for (auto &aCreature : creatuesArray) {
         creatures.insert(std::pair<CreatureID, CreatureInfo>(CreatureID(aCreature["id"].GetInt()), createCreatureInfo(aCreature)));
     }
 }
@@ -99,7 +100,7 @@ float GameStatsConfig::getMaxHealth(RaceID raceId, GameClassID gameClass, uint l
 }
 
 float GameStatsConfig::getRecoveryHealth(RaceID raceId) {
-    return races.at(raceId).recoveryTime;
+    return races.at(raceId).recoveryTime/ (45 * 10);
 }
 
 float GameStatsConfig::getMaxMana(RaceID raceId, GameClassID gameClass, uint level) {
@@ -108,11 +109,11 @@ float GameStatsConfig::getMaxMana(RaceID raceId, GameClassID gameClass, uint lev
 }
 
 float GameStatsConfig::getRecoveryMana(RaceID race) {
-    return races.at(race).recoveryTime;
+    return races.at(race).recoveryTime / (45 * 10);
 }
 
 float GameStatsConfig::getRecoveryManaMeditation(RaceID race, GameClassID gameClass) {
-    return (races.at(race).intelligent * gameClasses.at(gameClass).meditation);
+    return (races.at(race).intelligent * gameClasses.at(gameClass).meditation) / (45 * 10);
 }
 
 float GameStatsConfig::getGoldDrop(CreatureID creatureId, uint level){
@@ -175,7 +176,7 @@ float GameStatsConfig::getDistance(){
 }
 
 uint8_t GameStatsConfig::getAmountSteps(CreatureID creatureId) {
-    return 10 + (maxAgility - creatures.at(creatureId).agility);
+    return 30 + (maxAgility - creatures.at(creatureId).agility);
 }
 
 float GameStatsConfig::getDamage(CreatureID creatureId){
@@ -229,6 +230,19 @@ int GameStatsConfig::getWeaponCost(WeaponID aWeaponId) {
     return items.at(ItemTranslator::weaponToItem(aWeaponId)).manaUsed;
 }
 
+bool GameStatsConfig::canAttack(int level, int enemyLevel) {
+    if (isNewbie(level) || isNewbie(enemyLevel))
+        return false;
+    int diff = level - enemyLevel;
+    if (diff < -GameStatsConfig::levelDifference || diff > GameStatsConfig::levelDifference) 
+        return false;
+    return true;
+}
+
+bool GameStatsConfig::isNewbie(int level){
+    return level <= GameStatsConfig::newbieLevel; 
+}
+
 GameStatsConfig::GameStatsConfig() = default;
 
 GameStatsConfig::~GameStatsConfig() = default;
@@ -255,3 +269,4 @@ uint8_t GameStatsConfig::creaturesLimit = 0.0;
 uint8_t GameStatsConfig::nestCreaturesLimit = 0.0;
 float GameStatsConfig::distance = 0.0;
 int GameStatsConfig::inventoryLimit = 0;
+int GameStatsConfig::newbieLevel = 0;

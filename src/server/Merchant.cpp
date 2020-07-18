@@ -50,7 +50,7 @@ NPCInfo Merchant::getInfo(uint id) {
 }
 
 void Merchant::processInput(GameCharacter &character, InputInfo inputInfo) {
-    uint sell,goldAmount;
+    uint sell, goldAmount;
     switch (inputInfo.input) {
         case InputID::sell:
             sell = sellItem(ItemsInventoryID(inputInfo.aditional));
@@ -60,15 +60,17 @@ void Merchant::processInput(GameCharacter &character, InputInfo inputInfo) {
         case InputID::buy:
             goldAmount = character.getGoldAmount();
             if (!character.inventoryIsFull()) {
-                ItemsInventoryID aItem = buyItem(ItemsInventoryID(inputInfo.aditional), &goldAmount);
-                if (aItem != ItemsInventoryID::Nothing) {
-                    character.addItemToInventory(aItem);
+                ItemsInventoryID anItem = buyItem(ItemsInventoryID(inputInfo.aditional), &goldAmount);
+                if (anItem != ItemsInventoryID::Nothing) {
+                    character.addItemToInventory(anItem);
                     character.setGoldAmount(goldAmount);
                 }
             }
+            break;
+        default:
             break;
     }
 }
 
 
-Merchant::~Merchant() = default;
+Merchant::~Merchant() {}

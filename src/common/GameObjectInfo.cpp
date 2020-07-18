@@ -4,8 +4,8 @@
 GameObjectInfo::~GameObjectInfo() = default;
 
 GameObjectInfo::GameObjectInfo(uint id, const Point &point, std::string textureHashId, Direction aDirection,
-     CharacterStateID state, bool item, WeaponID attackBy) : id(id), point(point), textureHashId(std::move(textureHashId)),
-     direction(aDirection), state(state), item(item), attackBy(attackBy) {}
+     CharacterStateID state, bool item, WeaponID attackBy) : id(id), point(point), direction(aDirection),
+      textureHashId(std::move(textureHashId)), state(state), item(item), attackBy(attackBy) {}
 
 uint GameObjectInfo::getId() const {
     return id;

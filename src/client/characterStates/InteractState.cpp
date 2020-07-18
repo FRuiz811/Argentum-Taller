@@ -171,3 +171,13 @@ InputInfo InteractState::retire(Character& character,int item, bool isItem) {
     beforeInput = info.input;
     return info;
 }
+
+InputInfo InteractState::unequipItem(Character& character,int item) {
+    InputInfo info;
+    Point aux(0.0,0.0);
+    info.position = aux;
+    info.input = InputID::nothing;
+    beforeInput = info.input;
+    return info;
+}
+

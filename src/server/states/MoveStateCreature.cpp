@@ -5,7 +5,8 @@
 
 MoveStateCreature::~MoveStateCreature() = default;
 
-MoveStateCreature::MoveStateCreature(InputInfo info) : State(info){
+MoveStateCreature::MoveStateCreature(InputInfo info) : State(info),
+    direction(Direction::down), movement(){
     switch(info.input) {
         case InputID::up:
             direction = Direction::up;
@@ -18,6 +19,9 @@ MoveStateCreature::MoveStateCreature(InputInfo info) : State(info){
             break;
         case InputID::right:
             direction = Direction::right;
+            break;
+        default:
+            direction = Direction::up;
             break;
     }
     stateId = CharacterStateID::Move;
