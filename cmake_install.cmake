@@ -37,6 +37,99 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
   set(CMAKE_CROSSCOMPILING "FALSE")
 endif()
 
+# Set default install directory permissions.
+if(NOT DEFINED CMAKE_OBJDUMP)
+  set(CMAKE_OBJDUMP "/usr/bin/objdump")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  if(EXISTS "$ENV{DESTDIR}/usr/bin/argentum_client" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}/usr/bin/argentum_client")
+    file(RPATH_CHECK
+         FILE "$ENV{DESTDIR}/usr/bin/argentum_client"
+         RPATH "")
+  endif()
+  list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
+   "/usr/bin/argentum_client")
+  if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
+    message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
+  endif()
+  if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
+    message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
+  endif()
+file(INSTALL DESTINATION "/usr/bin" TYPE EXECUTABLE FILES "/home/deandre/Argentum-Taller/argentum_client")
+  if(EXISTS "$ENV{DESTDIR}/usr/bin/argentum_client" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}/usr/bin/argentum_client")
+    if(CMAKE_INSTALL_DO_STRIP)
+      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}/usr/bin/argentum_client")
+    endif()
+  endif()
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  if(EXISTS "$ENV{DESTDIR}/usr/bin/argentum_server" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}/usr/bin/argentum_server")
+    file(RPATH_CHECK
+         FILE "$ENV{DESTDIR}/usr/bin/argentum_server"
+         RPATH "")
+  endif()
+  list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
+   "/usr/bin/argentum_server")
+  if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
+    message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
+  endif()
+  if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
+    message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
+  endif()
+file(INSTALL DESTINATION "/usr/bin" TYPE EXECUTABLE FILES "/home/deandre/Argentum-Taller/argentum_server")
+  if(EXISTS "$ENV{DESTDIR}/usr/bin/argentum_server" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}/usr/bin/argentum_server")
+    if(CMAKE_INSTALL_DO_STRIP)
+      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}/usr/bin/argentum_server")
+    endif()
+  endif()
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
+   "/var/Argentum/assets")
+  if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
+    message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
+  endif()
+  if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
+    message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
+  endif()
+file(INSTALL DESTINATION "/var/Argentum" TYPE DIRECTORY FILES "/home/deandre/Argentum-Taller/assets")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
+   "/var/Argentum/include")
+  if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
+    message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
+  endif()
+  if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
+    message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
+  endif()
+file(INSTALL DESTINATION "/var/Argentum" TYPE DIRECTORY FILES "/home/deandre/Argentum-Taller/include")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
+   "/etc/Argentum/gameStats.json;/etc/Argentum/bigMapNPC.json;/etc/Argentum/finishedMap.json")
+  if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
+    message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
+  endif()
+  if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
+    message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
+  endif()
+file(INSTALL DESTINATION "/etc/Argentum" TYPE FILE FILES
+    "/home/deandre/Argentum-Taller/gameStats.json"
+    "/home/deandre/Argentum-Taller/bigMapNPC.json"
+    "/home/deandre/Argentum-Taller/finishedMap.json"
+    )
+endif()
+
 if(CMAKE_INSTALL_COMPONENT)
   set(CMAKE_INSTALL_MANIFEST "install_manifest_${CMAKE_INSTALL_COMPONENT}.txt")
 else()
