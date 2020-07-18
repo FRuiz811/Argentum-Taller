@@ -5,6 +5,10 @@
 #include <vector>
 #include <cstdint>
 
+//Wrapper del mensaje recibido por el socket.
+//Se puede obtener la longitud del mismo, su tipo de mensaje
+//y la información propiamente del mensaje enviado.
+//Además provee un mecanismo de lectura de distintos bytes.
 class Message {
 private:
     std::vector<uint8_t> data;

@@ -19,6 +19,12 @@
 #include "Dispatcher.h"
 #include "Receiver.h"
 
+//Clase destinada a coordinar el juego del lado del cliente
+//Realiza la conexión inicial y luego, irá realizando los updates 
+//recibidos desde el server para renderizarlos y enviando
+//comandos al mismo. A su vez tendrá otros 2 Threads que 
+//establecerán la comunicación con el server
+
 class Game {
 private:
     Window window;
@@ -45,9 +51,12 @@ private:
     void close();
 public:
     Game();
-
+    //Se conecta con el servidor, enviando la raza y clase elegida
+    //Recibe el mapa estático y el primer playerInfo que tendrá la
+    //información inicial para que el jugador pueda comenzar el juego.
     bool init(char* argv[]);
 
+    //Gameloop principal del cliente.
     int run();
 
     ~Game();

@@ -8,6 +8,10 @@
 #include "TiledMap.h"
 #include "Message.h"
 
+//Este protocolo binario de comunicación está diseñado para enviar el mapa, la
+//información del jugador, los objetos renderizables del mapa(items, criaturas, npc u otros jugadores),
+//la información del NPC con el que interactua y los comandos que ingresa el jugador.
+
 class Decoder {
 private:
     static void encodeStatsPlayer(const PlayerInfo &info, std::vector<uint8_t>&);
@@ -21,7 +25,7 @@ private:
     static void encodeCharacter(GameObjectInfo object, std::vector<uint8_t>&);
 public:
     Decoder();
-    //De un PlayerInfo genera una tira de bytes con la codificación correspondiente
+    //De un PlayerInfo genera una codificación correspondiente
     static std::vector<uint8_t> encodePlayerInfo(const PlayerInfo &info);
 
     static std::vector<uint8_t> encodeCommand(InputInfo input);
@@ -33,9 +37,9 @@ public:
     static std::vector<uint8_t> encodeNPCInfo(const NPCInfo& info);
 
     static std::vector<uint8_t> encodeGameObjects(const std::vector<GameObjectInfo> &objects);
-    //Se recibe como parámetro el mensaje recibido desde el servidor. Los primeros 5 bytes ya fueron
-    //leidos y por lo tanto no serán pasados a esta función. Devuelve un PlayerInfo con toda la información
-    //del jugador
+
+    //Se recibe como parámetro el mensaje recibido desde el servidor
+    //Devuelve un PlayerInfo con toda la información del jugador
     static PlayerInfo decodePlayerInfo(Message msg);
 
     static InputInfo decodeCommand(Message msg);

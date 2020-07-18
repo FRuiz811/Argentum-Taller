@@ -10,6 +10,9 @@
 #define WIDTHBUTTON 70
 #define HEIGTHBUTTON 25
 #define ITEMSMERCHANT 12
+#define MERCHANTTYPE 1
+#define PRIESTTYPE 2
+#define BANKERTYPE 3
 
 UI::UI(Window& window, Player* player, const TextureManager& manager) : 
  playerTarget(player),window(window), manager(manager),
@@ -258,11 +261,11 @@ void UI::updateBuild() {
 
 void UI::updateInteract() {
     if (this->npc == nullptr) {
-        if (this->informationNPC.type == 1) {
+        if (this->informationNPC.type == MERCHANTTYPE) {
             this->npc = std::shared_ptr<NPCInterface>(new MerchantInterface(informationNPC,&window,manager,playerTarget));
-        } else if (this->informationNPC.type == 2) {
+        } else if (this->informationNPC.type == PRIESTTYPE) {
             this->npc = std::shared_ptr<NPCInterface>(new PriestInterface(informationNPC,&window,manager,playerTarget));
-        } else if (this->informationNPC.type == 3) {
+        } else if (this->informationNPC.type == BANKERTYPE) {
             this->npc = std::shared_ptr<NPCInterface>(new BankerInterface(informationNPC,&window,manager,playerTarget));
         } else {
             updateBuild();
