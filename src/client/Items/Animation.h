@@ -17,6 +17,7 @@ protected:
     bool finish{false};
     bool effectPlayed{false};
 public:
+
     Animation(const Texture& texture, const int width, const int height, const Effect& effect,int totalFrames) :
     effect(effect), texture(texture), width(width), height(height), totalFrames(totalFrames) {}
 

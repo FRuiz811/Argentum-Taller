@@ -9,16 +9,11 @@ protected:
     const int width; //Ancho del Frame
     const int height; //Alto del Frame
 public:
-    Item(const Texture& texture, const int width, const int height) : texture(texture),
-        width(width), height(height) {}
+    Item(const Texture& texture, const int width, const int height);
 
-    virtual void render(int posX, int posY) {
-        SDL_Rect srcItem = {0,0, this->width, this->height};
-	    SDL_Rect dstItem = {posX, posY, this->width, this->height};
-        this->texture.render(srcItem, dstItem);
-    }
+    virtual void render(int posX, int posY);
     
-    ~Item()= default;
+    ~Item();
 };
 
 #endif 

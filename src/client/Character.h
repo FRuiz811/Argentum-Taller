@@ -42,7 +42,7 @@ public:
 
     virtual void render(Camera& camera);
 
-    virtual void update(double dt);
+    virtual void update(double dt) = 0;
 
     Direction getDirection() const;
     

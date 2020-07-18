@@ -60,10 +60,6 @@ void Character::render(Camera& camera) {
           this->animation->render(int(posX-camera.getCameraPosition().x), int(posY-camera.getCameraPosition().y));
 }
 
-void Character::update(double dt) {
-
-}
-
 Direction Character::getDirection() const {
         return this->direction;
 }
