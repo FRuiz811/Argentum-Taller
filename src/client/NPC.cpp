@@ -29,7 +29,7 @@ void NPC::render(Camera& camera) {
     if(distance < 800){
       Character::render(camera);
       MusicID effectId = selectSound();
-      if (Random::get(0,500) == 1 && effectId != MusicID::Nothing) {
+      if (Random::get(0,600) == 1 && effectId != MusicID::Nothing) {
         const Effect& effect = mixer.getEffect(effectId);
         if (distance > 255)
           distance = 255;
