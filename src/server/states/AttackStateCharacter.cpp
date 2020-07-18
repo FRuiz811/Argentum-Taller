@@ -5,7 +5,9 @@
 
 AttackStateCharacter::~AttackStateCharacter() = default;
 
-AttackStateCharacter::AttackStateCharacter(InputInfo info) : State(info) {}
+AttackStateCharacter::AttackStateCharacter(InputInfo info) : State(info) {
+    stateId = CharacterStateID::Attack;
+}
 
 void AttackStateCharacter::performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects,
                                        Board &board) {

@@ -1,6 +1,7 @@
 #include "Movement.h"
 
-Movement::Movement() : finalized(false), initialized(false) {}
+Movement::Movement() : finalized(false), initialized(false), firstPoint(0.0,0.0),
+    direction(Direction::down) {}
 
 Movement::~Movement() = default;
 

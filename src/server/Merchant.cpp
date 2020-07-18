@@ -73,4 +73,4 @@ void Merchant::processInput(GameCharacter &character, InputInfo inputInfo) {
 }
 
 
-Merchant::~Merchant() = default;
+Merchant::~Merchant() {}

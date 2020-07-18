@@ -16,6 +16,8 @@ World::World(GameStatsConfig& configuration) : gameStatsConfig(configuration),
     this->merchant->init(configuration.getItems());
     this->priest = Priest::getInstance();
     this->priest->init(configuration.getItems());
+    this->merchant->init(configuration.getItems());
+    this->priest->init(configuration.getItems());
     this->map = TiledMap(jsonMap);
     this->board = Board(map, GameStatsConfig::getNestCreatureLimit());
     addNPCs(map.getObjectLayers());
@@ -162,4 +164,9 @@ void World::checkDrops() {
     }
 }
 
-World::~World() = default;
+World::~World() {
+    delete priest;
+    delete merchant;
+    delete banker;
+}
+

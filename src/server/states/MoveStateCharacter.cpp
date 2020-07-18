@@ -7,7 +7,8 @@
 
 MoveStateCharacter::~MoveStateCharacter() = default;
 
-MoveStateCharacter::MoveStateCharacter(const InputInfo &info) : State(info) {
+MoveStateCharacter::MoveStateCharacter(const InputInfo &info) : State(info),
+ direction(Direction::down), movement() {
     switch(info.input) {
         case InputID::up:
             direction = Direction::up;

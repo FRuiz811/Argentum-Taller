@@ -3,7 +3,8 @@
 
 WorldInfo::~WorldInfo() = default;
 
-WorldInfo::WorldInfo(std::vector<std::shared_ptr<GameObject>> gameObjects, uint id) {
+WorldInfo::WorldInfo(std::vector<std::shared_ptr<GameObject>> gameObjects, uint id) :
+    playerInfo(), gameObjectsInfo(), npcInfo(){
     std::vector<std::shared_ptr<GameObject>>::iterator iter;
     iter = gameObjects.begin();
     while (iter != gameObjects.end()){

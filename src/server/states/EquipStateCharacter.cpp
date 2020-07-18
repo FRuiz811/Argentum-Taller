@@ -9,6 +9,7 @@ EquipStateCharacter::~EquipStateCharacter() = default;
 
 EquipStateCharacter::EquipStateCharacter(const InputInfo &info) : State(info) {
     finalized = true;
+    stateId = CharacterStateID::Still;
 }
 
 void EquipStateCharacter::performTask(uint id,

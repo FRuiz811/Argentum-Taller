@@ -5,7 +5,8 @@
 
 MoveStateCreature::~MoveStateCreature() = default;
 
-MoveStateCreature::MoveStateCreature(InputInfo info) : State(info){
+MoveStateCreature::MoveStateCreature(InputInfo info) : State(info),
+    direction(Direction::down), movement(){
     switch(info.input) {
         case InputID::up:
             direction = Direction::up;
