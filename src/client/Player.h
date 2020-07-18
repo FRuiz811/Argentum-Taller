@@ -6,12 +6,6 @@
 #include "TextureManager.h"
 #include "MusicManager.h"
 #include "../common/Point.h"
-#include "Items/Head.h"
-#include "Items/Body.h"
-#include "Items/Helmet.h"
-#include "Items/Shield.h"
-#include "Items/Weapon.h"
-#include "Items/Animation.h"
 #include "characterStates/CharacterState.h"
 #include "../common/Identificators.h"
 #include "../common/PlayerInfo.h"
@@ -24,26 +18,11 @@ union SDL_Event;
 class Player : public Character {
 private:
 	Point center;
-	const TextureManager& manager;
-	const MusicManager& mixer;
-	PlayerInfo playerInfo;	
-	std::shared_ptr<Body>  body = nullptr;
+	PlayerInfo playerInfo;
 	std::shared_ptr<CharacterState> state = nullptr;
-	std::shared_ptr<Head> head = nullptr;
-	std::shared_ptr<Helmet> helmet = nullptr;
-	std::shared_ptr<Shield> shield = nullptr;
-	std::shared_ptr<Weapon> weapon = nullptr;
-	int frameHead{0};
-	std::shared_ptr<Animation> animation = nullptr;
 	bool playLowLife{false};
-	void setArmor(BodyID newArmor);
-	void setShield(ShieldID newShield);
-	void setHelmet(HelmetID newHelmet);
-	void setHead(HeadID head);
-	void setWeapon(WeaponID newWeapon);
-	void setFrameHead();
+
 	void setState(CharacterStateID newState);
-	void setAnimation(WeaponID weaponEnemy);
 	void playEffectLowLife();
 
 public:
@@ -52,7 +31,7 @@ public:
 	virtual void render(Camera& camera);
 	virtual void update(double dt);
 
-	void updatePlayerInfo(PlayerInfo info);
+	void updatePlayerInfo(const PlayerInfo& info);
 
 	InputInfo handleEvent(SDL_Event& event, Camera& camera);
 	InputInfo dropItem(int itemNumber);
@@ -66,18 +45,18 @@ public:
 	InputInfo unequipItem(int itemNumber);
 	Point* getCenter();
 
-	uint getLevel();
-	uint getHealth();
-	uint getMana();
-	uint getGold();
-	uint getMaxMana();
-	uint getMaxHealth();
-	uint getSafeGold();
-	uint getExp();
-	uint getMaxExp();
-	std::string getInventory();
-	CharacterStateID& getState();
-	PlayerInfo getInfo();
+	uint getLevel() const;
+	uint getHealth() const;
+	uint getMana() const;
+	uint getGold() const;
+	uint getMaxMana() const;
+	uint getMaxHealth() const;
+	uint getSafeGold() const;
+	uint getExp() const;
+	uint getMaxExp() const;
+	std::string getInventory() const;
+	CharacterStateID& getState() const;
+	PlayerInfo getInfo() const;
 
 	~Player();
 };
