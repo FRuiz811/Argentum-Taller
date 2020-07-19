@@ -278,7 +278,7 @@ void GameCharacter::upLevel() {
     mana = GameStatsConfig::getMaxMana(race, gameClass, level);
 }
 
-bool GameCharacter::canPerformAttack() {
+bool GameCharacter::canUseWeapon() {
     return weapon != WeaponID::Nothing && GameStatsConfig::getWeaponCost(weapon) <= mana;
 }
 
@@ -314,6 +314,19 @@ void GameCharacter::dropItem(int index) {
 
 bool GameCharacter::canBeAttacked(int enemyLevel) const {
     return GameStatsConfig::canAttack(this->level, enemyLevel);
+}
+
+bool GameCharacter::restoreHealth() {
+    bool canRestoreHealth = false;
+    float healthRestore = 0;
+    if (canUseWeapon()) {
+        setInteractWeapon(weapon);
+        healthRestore = GameStatsConfig::restoreHealth(weapon);
+        canRestoreHealth = true;
+        consumeMana();
+        life = healthRestore + life > getMaxLife() ? getMaxLife() : healthRestore + life;
+    }
+    return canRestoreHealth;
 }
 
 GameCharacter::~GameCharacter()= default;

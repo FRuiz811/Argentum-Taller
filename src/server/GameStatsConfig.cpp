@@ -244,6 +244,14 @@ bool GameStatsConfig::isNewbie(int level){
     return level <= GameStatsConfig::newbieLevel; 
 }
 
+float GameStatsConfig::restoreHealth(WeaponID aWeaponId) {
+    if ( aWeaponId == WeaponID::Nothing) {
+        return 0;
+    }
+    ItemInfo aItemInfo = items.at(ItemTranslator::weaponToItem(aWeaponId));
+    return aItemInfo.healthRestored;
+}
+
 GameStatsConfig::GameStatsConfig() = default;
 
 GameStatsConfig::~GameStatsConfig() = default;

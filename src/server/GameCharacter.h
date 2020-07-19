@@ -40,11 +40,13 @@ public:
 
     void upLevel();
 
-    bool canPerformAttack();
+    bool canUseWeapon();
 
     bool hasAnInputInfo() override;
 
     InputInfo getNextInputInfo() override;
+
+    bool restoreHealth();
 
     bool inventoryIsFull();
 

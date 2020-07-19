@@ -12,14 +12,19 @@ void AttackStateCharacter::performTask(uint id, std::unordered_map<uint, std::sh
 
     std::shared_ptr<GameCharacter> aCharacter = std::dynamic_pointer_cast<GameCharacter>(gameObjects.at(id));
     if (timeBetweenAttacks == 0) {
-        timeBetweenAttacks = 30;
+        timeBetweenAttacks = 10;
         std::shared_ptr<Cell> enemyCell = board.getCellFromPoint(inputInfo.position);
+        if (enemyCell == aCharacter->getActualCell() && aCharacter->getWeapon() == WeaponID::ElficFlaute) {
+            aCharacter->restoreHealth();
+            aEnemy = aCharacter;
+            return;
+        }
         if (enemyCell->getGameObjectId() != 0 && enemyCell != aCharacter->getActualCell()) {
             try {
                 aEnemy = gameObjects.at(enemyCell->getGameObjectId());
                 if (!aEnemy->isDead() &&
                     board.getDistance(aCharacter->getActualCell(), enemyCell) <= GameStatsConfig::getWeaponDistance(aCharacter->getWeapon()) &&
-                    aCharacter->canPerformAttack() && aEnemy->canBeAttacked(aCharacter->getLevel())) {
+                        aCharacter->canUseWeapon() && aEnemy->canBeAttacked(aCharacter->getLevel())) {
 
                     float damage = GameStatsConfig::getDamage(aCharacter->getRace(), aCharacter->getWeapon());
                     aCharacter->consumeMana();

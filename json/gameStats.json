@@ -195,12 +195,12 @@
       "range": 0,
       "minDamage":0,
       "maxDamage":0,
-      "manaUsed": 100,
+      "manaUsed": 30,
       "manaRestored": 0,
       "healthRestored": 100,
       "minDefense": 0,
       "maxDefense": 0,
-      "goldCost": 150,
+      "goldCost": 100,
       "type": "Weapon"
     },    
     {

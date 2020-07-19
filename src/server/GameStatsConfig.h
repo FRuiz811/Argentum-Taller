@@ -72,6 +72,7 @@ public:
     static int getWeaponCost(WeaponID aWeaponId);
     static bool canAttack(int level, int enemyLevel);
     static bool isNewbie(int level);
+    static float restoreHealth(WeaponID aWeaponId);
 };
 
 
