@@ -3,7 +3,7 @@
 #include "../ObjectItem.h"
 
 TakeAndDropStateCharacter::~TakeAndDropStateCharacter() {
-    stateId = StateID::Still;
+    stateId = StateID::TakeDrop;
 }
 
 TakeAndDropStateCharacter::TakeAndDropStateCharacter() : StateCharacter() {}

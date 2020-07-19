@@ -7,12 +7,13 @@
 
 class StatePoolCreature : public StatePool {
 private:
+    GameObject& creature;
     std::shared_ptr<StateCreature> actualState;
     std::unordered_map<StateID, std::shared_ptr<StateCreature>, std::hash<StateID>> states;
 public:
-    explicit StatePoolCreature();
+    explicit StatePoolCreature(GameObject &creature);
 
-    void updateState(InputInfo aInputInfo) override;
+    void updateState() override;
 
     bool startChasing(uint pursuitId);
 
@@ -23,6 +24,11 @@ public:
     void changeState(StateID id, InputInfo aInputInfo) override;
 
     void setNextState(StateID id, InputInfo aInputInfo) override;
+
+    StateID getStateId() override;
+
+    void performTask(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) override;
+
 };
 
 

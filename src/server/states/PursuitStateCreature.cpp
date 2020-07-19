@@ -5,7 +5,8 @@
 PursuitStateCreature::~PursuitStateCreature() = default;
 
 PursuitStateCreature::PursuitStateCreature() : StateCreature(), pursuitId(0) {
-    stateId = StateID::Move;
+    stateId = StateID::Pursuit;
+    finalized = false;
 }
 
 void PursuitStateCreature::performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) {
@@ -60,7 +61,7 @@ bool PursuitStateCreature::isAttacking() {
 StateID PursuitStateCreature::getNextStateID(InputInfo info) {
     StateID nextStateId = StateID::Still;
     if (canAttack) {
-        nextStateId = StateID::Pursuit;
+        nextStateId = StateID::Attack;
     }
     return nextStateId;
 }
@@ -74,8 +75,5 @@ void PursuitStateCreature::init(InputInfo aInputInfo) {
     pursuitId = aInputInfo.aditional;
     movement.reset();
     canAttack = false;
-}
-
-uint PursuitStateCreature::getId() {
-    return pursuitId;
+    finalized = false;
 }

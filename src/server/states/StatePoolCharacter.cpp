@@ -8,16 +8,18 @@
 #include "TakeAndDropStateCharacter.h"
 #include "ResurrectStateCharacter.h"
 
-StatePoolCharacter::StatePoolCharacter(GameObject &aGameObject) : character(aGameObject),
-actualState(std::shared_ptr<StateCharacter>(new StillStateCharacter())) {
+StatePoolCharacter::StatePoolCharacter(GameObject &aCharacter) : character(aCharacter),
+                                                                   actualState(std::shared_ptr<StateCharacter>(new StillStateCharacter())) {
     states.insert(std::pair<StateID,
             std::shared_ptr<StateCharacter>>(actualState->getStateId(), actualState));
 }
 
-void StatePoolCharacter::updateState(InputInfo aInputInfo) {
+void StatePoolCharacter::updateState() {
     if (actualState->isOver()) {
         StateID nextStateId;
-        if (aInputInfo.input != InputID::nothing) {
+        InputInfo aInputInfo = actualState->getInputInfo();
+        if (character.hasAnInputInfo()) {
+            aInputInfo = character.getNextInputInfo();
             nextStateId = actualState->getNextStateID(aInputInfo);
         } else {
             nextStateId = actualState->getResetStateID();
@@ -78,7 +80,21 @@ std::shared_ptr<StateCharacter> StatePoolCharacter::generateState(StateID stateI
         default:
             break;
     }
+    states.insert(std::pair<StateID,
+            std::shared_ptr<StateCharacter>>(newState->getStateId(), newState));
     return newState;
+}
+
+StateID StatePoolCharacter::getStateId() {
+    return actualState->getStateId();
+}
+
+void StatePoolCharacter::performTask(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) {
+    actualState->performTask(character.getId(), gameObjects, board);
+}
+
+bool StatePoolCharacter::isMeditating() {
+    return actualState->isMeditating();
 }
 
 StatePoolCharacter::~StatePoolCharacter() = default;

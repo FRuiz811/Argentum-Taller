@@ -1,7 +1,6 @@
 #ifndef ARGENTUM_TALLER_STATECREATURE_H
 #define ARGENTUM_TALLER_STATECREATURE_H
 
-
 #include "State.h"
 
 class StateCreature : public State {

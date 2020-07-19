@@ -4,14 +4,20 @@
 #include "MoveStateCreature.h"
 #include "PursuitStateCreature.h"
 
-StatePoolCreature::StatePoolCreature() :
+StatePoolCreature::StatePoolCreature(GameObject &aCreature) : creature(aCreature),
 actualState(std::shared_ptr<StateCreature>(new StillStateCreature())) {
     states.insert(std::pair<StateID,
             std::shared_ptr<StateCreature>>(actualState->getStateId(), actualState));
 }
 
-void StatePoolCreature::updateState(InputInfo aInputInfo) {
+void StatePoolCreature::updateState() {
     if (actualState->isOver()) {
+        InputInfo aInputInfo;
+        if (actualState->getStateId() == StateID::Pursuit || actualState->getStateId() == StateID::Attack) {
+            aInputInfo = actualState->getInputInfo();
+        } else {
+            aInputInfo = creature.getNextInputInfo();
+        }
         StateID nextStateId = actualState->getNextStateID(aInputInfo);
         setNextState(nextStateId, aInputInfo);
     }
@@ -47,11 +53,21 @@ std::shared_ptr<StateCreature> StatePoolCreature::generateState(StateID stateId)
         default:
             break;
     }
+    states.insert(std::pair<StateID,
+            std::shared_ptr<StateCreature>>(newState->getStateId(), newState));
     return newState;
 }
 
 bool StatePoolCreature::startChasing(uint pursuitId) {
     return !actualState->isAttacking() && !actualState->isOnPursuit(pursuitId);
+}
+
+StateID StatePoolCreature::getStateId() {
+    return actualState->getStateId();
+}
+
+void StatePoolCreature::performTask(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) {
+    actualState->performTask(creature.getId(), gameObjects, board);
 }
 
 StatePoolCreature::~StatePoolCreature() = default;

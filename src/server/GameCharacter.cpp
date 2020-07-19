@@ -1,5 +1,6 @@
 #include <iostream>
 #include <utility>
+#include <states/StateTranslator.h>
 #include "GameCharacter.h"
 #include "GameStatsConfig.h"
 #include "../common/Random.h"
@@ -10,11 +11,11 @@ PlayerInfo GameCharacter::getPlayerInfo() {
                       GameStatsConfig::getMaxHealth(race, gameClass, level),
                       GameStatsConfig::getMaxMana(race, gameClass, level),
                       exp,GameStatsConfig::getNextLevelLimit(level), level,
-                      getStringInventory(), statePool.getStateId(), interactWeapon);
+                      getStringInventory(), StateTranslator::stateToCharacterState(statePool.getStateId()), interactWeapon);
 }
 
 GameCharacter::GameCharacter(uint id, RaceID aRace, GameClassID aClass, std::shared_ptr<Cell> initialCell, Point initialPoint):
-        GameObject(id, initialPoint, std::move(initialCell)), race(aRace), gameClass(aClass), statePool(this), queueInputs(true), inventory() {
+        GameObject(id, initialPoint, std::move(initialCell)), race(aRace), gameClass(aClass), statePool(*this), queueInputs(true), inventory() {
 
     this->life = GameStatsConfig::getMaxHealth(race, gameClass, level);
     this->mana = GameStatsConfig::getMaxMana(race, gameClass, level);
@@ -26,8 +27,8 @@ GameCharacter::GameCharacter(uint id, RaceID aRace, GameClassID aClass, std::sha
 
 void GameCharacter::update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) {
     this->infoInteracting.type = 0;
-    statePool.updateState(getNextInputInfo());
-    statePool.getActualState()->performTask(id, gameObjects, board);
+    statePool.updateState();
+    statePool.performTask(gameObjects, board);
     this->textureHashId = updateTextureHashId();
     updateHealthAndMana();
 }
@@ -147,7 +148,7 @@ InputQueue &GameCharacter::getQueueInputs() {
     return queueInputs;
 }
 CharacterStateID GameCharacter::getStateId() {
-    return statePool->getStateId();
+    return StateTranslator::stateToCharacterState(statePool.getStateId());
 }
 
 void GameCharacter::receiveDamage(float damage, WeaponID weaponId) {
@@ -182,12 +183,7 @@ bool GameCharacter::hasAnInputInfo() {
 }
 
 InputInfo GameCharacter::getNextInputInfo() {
-    InputInfo info;
-    info.input = InputID::nothing;
-    if (hasAnInputInfo()) {
-        info = queueInputs.pop();
-    }
-    return info;
+    return queueInputs.pop();;
 }
 
 WeaponID GameCharacter::getWeapon() {
@@ -229,8 +225,8 @@ bool GameCharacter::addItemToInventory(ItemsInventoryID aItemInventoryId) {
    return inventory.addItem(aItemInventoryId);
 }
 
-void GameCharacter::setGoldAmount(uint goldAmount) {
-    GameCharacter::goldAmount = goldAmount;
+void GameCharacter::setGoldAmount(uint aGoldAmount) {
+    GameCharacter::goldAmount = aGoldAmount;
 }
 
 ItemsInventoryID GameCharacter::removeItemFromInventory(ItemsInventoryID aItemToRemove) {
@@ -291,7 +287,7 @@ void GameCharacter::updateHealthAndMana() {
         float manaMax = GameStatsConfig::getMaxMana(race, gameClass, level);
         float lifeIncrement = GameStatsConfig::getRecoveryHealth(race);
         life = life + lifeIncrement > getMaxLife() ? getMaxLife() : lifeIncrement + life;
-        float manaIncrement = statePool->isMeditating() ?
+        float manaIncrement = statePool.isMeditating() ?
                               GameStatsConfig::getRecoveryManaMeditation(race, gameClass) :
                               GameStatsConfig::getRecoveryMana(race);
         mana = mana + manaIncrement > manaMax ? manaMax : mana + manaIncrement;

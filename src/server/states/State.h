@@ -1,11 +1,8 @@
 #ifndef ARGENTUM_TALLER_STATE_H
 #define ARGENTUM_TALLER_STATE_H
 
-#include <unordered_map>
-#include <memory>
-#include <vector>
-#include "../../common/StaticObject.h"
-#include "../GameObject.h"
+#include <GameObject.h>
+#include "../../common/Identificators.h"
 
 class State {
 protected:
@@ -15,11 +12,11 @@ protected:
 public:
     State();
 
-    explicit State(InputInfo);
-
     virtual ~State();
 
     StateID getStateId() const;
+
+    const InputInfo &getInputInfo() const;
 
     bool isOver() const;
 

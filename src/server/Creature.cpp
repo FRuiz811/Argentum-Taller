@@ -1,17 +1,16 @@
 #include <iostream>
 #include <utility>
+#include <states/StateTranslator.h>
 #include "Creature.h"
-#include "states/StillStateCreature.h"
-#include "states/PursuitStateCreature.h"
 #include "../common/Random.h"
 
 void Creature::update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) {
-    statePool.updateState(generateRandomInputInfo());
-    statePool.getActualState()->performTask(id, gameObjects, board);
+    statePool.updateState();
+    statePool.performTask(gameObjects, board);
 }
 
 Creature::Creature(uint id, CreatureID creatureId, std::shared_ptr<Cell> initialCell, Point initialPoint) :
-        GameObject(id, initialPoint, std::move(initialCell)), creatureId(creatureId), statePool() {
+        GameObject(id, initialPoint, std::move(initialCell)), creatureId(creatureId), statePool(*this) {
 
     switch (creatureId) {
         case CreatureID::Goblin:
@@ -49,7 +48,7 @@ InputInfo Creature::generateRandomInputInfo() {
 }
 
 CharacterStateID Creature::getStateId() {
-    return state->getStateId();
+    return StateTranslator::stateToCharacterState(statePool.getStateId());
 }
 
 CreatureID Creature::getCreatureId() const {
@@ -131,6 +130,18 @@ bool Creature::canDropsItems() {
 
 bool Creature::canBeAttacked(int enemyLevel) const {
     return true;
+}
+
+PlayerInfo Creature::getPlayerInfo() {
+    return GameObject::getPlayerInfo();
+}
+
+bool Creature::hasAnInputInfo() {
+    return true;
+}
+
+InputInfo Creature::getNextInputInfo() {
+    return generateRandomInputInfo();
 }
 
 

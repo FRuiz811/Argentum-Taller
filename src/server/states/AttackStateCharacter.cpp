@@ -3,7 +3,7 @@
 
 AttackStateCharacter::~AttackStateCharacter() = default;
 
-AttackStateCharacter::AttackStateCharacter() : State() {
+AttackStateCharacter::AttackStateCharacter() : StateCharacter() {
     stateId = StateID::Attack;
 }
 
@@ -48,10 +48,6 @@ void AttackStateCharacter::performTask(uint id, std::unordered_map<uint, std::sh
             }
         }
     }
-}
-
-bool AttackStateCharacter::isOnPursuit(uint pursuitId) {
-    return false;
 }
 
 bool AttackStateCharacter::isAttacking() {

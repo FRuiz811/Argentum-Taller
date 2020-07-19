@@ -65,3 +65,17 @@ void ObjectItem::take() {
 bool ObjectItem::canBeAttacked(int enemyLevel) const {
     return false;
 }
+
+PlayerInfo ObjectItem::getPlayerInfo() {
+    return GameObject::getPlayerInfo();
+}
+
+bool ObjectItem::hasAnInputInfo() {
+    return false;
+}
+
+InputInfo ObjectItem::getNextInputInfo() {
+    InputInfo info;
+    info.input = InputID::nothing;
+    return info;
+}

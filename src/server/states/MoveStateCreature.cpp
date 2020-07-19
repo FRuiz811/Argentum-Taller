@@ -8,6 +8,7 @@ MoveStateCreature::~MoveStateCreature() = default;
 MoveStateCreature::MoveStateCreature() : StateCreature(){
     stateId = StateID::Move;
     direction = Direction::down;
+    finalized = false;
 }
 
 void MoveStateCreature::performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) {
@@ -49,6 +50,8 @@ StateID MoveStateCreature::getResetStateID() {
 }
 
 void MoveStateCreature::init(InputInfo aInputInfo) {
+    movement.reset();
+    inputInfo = aInputInfo;
     switch(aInputInfo.input) {
         case InputID::up:
             direction = Direction::up;
@@ -66,4 +69,5 @@ void MoveStateCreature::init(InputInfo aInputInfo) {
             direction = Direction::up;
             break;
     }
+    finalized = false;
 }

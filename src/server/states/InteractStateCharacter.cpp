@@ -74,6 +74,7 @@ void InteractStateCharacter::init(InputInfo aInputInfo) {
     interacting = false;
     aNpc = nullptr;
     inputInfo = aInputInfo;
+    finalized = false;
 }
 
 

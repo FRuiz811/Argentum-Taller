@@ -1,13 +1,11 @@
 #include "AttackStateCreature.h"
 #include "../Creature.h"
-#include "../GameCharacter.h"
-#include "StillStateCreature.h"
-#include "PursuitStateCreature.h"
 
 AttackStateCreature::~AttackStateCreature() = default;
 
 AttackStateCreature::AttackStateCreature() : StateCreature(), enemyIsDead(false) {
     stateId = StateID::Attack;
+    finalized = false;
 }
 
 void AttackStateCreature::performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) {
@@ -70,4 +68,5 @@ void AttackStateCreature::init(InputInfo aInputInfo) {
     enemyIsDead = false;
     timeBetweenAttacks = 0;
     aEnemy = nullptr;
+    finalized = false;
 }

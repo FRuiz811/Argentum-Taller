@@ -10,17 +10,23 @@ private:
     std::shared_ptr<StateCharacter> actualState;
     std::unordered_map<StateID, std::shared_ptr<StateCharacter>, std::hash<StateID>> states;
 public:
-    explicit StatePoolCharacter(GameObject &gameObject);
+    explicit StatePoolCharacter(GameObject &aCharacter);
 
-    void updateState(InputInfo aInputInfo) override;
+    void updateState() override;
 
     ~StatePoolCharacter() override;
 
+    void performTask(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) override;
+
     bool isPossibleDeadState(StateID id);
+
+    bool isMeditating();
 
     void changeState(StateID id, InputInfo aInputInfo) override;
 
     void setNextState(StateID id, InputInfo aInputInfo) override;
+
+    StateID getStateId() override;
 
     std::shared_ptr<StateCharacter> generateState(StateID id);
 };

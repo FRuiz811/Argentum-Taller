@@ -69,6 +69,10 @@ public:
 
     virtual bool canBeAttacked(int enemyLevel) const = 0;
 
+    virtual bool hasAnInputInfo() = 0;
+
+    virtual InputInfo getNextInputInfo() = 0;
+
     ~GameObject();
 };
 

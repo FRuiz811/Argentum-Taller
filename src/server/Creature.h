@@ -24,6 +24,12 @@ public:
 
     CreatureID getCreatureId() const;
 
+    PlayerInfo getPlayerInfo() override;
+
+    bool hasAnInputInfo() override;
+
+    InputInfo getNextInputInfo() override;
+
     bool isDead();
 
     bool canDropsItems() override;

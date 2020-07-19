@@ -5,10 +5,6 @@ State::State() {
     info.input = InputID::nothing;
     inputInfo = info;
     stateId = StateID::Still;
-};
-
-State::State(InputInfo anInputInfo): inputInfo(std::move(anInputInfo)) {
-    stateId = StateID::Still;
 }
 
 State::~State() = default;
@@ -19,6 +15,10 @@ bool State::isOver() const {
 
 StateID State::getStateId() const {
     return stateId;
+}
+
+const InputInfo &State::getInputInfo() const {
+    return inputInfo;
 }
 
 

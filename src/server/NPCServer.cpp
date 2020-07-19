@@ -21,7 +21,6 @@ NPCServer::NPCServer(uint id, const std::string& type, Point initialPoint, std::
         textureHashId = "ht00|h05|b10|s00|w00";
         this->profession = Priest::getInstance();
     }
-    state = std::unique_ptr<State>(new StillStateCharacter());
 }
 
 void NPCServer::update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) {}
@@ -35,7 +34,7 @@ NPCInfo NPCServer::interact(GameObject& character, InputInfo inputInfo) {
 }
 
 CharacterStateID NPCServer::getStateId() {
-    return state->getStateId();
+    return CharacterStateID::Still;
 }
 
 bool NPCServer::isReadyToRemove() {
@@ -71,4 +70,18 @@ bool NPCServer::canDropsItems() {
 
 bool NPCServer::canBeAttacked(int enemyLevel) const {
     return false;
+}
+
+PlayerInfo NPCServer::getPlayerInfo() {
+    return GameObject::getPlayerInfo();
+}
+
+bool NPCServer::hasAnInputInfo() {
+    return false;
+}
+
+InputInfo NPCServer::getNextInputInfo() {
+    InputInfo info;
+    info.input = InputID::nothing;
+    return info;
 }

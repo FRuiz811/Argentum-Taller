@@ -34,8 +34,6 @@ private:
 public:
 	GameCharacter(uint id, RaceID aRace, GameClassID aClass, std::shared_ptr<Cell> initialCell, Point initialPoint);
 
-	bool hasAnInputInfo();
-
     PlayerInfo getPlayerInfo() override;
 
 	void consumeMana();
@@ -44,9 +42,11 @@ public:
 
     bool canPerformAttack();
 
-	InputInfo getNextInputInfo();
+    bool hasAnInputInfo() override;
 
-	bool inventoryIsFull();
+    InputInfo getNextInputInfo() override;
+
+    bool inventoryIsFull();
 
 	bool addItemToInventory(ItemsInventoryID aItemInventoryId);
 
@@ -106,7 +106,7 @@ public:
 
     void updateHealthAndMana();
 
-    bool canBeAttacked(int enemyLevel) const;
+    bool canBeAttacked(int enemyLevel) const override;
 };
 
 #endif

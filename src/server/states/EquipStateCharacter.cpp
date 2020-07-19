@@ -5,7 +5,7 @@ EquipStateCharacter::~EquipStateCharacter() = default;
 
 EquipStateCharacter::EquipStateCharacter() : StateCharacter() {
     finalized = true;
-    stateId = StateID::Still;
+    stateId = StateID::Equip;
 }
 
 void EquipStateCharacter::performTask(uint id,
