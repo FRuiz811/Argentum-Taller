@@ -52,7 +52,9 @@ void MusicManager::loadSounds() {
 	createEffect(MusicID::Wolf, "assets/sound/Lobo.wav");
 	createEffect(MusicID::Raven, "assets/sound/Cuervo.wav");
 	createEffect(MusicID::Heart, "assets/sound/Latidos.wav");
-
+	createEffect(MusicID::Merchant, "assets/sound/Comerciante.wav");
+	createEffect(MusicID::Banker, "assets/sound/Banquero.wav");
+	createEffect(MusicID::Priest, "assets/sound/Sacerdote.wav");
 }
 
 MusicManager::~MusicManager() {}

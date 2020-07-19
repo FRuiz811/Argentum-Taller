@@ -47,7 +47,7 @@ bool Game::init(char* argv[]) {
         recieveMapAndPlayer();
 
         this->camera = std::make_shared<Camera>(this->window, this->map->getMapWidth(), this->map->getMapHeight());
-        this->ui = std::make_shared<UI>(this->window, &(*this->player), this->textureManager);
+        this->ui = std::make_shared<UI>(this->window, &(*this->player), this->textureManager, this->musicManager);
 
     } catch (const SocketException& e) {
         std::cout << INITERROR << e.what() << std::endl;

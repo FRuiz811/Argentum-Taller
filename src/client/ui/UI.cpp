@@ -6,6 +6,7 @@
 #include "PriestInterface.h"
 #include "MerchantInterface.h"
 #include "BankerInterface.h"
+#include "../Effect.h"
 
 #define WIDTHBUTTON 70
 #define HEIGTHBUTTON 25
@@ -16,8 +17,8 @@
 #define LIMITINVENTORY 9
 #define TOPBARHEIGHT 60
 
-UI::UI(Window& window, Player* player, const TextureManager& manager) : 
- playerTarget(player),window(window), manager(manager),
+UI::UI(Window& window, Player* player, const TextureManager& manager, const MusicManager& mixer) : 
+ playerTarget(player),window(window), manager(manager), mixer(mixer),
  font("assets/font/Prince Valiant.ttf",18,{0xA4, 0xA4, 0xA4}), texts(), info(),
  itemsID(), buttonsBuild() {
 	createTexts();
@@ -278,10 +279,16 @@ void UI::updateInteract() {
     if (this->npc == nullptr) {
         if (this->informationNPC.type == MERCHANTTYPE) {
             this->npc = std::shared_ptr<NPCInterface>(new MerchantInterface(informationNPC,&window,manager,playerTarget));
+            const Effect& effect = mixer.getEffect(MusicID::Merchant);
+            effect.playEffect();
         } else if (this->informationNPC.type == PRIESTTYPE) {
             this->npc = std::shared_ptr<NPCInterface>(new PriestInterface(informationNPC,&window,manager,playerTarget));
+            const Effect& effect = mixer.getEffect(MusicID::Priest);
+            effect.playEffect();
         } else if (this->informationNPC.type == BANKERTYPE) {
             this->npc = std::shared_ptr<NPCInterface>(new BankerInterface(informationNPC,&window,manager,playerTarget));
+            const Effect& effect = mixer.getEffect(MusicID::Banker);
+            effect.playEffect();
         } else {
             updateBuild();
         }

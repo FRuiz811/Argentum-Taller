@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 #include "../Window.h"
 #include "../../common/Point.h"
+#include "../MusicManager.h"
 #include "../Player.h"
 #include "../Font.h"
 #include "SelectButton.h"
@@ -20,6 +21,7 @@ private:
     Player* playerTarget = nullptr; //Jugador del cual debe mostrar estadisticas.
     Window& window;
     const TextureManager& manager;
+    const MusicManager& mixer;
     Font font;
     //Interfaz del NPC con el que se está interactuando
     std::shared_ptr<NPCInterface> npc{nullptr};
@@ -62,7 +64,7 @@ private:
     void createTexts();
     
 public:
-    UI(Window& window, Player* player, const TextureManager& manager);
+    UI(Window& window, Player* player, const TextureManager& manager, const MusicManager& mixer);
 
     void render();
     

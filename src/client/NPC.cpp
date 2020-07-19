@@ -26,8 +26,8 @@ NPC::NPC(const TextureManager& manager, const GameObjectInfo& gameObjectInfo,
 void NPC::render(Camera& camera) {
   if (!aItem) {
     int distance = camera.distanceFromTarget(this->getPosition());
-    if(distance < 800){
-      Character::render(camera);
+    Character::render(camera);
+    if(distance < 400){
       MusicID effectId = selectSound();
       if (Random::get(0,600) == 1 && effectId != MusicID::Nothing) {
         const Effect& effect = mixer.getEffect(effectId);
