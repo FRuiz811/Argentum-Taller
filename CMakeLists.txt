@@ -34,11 +34,13 @@ target_link_libraries(argentum_client -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf 
 target_link_libraries(argentum_server pthread)
 
 set(DEV yes)
-if(DEV)
-        set(ROOT_DIR ./)
-else()
-        set(ROOT_DIR /var/Argentum)
-endif()
+#ifdef DEV
+#define ROOT_DIR "./"
+#define CONFIG_DIR "./"
+#else
+#define ROOT_DIR "/var/Argentum"
+#define CONFIG_DIR "/etc/Argentum"
+#endif
 
 file(COPY assets DESTINATION ./)
 file(COPY json/gameStats.json json/bigMapNPC.json json/finishedMap.json DESTINATION ./)

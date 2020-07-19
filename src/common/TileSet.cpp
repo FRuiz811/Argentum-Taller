@@ -1,4 +1,5 @@
 #include "TileSet.h"
+#include "Identificators.h"
 
 TileSet::TileSet(rapidjson::Value & tilesetDoc, uint8_t id): id(id) {
     firstgid = tilesetDoc["firstgid"].GetInt();
@@ -18,7 +19,8 @@ uint8_t TileSet::getId() const {
 }
 
 TileSet::TileSet(uint16_t firstGid, uint8_t id): firstgid(firstGid), id(id) {
-    image = "assets/img/map/" + std::to_string(id) + ".png";
+    std::string path(ROOT_DIR);
+    image = path + "/assets/img/map/" + std::to_string(id) + ".png";
 }
 
 TileSet::~TileSet() = default;

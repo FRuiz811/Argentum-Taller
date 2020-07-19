@@ -10,7 +10,8 @@
 
 World::World(GameStatsConfig& configuration) : gameStatsConfig(configuration), 
     current_id(1), keepTalking(true) {
-    rapidjson::Document jsonMap = JsonReader::read("json/finishedMap.json");
+    std::string path(CONFIG_DIR+std::string("/finishedMap.json"));
+    rapidjson::Document jsonMap = JsonReader::read(path);
     this->banker = Banker::getInstance();
     this->merchant = Merchant::getInstance();
     this->merchant->init(configuration.getItems());
