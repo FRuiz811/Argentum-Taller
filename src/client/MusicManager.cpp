@@ -1,6 +1,7 @@
 #include "MusicManager.h"
 #include <utility>
 #include "MusicID.h"
+#include "../common/Identificators.h"
 
 MusicManager::MusicManager() : songs(),effects() {}
 
@@ -32,27 +33,30 @@ const Effect& MusicManager::getEffect(MusicID id) const {
 }
 
 void MusicManager::loadSounds() {
-	createMusic(MusicID::BackGround, "assets/sound/Musica Inicio.mp3");
-	createEffect(MusicID::Eagle, "assets/sound/Aguila.wav");
-	createEffect(MusicID::Walk, "assets/sound/Caminata.wav");
-	createEffect(MusicID::Cure, "assets/sound/Curar.wav");
-	createEffect(MusicID::Sword, "assets/sound/Espada.wav");
-	createEffect(MusicID::Skeleton, "assets/sound/Esqueleto.wav");
-	createEffect(MusicID::Explotion, "assets/sound/Explosion.wav");
-	createEffect(MusicID::MagicArrow, "assets/sound/Flecha Magica.wav");
-	createEffect(MusicID::Arrow, "assets/sound/Flecha.wav");
-	createEffect(MusicID::Goblin, "assets/sound/Goblin.wav");
-	createEffect(MusicID::Ax, "assets/sound/Hacha.wav");
-	createEffect(MusicID::Hammer, "assets/sound/Martillo.wav");
-	createEffect(MusicID::Meditation, "assets/sound/Meditar.wav");
-	createEffect(MusicID::Misil, "assets/sound/Misil.wav");
-	createEffect(MusicID::Death, "assets/sound/Muerte.wav");
-	createEffect(MusicID::Wind, "assets/sound/Viento.wav");
-	createEffect(MusicID::Zombie, "assets/sound/Zombie.wav");
-	createEffect(MusicID::Wolf, "assets/sound/Lobo.wav");
-	createEffect(MusicID::Raven, "assets/sound/Cuervo.wav");
-	createEffect(MusicID::Heart, "assets/sound/Latidos.wav");
-
+	std::string path(ROOT_DIR);
+	createMusic(MusicID::BackGround, path + "/assets/sound/Musica Inicio.mp3");
+	createEffect(MusicID::Eagle, path + "/assets/sound/Aguila.wav");
+	createEffect(MusicID::Walk, path + "/assets/sound/Caminata.wav");
+	createEffect(MusicID::Cure, path + "/assets/sound/Curar.wav");
+	createEffect(MusicID::Sword, path + "/assets/sound/Espada.wav");
+	createEffect(MusicID::Skeleton, path + "/assets/sound/Esqueleto.wav");
+	createEffect(MusicID::Explotion, path + "/assets/sound/Explosion.wav");
+	createEffect(MusicID::MagicArrow, path + "/assets/sound/Flecha Magica.wav");
+	createEffect(MusicID::Arrow, path + "/assets/sound/Flecha.wav");
+	createEffect(MusicID::Goblin, path + "/assets/sound/Goblin.wav");
+	createEffect(MusicID::Ax, path + "/assets/sound/Hacha.wav");
+	createEffect(MusicID::Hammer, path + "/assets/sound/Martillo.wav");
+	createEffect(MusicID::Meditation, path + "/assets/sound/Meditar.wav");
+	createEffect(MusicID::Misil, path + "/assets/sound/Misil.wav");
+	createEffect(MusicID::Death, path + "/assets/sound/Muerte.wav");
+	createEffect(MusicID::Wind, path + "/assets/sound/Viento.wav");
+	createEffect(MusicID::Zombie, path + "/assets/sound/Zombie.wav");
+	createEffect(MusicID::Wolf, path + "/assets/sound/Lobo.wav");
+	createEffect(MusicID::Raven, path + "/assets/sound/Cuervo.wav");
+	createEffect(MusicID::Heart, path + "/assets/sound/Latidos.wav");
+	createEffect(MusicID::Merchant, path + "/assets/sound/Comerciante.wav");
+	createEffect(MusicID::Banker, path + "/assets/sound/Banquero.wav");
+	createEffect(MusicID::Priest, path + "/assets/sound/Sacerdote.wav");
 }
 
 MusicManager::~MusicManager() {}

@@ -16,7 +16,7 @@ private:
     std::unordered_map<uint, std::vector<ItemsInventoryID>> accountsItems;
     std::unordered_map<uint, uint> accountsGold;
     static Banker* banker;
-    
+
     void createNewAccount(uint accountHolder);
 
     std::vector<ItemsInventoryID> getMyItems(uint accountHolder);
@@ -38,7 +38,7 @@ public:
 
     void processInput(GameCharacter &character, InputInfo inputInfo) override;
 
-    ~Banker();
+    virtual ~Banker();
 };
 
 #endif

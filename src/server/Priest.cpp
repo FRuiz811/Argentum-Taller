@@ -69,4 +69,4 @@ void Priest::processInput(GameCharacter &character, InputInfo inputInfo) {
         }
 }
 
-Priest::~Priest() = default;
+Priest::~Priest() {}

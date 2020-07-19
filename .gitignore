@@ -3,3 +3,12 @@ cmake-build-debug/*
 **/*.o
 .vscode/*
 CMakeCache.txt
+CMakeFiles/*
+cmake_install.cmake
+Argentum_Taller.cbp
+Makefile
+argentum_client
+argentum_server
+finishedMap.json
+gameStats.json
+install_manifest.txt

@@ -5,6 +5,8 @@
 #include "../common/InputQueue.h"
 #include "../common/CommunicationProtocol.h"
 
+//Thread encargado de enviar al servidor los comandos ingresados 
+//por el jugador.
 class Dispatcher: public Thread {
 private:
     InputQueue& queue;

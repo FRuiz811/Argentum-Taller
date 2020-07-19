@@ -23,6 +23,7 @@ void ThPlayer::run() {
             if (aPlayerInfo.getState() == CharacterStateID::Interact && worldInfo.getNpcInfo().type != 0) {
                 this->protocol->send(Decoder::encodeNPCInfo(worldInfo.getNpcInfo()));
             }
+            
         } catch(const SocketException& e) {
            std::cout << ERRORSOCKET << e.what() << std::endl;
            this->stop();

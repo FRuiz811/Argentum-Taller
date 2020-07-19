@@ -39,6 +39,7 @@ struct CreatureInfo {
     float health;
     float strength;
     float agility;
+    float constitution;
 };
 
 #endif //ARGENTUM_TALLER_GAMESTATS_H

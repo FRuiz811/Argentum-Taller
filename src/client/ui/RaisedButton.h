@@ -15,6 +15,8 @@ public:
 
     void setViewport(SDL_Rect viewport);
 
+    virtual void updatePosition(SDL_Rect position);
+
     virtual ~RaisedButton();
 
 };

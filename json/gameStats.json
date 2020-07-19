@@ -6,7 +6,7 @@
       "name": "Human",
       "intelligent": 3.5,
       "recoveryTime": 3.5,
-      "constitution": 3.5,
+      "constitution": 3.7,
       "strength": 3.5,
       "agility": 3.5,
       "health": 3.5,
@@ -15,11 +15,11 @@
     {
       "id": 2,
       "name": "Elf",
-      "intelligent": 4.3,
+      "intelligent": 3.9,
       "recoveryTime": 3.8,
-      "constitution": 3,
+      "constitution": 3.2,
       "strength": 3,
-      "agility": 4.5,
+      "agility": 4.3,
       "health": 3.2,
       "mana": 3.7
     },
@@ -28,7 +28,7 @@
       "name": "Dwarf",
       "intelligent": 3,
       "recoveryTime": 4,
-      "constitution": 4.2,
+      "constitution": 4.0,
       "strength": 3.8,
       "agility": 3,
       "health": 3.5,
@@ -37,13 +37,13 @@
     {
       "id": 4,
       "name": "Gnome",
-      "intelligent": 3.7,
-      "recoveryTime": 3,
-      "constitution": 3.7,
-      "strength": 3.5,
-      "agility": 3.7,
-      "health": 3.5,
-      "mana": 3.3
+      "intelligent": 4.3,
+      "recoveryTime": 3.8,
+      "constitution": 3,
+      "strength": 3.3,
+      "agility": 3.8,
+      "health": 3.2,
+      "mana": 3.9
     }
   ],
   "classes": [
@@ -80,30 +80,34 @@
     {
       "id": 1,
       "name": "Zombie",
-      "strength": 15,
+      "strength": 18,
       "agility": 3,
-      "health": 62
+      "health": 62,
+      "constitution": 3.4
     },
     {
       "id": 2,
       "name": "Skeleton",
-      "strength": 18,
+      "strength": 21,
       "agility": 3.2,
-      "health": 75
+      "health": 75,
+      "constitution": 3.6
     },
     {
       "id": 3,
       "name": "Spider",
-      "strength": 23,
+      "strength": 24,
       "agility": 3.8,
-      "health": 55
+      "health": 55,
+      "constitution": 3.8
     },
     {
       "id": 4,
       "name": "Goblin",
-      "strength": 10,
+      "strength": 15,
       "agility": 4,
-      "health": 35
+      "health": 45,
+      "constitution": 3.2
     }
   ],
   "items": [

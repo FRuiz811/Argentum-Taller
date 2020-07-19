@@ -6,7 +6,7 @@
 
 #define WIDTHBUTTON 70
 #define HEIGTHBUTTON 25
-#define ITEMSBANKER 12
+#define ITEMSBANKER 9
 
 BankerInterface::BankerInterface(NPCInfo info, Window* window, const TextureManager& manager, Player* player) :
     NPCInterface(std::move(info), window, manager, player), buttonsNPC(), buttonsItemsNPC(), arrows() {
@@ -80,6 +80,8 @@ void BankerInterface::renderGoldManagment() {
             }
             this->buttonsNPC[i]->setViewport({0,(this->window->getHeight())/2,
                         (this->window->getWidth()/8)*2,(this->window->getHeight())/2});
+            this->buttonsNPC[i]->updatePosition({12+width,
+                    ((this->window->getHeight()-60)/2)-HEIGTHBUTTON,WIDTHBUTTON,HEIGTHBUTTON});
             this->buttonsNPC[i]->render();
             i++;
         }
@@ -108,17 +110,18 @@ void BankerInterface::renderItems() {
     } else {
         max =(pagItemsInBank+1)*ITEMSBANKER;
     }
-
+    int widthSegment = this->window->getWidth()/8;
     for (uint j = pagItemsInBank*ITEMSBANKER; j < max; j++) {
         const Texture& item = manager.getTexture(information.itemsInBank[j]);
         src = {0,0,52,52};
-        dst = {9+(i%3)*50,50+(i/3)*50,32,32};
+        dst = {20+(i%3)*widthSegment/2,50+(i/3)*((this->window->getHeight())/2)/5,widthSegment/3,widthSegment/3};
         if (loadButtons) {
             selection = std::make_shared<SelectButton>(&(window->getRenderer()),dst,manager,j);
             this->buttonsItemsNPC.push_back(selection);
         }
         this->buttonsItemsNPC[i]->setViewport({0,(this->window->getHeight())/2,
                                 (this->window->getWidth()/8)*2,(this->window->getHeight())/2});
+        this->buttonsItemsNPC[i]->updatePosition(dst);
         this->buttonsItemsNPC[i]->render();
         item.render(src,dst);
         i++;
@@ -142,6 +145,8 @@ void BankerInterface::renderItems() {
             }
             this->buttonsNPC[i]->setViewport({0,(this->window->getHeight())/2,
                         (this->window->getWidth()/8)*2,(this->window->getHeight())/2});
+            this->buttonsNPC[i]->updatePosition({12+width,
+                    ((this->window->getHeight()-60)/2)-HEIGTHBUTTON,WIDTHBUTTON,HEIGTHBUTTON});
             this->buttonsNPC[i]->render();
             i++;
         }
@@ -154,6 +159,8 @@ void BankerInterface::renderItems() {
     if (this->arrow != nullptr){
         this->arrow->setViewport({0,(this->window->getHeight())/2,
                     (this->window->getWidth()/8)*2,(this->window->getHeight())/2});
+        this->arrow->updatePosition({(this->window->getWidth()/8)*2-40,
+            ((this->window->getHeight()-60)/2)-HEIGTHBUTTON*4,20,20});            
         this->arrow->render();
     }
 
@@ -180,6 +187,8 @@ void BankerInterface::render() {
     if (this->changeScreen != nullptr){
         this->changeScreen->setViewport({0,(this->window->getHeight())/2,
                     (this->window->getWidth()/8)*2,(this->window->getHeight())/2});
+        this->changeScreen->updatePosition({(this->window->getWidth()/8)*2-40,
+            ((this->window->getHeight()-60)/2)-HEIGTHBUTTON*3,20,20});
         this->changeScreen->render();
     }
 }

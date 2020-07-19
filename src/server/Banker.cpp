@@ -2,7 +2,7 @@
 
 Banker* Banker::banker = nullptr;
 
-Banker::Banker() :accountsItems(), accountsGold(2500) {
+Banker::Banker() :accountsItems(), accountsGold() {
     this->actions.push_back(ActionsProfessionID::DepositGold);
     this->actions.push_back(ActionsProfessionID::DepositItem);
     this->actions.push_back(ActionsProfessionID::RetireItem);
@@ -136,3 +136,5 @@ void Banker::processInput(GameCharacter &character, InputInfo inputInfo) {
     }
 
 }
+
+Banker::~Banker() {}

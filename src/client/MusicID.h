@@ -23,6 +23,9 @@ enum class MusicID {
 	Zombie,
 	Raven,
 	Heart,
+	Banker,
+	Merchant,
+	Priest,
 };
 
 #endif

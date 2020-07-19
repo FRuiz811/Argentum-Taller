@@ -10,9 +10,9 @@ class Profession {
 protected:
     std::vector<ActionsProfessionID> actions;
 public:
-    Profession() {}
+    Profession() : actions() {}
 
-    ~Profession(){}
+    virtual ~Profession(){}
     
     std::vector<ActionsProfessionID> getActions() const {
         return actions;

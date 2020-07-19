@@ -12,9 +12,9 @@ private:
     bool initialized;
     Point firstPoint;
     Direction direction;
-    float distance{};
-    uint8_t amountSteps = 0;
-    uint8_t actualStep = 0;
+    float distance{0.0};
+    uint8_t amountSteps{0};
+    uint8_t actualStep{0};
 public:
     Movement();
     bool isOver() const;

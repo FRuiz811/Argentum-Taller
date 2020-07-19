@@ -11,7 +11,7 @@ class Priest : public Profession {
 private:
     Priest();
     std::unordered_map<ItemsInventoryID, uint,std::hash<ItemsInventoryID>> items;
-
+    
     static Priest* priest;
 
     ItemsInventoryID buyItem(ItemsInventoryID idItem, uint* balance) const;
@@ -27,7 +27,7 @@ public:
 
     void processInput(GameCharacter &character, InputInfo inputInfo) override;
 
-    ~Priest();
+    virtual ~Priest();
 };
 
 #endif

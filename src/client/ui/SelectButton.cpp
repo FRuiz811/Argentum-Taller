@@ -26,6 +26,10 @@ void SelectButton::onClick() {
     this->clicked = !this->clicked;
 }
 
+void SelectButton::updatePosition(SDL_Rect position) {
+    Button::updatePosition(position);
+}
+
 bool SelectButton::inside(int x, int y) {
     bool inside = true;
     if (x < this->button.x+viewport.x)

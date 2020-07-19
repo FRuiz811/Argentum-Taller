@@ -6,6 +6,7 @@
 #include <iostream>
 #include "../common/Decoder.h"
 #include "../common/SocketException.h"
+#include <algorithm>
 #include "../common/Random.h"
 
 #define WRONGRACE "Raza invalida. Seleccione entre: elfo, gnomo, humano, enano."
@@ -46,7 +47,7 @@ bool Game::init(char* argv[]) {
         recieveMapAndPlayer();
 
         this->camera = std::make_shared<Camera>(this->window, this->map->getMapWidth(), this->map->getMapHeight());
-        this->ui = std::make_shared<UI>(this->window, &(*this->player), this->textureManager);
+        this->ui = std::make_shared<UI>(this->window, &(*this->player), this->textureManager, this->musicManager);
 
     } catch (const SocketException& e) {
         std::cout << INITERROR << e.what() << std::endl;
@@ -146,6 +147,11 @@ void Game::update() {
         npc.second.update(GAMELOOPTIME);
 }
 
+
+bool comparation(Character* c1, Character* c2) {
+    return c1->getPosition().y < c2->getPosition().y;
+}
+
 void Game::render() {
 		window.clearScreen();
 
@@ -155,11 +161,30 @@ void Game::render() {
 	    camera->render(*center);
         this->map->drawGround(*camera);
 
-		for (auto& aNPC : this->npcs) {
-		    aNPC.second.render(*camera);
-		}
-        this->player->render(*camera);
+        std::vector<Character*> characters;
+        std::vector<Character*> items;
 
+        characters.push_back(&(*this->player));
+
+		for (auto& aNPC : this->npcs) {
+            if(aNPC.second.isItem()){
+                items.push_back(&(aNPC.second));
+            } else {
+                characters.push_back(&(aNPC.second));
+            }
+		}
+
+        std::sort(characters.begin(),characters.end(),comparation);
+        std::sort(items.begin(),items.end(),comparation);
+
+        for (auto& aItem : items) {
+            aItem->render(*camera);
+        }
+
+        for (auto& aCharacter : characters) {
+            aCharacter->render(*camera);
+        }
+        
 		this->map->drawHighLayers(*camera);
 
 		this->window.render();
