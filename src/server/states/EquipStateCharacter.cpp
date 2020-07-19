@@ -43,5 +43,5 @@ StateID EquipStateCharacter::getResetStateID() {
 }
 
 void EquipStateCharacter::init(InputInfo aInputInfo) {
-
+    inputInfo = aInputInfo;
 }

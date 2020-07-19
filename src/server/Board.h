@@ -72,6 +72,8 @@ public:
 
     std::shared_ptr<Cell> getNextEmptyCell(const std::shared_ptr<Cell>& aCell);
 
+    std::shared_ptr<Cell> getCloserPriest(const std::shared_ptr<Cell>& aCell);
+
 };
 
 

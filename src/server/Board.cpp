@@ -256,3 +256,21 @@ std::shared_ptr<Cell> Board::getNextEmptyCell(const std::shared_ptr<Cell> &aCell
     }
     return cell;
 }
+
+std::shared_ptr<Cell> Board::getCloserPriest(const std::shared_ptr<Cell>& aCell) {
+    std::shared_ptr<Cell> chosenCell;
+    std::shared_ptr<Cell> aCellPriest;
+    uint8_t minDistance = 0;
+    for (size_t i = 0; i < rows; ++i) {
+        for (size_t j = 0; j < cols; ++j) {
+            aCellPriest = getCell(i, j);
+            if (aCell->isPriest()) {
+                if (minDistance == 0 || minDistance > getDistance(aCellPriest, aCell)) {
+                    minDistance = getDistance(aCellPriest, aCell);
+                    chosenCell = aCellPriest;
+                }
+            }
+        }
+    }
+    return chosenCell;
+}

@@ -24,6 +24,8 @@ StateID StillStateCharacter::getNextStateID(InputInfo info) {
         nextStateId = StateID::TakeDrop;
     } else if (info.input == InputID::meditate) {
         nextStateId = StateID::Meditate;
+    } else if (info.input == InputID::resurrect) {
+        nextStateId = StateID::Resurrect;
     }
     return nextStateId;
 }

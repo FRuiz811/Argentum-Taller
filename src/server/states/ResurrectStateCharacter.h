@@ -1,10 +1,16 @@
 #ifndef ARGENTUM_TALLER_RESURRECTSTATECHARACTER_H
 #define ARGENTUM_TALLER_RESURRECTSTATECHARACTER_H
 
+#include <Movement.h>
 #include "StateCharacter.h"
 
 class ResurrectStateCharacter : public StateCharacter {
+private:
+    std::shared_ptr<Cell> aPriestCell = nullptr;
+    Movement movement;
 public:
+    ResurrectStateCharacter();
+
     ~ResurrectStateCharacter() override;
 
     void
