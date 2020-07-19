@@ -1,6 +1,7 @@
 #ifndef ARGENTUM_TALLER_CREATURE_H
 #define ARGENTUM_TALLER_CREATURE_H
 
+#include <states/StatePoolCreature.h>
 #include "GameObject.h"
 #include "states/State.h"
 
@@ -11,6 +12,7 @@ private:
     std::unique_ptr<State> state;
     bool itemDrop = false;
     uint8_t timeToRemove = 10;
+    StatePoolCreature statePool;
 
     InputInfo generateRandomInputInfo();
 public:

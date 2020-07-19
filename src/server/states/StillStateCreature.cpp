@@ -28,4 +28,8 @@
      return false;
  }
 
+ void StillStateCreature::init(InputInfo aInputInfo) {
+
+ }
+
  StillStateCreature::~StillStateCreature() = default;

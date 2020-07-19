@@ -6,13 +6,8 @@
 #include "../common/Random.h"
 
 void Creature::update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) {
-    if (state->isOver()) {
-        state->setNextState(generateRandomInputInfo());
-        if (state->hasNextState()) {
-            state = state->getNextState();
-        }
-    }
-    state->performTask(id, gameObjects, board);
+    statePool.updateState(generateRandomInputInfo());
+    statePool.getActualState()->performTask(id, gameObjects, board);
 }
 
 Creature::Creature(uint id, CreatureID creatureId, std::shared_ptr<Cell> initialCell, Point initialPoint) :
@@ -35,9 +30,7 @@ Creature::Creature(uint id, CreatureID creatureId, std::shared_ptr<Cell> initial
             this->textureHashId = nullptr;
             break;
     }
-    this->state = std::unique_ptr<State>(new StillStateCreature());
     life = GameStatsConfig::getMaxHealth(creatureId, level);
-    level = 1;
 }
 
 void Creature::notify(uint pursuitId) {
@@ -62,7 +55,7 @@ CreatureID Creature::getCreatureId() const {
 }
 
 void Creature::receiveDamage(float damage, WeaponID weaponId) {
-    setAttackBy(weaponId);
+    setInteractWeapon(weaponId);
     if (GameStatsConfig::canEvade(creatureId)) {
         std::cout << "Enemy fail attack" << std::endl;
     } else {
@@ -109,7 +102,19 @@ float Creature::getMaxLife() {
 
 std::vector<DropItem> Creature::getDrop() {
     std::vector<DropItem> dropItems;
-    dropItems.emplace_back(ItemsInventoryID::Gold, GameStatsConfig::getGoldDrop(creatureId, level));
+    int randomDrop = Random::get(0,100);
+    ItemsInventoryID aItemInventoryId = ItemsInventoryID::Nothing;
+    float amount = 0;
+    if ((randomDrop > 80) && randomDrop <= 96) {
+        aItemInventoryId = ItemsInventoryID::Gold;
+        amount = GameStatsConfig::getGoldDrop(creatureId, level);
+    } else if (randomDrop > 96 && randomDrop <= 98) {
+        aItemInventoryId = ItemsInventoryID(Random::get(21, 22));
+        amount = 1;
+    } else if (randomDrop > 98 && randomDrop <= 100) {
+        aItemInventoryId = ItemsInventoryID(Random::get(1, 20));
+    }
+    dropItems.emplace_back(aItemInventoryId, amount);
     itemDrop = false;
     return dropItems;
 }

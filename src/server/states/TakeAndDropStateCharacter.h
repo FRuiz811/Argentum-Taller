@@ -20,6 +20,8 @@ public:
 
     bool isAttacking() override;
 
+    void init(InputInfo aInputInfo) override;
+
     bool isMeditating() override;
 };
 

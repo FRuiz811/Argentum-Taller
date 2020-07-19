@@ -26,6 +26,8 @@ public:
 
     bool isAttacking() override;
 
+    void init(InputInfo aInputInfo) override;
+
     void performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) override;
 
 };

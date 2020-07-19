@@ -19,7 +19,7 @@ public:
 
     void changeState(StateID id, InputInfo aInputInfo);
 
-    std::shared_ptr<State> generateState(StateID id, InputInfo aInputInfo);
+    std::shared_ptr<State> generateState(StateID id);
 };
 
 

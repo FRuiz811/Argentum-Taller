@@ -11,6 +11,8 @@ public:
     void updateState(InputInfo aInputInfo) override;
 
     ~StatePoolCreature() override;
+
+    void setNextState(StateID id, InputInfo info);
 };
 
 

@@ -4,11 +4,6 @@
 
 StillStateCharacter::~StillStateCharacter() = default;
 
-StillStateCharacter::StillStateCharacter(InputInfo anInputInfo) : State(anInputInfo) {
-    finalized = true;
-    stateId = StateID::Still;
-}
-
 StillStateCharacter::StillStateCharacter() {
     finalized = true;
     stateId = StateID::Still;
@@ -48,5 +43,9 @@ bool StillStateCharacter::isAttacking() {
 
 bool StillStateCharacter::isMeditating() {
     return false;
+}
+
+void StillStateCharacter::init(InputInfo aInputInfo) {
+    inputInfo = aInputInfo;
 }
 

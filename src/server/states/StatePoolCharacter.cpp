@@ -6,6 +6,7 @@
 #include "AttackStateCharacter.h"
 #include "MeditateStateCharacter.h"
 #include "TakeAndDropStateCharacter.h"
+#include "ResurrectStateCharacter.h"
 
 StatePoolCharacter::StatePoolCharacter(GameObject &aGameObject) : StatePool(std::shared_ptr<State>(new StillStateCharacter())), character(aGameObject) {}
 
@@ -40,7 +41,7 @@ void StatePoolCharacter::changeState(StateID id, InputInfo aInputInfo) {
     try {
         nextState = states.at(id);
     } catch (std::exception &e) {
-        nextState = generateState(id, aInputInfo);
+        nextState = generateState(id);
     }
     actualState = nextState;
 }

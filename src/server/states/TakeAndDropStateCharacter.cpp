@@ -63,3 +63,7 @@ bool TakeAndDropStateCharacter::isAttacking() {
 bool TakeAndDropStateCharacter::isMeditating() {
     return false;
 }
+
+void TakeAndDropStateCharacter::init(InputInfo aInputInfo) {
+
+}

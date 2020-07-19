@@ -22,6 +22,8 @@ public:
 
     bool isMeditating() override;
 
+    void init(InputInfo aInputInfo) override;
+
 };
 
 
