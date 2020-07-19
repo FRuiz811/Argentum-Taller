@@ -20,6 +20,7 @@ enum class CharacterStateID {
     Attack, //Aplica a NPCServer
     Meditate,
     Interact,
+    Resurrect,
 };
 
 enum class InputID {

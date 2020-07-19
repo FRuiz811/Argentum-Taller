@@ -6,6 +6,7 @@
 #include "characterStates/MeditateState.h"
 #include "characterStates/InteractState.h"
 #include "characterStates/AttackState.h"
+#include "characterStates/ResurrectState.h"
 #include "../common/Random.h"
 #include "Items/Animation.h"
 #include "Items/MeditateAnimation.h"
@@ -123,6 +124,9 @@ void NPC::setState(CharacterStateID newState) {
         break;
       case CharacterStateID::Attack:
         this->state = std::shared_ptr<CharacterState>(new AttackState());
+        break;
+      case CharacterStateID::Resurrect:
+        this->state = std::shared_ptr<CharacterState>(new ResurrectState());
         break;
 		}
 	}
