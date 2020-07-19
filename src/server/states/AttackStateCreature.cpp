@@ -6,8 +6,7 @@
 
 AttackStateCreature::~AttackStateCreature() = default;
 
-AttackStateCreature::AttackStateCreature() : State(),
-        enemyId(enemyId), enemyIsDead(false) {
+AttackStateCreature::AttackStateCreature() : StateCreature(), enemyIsDead(false) {
     stateId = StateID::Attack;
 }
 
@@ -53,10 +52,6 @@ bool AttackStateCreature::isAttacking() {
     return true;
 }
 
-bool AttackStateCreature::isMeditating() {
-    return false;
-}
-
 StateID AttackStateCreature::getNextStateID(InputInfo info) {
     StateID nextStateId = StateID::Still;
     if (!enemyIsDead) {
@@ -70,7 +65,8 @@ StateID AttackStateCreature::getResetStateID() {
 }
 
 void AttackStateCreature::init(InputInfo aInputInfo) {
-    enemyId;
+    inputInfo = aInputInfo;
+    enemyId = aInputInfo.aditional;
     enemyIsDead = false;
     timeBetweenAttacks = 0;
     aEnemy = nullptr;

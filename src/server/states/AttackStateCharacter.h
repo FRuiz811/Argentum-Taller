@@ -3,8 +3,9 @@
 
 
 #include "State.h"
+#include "StateCharacter.h"
 
-class AttackStateCharacter : public State {
+class AttackStateCharacter : public StateCharacter {
 private:
     uint8_t timeBetweenAttacks = 0;
     bool enemyReceiveDamage = false;
@@ -19,8 +20,6 @@ public:
     StateID getNextStateID(InputInfo info) override;
 
     StateID getResetStateID() override;
-
-    bool isOnPursuit(uint pursuitId) override;
 
     void init(InputInfo aInputInfo) override;
 

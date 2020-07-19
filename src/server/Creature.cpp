@@ -11,7 +11,7 @@ void Creature::update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gam
 }
 
 Creature::Creature(uint id, CreatureID creatureId, std::shared_ptr<Cell> initialCell, Point initialPoint) :
-        GameObject(id, initialPoint, std::move(initialCell)), creatureId(creatureId) {
+        GameObject(id, initialPoint, std::move(initialCell)), creatureId(creatureId), statePool() {
 
     switch (creatureId) {
         case CreatureID::Goblin:
@@ -34,8 +34,10 @@ Creature::Creature(uint id, CreatureID creatureId, std::shared_ptr<Cell> initial
 }
 
 void Creature::notify(uint pursuitId) {
-    if (!state->isOnPursuit(pursuitId) && !state->isAttacking()) {
-        state = std::unique_ptr<State>(new PursuitStateCreature(pursuitId));
+    if (statePool.startChasing(pursuitId)) {
+        InputInfo aInputInfo;
+        aInputInfo.aditional = pursuitId;
+        statePool.setNextState(StateID::Pursuit, aInputInfo);
     }
 }
 

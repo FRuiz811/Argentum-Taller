@@ -1,23 +1,17 @@
 #include "TakeAndDropStateCharacter.h"
 #include "../GameCharacter.h"
 #include "../ObjectItem.h"
-#include "StillStateCharacter.h"
-#include "MoveStateCharacter.h"
 
 TakeAndDropStateCharacter::~TakeAndDropStateCharacter() {
     stateId = StateID::Still;
 }
 
-TakeAndDropStateCharacter::TakeAndDropStateCharacter(const InputInfo &info) : State(info) {}
+TakeAndDropStateCharacter::TakeAndDropStateCharacter() : StateCharacter() {}
 
 void TakeAndDropStateCharacter::performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects,
                                             Board &board) {
 
     std::shared_ptr<GameCharacter> aCharacter = std::dynamic_pointer_cast<GameCharacter>(gameObjects.at(id));
-    if (aCharacter->isDead()) {
-        finalized = true;
-        return;
-    }
     std::shared_ptr<Cell> characterCell = aCharacter->getActualCell();
     switch (inputInfo.input) {
         case InputID::dropItem:
@@ -49,11 +43,7 @@ StateID TakeAndDropStateCharacter::getNextStateID(InputInfo info) {
 }
 
 StateID TakeAndDropStateCharacter::getResetStateID() {
-    return StateID::Still
-}
-
-bool TakeAndDropStateCharacter::isOnPursuit(uint pursuitId) {
-    return false;
+    return StateID::Still;
 }
 
 bool TakeAndDropStateCharacter::isAttacking() {
@@ -65,5 +55,5 @@ bool TakeAndDropStateCharacter::isMeditating() {
 }
 
 void TakeAndDropStateCharacter::init(InputInfo aInputInfo) {
-
+    inputInfo = aInputInfo;
 }

@@ -11,10 +11,6 @@ void MeditateStateCharacter::performTask(uint id, std::unordered_map<uint, std::
                                          Board &board) {
 }
 
-bool MeditateStateCharacter::isOnPursuit(uint pursuitId) {
-    return false;
-}
-
 bool MeditateStateCharacter::isAttacking() {
     return false;
 }
@@ -34,4 +30,8 @@ StateID MeditateStateCharacter::getNextStateID(InputInfo info) {
 
 StateID MeditateStateCharacter::getResetStateID() {
     return StateID::Meditate;
+}
+
+void MeditateStateCharacter::init(InputInfo aInputInfo) {
+    inputInfo = aInputInfo;
 }

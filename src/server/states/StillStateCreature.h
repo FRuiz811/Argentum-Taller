@@ -2,13 +2,14 @@
 #define ARGENTUM_TALLER_STILLSTATECREATURE_H
 
 #include "State.h"
+#include "StateCreature.h"
 
-class StillStateCreature : public State {
+class StillStateCreature : public StateCreature {
 private:
 public:
     StillStateCreature();
 
-    virtual ~StillStateCreature();
+    ~StillStateCreature() override;
 
     bool isOnPursuit(uint pursuitId) override;
 
@@ -16,14 +17,11 @@ public:
 
     StateID getNextStateID(InputInfo info) override;
 
-    StateID getResetStateID() override;
-
     bool isAttacking() override;
 
-    bool isMeditating() override;
+    StateID getResetStateID() override;
 
     void init(InputInfo aInputInfo) override;
-
 };
 
 

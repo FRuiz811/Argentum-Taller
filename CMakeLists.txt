@@ -28,7 +28,7 @@ file(GLOB_RECURSE COMMON_SOURCES
         src/common/*.cpp)
 
 add_executable(argentum_client ${CLIENT_SOURCES} ${COMMON_SOURCES})
-add_executable(argentum_server ${SERVER_SOURCES} ${COMMON_SOURCES} src/server/states/StatePool.cpp src/server/states/StatePool.h src/server/states/StatePoolCreature.cpp src/server/states/StatePoolCreature.h src/server/states/StatePoolCharacter.cpp src/server/states/StatePoolCharacter.h src/server/states/ResurrectStateCharacter.cpp src/server/states/ResurrectStateCharacter.h)
+add_executable(argentum_server ${SERVER_SOURCES} ${COMMON_SOURCES})
 
 target_link_libraries(argentum_client -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer pthread)
 target_link_libraries(argentum_server pthread)

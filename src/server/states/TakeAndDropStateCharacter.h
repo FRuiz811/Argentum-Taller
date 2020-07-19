@@ -2,11 +2,11 @@
 #define ARGENTUM_TALLER_TAKEANDDROPSTATECHARACTER_H
 
 
-#include "State.h"
+#include "StateCharacter.h"
 
-class TakeAndDropStateCharacter : public State {
+class TakeAndDropStateCharacter : public StateCharacter {
 public:
-    TakeAndDropStateCharacter(const InputInfo &info);
+    explicit TakeAndDropStateCharacter();
 
     ~TakeAndDropStateCharacter() override;
 
@@ -15,8 +15,6 @@ public:
     StateID getNextStateID(InputInfo info) override;
 
     StateID getResetStateID() override;
-
-    bool isOnPursuit(uint pursuitId) override;
 
     bool isAttacking() override;
 

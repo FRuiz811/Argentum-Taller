@@ -2,10 +2,13 @@
 #define ARGENTUM_TALLER_STATEPOOLCHARACTER_H
 
 #include "StatePool.h"
+#include "StateCharacter.h"
 
 class StatePoolCharacter : public StatePool {
 private:
     GameObject& character;
+    std::shared_ptr<StateCharacter> actualState;
+    std::unordered_map<StateID, std::shared_ptr<StateCharacter>, std::hash<StateID>> states;
 public:
     explicit StatePoolCharacter(GameObject &gameObject);
 
@@ -13,13 +16,13 @@ public:
 
     ~StatePoolCharacter() override;
 
-    void setNextState(StateID id, InputInfo aInputInfo);
-
     bool isPossibleDeadState(StateID id);
 
-    void changeState(StateID id, InputInfo aInputInfo);
+    void changeState(StateID id, InputInfo aInputInfo) override;
 
-    std::shared_ptr<State> generateState(StateID id);
+    void setNextState(StateID id, InputInfo aInputInfo) override;
+
+    std::shared_ptr<StateCharacter> generateState(StateID id);
 };
 
 

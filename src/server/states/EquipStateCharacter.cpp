@@ -3,7 +3,7 @@
 
 EquipStateCharacter::~EquipStateCharacter() = default;
 
-EquipStateCharacter::EquipStateCharacter(const InputInfo &info) : State(info) {
+EquipStateCharacter::EquipStateCharacter() : StateCharacter() {
     finalized = true;
     stateId = StateID::Still;
 }
@@ -19,10 +19,6 @@ void EquipStateCharacter::performTask(uint id,
             aCharacter->equipItem(inputInfo.aditional);
         }
     }
-}
-
-bool EquipStateCharacter::isOnPursuit(uint pursuitId) {
-    return false;
 }
 
 bool EquipStateCharacter::isAttacking() {
@@ -44,4 +40,8 @@ StateID EquipStateCharacter::getNextStateID(InputInfo info) {
 
 StateID EquipStateCharacter::getResetStateID() {
     return StateID::Still;
+}
+
+void EquipStateCharacter::init(InputInfo aInputInfo) {
+
 }

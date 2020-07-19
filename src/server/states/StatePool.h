@@ -4,15 +4,12 @@
 #include "State.h"
 
 class StatePool {
-protected:
-    std::shared_ptr<State> actualState;
-    std::unordered_map<StateID, std::shared_ptr<State>, std::hash<StateID>> states;
 public:
-    explicit StatePool(std::shared_ptr<State> firstState);
+    StatePool();
 
-    const std::shared_ptr<State> &getActualState() const;
+    virtual void changeState(StateID id, InputInfo aInputInfo) = 0;
 
-    StateID getStateId();
+    virtual void setNextState(StateID id, InputInfo aInputInfo) = 0;
 
     virtual void updateState(InputInfo aInputInfo) = 0;
 

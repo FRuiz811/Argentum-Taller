@@ -1,10 +1,9 @@
 #include "StillStateCharacter.h"
-#include "AttackStateCharacter.h"
 #include <iostream>
 
 StillStateCharacter::~StillStateCharacter() = default;
 
-StillStateCharacter::StillStateCharacter() {
+StillStateCharacter::StillStateCharacter() : StateCharacter() {
     finalized = true;
     stateId = StateID::Still;
 }
@@ -31,10 +30,6 @@ StateID StillStateCharacter::getNextStateID(InputInfo info) {
 
 StateID StillStateCharacter::getResetStateID() {
     return StateID::Still;
-}
-
-bool StillStateCharacter::isOnPursuit(uint pursuitId) {
-    return false;
 }
 
 bool StillStateCharacter::isAttacking() {

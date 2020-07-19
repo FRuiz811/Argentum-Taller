@@ -1,6 +1,6 @@
  #include "StillStateCreature.h"
 
- StillStateCreature::StillStateCreature() {
+ StillStateCreature::StillStateCreature() : StateCreature() {
     finalized = true;
     stateId = StateID::Still;
 }
@@ -12,10 +12,6 @@
      return StateID::Move;
  }
 
- StateID StillStateCreature::getResetStateID() {
-     return StateID::Still;
- }
-
  bool StillStateCreature::isOnPursuit(uint pursuitId) {
      return false;
  }
@@ -24,12 +20,12 @@
      return false;
  }
 
- bool StillStateCreature::isMeditating() {
-     return false;
+ void StillStateCreature::init(InputInfo aInputInfo) {
+    inputInfo = aInputInfo;
  }
 
- void StillStateCreature::init(InputInfo aInputInfo) {
-
+ StateID StillStateCreature::getResetStateID() {
+     return StateCreature::getResetStateID();
  }
 
  StillStateCreature::~StillStateCreature() = default;

@@ -3,29 +3,13 @@
 #include "../GameCharacter.h"
 #include "StillStateCharacter.h"
 #include "../Creature.h"
-#include "AttackStateCharacter.h"
+
 
 MoveStateCharacter::~MoveStateCharacter() = default;
 
-MoveStateCharacter::MoveStateCharacter(const InputInfo &info) : State(info) {
-    switch(info.input) {
-        case InputID::up:
-            direction = Direction::up;
-            break;
-        case InputID::down:
-            direction = Direction::down;
-            break;
-        case InputID::left:
-            direction = Direction::left;
-            break;
-        case InputID::right:
-            direction = Direction::right;
-            break;
-        default:
-            direction = Direction::down;
-            break;
-    }
+MoveStateCharacter::MoveStateCharacter() : StateCharacter() {
     stateId = StateID::Move;
+    direction = Direction::down;
 }
 
 void MoveStateCharacter::performTask(uint id,
@@ -63,7 +47,7 @@ void MoveStateCharacter::performTask(uint id,
 }
 
 StateID MoveStateCharacter::getNextStateID(InputInfo info) {
-    StateID nextStateId;
+    StateID nextStateId = StateID::Still;
     if (info.input == InputID::up || info.input == InputID::down ||
         info.input == InputID::left || info.input == InputID::right) {
         nextStateId = StateID::Move;
@@ -74,12 +58,7 @@ StateID MoveStateCharacter::getNextStateID(InputInfo info) {
 }
 
 StateID MoveStateCharacter::getResetStateID() {
-    movement.reset();
     return StateID::Move;
-}
-
-bool MoveStateCharacter::isOnPursuit(uint pursuitId) {
-    return false;
 }
 
 bool MoveStateCharacter::isAttacking() {
@@ -88,4 +67,27 @@ bool MoveStateCharacter::isAttacking() {
 
 bool MoveStateCharacter::isMeditating() {
     return false;
+}
+
+void MoveStateCharacter::init(InputInfo aInputInfo) {
+    movement.reset();
+    switch(aInputInfo.input) {
+        case InputID::up:
+            direction = Direction::up;
+            break;
+        case InputID::down:
+            direction = Direction::down;
+            break;
+        case InputID::left:
+            direction = Direction::left;
+            break;
+        case InputID::right:
+            direction = Direction::right;
+            break;
+        default:
+            direction = Direction::down;
+            break;
+    }
+    inputInfo = aInputInfo;
+    finalized = false;
 }

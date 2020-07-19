@@ -2,9 +2,9 @@
 #define ARGENTUM_TALLER_MEDITATESTATECHARACTER_H
 
 
-#include "State.h"
+#include "StateCharacter.h"
 
-class MeditateStateCharacter : public State {
+class MeditateStateCharacter : public StateCharacter {
 public:
     MeditateStateCharacter();
 
@@ -16,11 +16,11 @@ public:
 
     StateID getResetStateID() override;
 
-    bool isOnPursuit(uint pursuitId) override;
-
     bool isAttacking() override;
 
     bool isMeditating() override;
+
+    void init(InputInfo aInputInfo) override;
 
 };
 

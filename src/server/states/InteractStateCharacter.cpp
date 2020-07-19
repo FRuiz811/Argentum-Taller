@@ -1,7 +1,7 @@
 #include "InteractStateCharacter.h"
 #include "../GameCharacter.h"
 
-InteractStateCharacter::InteractStateCharacter(const InputInfo &info) : State(info) {
+InteractStateCharacter::InteractStateCharacter() : StateCharacter() {
     stateId = StateID::Interact;
 }
 
@@ -62,10 +62,6 @@ StateID InteractStateCharacter::getResetStateID() {
     return StateID::Still;
 }
 
-bool InteractStateCharacter::isOnPursuit(uint pursuitId) {
-    return false;
-}
-
 bool InteractStateCharacter::isAttacking() {
     return false;
 }
@@ -73,3 +69,11 @@ bool InteractStateCharacter::isAttacking() {
 bool InteractStateCharacter::isMeditating() {
     return false;
 }
+
+void InteractStateCharacter::init(InputInfo aInputInfo) {
+    interacting = false;
+    aNpc = nullptr;
+    inputInfo = aInputInfo;
+}
+
+

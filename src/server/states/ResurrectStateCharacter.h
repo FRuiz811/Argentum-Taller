@@ -1,9 +1,9 @@
 #ifndef ARGENTUM_TALLER_RESURRECTSTATECHARACTER_H
 #define ARGENTUM_TALLER_RESURRECTSTATECHARACTER_H
 
-#include "State.h"
+#include "StateCharacter.h"
 
-class ResurrectStateCharacter : public State {
+class ResurrectStateCharacter : public StateCharacter {
 public:
     ~ResurrectStateCharacter() override;
 
@@ -14,7 +14,7 @@ public:
 
     StateID getResetStateID() override;
 
-    bool isOnPursuit(uint pursuitId) override;
+    void init(InputInfo aInputInfo) override;
 
     bool isAttacking() override;
 

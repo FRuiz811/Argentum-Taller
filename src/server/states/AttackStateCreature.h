@@ -2,11 +2,11 @@
 #define ARGENTUM_TALLER_ATTACKSTATECREATURE_H
 
 
-#include "State.h"
+#include "StateCreature.h"
 
-class AttackStateCreature : public State {
+class AttackStateCreature : public StateCreature {
 private:
-    uint enemyId;
+    uint enemyId = 0;
     bool enemyIsDead;
     uint8_t timeBetweenAttacks = 0;
     std::shared_ptr<GameObject> aEnemy = nullptr;
@@ -22,8 +22,6 @@ public:
     StateID getResetStateID() override;
 
     bool isOnPursuit(uint pursuitId) override;
-
-    bool isMeditating() override;
 
     void init(InputInfo aInputInfo) override;
 

@@ -1,26 +1,19 @@
 #ifndef ARGENTUM_TALLER_STILLSTATECHARACTER_H
 #define ARGENTUM_TALLER_STILLSTATECHARACTER_H
 
-#include <memory>
-#include <vector>
-#include <unordered_map>
-#include "State.h"
-#include "../GameObject.h"
-#include "../../common/StaticObject.h"
+#include "StateCharacter.h"
 
-class StillStateCharacter: public State {
+class StillStateCharacter: public StateCharacter {
 public:
     StillStateCharacter();
 
-    explicit StillStateCharacter(InputInfo);
-
     ~StillStateCharacter() override;
-
-    bool isOnPursuit(uint pursuitId) override;
 
     StateID getNextStateID(InputInfo info) override;
 
     StateID getResetStateID() override;
+
+    void init(InputInfo aInputInfo) override;
 
     bool isMeditating() override;
 

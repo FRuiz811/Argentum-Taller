@@ -5,25 +5,9 @@
 
 MoveStateCreature::~MoveStateCreature() = default;
 
-MoveStateCreature::MoveStateCreature(InputInfo info) : State(info){
-    switch(info.input) {
-        case InputID::up:
-            direction = Direction::up;
-            break;
-        case InputID::down:
-            direction = Direction::down;
-            break;
-        case InputID::left:
-            direction = Direction::left;
-            break;
-        case InputID::right:
-            direction = Direction::right;
-            break;
-        default:
-            direction = Direction::up;
-            break;
-    }
-    stateId = CharacterStateID::Move;
+MoveStateCreature::MoveStateCreature() : StateCreature(){
+    stateId = StateID::Move;
+    direction = Direction::down;
 }
 
 void MoveStateCreature::performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) {
@@ -56,14 +40,30 @@ bool MoveStateCreature::isAttacking() {
     return false;
 }
 
-bool MoveStateCreature::isMeditating() {
-    return false;
-}
-
 StateID MoveStateCreature::getNextStateID(InputInfo info) {
     return StateID::Move;
 }
 
 StateID MoveStateCreature::getResetStateID() {
     return StateID::Move;
+}
+
+void MoveStateCreature::init(InputInfo aInputInfo) {
+    switch(aInputInfo.input) {
+        case InputID::up:
+            direction = Direction::up;
+            break;
+        case InputID::down:
+            direction = Direction::down;
+            break;
+        case InputID::left:
+            direction = Direction::left;
+            break;
+        case InputID::right:
+            direction = Direction::right;
+            break;
+        default:
+            direction = Direction::up;
+            break;
+    }
 }

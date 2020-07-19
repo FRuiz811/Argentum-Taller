@@ -4,7 +4,7 @@
 
 PursuitStateCreature::~PursuitStateCreature() = default;
 
-PursuitStateCreature::PursuitStateCreature(uint id) : pursuitId(id) {
+PursuitStateCreature::PursuitStateCreature() : StateCreature(), pursuitId(0) {
     stateId = StateID::Move;
 }
 
@@ -57,10 +57,6 @@ bool PursuitStateCreature::isAttacking() {
     return false;
 }
 
-bool PursuitStateCreature::isMeditating() {
-    return false;
-}
-
 StateID PursuitStateCreature::getNextStateID(InputInfo info) {
     StateID nextStateId = StateID::Still;
     if (canAttack) {
@@ -71,4 +67,15 @@ StateID PursuitStateCreature::getNextStateID(InputInfo info) {
 
 StateID PursuitStateCreature::getResetStateID() {
     return StateID::Pursuit;
+}
+
+void PursuitStateCreature::init(InputInfo aInputInfo) {
+    inputInfo = aInputInfo;
+    pursuitId = aInputInfo.aditional;
+    movement.reset();
+    canAttack = false;
+}
+
+uint PursuitStateCreature::getId() {
+    return pursuitId;
 }
