@@ -10,17 +10,19 @@ private:
     bool enemyReceiveDamage = false;
     std::shared_ptr<GameObject> aEnemy = nullptr;
 public:
-    AttackStateCharacter(InputInfo info);
+    AttackStateCharacter();
 
     ~AttackStateCharacter() override;
 
     void performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) override;
 
-    void setNextState(InputInfo info) override;
+    StateID getNextStateID(InputInfo info) override;
 
-    void resetState() override;
+    StateID getResetStateID() override;
 
     bool isOnPursuit(uint pursuitId) override;
+
+    void init(InputInfo aInputInfo) override;
 
     bool isAttacking() override;
 

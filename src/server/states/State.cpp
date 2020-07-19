@@ -1,7 +1,5 @@
 #include "State.h"
 
-#include <utility>
-
 State::State() = default;
 
 State::State(InputInfo anInputInfo): inputInfo(std::move(anInputInfo)) {}
@@ -12,15 +10,7 @@ bool State::isOver() const {
     return finalized;
 }
 
-bool State::hasNextState() {
-    return nextState != nullptr;
-}
-
-std::unique_ptr<State> State::getNextState() {
-    return std::move(nextState);
-}
-
-CharacterStateID State::getStateId() const {
+StateID State::getStateId() const {
     return stateId;
 }
 

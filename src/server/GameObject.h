@@ -17,7 +17,7 @@ protected:
     Direction direction;
     NPCInfo infoInteracting;
     uint level;
-    WeaponID attackBy;
+    WeaponID interactWeapon;
 public:
 	explicit GameObject(uint id, Point initialPoint, std::shared_ptr<Cell> initialCell, Direction aDirection = Direction::down);
 
@@ -39,7 +39,7 @@ public:
 
     virtual std::vector<DropItem> getDrop() = 0;
 
-    void setAttackBy(WeaponID attackBy);
+    void setInteractWeapon(WeaponID interactWeapon);
 
     std::shared_ptr<Cell> &getActualCell();
 

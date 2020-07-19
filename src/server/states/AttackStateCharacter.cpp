@@ -1,11 +1,11 @@
 #include "AttackStateCharacter.h"
 #include "../GameCharacter.h"
-#include "StillStateCharacter.h"
-#include "MoveStateCharacter.h"
 
 AttackStateCharacter::~AttackStateCharacter() = default;
 
-AttackStateCharacter::AttackStateCharacter(InputInfo info) : State(info) {}
+AttackStateCharacter::AttackStateCharacter() : State() {
+    stateId = StateID::Attack;
+}
 
 void AttackStateCharacter::performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects,
                                        Board &board) {
@@ -14,12 +14,12 @@ void AttackStateCharacter::performTask(uint id, std::unordered_map<uint, std::sh
     if (aCharacter->isDead()) {
         finalized = true;
         if (aEnemy != nullptr) {
-            aEnemy->setAttackBy(WeaponID::Nothing);
+            aEnemy->setInteractWeapon(WeaponID::Nothing);
         }
         return;
     }
     if (timeBetweenAttacks == 0) {
-        timeBetweenAttacks = 10;
+        timeBetweenAttacks = 30;
         std::shared_ptr<Cell> enemyCell = board.getCellFromPoint(inputInfo.position);
         if (enemyCell->getGameObjectId() != 0 && enemyCell != aCharacter->getActualCell()) {
             try {
@@ -39,7 +39,7 @@ void AttackStateCharacter::performTask(uint id, std::unordered_map<uint, std::sh
                     }
                     enemyReceiveDamage = true;
                 }
-            } catch (const std::out_of_range& e) {
+            } catch (const std::exception& e) {
                 std::cout << "Cannot get Enemy" << std::endl;
             }
         }
@@ -51,23 +51,10 @@ void AttackStateCharacter::performTask(uint id, std::unordered_map<uint, std::sh
         if (timeBetweenAttacks == 0) {
             finalized = true;
             if (aEnemy != nullptr) {
-                aEnemy->setAttackBy(WeaponID::Nothing);
+                aEnemy->setInteractWeapon(WeaponID::Nothing);
             }
         }
     }
-}
-
-void AttackStateCharacter::setNextState(InputInfo info) {
-    if (info.input == InputID::up || info.input == InputID::down ||
-        info.input == InputID::left || info.input == InputID::right) {
-        nextState = std::unique_ptr<State>(new MoveStateCharacter(info));
-    } else {
-        nextState = std::unique_ptr<State>(new StillStateCharacter(info));
-    }
-}
-
-void AttackStateCharacter::resetState() {
-    nextState = std::unique_ptr<State>(new StillStateCharacter());
 }
 
 bool AttackStateCharacter::isOnPursuit(uint pursuitId) {
@@ -80,4 +67,25 @@ bool AttackStateCharacter::isAttacking() {
 
 bool AttackStateCharacter::isMeditating() {
     return false;
+}
+
+StateID AttackStateCharacter::getNextStateID(InputInfo info) {
+    StateID nextStateId = StateID::Still;
+    if (info.input == InputID::up || info.input == InputID::down ||
+        info.input == InputID::left || info.input == InputID::right) {
+        nextStateId = StateID::Move;
+    }
+    return nextStateId;
+}
+
+StateID AttackStateCharacter::getResetStateID() {
+    return StateID::Still;
+}
+
+void AttackStateCharacter::init(InputInfo aInputInfo) {
+    inputInfo = aInputInfo;
+    finalized = false;
+    aEnemy = nullptr;
+    timeBetweenAttacks = 0;
+    enemyReceiveDamage = false;
 }

@@ -20,6 +20,10 @@ public:
 
     bool isOnPursuit(uint pursuitId) override;
 
+    StateID getNextStateID(InputInfo info) override;
+
+    StateID getResetStateID() override;
+
     bool isMeditating() override;
 
     bool isAttacking() override;

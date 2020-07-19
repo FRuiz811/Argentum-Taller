@@ -18,9 +18,9 @@ public:
 
     bool isOnPursuit(uint pursuitId) override;
 
-    void setNextState(InputInfo info) override;
+    StateID getNextStateID(InputInfo info) override;
 
-    void resetState() override;
+    StateID getResetStateID() override;
 
     bool isMeditating() override;
 

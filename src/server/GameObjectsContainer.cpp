@@ -5,7 +5,7 @@ GameObjectsContainer::GameObjectsContainer() = default;
 
 GameObjectsContainer::~GameObjectsContainer() = default;
 
-void GameObjectsContainer::addGameObject(const std::shared_ptr<GameObject>& aGameObject, uint id) {
+void GameObjectsContainer::addGameObject(std::shared_ptr<GameObject> aGameObject, uint id) {
     gameObjects.insert(std::pair<uint, std::shared_ptr<GameObject>>(id, aGameObject));
 }
 

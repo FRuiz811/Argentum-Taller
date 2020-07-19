@@ -21,11 +21,11 @@ public:
 
     void performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) override;
 
-    void setNextState(InputInfo info) override;
-
     bool isMeditating() override;
 
-    void resetState() override;
+    StateID getNextStateID(InputInfo info) override;
+
+    StateID getResetStateID() override;
 
     bool isAttacking() override;
 };

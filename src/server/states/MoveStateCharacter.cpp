@@ -25,7 +25,7 @@ MoveStateCharacter::MoveStateCharacter(const InputInfo &info) : State(info) {
             direction = Direction::down;
             break;
     }
-    stateId = CharacterStateID::Move;
+    stateId = StateID::Move;
 }
 
 void MoveStateCharacter::performTask(uint id,
@@ -62,18 +62,20 @@ void MoveStateCharacter::performTask(uint id,
 
 }
 
-void MoveStateCharacter::setNextState(InputInfo info) {
+StateID MoveStateCharacter::getNextStateID(InputInfo info) {
+    StateID nextStateId;
     if (info.input == InputID::up || info.input == InputID::down ||
         info.input == InputID::left || info.input == InputID::right) {
-        this->nextState = std::unique_ptr<State>(new MoveStateCharacter(info));
+        nextStateId = StateID::Move;
     } else if(info.input == InputID::stopMove) {
-        nextState = std::unique_ptr<State>(new StillStateCharacter(info));
+        nextStateId = StateID::Still;
     }
+    return nextStateId;
 }
 
-void MoveStateCharacter::resetState() {
-        movement.reset();
-        finalized = false;
+StateID MoveStateCharacter::getResetStateID() {
+    movement.reset();
+    return StateID::Move;
 }
 
 bool MoveStateCharacter::isOnPursuit(uint pursuitId) {

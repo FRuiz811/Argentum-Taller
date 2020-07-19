@@ -1,12 +1,11 @@
 #include "PursuitStateCreature.h"
 #include "StillStateCreature.h"
 #include "../GameCharacter.h"
-#include "AttackStateCreature.h"
 
 PursuitStateCreature::~PursuitStateCreature() = default;
 
 PursuitStateCreature::PursuitStateCreature(uint id) : pursuitId(id) {
-    stateId = CharacterStateID::Move;
+    stateId = StateID::Move;
 }
 
 void PursuitStateCreature::performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) {
@@ -50,16 +49,6 @@ void PursuitStateCreature::performTask(uint id, std::unordered_map<uint, std::sh
 
 }
 
-void PursuitStateCreature::setNextState(InputInfo info) {
-    if (canAttack) {
-        nextState = std::unique_ptr<State>(new AttackStateCreature(pursuitId));
-    } else {
-        nextState = std::unique_ptr<State>(new StillStateCreature());
-    }
-}
-
-void PursuitStateCreature::resetState() {}
-
 bool PursuitStateCreature::isOnPursuit(uint aPursuitId) {
     return pursuitId == aPursuitId;
 }
@@ -70,4 +59,16 @@ bool PursuitStateCreature::isAttacking() {
 
 bool PursuitStateCreature::isMeditating() {
     return false;
+}
+
+StateID PursuitStateCreature::getNextStateID(InputInfo info) {
+    StateID nextStateId = StateID::Still;
+    if (canAttack) {
+        nextStateId = StateID::Pursuit;
+    }
+    return nextStateId;
+}
+
+StateID PursuitStateCreature::getResetStateID() {
+    return StateID::Pursuit;
 }

@@ -5,7 +5,7 @@
 #include "MoveStateCharacter.h"
 
 TakeAndDropStateCharacter::~TakeAndDropStateCharacter() {
-    stateId = CharacterStateID::Still;
+    stateId = StateID::Still;
 }
 
 TakeAndDropStateCharacter::TakeAndDropStateCharacter(const InputInfo &info) : State(info) {}
@@ -39,19 +39,17 @@ void TakeAndDropStateCharacter::performTask(uint id, std::unordered_map<uint, st
     finalized = true;
 }
 
-
-void TakeAndDropStateCharacter::setNextState(InputInfo info) {
+StateID TakeAndDropStateCharacter::getNextStateID(InputInfo info) {
+    StateID nextState = StateID::Still;
     if (info.input == InputID::up || info.input == InputID::down ||
         info.input == InputID::left || info.input == InputID::right) {
-        nextState = std::unique_ptr<State>(new MoveStateCharacter(info));
-    } else {
-        nextState = std::unique_ptr<State>(new StillStateCharacter());
+        nextState = StateID::Move;
     }
-
+    return nextState;
 }
 
-void TakeAndDropStateCharacter::resetState() {
-    nextState = std::unique_ptr<State>(new StillStateCharacter());
+StateID TakeAndDropStateCharacter::getResetStateID() {
+    return StateID::Still
 }
 
 bool TakeAndDropStateCharacter::isOnPursuit(uint pursuitId) {

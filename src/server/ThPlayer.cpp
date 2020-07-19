@@ -16,14 +16,12 @@ void ThPlayer::run() {
     this->receiver.start();
     while (this->keepTalking) {
         try{
-            if (!worldInfoQueue.empty()) {
-                WorldInfo worldInfo = worldInfoQueue.pop();
-                const PlayerInfo& aPlayerInfo = worldInfo.getPlayerInfo();
-                this->protocol->send(Decoder::encodePlayerInfo(aPlayerInfo));
-                this->protocol->send(Decoder::encodeGameObjects(worldInfo.getGameObjectsInfo()));
-                if (aPlayerInfo.getState() == CharacterStateID::Interact && worldInfo.getNpcInfo().type != 0) {
-                    this->protocol->send(Decoder::encodeNPCInfo(worldInfo.getNpcInfo()));
-                }
+            WorldInfo worldInfo = worldInfoQueue.pop();
+            const PlayerInfo& aPlayerInfo = worldInfo.getPlayerInfo();
+            this->protocol->send(Decoder::encodePlayerInfo(aPlayerInfo));
+            this->protocol->send(Decoder::encodeGameObjects(worldInfo.getGameObjectsInfo()));
+            if (aPlayerInfo.getState() == CharacterStateID::Interact && worldInfo.getNpcInfo().type != 0) {
+                this->protocol->send(Decoder::encodeNPCInfo(worldInfo.getNpcInfo()));
             }
         } catch(const SocketException& e) {
            std::cout << ERRORSOCKET << e.what() << std::endl;

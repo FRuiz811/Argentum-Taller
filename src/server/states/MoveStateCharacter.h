@@ -9,7 +9,6 @@ class MoveStateCharacter : public State {
 private:
     Direction direction;
     Movement movement;
-
 public:
     explicit MoveStateCharacter(const InputInfo &info);
 
@@ -19,13 +18,13 @@ public:
 
     void performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) override;
 
-    void resetState() override;
-
     bool isAttacking() override;
 
     bool isMeditating() override;
 
-    void setNextState(InputInfo info) override;
+    StateID getNextStateID(InputInfo info) override;
+
+    StateID getResetStateID() override;
 };
 
 

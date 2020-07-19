@@ -48,12 +48,6 @@ void MoveStateCreature::performTask(uint id, std::unordered_map<uint, std::share
     }
 }
 
-void MoveStateCreature::setNextState(InputInfo info) {
-    nextState = std::unique_ptr<State>(new MoveStateCreature(info));
-}
-
-void MoveStateCreature::resetState() {}
-
 bool MoveStateCreature::isOnPursuit(uint pursuitId) {
     return false;
 }
@@ -64,4 +58,12 @@ bool MoveStateCreature::isAttacking() {
 
 bool MoveStateCreature::isMeditating() {
     return false;
+}
+
+StateID MoveStateCreature::getNextStateID(InputInfo info) {
+    return StateID::Move;
+}
+
+StateID MoveStateCreature::getResetStateID() {
+    return StateID::Move;
 }

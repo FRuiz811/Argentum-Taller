@@ -10,9 +10,8 @@
 class State {
 protected:
     bool finalized = false;
-    std::unique_ptr<State> nextState = nullptr;
     InputInfo inputInfo;
-    CharacterStateID stateId;
+    StateID stateId;
 public:
     State();
 
@@ -20,25 +19,23 @@ public:
 
     virtual ~State();
 
-    CharacterStateID getStateId() const;
+    StateID getStateId() const;
 
     virtual void performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) = 0;
 
     bool isOver() const;
 
-    virtual void setNextState(InputInfo) = 0;
+    virtual void init(InputInfo aInputInfo) = 0;
 
-    virtual void resetState() = 0;
+    virtual StateID getNextStateID(InputInfo aInputInfo) = 0;
+
+    virtual StateID getResetStateID() = 0;
 
     virtual bool isOnPursuit(uint pursuitId) = 0;
 
     virtual bool isAttacking() = 0;
 
     virtual bool isMeditating() = 0;
-
-    std::unique_ptr<State> getNextState();
-
-    bool hasNextState();
 };
 
 

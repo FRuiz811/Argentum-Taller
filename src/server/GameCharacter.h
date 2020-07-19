@@ -3,12 +3,13 @@
 
 #include "../common/PlayerInfo.h"
 #include "../common/StaticObject.h"
-#include "states/State.h"
 #include "../common/InputQueue.h"
 #include "../common/Identificators.h"
 #include "Inventory.h"
+#include "GameObject.h"
 #include <vector>
 #include <memory>
+#include <states/StatePoolCharacter.h>
 
 class GameCharacter : public GameObject{
 private:
@@ -18,7 +19,7 @@ private:
     float life;
     float mana;
     float exp;
-    std::unique_ptr<State> state;
+    StatePoolCharacter statePool;
     InputQueue queueInputs;
     Inventory inventory;
     WeaponID weapon{WeaponID::Nothing};
