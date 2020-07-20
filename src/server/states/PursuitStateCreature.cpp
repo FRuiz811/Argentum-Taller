@@ -1,12 +1,12 @@
 #include "PursuitStateCreature.h"
 #include "StillStateCreature.h"
 #include "../GameCharacter.h"
-#include "AttackStateCreature.h"
 
 PursuitStateCreature::~PursuitStateCreature() = default;
 
-PursuitStateCreature::PursuitStateCreature(uint id) : pursuitId(id) {
-    stateId = CharacterStateID::Move;
+PursuitStateCreature::PursuitStateCreature() : StateCreature(), pursuitId(0) {
+    stateId = StateID::Pursuit;
+    finalized = false;
 }
 
 void PursuitStateCreature::performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) {
@@ -24,7 +24,7 @@ void PursuitStateCreature::performTask(uint id, std::unordered_map<uint, std::sh
                     aCreature->setDirection(board.getDirection(creatureCell, enemyCell));
                 } else {
                     std::shared_ptr<Cell> newCell;
-                    newCell = board.getBestCell(creatureCell, enemyCell);
+                    newCell = board.getBestCell(creatureCell, enemyCell, false);
                     if (newCell != aCreature->getActualCell()) {
                         Direction aDirection = board.getDirection(creatureCell, newCell);
                         aCreature->setDirection(aDirection);
@@ -50,16 +50,6 @@ void PursuitStateCreature::performTask(uint id, std::unordered_map<uint, std::sh
 
 }
 
-void PursuitStateCreature::setNextState(InputInfo info) {
-    if (canAttack) {
-        nextState = std::unique_ptr<State>(new AttackStateCreature(pursuitId));
-    } else {
-        nextState = std::unique_ptr<State>(new StillStateCreature());
-    }
-}
-
-void PursuitStateCreature::resetState() {}
-
 bool PursuitStateCreature::isOnPursuit(uint aPursuitId) {
     return pursuitId == aPursuitId;
 }
@@ -68,6 +58,22 @@ bool PursuitStateCreature::isAttacking() {
     return false;
 }
 
-bool PursuitStateCreature::isMeditating() {
-    return false;
+StateID PursuitStateCreature::getNextStateID(InputInfo info) {
+    StateID nextStateId = StateID::Still;
+    if (canAttack) {
+        nextStateId = StateID::Attack;
+    }
+    return nextStateId;
+}
+
+StateID PursuitStateCreature::getResetStateID() {
+    return StateID::Pursuit;
+}
+
+void PursuitStateCreature::init(InputInfo aInputInfo) {
+    inputInfo = aInputInfo;
+    pursuitId = aInputInfo.aditional;
+    movement.reset();
+    canAttack = false;
+    finalized = false;
 }

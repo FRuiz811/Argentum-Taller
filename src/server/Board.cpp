@@ -1,4 +1,6 @@
 #include "Board.h"
+#include "Node.h"
+#include "NodeContainer.h"
 #include <memory>
 #include <cstdlib>
 
@@ -203,17 +205,36 @@ std::pair<int, int> Board::getCorrectPosition(const std::shared_ptr<Cell>& aCell
     return {x, y};
 }
 
-std::shared_ptr<Cell> Board::getBestCell(const std::shared_ptr<Cell>& actualCell, const std::shared_ptr<Cell>& destinationCell) {
-    uint distance = getDistance(actualCell, destinationCell);
-    std::shared_ptr<Cell> bestCell = actualCell;
-    for (auto &adjacent : getAdjacents(actualCell->getCoord(), 1)) {
-        uint adjacentDistance = getDistance(adjacent.second, destinationCell);
-        if (distance > adjacentDistance && adjacent.second->getNestId() == actualCell->getNestId() && adjacent.second->isEmpty()) {
-            bestCell = adjacent.second;
-            distance = adjacentDistance;
+std::shared_ptr<Cell> Board::getBestCell(const std::shared_ptr<Cell>& actualCell, const std::shared_ptr<Cell>& destinationCell, bool overstepNest) {
+    NodeContainer close;
+    NodeContainer open;
+    Node firstNode = Node(0, 0, getDistance(actualCell, destinationCell), actualCell);
+    Node destinationNode = Node(0, 0, 0, destinationCell);
+    Node& pos = firstNode;
+    open.insert(firstNode);
+    while (!open.has(destinationNode)) {
+        pos = open.getBestNode();
+        for (auto &adjacent : getAdjacents(pos.getCell()->getCoord(), 1)) {
+            Node aNode = Node(pos.getId(), pos.getG() + 1, getDistance(adjacent.second, destinationCell), adjacent.second);
+            if (overstepNest || adjacent.second->getNestId() == actualCell->getNestId()) {
+                if (adjacent.second == destinationCell) {
+                    open.insert(aNode);
+                } else if (adjacent.second->isEmpty() && !close.has(aNode)) {
+                    if (open.has(aNode)) {
+                        open.modifyNode(aNode.getId(), pos);
+                    } else {
+                        open.insert(aNode);
+                    }
+                }
+            }
         }
+        close.insert(pos);
     }
-    return bestCell;
+    Node &selectedNode = close.get(open.get(destinationNode.getId()).getParent());
+    while (close.get(selectedNode.getParent()).getParent() != 0) {
+        selectedNode = close.get(selectedNode.getParent());
+    }
+    return selectedNode.getCell();
 }
 
 Direction Board::getDirection(const std::shared_ptr<Cell>& actualCell, const std::shared_ptr<Cell>& destinationCell) {
@@ -255,4 +276,22 @@ std::shared_ptr<Cell> Board::getNextEmptyCell(const std::shared_ptr<Cell> &aCell
         }
     }
     return cell;
+}
+
+std::shared_ptr<Cell> Board::getCloserPriest(const std::shared_ptr<Cell>& aCell) {
+    std::shared_ptr<Cell> chosenCell;
+    std::shared_ptr<Cell> aCellPriest;
+    uint8_t minDistance = 0;
+    for (size_t i = 0; i < rows; ++i) {
+        for (size_t j = 0; j < cols; ++j) {
+            aCellPriest = getCell(i, j);
+            if (aCellPriest->isPriest()) {
+                if (minDistance == 0 || minDistance > getDistance(aCellPriest, aCell)) {
+                    minDistance = getDistance(aCellPriest, aCell);
+                    chosenCell = aCellPriest;
+                }
+            }
+        }
+    }
+    return chosenCell;
 }

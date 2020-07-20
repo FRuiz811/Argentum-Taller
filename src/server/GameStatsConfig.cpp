@@ -24,6 +24,7 @@ GameStatsConfig::GameStatsConfig(rapidjson::Document &json) {
     distance = json["distance"].GetFloat();
     inventoryLimit = json["inventoryLimit"].GetInt();
     newbieLevel = json["newbieLevel"].GetInt();
+    loseExp = json["loseExp"].GetFloat();
 
     rapidjson::Value::Array racesArray = json["races"].GetArray();
     for (auto &aRace : racesArray) {
@@ -244,6 +245,18 @@ bool GameStatsConfig::isNewbie(int level){
     return level <= GameStatsConfig::newbieLevel; 
 }
 
+float GameStatsConfig::restoreHealth(WeaponID aWeaponId) {
+    if ( aWeaponId == WeaponID::Nothing) {
+        return 0;
+    }
+    ItemInfo aItemInfo = items.at(ItemTranslator::weaponToItem(aWeaponId));
+    return aItemInfo.healthRestored;
+}
+
+float GameStatsConfig::getLoseExp() {
+    return loseExp;
+}
+
 GameStatsConfig::GameStatsConfig() = default;
 
 GameStatsConfig::~GameStatsConfig() = default;
@@ -271,3 +284,4 @@ uint8_t GameStatsConfig::nestCreaturesLimit = 0.0;
 float GameStatsConfig::distance = 0.0;
 int GameStatsConfig::inventoryLimit = 0;
 int GameStatsConfig::newbieLevel = 0;
+float GameStatsConfig::loseExp = 0;

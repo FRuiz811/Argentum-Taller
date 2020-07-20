@@ -3,7 +3,7 @@
 #include <utility>
 
 GameObjectInfo GameObject::getGameObjectInfo() {
-    return GameObjectInfo(id, point, textureHashId, direction,getStateId(), isItem(), attackBy);
+    return GameObjectInfo(id, point, textureHashId, direction,getStateId(), isItem(), interactWeapon);
 }
 
 uint GameObject::getId() const {
@@ -20,7 +20,7 @@ void GameObject::setTextureHashId(const std::string &textureHashId) {
 
 GameObject::GameObject(uint id, Point initialPoint, std::shared_ptr<Cell> initialCell, Direction aDirection) :
     point(initialPoint), cell(std::move(initialCell)), id(id), textureHashId(), direction(aDirection),
-    infoInteracting(), level(1), attackBy(WeaponID::Nothing) {}
+    infoInteracting(), level(1), interactWeapon(WeaponID::Nothing) {}
 
 std::shared_ptr<Cell> &GameObject::getActualCell() {
     return cell;
@@ -46,12 +46,12 @@ uint GameObject::getLevel() {
     return level;
 }
 
-void GameObject::setAttackBy(WeaponID attackBy) {
-    GameObject::attackBy = attackBy;
-}
-
 PlayerInfo GameObject::getPlayerInfo() {
     return PlayerInfo();
+}
+
+void GameObject::setInteractWeapon(WeaponID interactWeapon) {
+    GameObject::interactWeapon = interactWeapon;
 }
 
 GameObject::~GameObject()= default;

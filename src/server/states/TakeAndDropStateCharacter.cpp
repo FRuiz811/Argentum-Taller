@@ -1,23 +1,17 @@
 #include "TakeAndDropStateCharacter.h"
 #include "../GameCharacter.h"
 #include "../ObjectItem.h"
-#include "StillStateCharacter.h"
-#include "MoveStateCharacter.h"
 
 TakeAndDropStateCharacter::~TakeAndDropStateCharacter() {
-    stateId = CharacterStateID::Still;
+    stateId = StateID::TakeDrop;
 }
 
-TakeAndDropStateCharacter::TakeAndDropStateCharacter(const InputInfo &info) : State(info) {}
+TakeAndDropStateCharacter::TakeAndDropStateCharacter() : StateCharacter() {}
 
 void TakeAndDropStateCharacter::performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects,
                                             Board &board) {
 
     std::shared_ptr<GameCharacter> aCharacter = std::dynamic_pointer_cast<GameCharacter>(gameObjects.at(id));
-    if (aCharacter->isDead()) {
-        finalized = true;
-        return;
-    }
     std::shared_ptr<Cell> characterCell = aCharacter->getActualCell();
     switch (inputInfo.input) {
         case InputID::dropItem:
@@ -39,23 +33,17 @@ void TakeAndDropStateCharacter::performTask(uint id, std::unordered_map<uint, st
     finalized = true;
 }
 
-
-void TakeAndDropStateCharacter::setNextState(InputInfo info) {
+StateID TakeAndDropStateCharacter::getNextStateID(InputInfo info) {
+    StateID nextState = StateID::Still;
     if (info.input == InputID::up || info.input == InputID::down ||
         info.input == InputID::left || info.input == InputID::right) {
-        nextState = std::unique_ptr<State>(new MoveStateCharacter(info));
-    } else {
-        nextState = std::unique_ptr<State>(new StillStateCharacter());
+        nextState = StateID::Move;
     }
-
+    return nextState;
 }
 
-void TakeAndDropStateCharacter::resetState() {
-    nextState = std::unique_ptr<State>(new StillStateCharacter());
-}
-
-bool TakeAndDropStateCharacter::isOnPursuit(uint pursuitId) {
-    return false;
+StateID TakeAndDropStateCharacter::getResetStateID() {
+    return StateID::Still;
 }
 
 bool TakeAndDropStateCharacter::isAttacking() {
@@ -64,4 +52,8 @@ bool TakeAndDropStateCharacter::isAttacking() {
 
 bool TakeAndDropStateCharacter::isMeditating() {
     return false;
+}
+
+void TakeAndDropStateCharacter::init(InputInfo aInputInfo) {
+    inputInfo = aInputInfo;
 }

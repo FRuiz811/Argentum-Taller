@@ -1,10 +1,8 @@
 #include "InteractStateCharacter.h"
-#include "StillStateCharacter.h"
-#include "MoveStateCharacter.h"
 #include "../GameCharacter.h"
 
-InteractStateCharacter::InteractStateCharacter(const InputInfo &info) : State(info) {
-    stateId = CharacterStateID::Interact;
+InteractStateCharacter::InteractStateCharacter() : StateCharacter() {
+    stateId = StateID::Interact;
 }
 
 InteractStateCharacter::~InteractStateCharacter() = default;
@@ -51,21 +49,17 @@ void InteractStateCharacter::performTask(uint id, std::unordered_map<uint, std::
     }
 }
 
-void InteractStateCharacter::setNextState(InputInfo info) {
+StateID InteractStateCharacter::getNextStateID(InputInfo info) {
+    StateID nextStateId = StateID::Still;
     if (info.input == InputID::up || info.input == InputID::down ||
         info.input == InputID::left || info.input == InputID::right) {
-        nextState = std::unique_ptr<State>(new MoveStateCharacter(info));
-    } else {
-        nextState = std::unique_ptr<State>(new StillStateCharacter(info));
+        nextStateId = StateID::Move;
     }
+    return nextStateId;
 }
 
-void InteractStateCharacter::resetState() {
-    nextState = std::unique_ptr<State>(new StillStateCharacter());
-}
-
-bool InteractStateCharacter::isOnPursuit(uint pursuitId) {
-    return false;
+StateID InteractStateCharacter::getResetStateID() {
+    return StateID::Still;
 }
 
 bool InteractStateCharacter::isAttacking() {
@@ -75,3 +69,12 @@ bool InteractStateCharacter::isAttacking() {
 bool InteractStateCharacter::isMeditating() {
     return false;
 }
+
+void InteractStateCharacter::init(InputInfo aInputInfo) {
+    interacting = false;
+    aNpc = nullptr;
+    inputInfo = aInputInfo;
+    finalized = false;
+}
+
+

@@ -1,24 +1,24 @@
 #ifndef ARGENTUM_TALLER_INTERACTSTATECHARACTER_H
 #define ARGENTUM_TALLER_INTERACTSTATECHARACTER_H
 
-#include "State.h"
+#include "StateCharacter.h"
 
-class InteractStateCharacter: public State {
+class InteractStateCharacter: public StateCharacter {
 private:
     bool interacting = false;
     std::shared_ptr<GameObject> aNpc = nullptr;
 public:
-    InteractStateCharacter(const InputInfo &info);
+    InteractStateCharacter();
 
     ~InteractStateCharacter() override;
 
     void performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) override;
 
-    void setNextState(InputInfo info) override;
+    void init(InputInfo aInputInfo) override;
 
-    void resetState() override;
+    StateID getNextStateID(InputInfo info) override;
 
-    bool isOnPursuit(uint pursuitId) override;
+    StateID getResetStateID() override;
 
     bool isMeditating() override;
 

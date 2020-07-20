@@ -20,6 +20,12 @@ public:
 
     bool isDead() override;
 
+    PlayerInfo getPlayerInfo() override;
+
+    bool hasAnInputInfo() override;
+
+    InputInfo getNextInputInfo() override;
+
     bool isItem() override;
 
     void take();

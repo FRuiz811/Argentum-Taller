@@ -12,6 +12,7 @@ private:
     bool city;
     uint nestId;
     uint itemId;
+    bool priest;
 public:
     Cell(uint x, uint y);
 
@@ -34,6 +35,10 @@ public:
     uint getItemId() const;
 
     bool isEmpty() const;
+
+    bool isPriest() const;
+
+    void addPriest();
 
     void setEmpty(bool empty);
 

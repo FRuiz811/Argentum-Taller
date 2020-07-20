@@ -34,7 +34,7 @@ void Player::render(Camera& camera) {
 
 void Player::update(double dt) {
   if(this->state != nullptr &&
-  this->state->getState() == CharacterStateID::Move) {
+          (this->state->getState() == CharacterStateID::Move || this->state->getState() == CharacterStateID::Resurrect)) {
     Point aux(posX, posY);
     this->center = aux;
     this->body->update(dt,direction);

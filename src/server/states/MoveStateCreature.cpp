@@ -5,26 +5,10 @@
 
 MoveStateCreature::~MoveStateCreature() = default;
 
-MoveStateCreature::MoveStateCreature(InputInfo info) : State(info),
-    direction(Direction::down), movement(){
-    switch(info.input) {
-        case InputID::up:
-            direction = Direction::up;
-            break;
-        case InputID::down:
-            direction = Direction::down;
-            break;
-        case InputID::left:
-            direction = Direction::left;
-            break;
-        case InputID::right:
-            direction = Direction::right;
-            break;
-        default:
-            direction = Direction::up;
-            break;
-    }
-    stateId = CharacterStateID::Move;
+MoveStateCreature::MoveStateCreature() : StateCreature(){
+    stateId = StateID::Move;
+    direction = Direction::down;
+    finalized = false;
 }
 
 void MoveStateCreature::performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) {
@@ -49,12 +33,6 @@ void MoveStateCreature::performTask(uint id, std::unordered_map<uint, std::share
     }
 }
 
-void MoveStateCreature::setNextState(InputInfo info) {
-    nextState = std::unique_ptr<State>(new MoveStateCreature(info));
-}
-
-void MoveStateCreature::resetState() {}
-
 bool MoveStateCreature::isOnPursuit(uint pursuitId) {
     return false;
 }
@@ -63,6 +41,33 @@ bool MoveStateCreature::isAttacking() {
     return false;
 }
 
-bool MoveStateCreature::isMeditating() {
-    return false;
+StateID MoveStateCreature::getNextStateID(InputInfo info) {
+    return StateID::Move;
+}
+
+StateID MoveStateCreature::getResetStateID() {
+    return StateID::Move;
+}
+
+void MoveStateCreature::init(InputInfo aInputInfo) {
+    movement.reset();
+    inputInfo = aInputInfo;
+    switch(aInputInfo.input) {
+        case InputID::up:
+            direction = Direction::up;
+            break;
+        case InputID::down:
+            direction = Direction::down;
+            break;
+        case InputID::left:
+            direction = Direction::left;
+            break;
+        case InputID::right:
+            direction = Direction::right;
+            break;
+        default:
+            direction = Direction::up;
+            break;
+    }
+    finalized = false;
 }

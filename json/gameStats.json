@@ -1,5 +1,5 @@
 {
-  "port": "7778",
+  "port": "7777",
   "races": [
     {
       "id": 1,
@@ -195,12 +195,12 @@
       "range": 0,
       "minDamage":0,
       "maxDamage":0,
-      "manaUsed": 100,
+      "manaUsed": 30,
       "manaRestored": 0,
       "healthRestored": 100,
       "minDefense": 0,
       "maxDefense": 0,
-      "goldCost": 150,
+      "goldCost": 100,
       "type": "Weapon"
     },    
     {
@@ -461,5 +461,6 @@
   "distance": 32.0,
   "inventoryLimit":9,
   "newbieLevel": 4,
-  "levelDifference": 10
+  "levelDifference": 10,
+  "loseExp": 500
 }
