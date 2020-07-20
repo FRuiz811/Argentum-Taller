@@ -12,11 +12,15 @@ void ResurrectStateCharacter::performTask(uint id, std::unordered_map<uint, std:
 
     std::shared_ptr<GameCharacter> aCharacter = std::dynamic_pointer_cast<GameCharacter>(gameObjects.at(id));
     std::shared_ptr<Cell> characterCell = aCharacter->getActualCell();
+    if (!aCharacter->isDead()) {
+        finalized = true;
+        return;
+    }
     if (aPriestCell == nullptr) {
         aPriestCell = board.getCloserPriest(characterCell);
     }
     if (!movement.hasStart()) {
-            if (board.getDistance(characterCell, aPriestCell) == 1) {
+            if (board.getDistance(characterCell, aPriestCell) == 2) {
                 finalized = true;
                 aCharacter->setDirection(board.getDirection(characterCell, aPriestCell));
                 aCharacter->cure();

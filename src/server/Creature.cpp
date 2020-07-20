@@ -105,17 +105,18 @@ std::vector<DropItem> Creature::getDrop() {
     std::vector<DropItem> dropItems;
     int randomDrop = Random::get(0,100);
     ItemsInventoryID aItemInventoryId = ItemsInventoryID::Nothing;
-    float amount = 0;
+    float amount = 1;
     if ((randomDrop > 80) && randomDrop <= 96) {
         aItemInventoryId = ItemsInventoryID::Gold;
         amount = GameStatsConfig::getGoldDrop(creatureId, level);
     } else if (randomDrop > 96 && randomDrop <= 98) {
         aItemInventoryId = ItemsInventoryID(Random::get(21, 22));
-        amount = 1;
     } else if (randomDrop > 98 && randomDrop <= 100) {
         aItemInventoryId = ItemsInventoryID(Random::get(1, 20));
     }
-    dropItems.emplace_back(aItemInventoryId, amount);
+    if (aItemInventoryId != ItemsInventoryID::Nothing) {
+        dropItems.emplace_back(aItemInventoryId, amount);
+    }
     itemDrop = false;
     return dropItems;
 }

@@ -461,5 +461,6 @@
   "distance": 32.0,
   "inventoryLimit":9,
   "newbieLevel": 4,
-  "levelDifference": 10
+  "levelDifference": 10,
+  "loseExp": 500
 }

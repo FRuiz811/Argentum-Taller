@@ -171,6 +171,7 @@ void GameCharacter::receiveDamage(float damage, WeaponID weaponId) {
         shield = ShieldID::Nothing;
         weapon = WeaponID::Nothing;
         helmet = HelmetID::Nothing;
+        exp = exp - GameStatsConfig::getLoseExp() < 0 ? 0 : exp - GameStatsConfig::getLoseExp();
     }
 }
 
