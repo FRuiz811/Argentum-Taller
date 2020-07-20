@@ -9,10 +9,7 @@
 #include "Socket.h"
 #include "Message.h"
 
-//Este protocolo de comunicación está diseñado para enviar el mapa, la
-//información del jugador, los objetos renderizables del mapa(items, criaturas, npc u otros jugadores)
-// y los comandos que ingresa el jugador. 
-
+//Wrapper del socket utilizado para la comunicacion.s
 class CommunicationProtocol {
 private:
     Socket socket;

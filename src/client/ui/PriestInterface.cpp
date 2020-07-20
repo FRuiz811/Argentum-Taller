@@ -40,21 +40,24 @@ void PriestInterface::render() {
     if (this->buttonsItemsNPC.size() == 0)
         loadButtons = true;
 
+    int widthSegment = this->window->getWidth()/8;
+
     for (uint j = 0; j < items.size(); j++) {
         const Texture& item = manager.getTexture(items[j].first);
         src = {0,0,52,52};
-        dst = {9+(i%3)*50,50+(i/3)*50,32,32};
+        dst = {20+(i%3)*widthSegment/2,50+(i/3)*((this->window->getHeight())/2)/5,widthSegment/3,widthSegment/3};
         if (loadButtons) {
             selection = std::make_shared<SelectButton>(&(window->getRenderer()),dst,manager,j);
             this->buttonsItemsNPC.push_back(selection);
         }
         this->buttonsItemsNPC[i]->setViewport({0,(this->window->getHeight())/2,(this->window->getWidth()/8)*2,(this->window->getHeight())/2});
+        this->buttonsItemsNPC[i]->updatePosition(dst);
         this->buttonsItemsNPC[i]->render();
         item.render(src,dst);
         textureGold = font.createText(std::to_string(items[j].second),&(window->getRenderer()),&w,&h);
         this->gold.push_back(textureGold);
         src = {0,0,w,h};
-        dst = {20+(i%3)*50, 65+(i/3)*50,w,h};
+        dst = {widthSegment/4+(i%3)*widthSegment/2,15+(i/3)*((this->window->getHeight())/2)/5+widthSegment/2,w,h};
         SDL_RenderCopy(&(window->getRenderer()),textureGold,&src,&dst);
         i++;
     }
@@ -78,6 +81,7 @@ void PriestInterface::render() {
             this->buttonsNPC.push_back(button);
         }
         this->buttonsNPC[i]->setViewport({0,(this->window->getHeight())/2,(this->window->getWidth()/8)*2,(this->window->getHeight())/2});
+        this->buttonsNPC[i]->updatePosition({12+width,((this->window->getHeight()-60)/2)-height-HEIGTHBUTTON,WIDTHBUTTON,HEIGTHBUTTON});
         this->buttonsNPC[i]->render();
         i++;
     }

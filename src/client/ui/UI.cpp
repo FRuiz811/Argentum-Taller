@@ -6,25 +6,31 @@
 #include "PriestInterface.h"
 #include "MerchantInterface.h"
 #include "BankerInterface.h"
+#include "../Effect.h"
 
 #define WIDTHBUTTON 70
 #define HEIGTHBUTTON 25
 #define ITEMSMERCHANT 12
+#define MERCHANTTYPE 1
+#define PRIESTTYPE 2
+#define BANKERTYPE 3
+#define LIMITINVENTORY 9
+#define TOPBARHEIGHT 60
 
-UI::UI(Window& window, Player* player, const TextureManager& manager) : 
- playerTarget(player),window(window), manager(manager),
+UI::UI(Window& window, Player* player, const TextureManager& manager, const MusicManager& mixer) : 
+ playerTarget(player),window(window), manager(manager), mixer(mixer),
  font("assets/font/Prince Valiant.ttf",18,{0xA4, 0xA4, 0xA4}), texts(), info(),
  itemsID(), buttonsBuild() {
 	createTexts();
     SDL_Rect buttonRect;
-    for (int i = 0; i<9; i++) {
+    for (int i = 0; i< LIMITINVENTORY; i++) {
         buttonRect = {9+(i%3)*50,50+(i/3)*50,32,32};
         std::shared_ptr<SelectButton> button = std::shared_ptr<SelectButton>(new 
             SelectButton(&(window.getRenderer()),buttonRect,manager,i));
         this->buttonsItems.push_back(button);
     }
-    std::shared_ptr<RaisedButton> equipButton = std::shared_ptr<RaisedButton>(new 
-        EquipButton(&(window.getRenderer()),font,"Equipar",{9,205,WIDTHBUTTON,HEIGTHBUTTON}, manager,playerTarget));
+    std::shared_ptr<RaisedButton> equipButton = std::shared_ptr<RaisedButton>(new EquipButton(&(window.getRenderer()),font,
+        "Equipar",{9,205,WIDTHBUTTON,HEIGTHBUTTON}, manager,playerTarget));
     std::shared_ptr<RaisedButton> dropButton = std::shared_ptr<RaisedButton>(new 
         DropButton(&(window.getRenderer()),font,"Tirar",{109,205,WIDTHBUTTON,HEIGTHBUTTON}, manager,playerTarget));
     this->buttonsInventory.push_back(equipButton);
@@ -155,7 +161,7 @@ void UI::deleteInfo(){
 
 void UI::updateStates() {
     const Texture& topBar = manager.getTexture(TextureID::TopBar);
-    SDL_Rect topBarViewport = {0,0,this->window.getWidth(),60};
+    SDL_Rect topBarViewport = {0,0,this->window.getWidth(),TOPBARHEIGHT};
     SDL_RenderSetViewport(&(this->window.getRenderer()), &topBarViewport);
     SDL_RenderCopy(&(this->window.getRenderer()), topBar.getTexture(), NULL, NULL);
     deleteInfo();
@@ -178,30 +184,35 @@ void UI::updateItems() {
 
     SDL_Rect src = {0,0,52,52};
     SDL_Rect dst;
-    for (int i = 0; i<9; i++) {
+    for (int i = 0; i < LIMITINVENTORY; i++) {
         item = items.substr(2*i+i,2);
         idItem = std::stoi(item);
         const Texture& item = manager.getTexture((ItemsInventoryID)idItem);
         itemsID.push_back((ItemsInventoryID)idItem);
-        buttonsItems[i]->setViewport({0,60,widthSegment*2,(this->window.getHeight()-60)/2});
+
+        buttonsItems[i]->setViewport({0,TOPBARHEIGHT,widthSegment*2,(this->window.getHeight()-TOPBARHEIGHT)/2});
+        dst = {35+(i%3)*widthSegment/2,50+(i/3)*((this->window.getHeight()-TOPBARHEIGHT)/2)/5,widthSegment/3,widthSegment/3};
+        buttonsItems[i]->updatePosition(dst);
         if (idItem > 0) {
             buttonsItems[i]->render();
         }
-        dst = {9+(i%3)*50,50+(i/3)*50,32,32};
         item.render(src,dst);
     }   
 }
 
 void UI::updateInventory() {
     const Texture& statBackground = manager.getTexture(TextureID::StatsBackground);
-    SDL_Rect inventoryViewPort = {0,60,widthSegment*2,(this->window.getHeight()-60)/2};
+    SDL_Rect inventoryViewPort = {0,TOPBARHEIGHT,widthSegment*2,(this->window.getHeight()-TOPBARHEIGHT)/2};
     SDL_RenderSetViewport(&(this->window.getRenderer()), &inventoryViewPort);
-    SDL_Rect dst = {0,0,widthSegment*2,(this->window.getHeight()-60)/2};
+    SDL_Rect dst = {0,0,widthSegment*2,(this->window.getHeight()-TOPBARHEIGHT)/2};
     SDL_RenderCopy(&(this->window.getRenderer()), statBackground.getTexture(), NULL, &dst);
     updateItems();
+    int i = 0;
     for (auto& button: buttonsInventory){
-        button->setViewport({0,60,widthSegment*2,(this->window.getHeight()-60)/2});
+        button->setViewport({0,TOPBARHEIGHT,widthSegment*2,(this->window.getHeight()-TOPBARHEIGHT)/2});
+        button->updatePosition({20+(i%2)*widthSegment,int(((this->window.getHeight()-TOPBARHEIGHT)/2)-HEIGTHBUTTON*2.5),WIDTHBUTTON,HEIGTHBUTTON});
         button->render();
+        i++;
     }
 }
 
@@ -221,49 +232,63 @@ void UI::updateBuild() {
     if (this->buttonsBuild.size() == 0) {
         std::shared_ptr<SelectButton> button;
         button = std::shared_ptr<SelectButton>(new SelectButton(
-            &(window.getRenderer()),{widthSegment-16,50,32,32},manager,0));
+            &(window.getRenderer()),{widthSegment-widthSegment/6,50,widthSegment/3,widthSegment/3},manager,0));
         this->buttonsBuild.push_back(button);
         button = std::shared_ptr<SelectButton>(new SelectButton(
-            &(window.getRenderer()),{widthSegment-64,130,32,32},manager,1));
+            &(window.getRenderer()),{widthSegment-(widthSegment/3)*2,140,widthSegment/3,widthSegment/3},manager,1));
         this->buttonsBuild.push_back(button);
         button = std::shared_ptr<SelectButton>(new SelectButton(
-            &(window.getRenderer()),{widthSegment+32,130,32,32},manager,2));
+            &(window.getRenderer()),{widthSegment+widthSegment/3,140,widthSegment/3,widthSegment/3},manager,2));
         this->buttonsBuild.push_back(button);
         this->unequipButton = std::shared_ptr<RaisedButton> (new UnequipButton(
             &(window.getRenderer()),font,"Guardar",{9,205,WIDTHBUTTON,HEIGTHBUTTON}, manager,playerTarget));
     }
 
-    for(auto& button: buttonsBuild){
-        button->setViewport({0,(this->window.getHeight())/2,widthSegment*2,
+    for(uint i = 0; i < this->buttonsBuild.size(); i++){
+        buttonsBuild[i]->setViewport({0,(this->window.getHeight())/2,widthSegment*2,
                             (this->window.getHeight())/2});
-        button->render();
+        if (i == 0) {
+            buttonsBuild[i]->updatePosition({widthSegment-widthSegment/6,50,widthSegment/3,widthSegment/3});
+        } else if (i == 1) {
+            buttonsBuild[i]->updatePosition({widthSegment-(widthSegment/3)*2,140,widthSegment/3,widthSegment/3});
+        } else if (i == 2) {
+            buttonsBuild[i]->updatePosition({widthSegment+widthSegment/3,140,widthSegment/3,widthSegment/3});
+        }
+        buttonsBuild[i]->render();
     }
 
     SDL_Rect src = {0,0,52,52};
-    itemHelmet.render(src,{widthSegment-16,50,32,32});
+    itemHelmet.render(src,{widthSegment-widthSegment/6,50,widthSegment/3,widthSegment/3});
+    itemBody.render(src,{widthSegment-widthSegment/3,117+widthSegment/5,(widthSegment/3)*2,(widthSegment/3)*2});
     if (this->playerTarget->getHealth() == 0) {
-        itemHead.render({0,0,52,52},{widthSegment-16,85,32,32});
+        itemHead.render({0,0,52,52},{widthSegment-widthSegment/6,85+widthSegment/6,widthSegment/3,widthSegment/3});
     } else {
-        itemHead.render({0,0,17,17},{widthSegment-16,85,32,32});
+        itemHead.render({0,0,17,17},{widthSegment-widthSegment/6,85+widthSegment/6,widthSegment/3,widthSegment/3});
     }
-    itemBody.render(src,{widthSegment-32,117,64,64});
-    itemWeapon.render(src,{widthSegment-64,130,32,32});
-    itemShield.render(src,{widthSegment+32,130,32,32});
+    itemWeapon.render(src,{widthSegment-(widthSegment/3)*2,140,widthSegment/3,widthSegment/3});
+    itemShield.render(src,{widthSegment+widthSegment/3,140,widthSegment/3,widthSegment/3});
 
     this->unequipButton->setViewport({0,(this->window.getHeight())/2,widthSegment*2,
                             (this->window.getHeight())/2});
+    this->unequipButton->updatePosition({20,int(((this->window.getHeight())/2)-HEIGTHBUTTON*2.5),WIDTHBUTTON,HEIGTHBUTTON});
     this->unequipButton->render();
 
 }
 
 void UI::updateInteract() {
     if (this->npc == nullptr) {
-        if (this->informationNPC.type == 1) {
+        if (this->informationNPC.type == MERCHANTTYPE) {
             this->npc = std::shared_ptr<NPCInterface>(new MerchantInterface(informationNPC,&window,manager,playerTarget));
-        } else if (this->informationNPC.type == 2) {
+            const Effect& effect = mixer.getEffect(MusicID::Merchant);
+            effect.playEffect();
+        } else if (this->informationNPC.type == PRIESTTYPE) {
             this->npc = std::shared_ptr<NPCInterface>(new PriestInterface(informationNPC,&window,manager,playerTarget));
-        } else if (this->informationNPC.type == 3) {
+            const Effect& effect = mixer.getEffect(MusicID::Priest);
+            effect.playEffect();
+        } else if (this->informationNPC.type == BANKERTYPE) {
             this->npc = std::shared_ptr<NPCInterface>(new BankerInterface(informationNPC,&window,manager,playerTarget));
+            const Effect& effect = mixer.getEffect(MusicID::Banker);
+            effect.playEffect();
         } else {
             updateBuild();
         }
@@ -326,7 +351,7 @@ InputInfo UI::handleClick(SDL_Event& event) {
                 }        
             }
             for (auto& button: buttonsInventory) {
-                if (button->inside(x,y))
+                if (button->inside(x,y) && itemSelected != -1) 
                     info = button->onClick(itemSelected+1);
             }
             for(auto& button: buttonsBuild){      

@@ -6,12 +6,21 @@
 #include <unordered_map>
 #include <iostream>
 
+#ifdef DEV
+#define ROOT_DIR "./"
+#define CONFIG_DIR "./json"
+#else
+#define ROOT_DIR "/var/Argentum"
+#define CONFIG_DIR "/etc/Argentum"
+#endif
+
 enum class CharacterStateID {
     Still, //Aplica a NPCServer
     Move,  //Aplica a NPCServer
     Attack, //Aplica a NPCServer
     Meditate,
     Interact,
+    Resurrect,
 };
 
 enum class InputID {

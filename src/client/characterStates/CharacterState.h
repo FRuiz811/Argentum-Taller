@@ -4,6 +4,10 @@
 #include "../../common/Identificators.h"
 #include "../Character.h"
 
+//Esta clase es la utilizada por los personajes del juego para retratar su
+//estado. Las implementaciones de esta clase abstracta
+//permitirán o no el efecto de ciertos comandos.
+
 class CharacterState {
 private:
     CharacterStateID id;

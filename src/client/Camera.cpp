@@ -3,11 +3,12 @@
 #include <SDL2/SDL.h>
 
 #define WIDTHSEGMENT 8
+#define TOPBARHEIGHT 60
 
 Camera::Camera(Window& window, float widthMap, float heightMap) : window(window),
     width(widthMap), height(heightMap), scale(1.0f) {
     this->positionScreen = Point(0.0,float(this->window.getHeight())/2.0);
-    this->cam = {(this->window.getWidth()/WIDTHSEGMENT)*2,60,(this->window.getWidth()/WIDTHSEGMENT)*6, this->window.getHeight()-60};
+    this->cam = {(this->window.getWidth()/WIDTHSEGMENT)*2,TOPBARHEIGHT,(this->window.getWidth()/WIDTHSEGMENT)*6, this->window.getHeight()-TOPBARHEIGHT};
 }
 
 float Camera::getCameraWidth() const {
@@ -18,7 +19,7 @@ float Camera::getCameraHeight() const {
     return float(this->window.getHeight());
 }
 
-SDL_Rect Camera::getCamera() {
+SDL_Rect Camera::getCamera() const {
     return this->cam;
 }
 
@@ -37,7 +38,7 @@ void Camera::setPlayer(Point* player){
 void Camera::limits(Point* destiny) {
     if (this->playerTarget != nullptr) {  
         float limitWidth = ((this->window.getWidth()/WIDTHSEGMENT)*6) / 2.0f;
-        float limitHeight = (this->window.getHeight()-60) / 2.0f;
+        float limitHeight = (this->window.getHeight()-TOPBARHEIGHT) / 2.0f;
 
         destiny->y = std::max(destiny->y,limitHeight);
         destiny->y = std::min(destiny->y, this->height-limitHeight);
@@ -63,11 +64,12 @@ bool Camera::clickInMap(Point coordinates) const {
 
 void Camera::render(Point destiny) {
     limits(&destiny);
-    this->cam = {(this->window.getWidth()/WIDTHSEGMENT)*2,60,(this->window.getWidth()/WIDTHSEGMENT)*6, this->window.getHeight()-60};
+    this->cam = {(this->window.getWidth()/WIDTHSEGMENT)*2,TOPBARHEIGHT,(this->window.getWidth()/WIDTHSEGMENT)*6,
+                this->window.getHeight()-TOPBARHEIGHT};
     this->positionScreen.x = destiny.x - (((this->window.getWidth()/WIDTHSEGMENT)*6) / 2.0f);
-    this->positionScreen.y = destiny.y - ((this->window.getHeight() - 60) / 2.0f);
-    SDL_Rect display = {(this->window.getWidth()/WIDTHSEGMENT) * 2,60,
-            (this->window.getWidth()/WIDTHSEGMENT) * 6,this->window.getHeight() - 60};
+    this->positionScreen.y = destiny.y - ((this->window.getHeight() - TOPBARHEIGHT) / 2.0f);
+    SDL_Rect display = {(this->window.getWidth()/WIDTHSEGMENT) * 2,TOPBARHEIGHT,
+            (this->window.getWidth()/WIDTHSEGMENT) * 6,this->window.getHeight() - TOPBARHEIGHT};
     SDL_RenderSetViewport(&(this->window.getRenderer()), &display);
 }
 

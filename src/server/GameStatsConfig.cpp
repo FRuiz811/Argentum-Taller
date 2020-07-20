@@ -87,6 +87,7 @@ CreatureInfo GameStatsConfig::createCreatureInfo(rapidjson::Value& value) {
     aCreatureInfo.strength = value["strength"].GetFloat();
     aCreatureInfo.agility = value["agility"].GetFloat();
     aCreatureInfo.health = value["health"].GetFloat();
+    aCreatureInfo.constitution = value["constitution"].GetFloat();
     return aCreatureInfo;
 }
 
@@ -202,7 +203,7 @@ float GameStatsConfig::getDefense(BodyID bodyId, ShieldID shieldId, HelmetID hel
 }
 
 float GameStatsConfig::getDefense(CreatureID creatureId) {
-    return 0;
+    return Random::getFloat(0.0,creatures.at(creatureId).constitution);
 }
 
 bool GameStatsConfig::canEvade(CreatureID creatureId) {

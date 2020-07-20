@@ -17,6 +17,8 @@ public:
 
     int getId();
 
+    virtual void updatePosition(SDL_Rect position);
+
     void setViewport(SDL_Rect viewport);
 
     ~SelectButton();

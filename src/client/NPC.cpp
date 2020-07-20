@@ -6,6 +6,7 @@
 #include "characterStates/MeditateState.h"
 #include "characterStates/InteractState.h"
 #include "characterStates/AttackState.h"
+#include "characterStates/ResurrectState.h"
 #include "../common/Random.h"
 #include "Items/Animation.h"
 #include "Items/MeditateAnimation.h"
@@ -26,10 +27,10 @@ NPC::NPC(const TextureManager& manager, const GameObjectInfo& gameObjectInfo,
 void NPC::render(Camera& camera) {
   if (!aItem) {
     int distance = camera.distanceFromTarget(this->getPosition());
-    if(distance < 800){
-      Character::render(camera);
+    Character::render(camera);
+    if(distance < 400){
       MusicID effectId = selectSound();
-      if (Random::get(0,500) == 1 && effectId != MusicID::Nothing) {
+      if (Random::get(0,600) == 1 && effectId != MusicID::Nothing) {
         const Effect& effect = mixer.getEffect(effectId);
         if (distance > 255)
           distance = 255;
@@ -123,6 +124,9 @@ void NPC::setState(CharacterStateID newState) {
         break;
       case CharacterStateID::Attack:
         this->state = std::shared_ptr<CharacterState>(new AttackState());
+        break;
+      case CharacterStateID::Resurrect:
+        this->state = std::shared_ptr<CharacterState>(new ResurrectState());
         break;
 		}
 	}

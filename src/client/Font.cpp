@@ -1,9 +1,11 @@
 #include "Font.h"
 #include "../common/Exception.h"
+#include "../common/Identificators.h"
 
 Font::Font(const std::string& path, const int size, SDL_Color color) : size(size),
 	color(color) {
-	this->font = TTF_OpenFont(path.c_str(), this->size);
+	std::string root(ROOT_DIR+std::string("/")+path);
+	this->font = TTF_OpenFont(root.c_str(), this->size);
 	if (!this->font)
 		throw Exception("Fail TTF_OpenFont: %s", TTF_GetError());
 }

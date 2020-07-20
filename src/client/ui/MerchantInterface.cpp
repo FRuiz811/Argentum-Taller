@@ -2,7 +2,7 @@
 
 #define WIDTHBUTTON 70
 #define HEIGTHBUTTON 25
-#define ITEMSMERCHANT 12
+#define ITEMSMERCHANT 9
 
 MerchantInterface::MerchantInterface(NPCInfo info,Window* window, const TextureManager& manager,Player* player) : 
     NPCInterface(info,window,manager,player), buttonsNPC(), buttonsItemsNPC(), gold(), itemsMerchant() {
@@ -45,11 +45,11 @@ void MerchantInterface::render() {
     } else {
         max =(pagItems+1)*ITEMSMERCHANT;
     }
-
+    int widthSegment = this->window->getWidth()/8;
     for (uint j = pagItems*ITEMSMERCHANT; j < max; j++) {
         const Texture& item = manager.getTexture(items[j].first);
         src = {0,0,52,52};
-        dst = {9+(i%3)*50,50+(i/3)*50,32,32};
+        dst = {20+(i%3)*widthSegment/2,50+(i/3)*((this->window->getHeight())/2)/5,widthSegment/3,widthSegment/3};
         if (loadButtons) {
             selection = std::shared_ptr<SelectButton>(new 
             SelectButton(&(window->getRenderer()),dst,manager,j));
@@ -57,12 +57,13 @@ void MerchantInterface::render() {
         }
         this->buttonsItemsNPC[i]->setViewport({0,(this->window->getHeight())/2,
                                 (this->window->getWidth()/8)*2,(this->window->getHeight())/2});
+        this->buttonsItemsNPC[i]->updatePosition(dst);
         this->buttonsItemsNPC[i]->render();
         item.render(src,dst);
         textureGold = font.createText(std::to_string(items[j].second),&(window->getRenderer()),&w,&h);
         this->gold.push_back(textureGold);
         src = {0,0,w,h};
-        dst = {20+(i%3)*50, 65+(i/3)*50,w,h};
+        dst = {widthSegment/4+(i%3)*widthSegment/2,15+(i/3)*((this->window->getHeight())/2)/5+widthSegment/2,w,h};
         SDL_RenderCopy(&(window->getRenderer()),textureGold,&src,&dst);
         i++;
         if (i == ITEMSMERCHANT)
@@ -86,6 +87,8 @@ void MerchantInterface::render() {
         }
         this->buttonsNPC[i]->setViewport({0,(this->window->getHeight())/2,
                         (this->window->getWidth()/8)*2,(this->window->getHeight())/2});
+        this->buttonsNPC[i]->updatePosition({12+width,
+                    ((this->window->getHeight()-60)/2)-HEIGTHBUTTON,WIDTHBUTTON,HEIGTHBUTTON});
         this->buttonsNPC[i]->render();
         i++;
     }
@@ -96,6 +99,8 @@ void MerchantInterface::render() {
     if (this->arrow != nullptr){
         this->arrow->setViewport({0,(this->window->getHeight())/2,
                     (this->window->getWidth()/8)*2,(this->window->getHeight())/2});
+        this->arrow->updatePosition({(this->window->getWidth()/8)*2-40,
+            ((this->window->getHeight()-60)/2)-HEIGTHBUTTON*4,20,20});
         this->arrow->render();
     }
 }

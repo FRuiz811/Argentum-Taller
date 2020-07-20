@@ -33,12 +33,7 @@ add_executable(argentum_server ${SERVER_SOURCES} ${COMMON_SOURCES})
 target_link_libraries(argentum_client -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer pthread)
 target_link_libraries(argentum_server pthread)
 
-set(DEV yes)
-if(DEV)
-        set(ROOT_DIR ./)
-else()
-        set(ROOT_DIR /var/Argentum)
-endif()
+set(DEV no)
 
 file(COPY assets DESTINATION ./)
 file(COPY json/gameStats.json json/bigMapNPC.json json/finishedMap.json DESTINATION ./)

@@ -14,29 +14,17 @@ protected:
     ShieldID id{ShieldID::Nothing};
     Direction direction{Direction::down};
 public:
-    Shield(const Texture& texture, const int width, const int height, ShieldID id = ShieldID::Nothing) : 
-        Item(texture, width, height), id(id){}
+    Shield(const Texture& texture, const int width, const int height, ShieldID id = ShieldID::Nothing);
     
     virtual void render(int posX, int posY) = 0;
 
-    void update(double dt, Direction dir) {
-        if (this->direction != dir) {
-            this->direction = dir;
-            this->elapsed = 0;
-        }
-        this->elapsed += dt;
-        this->frame = int(this->elapsed/this->animationSpeed) % this->totalFrames;
-    }
+    void update(double dt, Direction dir);
 
-    void setAnimationSpeed(float speed) {
-        this->animationSpeed = speed;
-    }
+    void setAnimationSpeed(float speed);
 
-    ShieldID getId(){
-        return this->id;
-    }
+    ShieldID getId() const;
 
-    ~Shield() {};
+    ~Shield();
 };
 
 #endif

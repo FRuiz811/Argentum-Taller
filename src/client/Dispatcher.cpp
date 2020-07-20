@@ -5,7 +5,7 @@
 #include "../common/Decoder.h"
 
 #define UNKNOW_ERROR "Unknow Error"
-#define ERRORSOCKET "Error en la comunicaciónn en Dispatcher::run() "
+#define ERRORSOCKET "Error en la comunicación en Dispatcher::run() "
 #define ERRORDISPATCHER "Error en Dispatcher::run() "
 
 Dispatcher::Dispatcher(CommunicationProtocol& protocol, InputQueue& queue) :
