@@ -19,9 +19,10 @@ void ResurrectStateCharacter::performTask(uint id, std::unordered_map<uint, std:
             if (board.getDistance(characterCell, aPriestCell) == 1) {
                 finalized = true;
                 aCharacter->setDirection(board.getDirection(characterCell, aPriestCell));
+                aCharacter->cure();
             } else {
                 std::shared_ptr<Cell> newCell;
-                newCell = board.getBestCell(characterCell, aPriestCell);
+                newCell = board.getBestCell(characterCell, aPriestCell, true);
                 if (newCell != characterCell) {
                     Direction aDirection = board.getDirection(characterCell, newCell);
                     aCharacter->setDirection(aDirection);

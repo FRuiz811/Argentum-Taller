@@ -203,14 +203,16 @@ std::pair<int, int> Board::getCorrectPosition(const std::shared_ptr<Cell>& aCell
     return {x, y};
 }
 
-std::shared_ptr<Cell> Board::getBestCell(const std::shared_ptr<Cell>& actualCell, const std::shared_ptr<Cell>& destinationCell) {
-    uint distance = getDistance(actualCell, destinationCell);
+std::shared_ptr<Cell> Board::getBestCell(const std::shared_ptr<Cell>& actualCell, const std::shared_ptr<Cell>& destinationCell, bool overstepNest) {
+    uint distance = 0;
     std::shared_ptr<Cell> bestCell = actualCell;
     for (auto &adjacent : getAdjacents(actualCell->getCoord(), 1)) {
         uint adjacentDistance = getDistance(adjacent.second, destinationCell);
-        if (distance > adjacentDistance && adjacent.second->getNestId() == actualCell->getNestId() && adjacent.second->isEmpty()) {
-            bestCell = adjacent.second;
-            distance = adjacentDistance;
+        if (overstepNest || adjacent.second->getNestId() == actualCell->getNestId()) {
+            if (adjacent.second->isEmpty() && (distance > adjacentDistance || distance == 0)) {
+                bestCell = adjacent.second;
+                distance = adjacentDistance;
+            }
         }
     }
     return bestCell;
@@ -264,7 +266,7 @@ std::shared_ptr<Cell> Board::getCloserPriest(const std::shared_ptr<Cell>& aCell)
     for (size_t i = 0; i < rows; ++i) {
         for (size_t j = 0; j < cols; ++j) {
             aCellPriest = getCell(i, j);
-            if (aCell->isPriest()) {
+            if (aCellPriest->isPriest()) {
                 if (minDistance == 0 || minDistance > getDistance(aCellPriest, aCell)) {
                     minDistance = getDistance(aCellPriest, aCell);
                     chosenCell = aCellPriest;

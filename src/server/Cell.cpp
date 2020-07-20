@@ -81,8 +81,9 @@ bool Cell::isPriest() const {
     return priest;
 }
 
-void Cell::setPriest(bool priest) {
-    Cell::priest = priest;
+void Cell::addPriest() {
+    priest = true;
 }
+
 
 Cell::~Cell() = default;

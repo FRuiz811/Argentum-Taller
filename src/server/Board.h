@@ -62,7 +62,7 @@ public:
 
     std::shared_ptr<Cell> getNextCell(const std::shared_ptr<Cell>& aCell, Direction aDirection);
 
-    std::shared_ptr<Cell> getBestCell(const std::shared_ptr<Cell>& actualCell, const std::shared_ptr<Cell>& DestinationCell);
+    std::shared_ptr<Cell> getBestCell(const std::shared_ptr<Cell>& actualCell, const std::shared_ptr<Cell>& DestinationCell, bool overstepNest);
 
     Direction getDirection(const std::shared_ptr<Cell>& actualCell, const std::shared_ptr<Cell>& DestinationCell);
 

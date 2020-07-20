@@ -38,7 +38,7 @@ public:
 
     bool isPriest() const;
 
-    void setPriest(bool priest);
+    void addPriest();
 
     void setEmpty(bool empty);
 

@@ -35,7 +35,7 @@ CharacterStateID StateTranslator::stateToCharacterState(StateID stateId) {
             characterStateId =  CharacterStateID::Still;
             break;
         case StateID::Resurrect:
-            characterStateId = CharacterStateID::Still;
+            characterStateId = CharacterStateID::Resurrect;
             break;
     }
     return characterStateId;
