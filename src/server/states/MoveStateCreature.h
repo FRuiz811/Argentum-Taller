@@ -2,13 +2,14 @@
 #define ARGENTUM_TALLER_MOVESTATECREATURE_H
 
 
-#include "../Movement.h"
+#include <MovementCreature.h>
+#include "State.h"
 #include "StateCreature.h"
 
 class MoveStateCreature : public StateCreature {
 private:
     Direction direction;
-    Movement movement;
+    MovementCreature movement;
 public:
     MoveStateCreature();
     ~MoveStateCreature() override;

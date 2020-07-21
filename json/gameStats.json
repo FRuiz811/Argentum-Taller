@@ -455,7 +455,7 @@
   "evadeRandMin": 0,
   "evadeRandMax": 1,
   "evadeProbability": 0.001,
-  "maxAgility": 5,
+  "minAgility": 4.0,
   "creaturesLimit": 40,
   "nestCreaturesLimit": 3,
   "distance": 32.0,

@@ -12,7 +12,7 @@ void AttackStateCharacter::performTask(uint id, std::unordered_map<uint, std::sh
 
     std::shared_ptr<GameCharacter> aCharacter = std::dynamic_pointer_cast<GameCharacter>(gameObjects.at(id));
     if (timeBetweenAttacks == 0) {
-        timeBetweenAttacks = 10;
+        timeBetweenAttacks = 20;
         std::shared_ptr<Cell> enemyCell = board.getCellFromPoint(inputInfo.position);
         if (enemyCell == aCharacter->getActualCell() && aCharacter->getWeapon() == WeaponID::ElficFlaute) {
             aCharacter->restoreHealth();

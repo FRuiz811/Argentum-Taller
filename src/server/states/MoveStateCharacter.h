@@ -2,13 +2,15 @@
 #define ARGENTUM_TALLER_MOVESTATECHARACTER_H
 
 
-#include "../Movement.h"
+#include <MovementCharacter.h>
+#include "State.h"
 #include "StateCharacter.h"
 
 class MoveStateCharacter : public StateCharacter {
 private:
     Direction direction;
-    Movement movement;
+    MovementCharacter movement;
+
 public:
     MoveStateCharacter();
 

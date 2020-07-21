@@ -18,7 +18,6 @@ NPCServer::NPCServer(uint id, const std::string& type, Point initialPoint, std::
         this->profession = Merchant::getInstance();
     } else {
         cell->addPriest();
-        std::cout << cell->getX() << cell->getY() << std::endl;
         textureHashId = "ht00|h05|b10|s00|w00";
         this->profession = Priest::getInstance();
     }

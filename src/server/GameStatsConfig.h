@@ -26,7 +26,7 @@ private:
     static float expRandMin;
     static float expRandMax;
     static uint8_t levelDifference;
-    static float maxAgility;
+    static float minAgility;
     static uint8_t creaturesLimit;
     static uint8_t nestCreaturesLimit;
     static float distance;
@@ -62,8 +62,8 @@ public:
     static float getDefense(BodyID bodyId, ShieldID shieldId, HelmetID helmetId);
     static float getDefense(CreatureID creatureId);
     static std::map<ItemsInventoryID,ItemInfo> getItems();
-    static uint8_t getAmountSteps(RaceID raceId);
-    static uint8_t getAmountSteps(CreatureID creatureId);
+    static uint8_t getAmountMovement(RaceID raceId);
+    static uint8_t getAmountMovement(CreatureID creatureId);
     static uint8_t getCreaturesLimit();
     static const ItemInfo getItem(ItemsInventoryID id);
     static uint8_t getNestCreatureLimit();
