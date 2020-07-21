@@ -10,7 +10,7 @@
 #define CLOSEDQUEUE "La queue se encuentra cerrada"
 
 //La clase Blocking Queue permite un acceso controlado a los recursos
-//encolados para que cada uno de los jugadores saquen un numero a la vez.
+//encolados.
 template<typename ITEM>
 class BlockingQueue {
 private:
