@@ -9,14 +9,6 @@ void GameObjectsContainer::addGameObject(std::shared_ptr<GameObject> aGameObject
     gameObjects.insert(std::pair<uint, std::shared_ptr<GameObject>>(id, aGameObject));
 }
 
-std::vector<GameObjectInfo> GameObjectsContainer::getUpdatedGameObjectsInfo() {
-    std::vector<GameObjectInfo> gameObjectsInfo;
-    for (auto& gameObjectPair : gameObjects) {
-        gameObjectsInfo.push_back(gameObjectPair.second->getGameObjectInfo());
-    }
-    return gameObjectsInfo;
-}
-
 std::vector<std::shared_ptr<GameObject>> GameObjectsContainer::getUpdatedGameObjects() {
     std::vector<std::shared_ptr<GameObject>> objects;
     for (auto& gameObjectPair : gameObjects) {
@@ -30,10 +22,6 @@ void GameObjectsContainer::update(Board& board) {
     for (auto& gameObjectPair : gameObjects) {
         gameObjectPair.second->update(gameObjects, board);
     }
-}
-
-std::shared_ptr<GameObject> GameObjectsContainer::getGameObject(uint id) {
-    return gameObjects.at(id);
 }
 
 void GameObjectsContainer::deleteGameObject(uint id, Board &board) {

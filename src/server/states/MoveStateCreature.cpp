@@ -42,11 +42,11 @@ bool MoveStateCreature::isAttacking() {
 }
 
 StateID MoveStateCreature::getNextStateID(InputInfo info) {
-    return StateID::Move;
+    return StateID::Still;
 }
 
 StateID MoveStateCreature::getResetStateID() {
-    return StateID::Move;
+    return StateCreature::getResetStateID();
 }
 
 void MoveStateCreature::init(InputInfo aInputInfo) {

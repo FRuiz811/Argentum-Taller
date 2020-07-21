@@ -38,8 +38,6 @@ private:
 
     uint getNextId();
 
-    std::vector<std::shared_ptr<GameObject>> getUpdatedGameObjects();
-
     void addCreatures();
 
     void generateCreature();

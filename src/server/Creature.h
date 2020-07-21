@@ -9,7 +9,6 @@ class Creature : public GameObject {
 private:
     uint life{};
     CreatureID creatureId;
-    std::unique_ptr<State> state;
     bool itemDrop = false;
     uint8_t timeToRemove = 10;
     StatePoolCreature statePool;
@@ -30,7 +29,7 @@ public:
 
     InputInfo getNextInputInfo() override;
 
-    bool isDead();
+    bool isDead() override;
 
     bool canDropsItems() override;
 
@@ -44,7 +43,7 @@ public:
 
     CharacterStateID getStateId() override;
 
-    virtual NPCInfo interact(GameObject& character, InputInfo input);
+    NPCInfo interact(GameObject& character, InputInfo input) override;
     
     virtual ~Creature();
 
@@ -52,7 +51,7 @@ public:
 
     bool isReadyToRemove() override;
 
-    bool canBeAttacked(int enemyLevel) const;
+    bool canBeAttacked(int enemyLevel) const override;
 
 };
 
