@@ -26,7 +26,7 @@ public:
 
     BodyID getId()const;
 
-    ~Body();;
+    ~Body();
 };
 
 #endif

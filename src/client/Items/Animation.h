@@ -18,23 +18,15 @@ protected:
     bool effectPlayed{false};
 public:
 
-    Animation(const Texture& texture, const int width, const int height, const Effect& effect,int totalFrames) :
-    effect(effect), texture(texture), width(width), height(height), totalFrames(totalFrames) {}
+    Animation(const Texture& texture, const int width, const int height, const Effect& effect,int totalFrames);
 
     virtual void render(int x, int y) = 0;
 
-    void update() {
-        this->frame ++;
-        if (this->frame >= this->totalFrames)
-            this->finish = true;
-        this->frame = this->frame % this->totalFrames;
-    }
+    void update();
 
-    bool finished() const {
-        return this->finish;
-    }
+    bool finished() const;
 
-    ~Animation() {}
+    ~Animation();
 
 };
 
