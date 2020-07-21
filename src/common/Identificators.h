@@ -184,4 +184,17 @@ struct InputInfo {
     int aditional = 0;
 };
 
+enum class StateID {
+    Still,
+    Move,
+    Equip,
+    Transition,
+    Interact,
+    Attack,
+    Pursuit,
+    Meditate,
+    TakeDrop,
+    Resurrect,
+};
+
 #endif

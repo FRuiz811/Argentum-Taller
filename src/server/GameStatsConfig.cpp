@@ -18,12 +18,13 @@ GameStatsConfig::GameStatsConfig(rapidjson::Document &json) {
     evadeRandMax = json["evadeRandMax"].GetFloat();
     evadeProbability = json["evadeProbability"].GetFloat();
     levelDifference = json["levelDifference"].GetFloat();
-    maxAgility = json["maxAgility"].GetFloat();
+    minAgility = json["minAgility"].GetFloat();
     creaturesLimit = json["creaturesLimit"].GetInt();
     nestCreaturesLimit = json["nestCreaturesLimit"].GetInt();
     distance = json["distance"].GetFloat();
     inventoryLimit = json["inventoryLimit"].GetInt();
     newbieLevel = json["newbieLevel"].GetInt();
+    loseExp = json["loseExp"].GetFloat();
 
     rapidjson::Value::Array racesArray = json["races"].GetArray();
     for (auto &aRace : racesArray) {
@@ -151,9 +152,8 @@ bool GameStatsConfig::canEvade(RaceID race){
     return pow(base, races.at(race).agility) < evadeProbability;
 }
 
-uint8_t GameStatsConfig::getAmountSteps(RaceID raceId) {
-    RaceInfo raceInfo = races.at(raceId);
-    return  5 + (maxAgility - raceInfo.agility);
+uint8_t GameStatsConfig::getAmountMovement(RaceID raceId) {
+    return std::max(races.at(raceId).agility * 1.5f, minAgility);
 }
 
 uint8_t GameStatsConfig::getCreaturesLimit() {
@@ -176,8 +176,8 @@ float GameStatsConfig::getDistance(){
     return distance;
 }
 
-uint8_t GameStatsConfig::getAmountSteps(CreatureID creatureId) {
-    return 30 + (maxAgility - creatures.at(creatureId).agility);
+uint8_t GameStatsConfig::getAmountMovement(CreatureID creatureId) {
+    return std::max(creatures.at(creatureId).agility, minAgility) / 2;
 }
 
 float GameStatsConfig::getDamage(CreatureID creatureId){
@@ -203,7 +203,7 @@ float GameStatsConfig::getDefense(BodyID bodyId, ShieldID shieldId, HelmetID hel
 }
 
 float GameStatsConfig::getDefense(CreatureID creatureId) {
-    return Random::getFloat(0.0,creatures.at(creatureId).constitution);
+    return Random::getFloat(0.0, creatures.at(creatureId).constitution);
 }
 
 bool GameStatsConfig::canEvade(CreatureID creatureId) {
@@ -244,6 +244,18 @@ bool GameStatsConfig::isNewbie(int level){
     return level <= GameStatsConfig::newbieLevel; 
 }
 
+float GameStatsConfig::restoreHealth(WeaponID aWeaponId) {
+    if ( aWeaponId == WeaponID::Nothing) {
+        return 0;
+    }
+    ItemInfo aItemInfo = items.at(ItemTranslator::weaponToItem(aWeaponId));
+    return aItemInfo.healthRestored;
+}
+
+float GameStatsConfig::getLoseExp() {
+    return loseExp;
+}
+
 GameStatsConfig::GameStatsConfig() = default;
 
 GameStatsConfig::~GameStatsConfig() = default;
@@ -265,9 +277,10 @@ float GameStatsConfig::evadeProbability = 0.0;
 float GameStatsConfig::expRandMin = 0.0;
 float GameStatsConfig::expRandMax = 0.0;
 uint8_t GameStatsConfig::levelDifference = 0;
-float GameStatsConfig::maxAgility = 0.0;
+float GameStatsConfig::minAgility = 0.0;
 uint8_t GameStatsConfig::creaturesLimit = 0.0;
 uint8_t GameStatsConfig::nestCreaturesLimit = 0.0;
 float GameStatsConfig::distance = 0.0;
 int GameStatsConfig::inventoryLimit = 0;
 int GameStatsConfig::newbieLevel = 0;
+float GameStatsConfig::loseExp = 0;

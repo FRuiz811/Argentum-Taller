@@ -1,60 +1,46 @@
 #include "AttackStateCreature.h"
 #include "../Creature.h"
-#include "../GameCharacter.h"
-#include "StillStateCreature.h"
-#include "PursuitStateCreature.h"
 
 AttackStateCreature::~AttackStateCreature() = default;
 
-AttackStateCreature::AttackStateCreature(uint enemyId) :
-        enemyId(enemyId), enemyIsDead(false) {
-    stateId = CharacterStateID::Attack;
+AttackStateCreature::AttackStateCreature() : StateCreature(), enemyIsDead(false) {
+    stateId = StateID::Attack;
+    finalized = false;
 }
-
 
 void AttackStateCreature::performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) {
 
     if (timeBetweenAttacks == 0) {
-        timeBetweenAttacks = 20;
+        timeBetweenAttacks = 30;
         std::shared_ptr<Creature> aCreature = std::dynamic_pointer_cast<Creature>(gameObjects.at(id));
         try {
-            aEnemy = std::dynamic_pointer_cast<GameCharacter>(gameObjects.at(enemyId));
-            std::shared_ptr<Cell> creatureCell = aCreature->getActualCell();
-            std::shared_ptr<Cell> enemyCell = aEnemy->getActualCell();
+            aEnemy = gameObjects.at(enemyId);
             if (aEnemy->isDead()) {
                 enemyIsDead = true;
                 finalized = true;
-            } else {
-                if (board.getDistance(creatureCell, enemyCell) == GameStatsConfig::getWeaponDistance(WeaponID::Nothing)) {
-                    aEnemy->receiveDamage(GameStatsConfig::getDamage(aCreature->getCreatureId()),
-                            WeaponID::Nothing);
-                    if (aEnemy->isDead()) {
-                        enemyIsDead = true;
-                        finalized = true;
-                    }
-                } else {
-                    aEnemy->setAttackBy(WeaponID::Nothing);
-                    finalized = true;
-                }
+                return;
             }
-        } catch (const std::out_of_range& e) {
+        } catch (const std::exception& e) {
             enemyIsDead = true;
+            finalized = true;
+            return;
+        }
+        std::shared_ptr<Cell> creatureCell = aCreature->getActualCell();
+        std::shared_ptr<Cell> enemyCell = aEnemy->getActualCell();
+
+        if (board.getDistance(creatureCell, enemyCell) == GameStatsConfig::getWeaponDistance(WeaponID::Nothing)) {
+            aEnemy->receiveDamage(GameStatsConfig::getDamage(aCreature->getCreatureId()),
+                    WeaponID::Nothing);
+        } else {
+            if (aEnemy != nullptr) {
+                aEnemy->setInteractWeapon(WeaponID::Nothing);
+            }
             finalized = true;
         }
     } else {
         timeBetweenAttacks--;
     }
 }
-
-void AttackStateCreature::setNextState(InputInfo info) {
-    if (enemyIsDead) {
-        nextState = std::unique_ptr<State>(new StillStateCreature());
-    } else {
-        nextState = std::unique_ptr<State>(new PursuitStateCreature(enemyId));
-    }
-}
-
-void AttackStateCreature::resetState() {}
 
 bool AttackStateCreature::isOnPursuit(uint pursuitId) {
     return false;
@@ -64,6 +50,23 @@ bool AttackStateCreature::isAttacking() {
     return true;
 }
 
-bool AttackStateCreature::isMeditating() {
-    return false;
+StateID AttackStateCreature::getNextStateID(InputInfo info) {
+    StateID nextStateId = StateID::Still;
+    if (!enemyIsDead) {
+        nextStateId = StateID::Pursuit;
+    }
+    return nextStateId;
+}
+
+StateID AttackStateCreature::getResetStateID() {
+    return StateID::Still;
+}
+
+void AttackStateCreature::init(InputInfo aInputInfo) {
+    inputInfo = aInputInfo;
+    enemyId = aInputInfo.aditional;
+    enemyIsDead = false;
+    timeBetweenAttacks = 0;
+    aEnemy = nullptr;
+    finalized = false;
 }

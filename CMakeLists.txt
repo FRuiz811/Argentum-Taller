@@ -36,10 +36,10 @@ target_link_libraries(argentum_server pthread)
 set(DEV no)
 
 file(COPY assets DESTINATION ./)
-file(COPY json/gameStats.json json/bigMapNPC.json json/finishedMap.json DESTINATION ./)
+file(COPY json/gameStats.json json/finishedMap.json DESTINATION ./)
 file(COPY include DESTINATION ./)
 
 INSTALL(TARGETS argentum_client argentum_server DESTINATION /usr/bin)
 INSTALL(DIRECTORY assets DESTINATION /var/Argentum)
 INSTALL(DIRECTORY include DESTINATION /var/Argentum)
-INSTALL(FILES gameStats.json bigMapNPC.json finishedMap.json DESTINATION /etc/Argentum)
+INSTALL(FILES gameStats.json finishedMap.json DESTINATION /etc/Argentum)

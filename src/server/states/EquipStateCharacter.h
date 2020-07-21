@@ -2,26 +2,26 @@
 #define ARGENTUM_TALLER_EQUIPSTATECHARACTER_H
 
 
-#include "State.h"
+#include "StateCharacter.h"
 
-class EquipStateCharacter : public State {
+class EquipStateCharacter : public StateCharacter {
 private:
     int itemToChange{0};
 public:
-    EquipStateCharacter(const InputInfo &info);
+    explicit EquipStateCharacter();
 
     ~EquipStateCharacter() override;
 
     void
     performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) override;
 
-    void setNextState(InputInfo info) override;
+    StateID getNextStateID(InputInfo info) override;
 
-    void resetState() override;
-
-    bool isOnPursuit(uint pursuitId) override;
+    StateID getResetStateID() override;
 
     bool isMeditating() override;
+
+    void init(InputInfo aInputInfo) override;
 
     bool isAttacking() override;
 };

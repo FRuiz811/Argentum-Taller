@@ -1,7 +1,7 @@
 #include "Shield.h"
 
-Shield::Shield(const Texture& texture, const int width, const int height, 
-    ShieldID id = ShieldID::Nothing) : Item(texture, width, height), id(id){}
+Shield::Shield(const Texture& texture, const int width, const int height, ShieldID id) : 
+        Item(texture, width, height), id(id){}
 
 void Shield::update(double dt, Direction dir) {
         if (this->direction != dir) {

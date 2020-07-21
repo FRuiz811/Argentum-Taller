@@ -1,10 +1,11 @@
 #include "State.h"
 
-#include <utility>
-
-State::State() = default;
-
-State::State(InputInfo anInputInfo): inputInfo(std::move(anInputInfo)) {}
+State::State() {
+    InputInfo info;
+    info.input = InputID::nothing;
+    inputInfo = info;
+    stateId = StateID::Still;
+}
 
 State::~State() = default;
 
@@ -12,16 +13,12 @@ bool State::isOver() const {
     return finalized;
 }
 
-bool State::hasNextState() {
-    return nextState != nullptr;
-}
-
-std::unique_ptr<State> State::getNextState() {
-    return std::move(nextState);
-}
-
-CharacterStateID State::getStateId() const {
+StateID State::getStateId() const {
     return stateId;
+}
+
+const InputInfo &State::getInputInfo() const {
+    return inputInfo;
 }
 
 

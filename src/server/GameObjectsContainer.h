@@ -12,7 +12,7 @@ private:
 public:
     GameObjectsContainer();
 
-    void addGameObject(const std::shared_ptr<GameObject>& aGameObject, uint id);
+    void addGameObject(std::shared_ptr<GameObject> aGameObject, uint id);
 
     std::vector<GameObjectInfo> getUpdatedGameObjectsInfo();
     

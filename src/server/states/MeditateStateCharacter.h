@@ -2,9 +2,9 @@
 #define ARGENTUM_TALLER_MEDITATESTATECHARACTER_H
 
 
-#include "State.h"
+#include "StateCharacter.h"
 
-class MeditateStateCharacter : public State {
+class MeditateStateCharacter : public StateCharacter {
 public:
     MeditateStateCharacter();
 
@@ -12,15 +12,15 @@ public:
 
     void performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) override;
 
-    void setNextState(InputInfo info) override;
+    StateID getNextStateID(InputInfo info) override;
 
-    void resetState() override;
-
-    bool isOnPursuit(uint pursuitId) override;
+    StateID getResetStateID() override;
 
     bool isAttacking() override;
 
     bool isMeditating() override;
+
+    void init(InputInfo aInputInfo) override;
 
 };
 

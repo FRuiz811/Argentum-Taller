@@ -1,7 +1,7 @@
 #include <iostream>
 #include <utility>
+#include <states/StateTranslator.h>
 #include "GameCharacter.h"
-#include "states/StillStateCharacter.h"
 #include "GameStatsConfig.h"
 #include "../common/Random.h"
 #include "ItemTranslator.h"
@@ -11,11 +11,11 @@ PlayerInfo GameCharacter::getPlayerInfo() {
                       GameStatsConfig::getMaxHealth(race, gameClass, level),
                       GameStatsConfig::getMaxMana(race, gameClass, level),
                       exp,GameStatsConfig::getNextLevelLimit(level), level,
-                      getStringInventory(),state->getStateId(),attackBy);
+                      getStringInventory(), StateTranslator::stateToCharacterState(statePool.getStateId()), interactWeapon);
 }
 
 GameCharacter::GameCharacter(uint id, RaceID aRace, GameClassID aClass, std::shared_ptr<Cell> initialCell, Point initialPoint):
-        GameObject(id, initialPoint, std::move(initialCell)), race(aRace), gameClass(aClass), queueInputs(true), inventory() {
+        GameObject(id, initialPoint, std::move(initialCell)), race(aRace), gameClass(aClass), statePool(*this), queueInputs(true), inventory() {
 
     this->life = GameStatsConfig::getMaxHealth(race, gameClass, level);
     this->mana = GameStatsConfig::getMaxMana(race, gameClass, level);
@@ -23,22 +23,12 @@ GameCharacter::GameCharacter(uint id, RaceID aRace, GameClassID aClass, std::sha
     this->exp = 0;
     this->direction = Direction::down;
     this->textureHashId = updateTextureHashId(); //Solo debería tener la cabeza correspondiente y su cuerpo. "ht00|h03|b01|s00|w00"
-    state = std::unique_ptr<State>(new StillStateCharacter());
 }
 
 void GameCharacter::update(std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) {
     this->infoInteracting.type = 0;
-    if (state->isOver()) {
-        if (hasAnInputInfo() && !state->hasNextState()) {
-            state->setNextState(getNextInputInfo());
-        } else {
-            state->resetState();
-        }
-        if (state->hasNextState()) {
-            state = state->getNextState();
-        }
-    }
-    state->performTask(id, gameObjects, board);
+    statePool.updateState();
+    statePool.performTask(gameObjects, board);
     this->textureHashId = updateTextureHashId();
     updateHealthAndMana();
 }
@@ -158,11 +148,11 @@ InputQueue &GameCharacter::getQueueInputs() {
     return queueInputs;
 }
 CharacterStateID GameCharacter::getStateId() {
-    return state->getStateId();
+    return StateTranslator::stateToCharacterState(statePool.getStateId());
 }
 
 void GameCharacter::receiveDamage(float damage, WeaponID weaponId) {
-    setAttackBy(weaponId);
+    setInteractWeapon(weaponId);
     if (GameStatsConfig::canEvade(race)) {
         std::cout << "Enemy fail attack" << std::endl;
     } else {
@@ -171,9 +161,9 @@ void GameCharacter::receiveDamage(float damage, WeaponID weaponId) {
         if (realDamage > 0) {
             life = (life - realDamage > 0) ? life - realDamage : 0;
         }
-//        std::cout << "Enemy attack damage: " << damage << std::endl;
-//        std::cout << "Character defense: " << defense << std::endl;
-//        std::cout << "Enemy real damage: " << realDamage << std::endl;
+        std::cout << "Enemy attack damage: " << damage << std::endl;
+        std::cout << "Character defense: " << defense << std::endl;
+        std::cout << "Enemy real damage: " << realDamage << std::endl;
     }
     if (isDead()) {
         this->mana = 0;
@@ -181,6 +171,7 @@ void GameCharacter::receiveDamage(float damage, WeaponID weaponId) {
         shield = ShieldID::Nothing;
         weapon = WeaponID::Nothing;
         helmet = HelmetID::Nothing;
+        exp = exp - GameStatsConfig::getLoseExp() < 0 ? 0 : exp - GameStatsConfig::getLoseExp();
     }
 }
 
@@ -193,7 +184,7 @@ bool GameCharacter::hasAnInputInfo() {
 }
 
 InputInfo GameCharacter::getNextInputInfo() {
-    return queueInputs.pop();
+    return queueInputs.pop();;
 }
 
 WeaponID GameCharacter::getWeapon() {
@@ -235,8 +226,8 @@ bool GameCharacter::addItemToInventory(ItemsInventoryID aItemInventoryId) {
    return inventory.addItem(aItemInventoryId);
 }
 
-void GameCharacter::setGoldAmount(uint goldAmount) {
-    GameCharacter::goldAmount = goldAmount;
+void GameCharacter::setGoldAmount(uint aGoldAmount) {
+    GameCharacter::goldAmount = aGoldAmount;
 }
 
 ItemsInventoryID GameCharacter::removeItemFromInventory(ItemsInventoryID aItemToRemove) {
@@ -288,7 +279,7 @@ void GameCharacter::upLevel() {
     mana = GameStatsConfig::getMaxMana(race, gameClass, level);
 }
 
-bool GameCharacter::canPerformAttack() {
+bool GameCharacter::canUseWeapon() {
     return weapon != WeaponID::Nothing && GameStatsConfig::getWeaponCost(weapon) <= mana;
 }
 
@@ -297,7 +288,7 @@ void GameCharacter::updateHealthAndMana() {
         float manaMax = GameStatsConfig::getMaxMana(race, gameClass, level);
         float lifeIncrement = GameStatsConfig::getRecoveryHealth(race);
         life = life + lifeIncrement > getMaxLife() ? getMaxLife() : lifeIncrement + life;
-        float manaIncrement = state->isMeditating() ?
+        float manaIncrement = statePool.isMeditating() ?
                               GameStatsConfig::getRecoveryManaMeditation(race, gameClass) :
                               GameStatsConfig::getRecoveryMana(race);
         mana = mana + manaIncrement > manaMax ? manaMax : mana + manaIncrement;
@@ -324,6 +315,19 @@ void GameCharacter::dropItem(int index) {
 
 bool GameCharacter::canBeAttacked(int enemyLevel) const {
     return GameStatsConfig::canAttack(this->level, enemyLevel);
+}
+
+bool GameCharacter::restoreHealth() {
+    bool canRestoreHealth = false;
+    float healthRestore = 0;
+    if (canUseWeapon()) {
+        setInteractWeapon(weapon);
+        healthRestore = GameStatsConfig::restoreHealth(weapon);
+        canRestoreHealth = true;
+        consumeMana();
+        life = healthRestore + life > getMaxLife() ? getMaxLife() : healthRestore + life;
+    }
+    return canRestoreHealth;
 }
 
 GameCharacter::~GameCharacter()= default;

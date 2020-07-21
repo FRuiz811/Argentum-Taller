@@ -3,30 +3,13 @@
 #include "../GameCharacter.h"
 #include "StillStateCharacter.h"
 #include "../Creature.h"
-#include "AttackStateCharacter.h"
+
 
 MoveStateCharacter::~MoveStateCharacter() = default;
 
-MoveStateCharacter::MoveStateCharacter(const InputInfo &info) : State(info),
- direction(Direction::down), movement() {
-    switch(info.input) {
-        case InputID::up:
-            direction = Direction::up;
-            break;
-        case InputID::down:
-            direction = Direction::down;
-            break;
-        case InputID::left:
-            direction = Direction::left;
-            break;
-        case InputID::right:
-            direction = Direction::right;
-            break;
-        default:
-            direction = Direction::down;
-            break;
-    }
-    stateId = CharacterStateID::Move;
+MoveStateCharacter::MoveStateCharacter() : StateCharacter() {
+    stateId = StateID::Move;
+    direction = Direction::down;
 }
 
 void MoveStateCharacter::performTask(uint id,
@@ -63,22 +46,19 @@ void MoveStateCharacter::performTask(uint id,
 
 }
 
-void MoveStateCharacter::setNextState(InputInfo info) {
+StateID MoveStateCharacter::getNextStateID(InputInfo info) {
+    StateID nextStateId = StateID::Still;
     if (info.input == InputID::up || info.input == InputID::down ||
         info.input == InputID::left || info.input == InputID::right) {
-        this->nextState = std::unique_ptr<State>(new MoveStateCharacter(info));
+        nextStateId = StateID::Move;
     } else if(info.input == InputID::stopMove) {
-        nextState = std::unique_ptr<State>(new StillStateCharacter(info));
+        nextStateId = StateID::Still;
     }
+    return nextStateId;
 }
 
-void MoveStateCharacter::resetState() {
-        movement.reset();
-        finalized = false;
-}
-
-bool MoveStateCharacter::isOnPursuit(uint pursuitId) {
-    return false;
+StateID MoveStateCharacter::getResetStateID() {
+    return StateID::Move;
 }
 
 bool MoveStateCharacter::isAttacking() {
@@ -87,4 +67,27 @@ bool MoveStateCharacter::isAttacking() {
 
 bool MoveStateCharacter::isMeditating() {
     return false;
+}
+
+void MoveStateCharacter::init(InputInfo aInputInfo) {
+    movement.reset();
+    switch(aInputInfo.input) {
+        case InputID::up:
+            direction = Direction::up;
+            break;
+        case InputID::down:
+            direction = Direction::down;
+            break;
+        case InputID::left:
+            direction = Direction::left;
+            break;
+        case InputID::right:
+            direction = Direction::right;
+            break;
+        default:
+            direction = Direction::down;
+            break;
+    }
+    inputInfo = aInputInfo;
+    finalized = false;
 }
