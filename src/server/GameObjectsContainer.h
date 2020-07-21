@@ -13,18 +13,14 @@ public:
     GameObjectsContainer();
 
     void addGameObject(std::shared_ptr<GameObject> aGameObject, uint id);
-
-    std::vector<GameObjectInfo> getUpdatedGameObjectsInfo();
     
     std::vector<std::shared_ptr<GameObject>> getUpdatedGameObjects();
 
     void update(Board& board);
 
-    std::shared_ptr<GameObject> getGameObject(uint id);
-
     virtual ~GameObjectsContainer();
 
-    void deleteGameObject(const uint id, Board &board);
+    void deleteGameObject(uint id, Board &board);
 
     void removeCreaturesAndItems(Board& board);
 };

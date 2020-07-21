@@ -14,11 +14,11 @@ World::World(GameStatsConfig& configuration) : gameStatsConfig(configuration),
     rapidjson::Document jsonMap = JsonReader::read(path);
     this->banker = Banker::getInstance();
     this->merchant = Merchant::getInstance();
-    this->merchant->init(configuration.getItems());
+    this->merchant->init(GameStatsConfig::getItems());
     this->priest = Priest::getInstance();
-    this->priest->init(configuration.getItems());
-    this->merchant->init(configuration.getItems());
-    this->priest->init(configuration.getItems());
+    this->priest->init(GameStatsConfig::getItems());
+    this->merchant->init(GameStatsConfig::getItems());
+    this->priest->init(GameStatsConfig::getItems());
     this->map = TiledMap(jsonMap);
     this->board = Board(map, GameStatsConfig::getNestCreatureLimit());
     addNPCs(map.getObjectLayers());
@@ -126,10 +126,6 @@ void World::stop() {
 
 void World::update() {
     gameObjectsContainer.update(board);
-}
-
-std::vector<std::shared_ptr<GameObject>> World::getUpdatedGameObjects() {
-    return gameObjectsContainer.getUpdatedGameObjects();
 }
 
 void World::addPlayer(ThPlayer *aPlayer,uint id) {

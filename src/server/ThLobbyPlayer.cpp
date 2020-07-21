@@ -1,4 +1,3 @@
-#include <iostream>
 #include <memory>
 #include "ThLobbyPlayer.h"
 
@@ -8,8 +7,8 @@ void ThLobbyPlayer::run() {
     Message welcomeMsg = this->protocol->receive();
     std::shared_ptr<GameCharacter> aCharacter;
     if (welcomeMsg.getType() == INITMSG) {
-        RaceID race = (RaceID) welcomeMsg.read8();
-        GameClassID gameClass = (GameClassID) welcomeMsg.read8();
+        auto race = (RaceID) welcomeMsg.read8();
+        auto gameClass = (GameClassID) welcomeMsg.read8();
         aCharacter = world.createCharacter(race, gameClass);
     }
     std::vector<uint8_t> map = Decoder::encodeMap(this->world.getStaticMap());
