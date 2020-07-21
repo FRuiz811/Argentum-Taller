@@ -12,3 +12,7 @@ void MovementCreature::start(Point aFirstPoint, Direction aDirection, CreatureID
     firstPoint = aFirstPoint;
     initialized = true;
 }
+
+float MovementCreature::getAmountMovement() {
+    return GameStatsConfig::getAmountMovement(creatureId);
+}

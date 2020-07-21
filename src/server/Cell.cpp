@@ -1,7 +1,7 @@
 #include <tuple>
 #include "Cell.h"
 
-Cell::Cell(uint x, uint y) : x(x), y(y), empty(true), gameObjectId(0), city(false), nestId(0), itemId(0) {}
+Cell::Cell(uint x, uint y) : x(x), y(y), empty(true), gameObjectId(0), city(false), nestId(0), itemId(0), priest(false) {}
 
 bool Cell::isEmpty() const {
     return empty;
@@ -76,5 +76,14 @@ bool Cell::hasItem() const {
 void Cell::setItemId(uint itemId) {
     Cell::itemId = itemId;
 }
+
+bool Cell::isPriest() const {
+    return priest;
+}
+
+void Cell::addPriest() {
+    priest = true;
+}
+
 
 Cell::~Cell() = default;

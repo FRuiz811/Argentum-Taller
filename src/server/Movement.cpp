@@ -21,19 +21,19 @@ void Movement::reset() {
 
 Point Movement::doStep() {
     Point newPoint = firstPoint;
-//    partialDistance = partialDistance;
+    partialDistance = partialDistance + getAmountMovement() > distance ? distance : partialDistance + getAmountMovement();
     switch(direction) {
         case Direction::up:
-            newPoint.y = partialDistance;
+            newPoint.y -= partialDistance;
             break;
         case Direction::down:
-            newPoint.y = partialDistance;
+            newPoint.y += partialDistance;
             break;
         case Direction::left:
-            newPoint.x = partialDistance;
+            newPoint.x -= partialDistance;
             break;
         case Direction::right:
-            newPoint.x = partialDistance;
+            newPoint.x += partialDistance;
             break;
     }
     if (partialDistance >=  distance) {

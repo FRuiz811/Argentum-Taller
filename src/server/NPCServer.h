@@ -9,7 +9,6 @@
 class NPCServer : public GameObject{
 private:
     Profession* profession;
-    std::unique_ptr<State> state;
 public:
 	NPCServer(uint id, const std::string& type, Point initialPoint, std::shared_ptr<Cell> initialCell);
 
@@ -27,6 +26,12 @@ public:
 
     bool canDropsItems() override;
 
+    PlayerInfo getPlayerInfo() override;
+
+    bool hasAnInputInfo() override;
+
+    InputInfo getNextInputInfo() override;
+
     float getMaxLife() override;
 
     std::vector<DropItem> getDrop() override;
@@ -37,7 +42,7 @@ public:
 
     bool isReadyToRemove() override;
 
-    bool canBeAttacked(int enemyLevel) const ;
+    bool canBeAttacked(int enemyLevel) const override ;
 };
 
 #endif

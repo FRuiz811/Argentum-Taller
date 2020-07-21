@@ -4,25 +4,25 @@
 
 #include <MovementCreature.h>
 #include "State.h"
+#include "StateCreature.h"
 
-class MoveStateCreature : public State {
+class MoveStateCreature : public StateCreature {
 private:
     Direction direction;
     MovementCreature movement;
 public:
-    explicit MoveStateCreature(InputInfo info);
-
+    MoveStateCreature();
     ~MoveStateCreature() override;
 
     void performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) override;
 
-    void setNextState(InputInfo info) override;
-
     bool isOnPursuit(uint pursuitId) override;
 
-    void resetState() override;
+    void init(InputInfo aInputInfo) override;
 
-    bool isMeditating() override;
+    StateID getNextStateID(InputInfo info) override;
+
+    StateID getResetStateID() override;
 
     bool isAttacking() override;
 };

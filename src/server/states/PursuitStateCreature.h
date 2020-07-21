@@ -5,15 +5,16 @@
 #include <MovementCreature.h>
 #include "State.h"
 #include "../Creature.h"
+#include "StateCreature.h"
 
-class PursuitStateCreature : public State {
+class PursuitStateCreature : public StateCreature {
 private:
     uint pursuitId;
     MovementCreature movement;
     bool canAttack = false;
 
 public:
-    explicit PursuitStateCreature(uint id);
+    explicit PursuitStateCreature();
 
     ~PursuitStateCreature() override;
 
@@ -21,11 +22,11 @@ public:
 
     void performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects, Board &board) override;
 
-    void setNextState(InputInfo info) override;
+    StateID getNextStateID(InputInfo info) override;
 
-    bool isMeditating() override;
+    StateID getResetStateID() override;
 
-    void resetState() override;
+    void init(InputInfo aInputInfo) override;
 
     bool isAttacking() override;
 };

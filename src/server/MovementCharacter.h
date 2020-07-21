@@ -12,6 +12,8 @@ public:
 
     void start(Point aFirstPoint, Direction aDirection, RaceID raceId);
 
+    float getAmountMovement() override;
+
     ~MovementCharacter() override;
 
 };

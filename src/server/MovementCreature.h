@@ -14,6 +14,7 @@ public:
 
     virtual ~MovementCreature();
 
+    float getAmountMovement() override;
 };
 
 

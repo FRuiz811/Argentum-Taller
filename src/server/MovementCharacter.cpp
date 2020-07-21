@@ -12,3 +12,7 @@ void MovementCharacter::start(Point aFirstPoint, Direction aDirection, RaceID aR
     firstPoint = aFirstPoint;
     initialized = true;
 }
+
+float MovementCharacter::getAmountMovement() {
+    return GameStatsConfig::getAmountMovement(raceId);
+}

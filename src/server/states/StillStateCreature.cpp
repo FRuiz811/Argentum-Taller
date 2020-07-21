@@ -1,19 +1,16 @@
  #include "StillStateCreature.h"
-#include "MoveStateCreature.h"
 
- StillStateCreature::StillStateCreature() {
+ StillStateCreature::StillStateCreature() : StateCreature() {
     finalized = true;
-    stateId = CharacterStateID::Still;
+    stateId = StateID::Still;
 }
 
  void StillStateCreature::performTask(uint id, std::unordered_map<uint, std::shared_ptr<GameObject>> &gameObjects,
                                       Board &board) {}
 
- void StillStateCreature::setNextState(InputInfo info) {
-    nextState = std::unique_ptr<State>(new MoveStateCreature(inputInfo));
+ StateID StillStateCreature::getNextStateID(InputInfo info) {
+     return StateID::Move;
  }
-
- void StillStateCreature::resetState() {}
 
  bool StillStateCreature::isOnPursuit(uint pursuitId) {
      return false;
@@ -23,8 +20,12 @@
      return false;
  }
 
- bool StillStateCreature::isMeditating() {
-     return false;
+ void StillStateCreature::init(InputInfo aInputInfo) {
+    inputInfo = aInputInfo;
+ }
+
+ StateID StillStateCreature::getResetStateID() {
+     return StateCreature::getResetStateID();
  }
 
  StillStateCreature::~StillStateCreature() = default;

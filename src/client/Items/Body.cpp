@@ -1,6 +1,6 @@
 #include "Body.h"
 
-Body::Body(const Texture& texture, const int width, const int height, BodyID id = BodyID::Nothing) : 
+Body::Body(const Texture& texture, const int width, const int height, BodyID id) : 
         Item(texture, width, height), id(id) {}
 
  void Body::update(double dt, Direction dir) {

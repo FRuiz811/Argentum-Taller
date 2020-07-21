@@ -1,15 +1,11 @@
 #include "EquipStateCharacter.h"
 #include "../GameCharacter.h"
-#include "StillStateCharacter.h"
-#include "MoveStateCharacter.h"
-#include "InteractStateCharacter.h"
-#include "TransitionStateCharacter.h"
 
 EquipStateCharacter::~EquipStateCharacter() = default;
 
-EquipStateCharacter::EquipStateCharacter(const InputInfo &info) : State(info) {
+EquipStateCharacter::EquipStateCharacter() : StateCharacter() {
     finalized = true;
-    stateId = CharacterStateID::Still;
+    stateId = StateID::Equip;
 }
 
 void EquipStateCharacter::performTask(uint id,
@@ -25,27 +21,27 @@ void EquipStateCharacter::performTask(uint id,
     }
 }
 
-void EquipStateCharacter::setNextState(InputInfo info) {
-    if (info.input == InputID::up || info.input == InputID::down ||
-        info.input == InputID::left || info.input == InputID::right) {
-        nextState = std::unique_ptr<State>(new MoveStateCharacter(info));
-    } else {
-        nextState = std::unique_ptr<State>(new StillStateCharacter(info));
-    }
-}
-
-void EquipStateCharacter::resetState() {
-    nextState = std::unique_ptr<State>(new StillStateCharacter());
-}
-
-bool EquipStateCharacter::isOnPursuit(uint pursuitId) {
-    return false;
-}
-
 bool EquipStateCharacter::isAttacking() {
     return false;
 }
 
 bool EquipStateCharacter::isMeditating() {
     return false;
+}
+
+StateID EquipStateCharacter::getNextStateID(InputInfo info) {
+    StateID nextStateId = StateID::Still;
+    if (info.input == InputID::up || info.input == InputID::down ||
+        info.input == InputID::left || info.input == InputID::right) {
+        nextStateId = StateID::Move;
+    }
+    return nextStateId;
+}
+
+StateID EquipStateCharacter::getResetStateID() {
+    return StateID::Still;
+}
+
+void EquipStateCharacter::init(InputInfo aInputInfo) {
+    inputInfo = aInputInfo;
 }

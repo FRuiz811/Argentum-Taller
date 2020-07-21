@@ -32,6 +32,7 @@ private:
     static float distance;
     static int inventoryLimit;
     static int newbieLevel;
+    static float loseExp;
     RaceInfo createRaceInfo(rapidjson::Value &value);
     GameClassInfo createGameClass(rapidjson::Value &value);
     ItemInfo createItem(rapidjson::Value& value);
@@ -72,6 +73,8 @@ public:
     static int getWeaponCost(WeaponID aWeaponId);
     static bool canAttack(int level, int enemyLevel);
     static bool isNewbie(int level);
+    static float restoreHealth(WeaponID aWeaponId);
+    static float getLoseExp();
 };
 
 

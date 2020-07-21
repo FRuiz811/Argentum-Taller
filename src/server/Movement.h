@@ -16,10 +16,10 @@ protected:
     float partialDistance;
 public:
     Movement();
+
     bool isOver() const;
+
     bool hasStart() const;
-
-
 
     void reset();
 
@@ -27,6 +27,7 @@ public:
 
     Point doStep();
 
+    virtual float getAmountMovement() = 0;
 
     virtual ~Movement();
 

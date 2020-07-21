@@ -1,7 +1,7 @@
 #include "Weapon.h"
 
-Weapon::Weapon(const Texture& texture, const int width, const int height,
-     WeaponID id = WeaponID::Nothing) : Item(texture, width, height), id(id) {}
+Weapon::Weapon(const Texture& texture, const int width, const int height, WeaponID id) : 
+        Item(texture, width, height), id(id) {}
 
 void Weapon::update(double dt, Direction dir) {
         if (this->direction != dir) {

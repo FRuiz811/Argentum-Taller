@@ -3,12 +3,13 @@
 
 #include "../common/PlayerInfo.h"
 #include "../common/StaticObject.h"
-#include "states/State.h"
 #include "../common/InputQueue.h"
 #include "../common/Identificators.h"
 #include "Inventory.h"
+#include "GameObject.h"
 #include <vector>
 #include <memory>
+#include <states/StatePoolCharacter.h>
 
 class GameCharacter : public GameObject{
 private:
@@ -18,7 +19,7 @@ private:
     float life;
     float mana;
     float exp;
-    std::unique_ptr<State> state;
+    StatePoolCharacter statePool;
     InputQueue queueInputs;
     Inventory inventory;
     WeaponID weapon{WeaponID::Nothing};
@@ -33,19 +34,21 @@ private:
 public:
 	GameCharacter(uint id, RaceID aRace, GameClassID aClass, std::shared_ptr<Cell> initialCell, Point initialPoint);
 
-	bool hasAnInputInfo();
-
     PlayerInfo getPlayerInfo() override;
 
 	void consumeMana();
 
     void upLevel();
 
-    bool canPerformAttack();
+    bool canUseWeapon();
 
-	InputInfo getNextInputInfo();
+    bool hasAnInputInfo() override;
 
-	bool inventoryIsFull();
+    InputInfo getNextInputInfo() override;
+
+    bool restoreHealth();
+
+    bool inventoryIsFull();
 
 	bool addItemToInventory(ItemsInventoryID aItemInventoryId);
 
@@ -105,7 +108,7 @@ public:
 
     void updateHealthAndMana();
 
-    bool canBeAttacked(int enemyLevel) const;
+    bool canBeAttacked(int enemyLevel) const override;
 };
 
 #endif

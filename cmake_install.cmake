@@ -111,7 +111,7 @@ endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/etc/Argentum/gameStats.json;/etc/Argentum/bigMapNPC.json;/etc/Argentum/finishedMap.json")
+   "/etc/Argentum/gameStats.json;/etc/Argentum/finishedMap.json")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
@@ -120,7 +120,6 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
   endif()
 file(INSTALL DESTINATION "/etc/Argentum" TYPE FILE FILES
     "/home/victor/projects/personal/Argentum-Taller/gameStats.json"
-    "/home/victor/projects/personal/Argentum-Taller/bigMapNPC.json"
     "/home/victor/projects/personal/Argentum-Taller/finishedMap.json"
     )
 endif()
