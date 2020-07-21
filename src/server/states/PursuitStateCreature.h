@@ -2,14 +2,14 @@
 #define ARGENTUM_TALLER_PURSUITSTATECREATURE_H
 
 
+#include <MovementCreature.h>
 #include "State.h"
-#include "../Movement.h"
 #include "../Creature.h"
 
 class PursuitStateCreature : public State {
 private:
     uint pursuitId;
-    Movement movement;
+    MovementCreature movement;
     bool canAttack = false;
 
 public:

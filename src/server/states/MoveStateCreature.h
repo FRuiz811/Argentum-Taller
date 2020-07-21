@@ -2,13 +2,13 @@
 #define ARGENTUM_TALLER_MOVESTATECREATURE_H
 
 
+#include <MovementCreature.h>
 #include "State.h"
-#include "../Movement.h"
 
 class MoveStateCreature : public State {
 private:
     Direction direction;
-    Movement movement;
+    MovementCreature movement;
 public:
     explicit MoveStateCreature(InputInfo info);
 

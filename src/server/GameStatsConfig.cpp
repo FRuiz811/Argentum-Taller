@@ -18,7 +18,7 @@ GameStatsConfig::GameStatsConfig(rapidjson::Document &json) {
     evadeRandMax = json["evadeRandMax"].GetFloat();
     evadeProbability = json["evadeProbability"].GetFloat();
     levelDifference = json["levelDifference"].GetFloat();
-    maxAgility = json["maxAgility"].GetFloat();
+    minAgility = json["minAgility"].GetFloat();
     creaturesLimit = json["creaturesLimit"].GetInt();
     nestCreaturesLimit = json["nestCreaturesLimit"].GetInt();
     distance = json["distance"].GetFloat();
@@ -151,9 +151,8 @@ bool GameStatsConfig::canEvade(RaceID race){
     return pow(base, races.at(race).agility) < evadeProbability;
 }
 
-uint8_t GameStatsConfig::getAmountSteps(RaceID raceId) {
-    RaceInfo raceInfo = races.at(raceId);
-    return  5 + (maxAgility - raceInfo.agility);
+uint8_t GameStatsConfig::getAmountMovement(RaceID raceId) {
+    return std::max(races.at(raceId).agility, minAgility);
 }
 
 uint8_t GameStatsConfig::getCreaturesLimit() {
@@ -176,8 +175,8 @@ float GameStatsConfig::getDistance(){
     return distance;
 }
 
-uint8_t GameStatsConfig::getAmountSteps(CreatureID creatureId) {
-    return 30 + (maxAgility - creatures.at(creatureId).agility);
+uint8_t GameStatsConfig::getAmountMovement(CreatureID creatureId) {
+    return std::max(creatures.at(creatureId).agility, minAgility);
 }
 
 float GameStatsConfig::getDamage(CreatureID creatureId){
@@ -203,7 +202,7 @@ float GameStatsConfig::getDefense(BodyID bodyId, ShieldID shieldId, HelmetID hel
 }
 
 float GameStatsConfig::getDefense(CreatureID creatureId) {
-    return Random::getFloat(0.0,creatures.at(creatureId).constitution);
+    return Random::getFloat(0.0, creatures.at(creatureId).constitution);
 }
 
 bool GameStatsConfig::canEvade(CreatureID creatureId) {
@@ -265,7 +264,7 @@ float GameStatsConfig::evadeProbability = 0.0;
 float GameStatsConfig::expRandMin = 0.0;
 float GameStatsConfig::expRandMax = 0.0;
 uint8_t GameStatsConfig::levelDifference = 0;
-float GameStatsConfig::maxAgility = 0.0;
+float GameStatsConfig::minAgility = 0.0;
 uint8_t GameStatsConfig::creaturesLimit = 0.0;
 uint8_t GameStatsConfig::nestCreaturesLimit = 0.0;
 float GameStatsConfig::distance = 0.0;

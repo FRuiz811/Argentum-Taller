@@ -1,7 +1,7 @@
 #include "Movement.h"
 
 Movement::Movement() : finalized(false), initialized(false), firstPoint(0.0,0.0),
-    direction(Direction::down) {}
+    direction(Direction::down), distance(0), partialDistance(0) {}
 
 Movement::~Movement() = default;
 
@@ -13,49 +13,30 @@ bool Movement::hasStart() const {
     return initialized;
 }
 
-void Movement::start(Point aFirstPoint, Direction aDirection, RaceID raceId) {
-    amountSteps = GameStatsConfig::getAmountSteps(raceId);
-    actualStep = 0;
-    distance = GameStatsConfig::getDistance();
-    direction = aDirection;
-    firstPoint = aFirstPoint;
-    initialized = true;
-}
-
-void Movement::start(Point aFirstPoint, Direction aDirection, CreatureID creatureId) {
-    amountSteps = GameStatsConfig::getAmountSteps(creatureId);
-    actualStep = 0;
-    distance = GameStatsConfig::getDistance();
-    direction = aDirection;
-    firstPoint = aFirstPoint;
-    initialized = true;
-}
-
 void Movement::reset() {
-    amountSteps = 0;
-    actualStep = 0;
+    partialDistance = 0.0f;
     initialized = false;
     finalized = false;
 }
 
 Point Movement::doStep() {
     Point newPoint = firstPoint;
+//    partialDistance = partialDistance;
     switch(direction) {
         case Direction::up:
-            newPoint.y -= (distance/amountSteps) * actualStep;
+            newPoint.y = partialDistance;
             break;
         case Direction::down:
-            newPoint.y += (distance/amountSteps) * actualStep;
+            newPoint.y = partialDistance;
             break;
         case Direction::left:
-            newPoint.x -= (distance/amountSteps) * actualStep;
+            newPoint.x = partialDistance;
             break;
         case Direction::right:
-            newPoint.x += (distance/amountSteps) * actualStep;
+            newPoint.x = partialDistance;
             break;
     }
-    actualStep++;
-    if (actualStep >= amountSteps) {
+    if (partialDistance >=  distance) {
         finalized = true;
     }
     return newPoint;
